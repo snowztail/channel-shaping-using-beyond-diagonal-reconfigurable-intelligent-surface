@@ -1,7 +1,7 @@
 clear; setup; config_indoor;
 
-iterator = create_iterator;
-while ~iterator.converged
+[iter.converged, iter.tolerance, iter.objective, iter.counter] = deal(false, 1e-3, 0, 0);
+while ~iter.converged
 	[channel.aggregate] = channel_aggregate(channel.direct, channel.forward, channel.backward, ris.scatter);
 	[bs.covariance] = update_bs(channel.aggregate, power.transmit, power.noise);
 	[ris.scatter] = update_ris(channel.direct, channel.forward, channel.backward, bs.covariance, power.noise);
@@ -25,23 +25,22 @@ function [Q] = update_bs(H, P_t, P_n)
 end
 
 function [Theta] = update_ris(H_d, H_f, H_b, Q, P_n)
-	persistent init;
-	if isempty(init)
-		init.Theta = eye(size(H_f, 1));
+	persistent iter;
+	if isempty(iter)
+		iter.Theta = eye(size(H_f, 1));
 	end
-	Theta = init.Theta;
+	Theta = iter.Theta;
 	
-	iter = create_iterator;
-	while ~iter.converged && ~iter.timeout
-		H = channel_aggregate(H_d, H_f, H_b, Theta);
-		G_e = (H_b') / (eye(size(H, 1)) + H * (Q / P_n) * H') * (H * (Q / P_n) * H_f');
-		G_r = G_e * Theta' - Theta * G_e';
+	[iter.converged, iter.objective, iter.tolerance, iter.counter] = deal(false, 1e-3, 0, 0);
+	while ~iter.converged
+		% TODO: update order
+		G_r = gradient_riemannian(H_d, H_f, H_b, Theta, Q, P_n);
 		
 		if mod(iter.counter, numel(Theta)) == 0
 			D = G_r;
 		else
-			gamma = trace((G_r - prev.G_r) * G_r') / trace(prev.G_r * prev.G_r');
-			D = G_r + gamma * prev.D;
+			gamma = trace((G_r - iter.G_r) * G_r') / trace(iter.G_r * iter.G_r');
+			D = G_r + gamma * iter.D;
 			if real(trace(D' * G)) < 0
 				D = G_r;
 			end
@@ -59,7 +58,13 @@ function [Theta] = update_ris(H_d, H_f, H_b, Q, P_n)
 		R = rate_mimo(H, Q, P_n);
 	end
 	
-	init.Theta = Theta;
+	iter.Theta = Theta;
+end
+
+function [G_r] = gradient_riemannian(H_d, H_f, H_b, Theta, Q, P_n)
+	H = channel_aggregate(H_d, H_f, H_b, Theta);
+	G_e = (H_b') / (eye(size(H, 1)) + H * (Q / P_n) * H') * (H * (Q / P_n) * H_f');
+	G_r = G_e * Theta' - Theta * G_e';
 end
 
 function [mu] = step_armijo(H_d, H_f, H_b, Theta, Q, P_n, D)
@@ -94,8 +99,6 @@ function [mu] = step_armijo(H_d, H_f, H_b, Theta, Q, P_n, D)
 	mu = test.mu;
 end
 
-function [iterator] = create_iterator
-	[iterator.converged, iterator.timeout] = deal(false);
-	[iterator.minGap, iterator.maxRun] = deal(1e-4, 1e2);
-	[iterator.reference, iterator.counter] = deal(0);
+function [iter] = create_algorithm
+	[iter.converged, iter.tolerance, iter.objective, iter.counter] = deal(false, 1e-3, 0, 0);
 end
