@@ -50,6 +50,7 @@ function [Theta] = update_ris(H_d, H_f, H_b, Q, P_n)
 	while ~iter.converge
 		G_r = gradient_riemannian(H_d, H_f, H_b, Theta, Q, P_n);
 		D = direction_conjugate(G_r, iter);
+		D = keep_block_diagonal(D, 4);
 		mu = step_armijo(H_d, H_f, H_b, Theta, Q, P_n, D);
 		Theta = expm(mu * D) * Theta;
 		R = rate_mimo(channel_aggregate(H_d, H_f, H_b, Theta), Q, P_n);
