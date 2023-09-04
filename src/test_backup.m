@@ -6,9 +6,9 @@ clear; close; setup;
 % [distance.direct, distance.forward, distance.backward] = deal(-14.7, -10, -6.3);
 % [exponent.direct, exponent.forward, exponent.backward] = deal(-3, -2.4, -2);
 [pathloss.direct, pathloss.forward, pathloss.backward] = deal(db2pow(-65), db2pow(-54), db2pow(-46));
-channel.direct = sqrt(pathloss.direct) * fading_ricean(base.antenna, 'ula', user.antenna, 'ula', 10);
+channel.direct = sqrt(pathloss.direct) * fading_ricean(base.antenna, 'ula', user.antenna, 'ula');
 channel.forward = sqrt(pathloss.forward) * fading_ricean(base.antenna, 'ula', ris.antenna, 'upa');
-channel.backward = sqrt(pathloss.backward) * fading_ricean(ris.antenna, 'upa', user.antenna, 'ula', 10);
+channel.backward = sqrt(pathloss.backward) * fading_ricean(ris.antenna, 'upa', user.antenna, 'ula');
 
 ris.connect = num2cell(2 .^ (0 : log2(ris.antenna)));
 ris.scatter = repmat({eye(ris.antenna)}, size(ris.connect));
@@ -21,11 +21,11 @@ rate = zeros(1, nVariables);
 eigenvalue = zeros(min(base.antenna, user.antenna), nVariables);
 
 for iVariable = 1 : nVariables
-	base.covariance{iVariable} = (power.transmit / base.antenna) * eye(base.antenna);
+	channel.aggregate{iVariable} = channel_aggregate(channel.direct, channel.forward, channel.backward, ris.scatter{iVariable});
 	[iter.converge, iter.tolerance, iter.counter, iter.rate] = deal(false, 1e-4, 0, 0);
 	while ~iter.converge
-		[ris.scatter{iVariable}, channel.aggregate{iVariable}] = update_ris(channel.direct, channel.forward, channel.backward, ris.scatter{iVariable}, ris.connect{iVariable}, base.covariance{iVariable}, power.noise);
 		[base.covariance{iVariable}, base.allocate{iVariable}] = update_bs(channel.aggregate{iVariable}, power.transmit, power.noise);
+		[ris.scatter{iVariable}, channel.aggregate{iVariable}] = update_ris(channel.direct, channel.forward, channel.backward, ris.scatter{iVariable}, ris.connect{iVariable}, base.covariance{iVariable}, power.noise);
 		rate(iVariable) = rate_mimo(channel.aggregate{iVariable}, base.covariance{iVariable}, power.noise);
 		
 		iter.converge = (abs(rate(iVariable) - iter.rate) <= iter.tolerance);
