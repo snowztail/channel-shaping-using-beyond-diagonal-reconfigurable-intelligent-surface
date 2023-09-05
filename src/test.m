@@ -22,7 +22,7 @@ eigenvalue = zeros(min(base.antenna, user.antenna), nVariables);
 
 for iVariable = 1 : nVariables
 	base.covariance{iVariable} = (power.transmit / base.antenna) * eye(base.antenna);
-	[iter.converge, iter.tolerance, iter.counter, iter.rate] = deal(false, 1e-4, 0, 0);
+	[iter.converge, iter.tolerance, iter.counter, iter.rate] = deal(false, 1e-5, 0, 0);
 	while ~iter.converge
 		[ris.scatter{iVariable}, channel.aggregate{iVariable}] = update_ris(channel.direct, channel.forward, channel.backward, ris.scatter{iVariable}, ris.connect{iVariable}, base.covariance{iVariable}, power.noise);
 		[base.covariance{iVariable}, base.allocate{iVariable}] = update_bs(channel.aggregate{iVariable}, power.transmit, power.noise);
