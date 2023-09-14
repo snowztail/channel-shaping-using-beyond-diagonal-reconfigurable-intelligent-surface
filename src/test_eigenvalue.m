@@ -44,12 +44,12 @@ hold off;
 legend(S, '$\sigma_1$', '$\sigma_2$');
 xlabel('$\theta_1$');
 ylabel('$\theta_2$');
-zlabel('Singular value');
+zlabel({'Channel'; 'singular value'});
 xticks([-2*pi, -1.5*pi, -pi, -0.5*pi, 0, 0.5*pi, pi, 1.5*pi, 2*pi]);
 yticks([-2*pi, -1.5*pi, -pi, -0.5*pi, 0, 0.5*pi, pi, 1.5*pi, 2*pi]);
 xticklabels({'-2$\pi$', '-1.5$\pi$', '-$\pi$', '-0.5$\pi$', '0', '0.5$\pi$', '$\pi$', '1.5$\pi$', '2$\pi$'});
 yticklabels({'-2$\pi$', '-1.5$\pi$', '-$\pi$', '-0.5$\pi$', '0', '0.5$\pi$', '$\pi$', '1.5$\pi$', '2$\pi$'});
-title('Diagonal 2-element RIS');
+title('2x2 MIMO + Diagonal 2-Element RIS');
 
 
 nexttile;
@@ -76,12 +76,12 @@ hold off;
 legend(S, '$\sigma_1$', '$\sigma_2$');
 xlabel('$\alpha$');
 ylabel('$\phi$');
-zlabel('Singular value');
+zlabel({'Channel'; 'singular value'});
 xticks([-2*pi, -1.5*pi, -pi, -0.5*pi, 0, 0.5*pi, pi, 1.5*pi, 2*pi]);
 yticks([-2*pi, -1.5*pi, -pi, -0.5*pi, 0, 0.5*pi, pi, 1.5*pi, 2*pi]);
 xticklabels({'-2$\pi$', '-1.5$\pi$', '-$\pi$', '-0.5$\pi$', '0', '0.5$\pi$', '$\pi$', '1.5$\pi$', '2$\pi$'});
 yticklabels({'-2$\pi$', '-1.5$\pi$', '-$\pi$', '-0.5$\pi$', '0', '0.5$\pi$', '$\pi$', '1.5$\pi$', '2$\pi$'});
-title('Unitary 2-element RIS');
+title('2x2 MIMO + Unitary 2-Element RIS');
 
 
 
