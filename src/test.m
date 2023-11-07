@@ -1,7 +1,7 @@
 clear; close; setup;
 
-[base.antenna, ris.antenna, user.antenna] = deal(8, 4, 4);
-[power.transmit, power.noise] = deal(db2pow(-20), db2pow(-90));
+[base.antenna, ris.antenna, user.antenna] = deal(4, 16, 4);
+[power.transmit, power.noise] = deal(db2pow(-20), db2pow(-120));
 
 % [distance.direct, distance.forward, distance.backward] = deal(-14.7, -10, -6.3);
 % [exponent.direct, exponent.forward, exponent.backward] = deal(-3, -2.4, -2);
@@ -11,7 +11,7 @@ channel.direct = zeros(size(channel.direct));
 channel.forward = sqrt(pathloss.forward) * fading_ricean(base.antenna, 'ula', ris.antenna, 'upa');
 channel.backward = sqrt(pathloss.backward) * fading_ricean(ris.antenna, 'upa', user.antenna, 'ula', 10);
 
-ris.connect = num2cell(2 .^ (0 : log2(ris.antenna)));
+ris.connect = num2cell(2 .^ (log2(ris.antenna)));
 ris.scatter = repmat({eye(ris.antenna)}, size(ris.connect));
 
 % benchmark.rate = rate_mimo(channel.direct, update_bs(channel.direct, power.transmit, power.noise), power.noise);
@@ -19,11 +19,14 @@ ris.scatter = repmat({eye(ris.antenna)}, size(ris.connect));
 
 nVariables = length(ris.connect);
 rate = zeros(1, nVariables);
-eigenvalue = zeros(min(base.antenna, user.antenna), nVariables);
+% eigenvalue = zeros(min(base.antenna, user.antenna), nVariables);
+sv = zeros(min(base.antenna, user.antenna), nVariables);
 
 for iVariable = 1 : nVariables
-	base.covariance{iVariable} = (power.transmit / base.antenna) * eye(base.antenna);
-	[iter.converge, iter.tolerance, iter.counter, iter.rate] = deal(false, 1e-5, 0, 0);
+	% base.covariance{iVariable} = (power.transmit / base.antenna) * eye(base.antenna);
+	base.covariance{iVariable} = rand(base.antenna);
+	base.covariance{iVariable} = base.covariance{iVariable} ./ sum(base.covariance{iVariable}, 'all') * power.transmit;
+	[iter.converge, iter.tolerance, iter.counter, iter.rate] = deal(false, 1e-6, 0, 0);
 	while ~iter.converge
 		[ris.scatter{iVariable}, channel.aggregate{iVariable}] = update_ris(channel.direct, channel.forward, channel.backward, ris.scatter{iVariable}, ris.connect{iVariable}, base.covariance{iVariable}, power.noise);
 		[base.covariance{iVariable}, base.allocate{iVariable}] = update_bs(channel.aggregate{iVariable}, power.transmit, power.noise);
@@ -33,5 +36,5 @@ for iVariable = 1 : nVariables
 		iter.counter = iter.counter + 1;
 		iter.rate = rate(iVariable);
 	end
-	eigenvalue(:, iVariable) = eig(channel.aggregate{iVariable} * channel.aggregate{iVariable}');
+	sv(:, iVariable) = svd(channel.aggregate{iVariable});
 end

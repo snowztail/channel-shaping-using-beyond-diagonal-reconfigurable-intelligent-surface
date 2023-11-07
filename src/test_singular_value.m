@@ -44,12 +44,12 @@ hold off;
 legend(S, '$\sigma_1$', '$\sigma_2$');
 xlabel('$\theta_1$');
 ylabel('$\theta_2$');
-zlabel({'Channel'; 'singular value'});
+zlabel({'Singular value'});
 xticks([-2*pi, -1.5*pi, -pi, -0.5*pi, 0, 0.5*pi, pi, 1.5*pi, 2*pi]);
 yticks([-2*pi, -1.5*pi, -pi, -0.5*pi, 0, 0.5*pi, pi, 1.5*pi, 2*pi]);
 xticklabels({'-2$\pi$', '-1.5$\pi$', '-$\pi$', '-0.5$\pi$', '0', '0.5$\pi$', '$\pi$', '1.5$\pi$', '2$\pi$'});
 yticklabels({'-2$\pi$', '-1.5$\pi$', '-$\pi$', '-0.5$\pi$', '0', '0.5$\pi$', '$\pi$', '1.5$\pi$', '2$\pi$'});
-title('2x2 MIMO + Diagonal 2-Element RIS');
+title('2x2x2: Diagonal RIS');
 
 
 nexttile;
@@ -75,14 +75,15 @@ S(2).DataTipTemplate.DataTipRows.Format = '%.3f';
 hold off;
 legend(S, '$\sigma_1$', '$\sigma_2$');
 xlabel('$\alpha$');
-ylabel('$\phi$');
-zlabel({'Channel'; 'singular value'});
+ylabel('$\theta$');
+zlabel({'Singular value'});
 xticks([-2*pi, -1.5*pi, -pi, -0.5*pi, 0, 0.5*pi, pi, 1.5*pi, 2*pi]);
 yticks([-2*pi, -1.5*pi, -pi, -0.5*pi, 0, 0.5*pi, pi, 1.5*pi, 2*pi]);
 xticklabels({'-2$\pi$', '-1.5$\pi$', '-$\pi$', '-0.5$\pi$', '0', '0.5$\pi$', '$\pi$', '1.5$\pi$', '2$\pi$'});
 yticklabels({'-2$\pi$', '-1.5$\pi$', '-$\pi$', '-0.5$\pi$', '0', '0.5$\pi$', '$\pi$', '1.5$\pi$', '2$\pi$'});
-title('2x2 MIMO + Unitary 2-Element RIS');
+title('2x2x2: Unitary RIS');
 
+savefig('plots/singular_value.fig');
 
 
 

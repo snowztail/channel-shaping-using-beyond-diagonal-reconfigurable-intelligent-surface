@@ -1,5 +1,5 @@
 function [Theta, H] = update_ris(H_d, H_f, H_b, Theta, G, Q, P_n)
-	[iter.converge, iter.tolerance, iter.counter, iter.R] = deal(false, 1e-5, 0, 0);
+	[iter.converge, iter.tolerance, iter.counter, iter.R] = deal(false, 1e-6, 0, 0);
 	while ~iter.converge
 		G_r = gradient_riemannian(H_d, H_f, H_b, Theta, Q, P_n);
 		D = direction_conjugate(G_r, iter);
