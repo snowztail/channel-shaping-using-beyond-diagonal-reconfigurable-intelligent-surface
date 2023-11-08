@@ -9,6 +9,5 @@ set(groot, 'defaultstemlinewidth', 2);
 set(groot, 'defaultscatterlinewidth', 2);
 
 % PBS_ARRAY_INDEX is environment variable (0 -> local, positive -> HPC instance)
-i = str2double(getenv('PBS_ARRAY_INDEX'));
-disp(i); % rng(i);
+disp(getenv('PBS_ARRAY_INDEX')); % rng(str2double(getenv('PBS_ARRAY_INDEX')));
 rng shuffle;
