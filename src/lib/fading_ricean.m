@@ -1,19 +1,19 @@
-function [H] = fading_ricean(N_t, type_t, N_r, type_r, K)
+function [H] = fading_ricean(N_r, type_r, N_t, type_t, K)
 	arguments
-		N_t;
-		type_t;
 		N_r;
 		type_r;
+		N_t;
+		type_t;
 		K = 0;
 	end
-	H = sqrt(K / (1 + K)) * component_los(steering(N_t, type_t), steering(N_r, type_r)) + sqrt(1 / (1 + K)) * component_nlos(N_t, N_r);
+	H = sqrt(K / (1 + K)) * component_los(steering(N_r, type_r), steering(N_t, type_t)) + sqrt(1 / (1 + K)) * component_nlos(N_r, N_t);
 end
 
-function [H] = component_los(s_t, s_r)
+function [H] = component_los(s_r, s_t)
 	H = s_r * s_t';
 end
 
-function [H] = component_nlos(N_t, N_r)
+function [H] = component_nlos(N_r, N_t)
 	H = sqrt(0.5) * (randn(N_r, N_t) + 1i * randn(N_r, N_t));
 end
 

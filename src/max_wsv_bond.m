@@ -1,19 +1,20 @@
 clc; clear; close; setup;
 
-[base.antenna, ris.antenna, user.antenna] = deal(4, 256, 2);
+[transmit.antenna, ris.antenna, receive.antenna] = deal(4, 256, 2);
 ris.bond = 2 .^ (0 : 2 : log2(ris.antenna));
 ris.group = ris.antenna ./ ris.bond;
 % [distance.direct, distance.forward, distance.backward] = deal(-14.7, -10, -6.3);
 % [exponent.direct, exponent.forward, exponent.backward] = deal(-3, -2.4, -2);
 [channel.pathloss.direct, channel.pathloss.forward, channel.pathloss.backward] = deal(db2pow(-65), db2pow(-54), db2pow(-46));
-channel.rank = min(base.antenna, user.antenna);
+channel.rank = min(transmit.antenna, receive.antenna);
 channel.weight = simplex_standard(channel.rank, 0.1);
 [number.bond, number.weight, number.realization] = deal(length(ris.bond), length(channel.weight), 1e1);
 
 for r = 1 : number.realization
-	channel.direct = sqrt(channel.pathloss.direct) * fading_ricean(base.antenna, 'ula', user.antenna, 'ula');
-	channel.forward = sqrt(channel.pathloss.forward) * fading_ricean(base.antenna, 'ula', ris.antenna, 'upa');
-	channel.backward = sqrt(channel.pathloss.backward) * fading_ricean(ris.antenna, 'upa', user.antenna, 'ula');
+	channel.direct = sqrt(channel.pathloss.direct) * fading_ricean(receive.antenna, 'ula', transmit.antenna, 'ula');
+	% channel.direct = 0 * channel.direct;
+	channel.forward = sqrt(channel.pathloss.forward) * fading_ricean(ris.antenna, 'upa', transmit.antenna, 'ula');
+	channel.backward = sqrt(channel.pathloss.backward) * fading_ricean(receive.antenna, 'ula', ris.antenna, 'upa');
 	channel.sv.direct(:, r) = svd(channel.direct);
 	for w = 1 : number.weight
 		for b = 1 : number.bond
