@@ -20,46 +20,25 @@ for r = 1 : number.realization
 	channel.backward = shiftdim(sqrt(channel.pathloss.backward), -2) .* fading_rayleigh(receive.antenna, ris.antenna, network.link);
 	for b = 1 : number.bond
 		[iter.converge, iter.tolerance, iter.counter] = deal(false, 1e-5, 0);
+		receive.beamformer = repmat(eye(channel.rank, receive.antenna), [1, 1, network.link]);
+		transmit.beamformer = repmat(eye(transmit.antenna, channel.rank), [1, 1, network.link]);
 		ris.scatter = eye(ris.antenna);
-		for l = 1 : network.link
-			transmit.beamformer(:, :, l) = rand_unitary(transmit.antenna, channel.rank);
-			receive.beamformer(:, :, l) = rand_unitary(receive.antenna, channel.rank);
-			channel.forward1(:, :, l) = channel.forward(:, :, l) * transmit.beamformer(:, :, l);
-			channel.backward1(:, :, l) = receive.beamformer(:, :, l)' * channel.backward(:, :, l);
+		channel.aggregate = channel_aggregate(channel.direct, channel.forward, channel.backward, ris.scatter);
+		
+		channel.equivalent.direct = pagemtimes(permute(receive.beamformer, [1, 2, 4, 3]), pagemtimes(channel.direct, transmit.beamformer));
+		channel.equivalent.forward = pagemtimes(channel.forward, transmit.beamformer);
+		channel.equivalent.backward = pagemtimes(receive.beamformer, channel.backward);
+		channel.equivalent.aggregate = channel_aggregate(channel.equivalent.direct, channel.equivalent.forward, channel.equivalent.backward, ris.scatter);
+		channel.interference(b, r) = norm(channel.equivalent.aggregate(:, :, ~logical(eye(network.link))), 'fro') ^ 2;
+		while ~iter.converge
+			iter.interference = channel.interference(b, r);
+			receive.beamformer = receive_min_interference(channel.aggregate, transmit.beamformer);
+			transmit.beamformer = receive_min_interference(pagectranspose(channel.aggregate), pagectranspose(receive.beamformer));
+			[ris.scatter, channel.aggregate] = ris_min_interference();
+			channel.interference(b, r) = norm(channel.equivalent.aggregate(:, :, ~logical(eye(network.link))), 'fro') ^ 2;
+			iter.converge = (abs(channel.interference(b, r) - iter.interference) <= iter.tolerance);
+			iter.counter = iter.counter + 1;
 		end
-		for l1 = network.link
-			for l2 = network.link
-				channel.direct1(:, :, l1, l2) = transmit.beamformer(:, :, l1)' * channel.direct(:, :, l1, l2) * receive.beamformer(:, :, l2);
-			end
-		end
-		channel.direct1 = transmit.beamformer' * channel.direct * receive.beamformer;
-		channel.forward1 = channel.forward * transmit.beamformer;
-		channel.backward1 = receiver.beamformer * channel.backward;
-
-
-
-
-		% [ris.scatter, transmit.covariance] = deal(eye(ris.antenna), eye(transmit.antenna) * transmit.power / transmit.antenna);
-		% channel.aggregate = channel_aggregate(channel.direct, channel.forward, channel.backward, ris.scatter);
-		% receive.rate.aggregate(b, n, r) = rate_mimo(channel.aggregate, transmit.covariance, receive.noise(n));
-		% while ~iter.converge
-		% 	iter.rate = receive.rate.aggregate(b, n, r);
-		% 	[ris.scatter, channel.aggregate] = ris_max_rate(channel.direct, channel.forward, channel.backward, ris.scatter, ris.group(b), transmit.covariance, receive.noise(n));
-		% 	transmit.covariance = transmit_max_rate(channel.aggregate, transmit.power, receive.noise(n));
-		% 	receive.rate.aggregate(b, n, r) = rate_mimo(channel.aggregate, transmit.covariance, receive.noise(n));
-		% 	iter.converge = (abs(receive.rate.aggregate(b, n, r) - iter.rate) <= iter.tolerance);
-		% 	iter.counter = iter.counter + 1;
-		% end
-		% channel.sv.aggregate(:, b, n, r) = svd(channel.aggregate);
-
-
-
-
-		% a = transmit.beamformer' *
-
-
-		[ris.scatter, channel.aggregate] = ris_min_interference(channel.direct, channel.forward, channel.backward, ris.scatter, ris.group(b), transmit.precoder, transmit.power, receive.combiner, receive.noise);
-		channel.power.aggregate(b, r) = norm(channel.aggregate, 'fro') ^ 2;
 	end
 end
 

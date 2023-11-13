@@ -1,4 +1,4 @@
-function [Theta, H] = ris_min_interference(H_d, H_f, H_b, Theta, G, U, P_t, V, P_n)
+function [Theta, H] = ris_min_interference(H_d, H_f, H_b, Theta)
 	[iter.converge, iter.tolerance, iter.counter] = deal(false, 1e-10, 0);
 	H = channel_aggregate(H_d, H_f, H_b, Theta);
 	I = interference_leakage(H_d, H_f, H_b, Theta);
