@@ -1,9 +1,9 @@
-function [U] = receive_min_interference(H, V)
-	[N_e, N_r, K] = deal(size(V, 2), size(H, 1), size(V, 3));
-	U = zeros(N_e, N_r, K);
-	Q = pagemtimes(pagemtimes(H, V), 'none', pagemtimes(H, V), 'ctranspose');
+function [G] = receive_min_interference(H, W)
+	[N_e, N_r, K] = deal(size(W, 2), size(H, 1), size(W, 3));
+	G = zeros(N_e, N_r, K);
+	Q = pagemtimes(pagemtimes(H, W), 'none', pagemtimes(H, W), 'ctranspose');
 	for k = 1 : K
-		[u, ~] = eigs(sum(Q(:, :, k, :), 4), N_e, 'smallestabs');
-		U(:, :, k) = u';
+		[U, ~] = eigs(sum(Q(:, :, k, 1 : end ~= k), 4), N_e, 'smallestabs');
+		G(:, :, k) = U';
 	end
 end
