@@ -6,4 +6,13 @@ function [G] = receive_min_interference(H, W)
 		[U, ~] = eigs(sum(Q(:, :, k, 1 : end ~= k), 4), N_e, 'smallestabs');
 		G(:, :, k) = U';
 	end
+
+    for i = 1 : K
+        M = 0;
+        for j = setdiff(1 : K, i)
+            M = M + H(:, :, i, j) * W(:, :, j) * W(:, :, j)' * H(:, :, i, j)';
+        end
+        [U, ~] = eigs(M, N_e, 'smallestabs');
+        g(:, :, i) = U';
+    end
 end

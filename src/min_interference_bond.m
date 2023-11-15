@@ -1,6 +1,6 @@
 clc; clear; close; setup;
 
-[transmit.antenna, ris.antenna, receive.antenna, network.link] = deal(2, 256, 4, 3);
+[transmit.antenna, ris.antenna, receive.antenna, network.link] = deal(2, 256, 4, 5);
 ris.bond = 2 .^ (2 : 2 : log2(ris.antenna));
 ris.group = ris.antenna ./ ris.bond;
 [transmit.power, receive.noise] = deal(db2pow(-20), db2pow(-75 : -10 : -105));
@@ -30,13 +30,14 @@ for r = 1 : number.realization
 		channel.aggregate = channel_aggregate(channel.direct, channel.forward, channel.backward, ris.scatter);
 		channel.equivalent.aggregate = channel_aggregate(channel.equivalent.direct, channel.equivalent.forward, channel.equivalent.backward, ris.scatter);
 		receive.interference(b, r) = interference_leakage(channel.equivalent.aggregate);
+        % interference_leakage(pagemtimes(permute(receive.beamformer, [1 2 4 3]), pagemtimes(channel.aggregate, transmit.beamformer)))
 		while ~iter.converge
 			iter.interference = receive.interference(b, r);
 			receive.beamformer = receive_min_interference(channel.aggregate, transmit.beamformer);
-			transmit.beamformer = receive_min_interference(pagectranspose(channel.aggregate), pagectranspose(receive.beamformer));
+			transmit.beamformer = transmit_min_interference(channel.aggregate, receive.beamformer);
 			[channel.equivalent.direct, channel.equivalent.forward, channel.equivalent.backward] = channel_equivalent(channel.direct, channel.forward, channel.backward, transmit.beamformer, receive.beamformer);
 			[ris.scatter] = ris_min_interference(channel.equivalent.direct, channel.equivalent.forward, channel.equivalent.backward, ris.scatter, ris.group(b));
-		    channel.aggregate = channel_aggregate(channel.direct, channel.forward, channel.backward, ris.scatter);
+			channel.aggregate = channel_aggregate(channel.direct, channel.forward, channel.backward, ris.scatter);
 			channel.equivalent.aggregate = channel_aggregate(channel.equivalent.direct, channel.equivalent.forward, channel.equivalent.backward, ris.scatter);
 			receive.interference(b, r) = norm(channel.equivalent.aggregate(:, :, ~logical(eye(network.link))), 'fro') ^ 2;
 			iter.converge = (abs(receive.interference(b, r) - iter.interference) <= iter.tolerance);
