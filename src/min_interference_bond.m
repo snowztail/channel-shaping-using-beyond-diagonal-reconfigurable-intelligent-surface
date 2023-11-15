@@ -1,7 +1,7 @@
 clc; clear; close; setup;
 
 [transmit.antenna, ris.antenna, receive.antenna, network.link] = deal(2, 256, 4, 5);
-ris.bond = 2 .^ (2 : 2 : log2(ris.antenna));
+ris.bond = 2 .^ (3 : 2 : log2(ris.antenna));
 ris.group = ris.antenna ./ ris.bond;
 [transmit.power, receive.noise] = deal(db2pow(-20), db2pow(-75 : -10 : -105));
 network.coverage = 1e2;

@@ -9,24 +9,10 @@ function [Theta] = ris_min_interference(H_d, H_f, H_b, Theta, G)
 			S = (g - 1) * L + 1 : g * L;
 			S_c = setdiff(1 : length(Theta), S);
 			D = H_d + pagemtimes(pagemtimes(H_b(:, S_c, :), Theta(S_c, S_c)), permute(H_f(S_c, :, :), [1, 2, 4, 3]));
-			B = zeros(L, L, K);
-			for k = 1 : K
-				B(:, :, k) = 2 * max(eig(H_b(:, S, k)' * H_b(:, S, k))) * eye(L) - H_b(:, S, k)' * H_b(:, S, k);
-			end
-tic
-            M = 0;
-			for k = 1 : K
-				for j = setdiff(1 : K, k)
-					M = M + B(:, :, k) * Theta(S, S) * H_f(S, :, j) * H_f(S, :, j)' - H_b(:, S, k)' * D(:, :, k, j) * H_f(S, :, j)';
-				end
-			end
-toc
-tic
+            T = pagemtimes(H_b(:, S, :), 'ctranspose', H_b(:, S, :), 'none');
+			B = 2 * max(pageeig(T)) .* repmat(eye(L), [1, 1, K]) - T;
 			Q = pagemtimes(pagemtimes(pagemtimes(B, Theta(S, S)), permute(H_f(S, :, :), [1, 2, 4, 3])) - pagemtimes(pagectranspose(H_b(:, S, :)), D), permute(pagectranspose(H_f(S, :, :)), [1, 2, 4, 3]));
-			M_ = sum(Q(:, :, ~logical(eye(K))), [3, 4]);
-toc
-            % M_ = sum(Q, [3, 4]);
-
+			M = sum(Q(:, :, ~logical(eye(K))), [3, 4]);
 			[U, ~, V] = svd(M);
 			Theta(S, S) = U * V';
 		end
