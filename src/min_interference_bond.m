@@ -19,18 +19,18 @@ channel.rank = min(transmit.antenna, receive.antenna);
 
 for r = 1 : number.realization
 	channel.direct = shiftdim(sqrt(channel.pathloss.direct), -2) .* fading_rayleigh(receive.antenna, transmit.antenna, network.link, network.link);
-	channel.forward = shiftdim(sqrt(channel.pathloss.forward), -2) .* fading_rayleigh(ris.antenna, transmit.antenna, network.link);
-	channel.backward = shiftdim(sqrt(channel.pathloss.backward), -2) .* fading_rayleigh(receive.antenna, ris.antenna, network.link);
+	channel.forward = shiftdim(sqrt(channel.pathloss.forward), -2) .* fading_rayleigh(ris.antenna, transmit.antenna, 1, network.link);
+	channel.backward = shiftdim(sqrt(channel.pathloss.backward), -2) .* fading_rayleigh(receive.antenna, ris.antenna, network.link, 1);
 	for b = 1 : number.bond
 		[iter.converge, iter.tolerance, iter.counter] = deal(false, 1e-5, 0);
-		receive.beamformer = repmat(eye(channel.rank, receive.antenna), [1, 1, network.link]);
-		transmit.beamformer = repmat(eye(transmit.antenna, channel.rank), [1, 1, network.link]);
+		receive.beamformer = repmat(eye(channel.rank, receive.antenna), [1, 1, network.link, 1]);
+		transmit.beamformer = repmat(eye(transmit.antenna, channel.rank), [1, 1, 1, network.link]);
 		[channel.equivalent.direct, channel.equivalent.forward, channel.equivalent.backward] = channel_equivalent(channel.direct, channel.forward, channel.backward, transmit.beamformer, receive.beamformer);
 		ris.scatter = eye(ris.antenna);
 		channel.aggregate = channel_aggregate(channel.direct, channel.forward, channel.backward, ris.scatter);
 		channel.equivalent.aggregate = channel_aggregate(channel.equivalent.direct, channel.equivalent.forward, channel.equivalent.backward, ris.scatter);
 		receive.interference(b, r) = interference_leakage(channel.equivalent.aggregate);
-        % interference_leakage(pagemtimes(permute(receive.beamformer, [1 2 4 3]), pagemtimes(channel.aggregate, transmit.beamformer)))
+        % interference_leakage(pagemtimes(pagemtimes(receive.beamformer, channel.aggregate), transmit.beamformer))
 		while ~iter.converge
 			iter.interference = receive.interference(b, r);
 			receive.beamformer = receive_min_interference(channel.aggregate, transmit.beamformer);
