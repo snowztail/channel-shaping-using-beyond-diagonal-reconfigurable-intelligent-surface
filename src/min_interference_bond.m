@@ -1,6 +1,6 @@
 clc; clear; close; setup;
 
-[transmit.antenna, ris.antenna, receive.antenna, network.link] = deal(2, 64, 2, 2);
+[transmit.antenna, ris.antenna, receive.antenna, network.link] = deal(4, 64, 4, 4);
 ris.bond = 2 .^ (0 : 1 : log2(ris.antenna));
 ris.group = ris.antenna ./ ris.bond;
 [transmit.power, receive.noise] = deal(db2pow(-20), db2pow(-75 : -10 : -115));
@@ -8,15 +8,15 @@ network.coverage = 1e1;
 ris.coordinate = 0;
 transmit.coordinate = sqrt(network.coverage ^ 2 * rand(network.link, 1)) .* exp(1i * 2 * pi * rand(network.link, 1));
 receive.coordinate = sqrt(network.coverage ^ 2 * rand(network.link, 1)) .* exp(1i * 2 * pi * rand(network.link, 1));
-% channel.pathloss.direct = db2pow(-30) * abs(transmit.coordinate - receive.coordinate') .^ (-2);
-% channel.pathloss.forward = db2pow(-30) * abs(transmit.coordinate - ris.coordinate) .^ (-2.4);
-% channel.pathloss.backward = db2pow(-30) * abs(ris.coordinate - receive.coordinate) .^ (-3);
+channel.pathloss.direct = db2pow(-30) * abs(transmit.coordinate - receive.coordinate') .^ (-2);
+channel.pathloss.forward = db2pow(-30) * abs(transmit.coordinate - ris.coordinate) .^ (-2.4);
+channel.pathloss.backward = db2pow(-30) * abs(ris.coordinate - receive.coordinate) .^ (-3);
 % channel.pathloss.direct = 1;
 % channel.pathloss.forward = 0.01;
 % channel.pathloss.backward = 0.01;
-[channel.pathloss.direct, channel.pathloss.forward, channel.pathloss.backward] = deal(db2pow(-65), db2pow(-54), db2pow(-46));
+% [channel.pathloss.direct, channel.pathloss.forward, channel.pathloss.backward] = deal(db2pow(-65), db2pow(-54), db2pow(-46));
 % channel.rank = min(transmit.antenna, receive.antenna);
-channel.rank = 2;
+channel.rank = 3;
 [number.bond, number.noise, number.realization] = deal(length(ris.bond), length(receive.noise), 1e1);
 
 for r = 1 : number.realization
@@ -71,7 +71,7 @@ receive.interference.aggregate = mean(receive.interference.aggregate, 2);
 receive.rate.direct = mean(receive.rate.direct, 2);
 receive.rate.aggregate = mean(receive.rate.aggregate, 3);
 
-figure('Name', 'Total Interference Leakage vs RIS Group Size', 'Position', [0, 0, 500, 400]);
+figure('Name', 'Total Leakage Interference vs RIS Group Size', 'Position', [0, 0, 500, 400]);
 handle.interference(1) = scatter(0, receive.interference.direct, 'Marker', 'o', 'DisplayName', 'No RIS');
 hold on;
 handle.interference(2) = plot(ris.bond, receive.interference.aggregate, 'Marker', 'x', 'DisplayName', 'BD-RIS');
@@ -79,6 +79,7 @@ legend(handle.interference, 'Location', 'nw'); grid on; box on; axis tight;
 xlabel('RIS Group Size');
 ylabel('Total Interference Leakage [W]');
 savefig('plots/min_interference_bound_il.fig');
+% savefig('plots/min_interference_bound_il_circle.fig');
 
 figure('Name', 'Total Rate vs RIS Group Size', 'Position', [0, 0, 500, 400]);
 handle.rate = gobjects(number.bond + 1, 1);
@@ -91,4 +92,5 @@ hold off; legend('Location', 'nw'); grid on; box on; axis tight;
 xlabel('Average Noise Power [dB]');
 ylabel('Total Rate [bits/s/Hz]');
 style_plot(handle.rate);
-savefig('plots/min_interference_bound_rate.fig');
+% savefig('plots/min_interference_bound_rate.fig');
+savefig('plots/min_interference_bound_rate_circle.fig');
