@@ -1,6 +1,6 @@
 clc; clear; close; setup;
 
-[transmit.antenna, ris.antenna, receive.antenna, network.link] = deal(4, 64, 4, 4);
+[transmit.antenna, ris.antenna, receive.antenna, network.link] = deal(8, 64, 4, 5);
 ris.bond = 2 .^ (0 : 1 : log2(ris.antenna));
 ris.group = ris.antenna ./ ris.bond;
 [transmit.power, receive.noise] = deal(db2pow(-20), db2pow(-75 : -10 : -115));
@@ -28,6 +28,14 @@ for r = 1 : number.realization
 	[iter.converge, iter.tolerance, iter.counter] = deal(false, 1e-8, 0);
 	receive.beamformer = repmat(eye(channel.rank, receive.antenna), [1, 1, network.link, 1]);
 	transmit.beamformer = repmat(eye(transmit.antenna, channel.rank), [1, 1, 1, network.link]);
+    % for k = 1 : network.link
+    %     X = randn(channel.rank, receive.antenna) + 1i * randn(channel.rank, receive.antenna);
+    %     X = X * (X' * X) ^ (-0.5);
+    %     receiver.beamformer(:, :, k) = X;
+    %     X = randn(transmit.antenna, channel.rank) + 1i * randn(transmit.antenna, channel.rank);
+    %     X = X * (X' * X) ^ (-0.5);
+    %     transmit.beamformer(:, :, :, k) = X;
+    % end
 	receive.interference.direct(r) = interference_leakage(pagemtimes(pagemtimes(receive.beamformer, channel.direct), transmit.beamformer));
 	while ~iter.converge
 		iter.interference = receive.interference.direct(r);
