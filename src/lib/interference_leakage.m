@@ -1,5 +1,4 @@
-function [I] = interference_leakage(H, W, G)
-	K = size(W, 4);
-	H = pagemtimes(pagemtimes(G, H), W);
+function [I] = interference_leakage(H)
+	K = size(H, 3);
 	I = norm(H(:, :, ~logical(eye(K))), 'fro') ^ 2;
 end

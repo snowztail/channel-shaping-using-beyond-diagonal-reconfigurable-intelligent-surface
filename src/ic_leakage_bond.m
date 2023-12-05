@@ -2,36 +2,32 @@ clc; clear; close; setup;
 
 [transmit.antenna, ris.antenna, receive.antenna, transmit.stream, network.pair, network.coverage] = deal(8, 2 .^ [-inf, 0 : 2 : 8], 4, 3, 5, 50);
 [transmit.power, receive.noise] = deal(db2pow(-20), db2pow(-75 : -10 : -115));
-[pathloss.reference, pathloss.exponent.direct, pathloss.exponent.forward, pathloss.exponent.backward] = deal(db2pow(-30), 3, 2.4, 2.4);
-[pathloss.direct, pathloss.forward, pathloss.backward] = pathloss_disk(network.pair, network.coverage, pathloss.reference, pathloss.exponent.direct, pathloss.exponent.forward, pathloss.exponent.backward);
+[channel.pathloss.reference, channel.pathloss.exponent.direct, channel.pathloss.exponent.forward, channel.pathloss.exponent.backward] = deal(db2pow(-30), 3, 2.4, 2.4);
+[channel.pathloss.direct, channel.pathloss.forward, channel.pathloss.backward] = pathloss_disk(network.pair, network.coverage, channel.pathloss.reference, channel.pathloss.exponent.direct, channel.pathloss.exponent.forward, channel.pathloss.exponent.backward);
 [number.antenna, number.noise, number.realization] = deal(length(ris.antenna), length(receive.noise), 1e1);
 
 for r = 1 : number.realization
-	channel.direct = shiftdim(sqrt(pathloss.direct), -2) .* fading_rayleigh(receive.antenna, transmit.antenna, network.pair, network.pair);
+	channel.direct = shiftdim(sqrt(channel.pathloss.direct), -2) .* fading_nlos(receive.antenna, transmit.antenna, network.pair, network.pair);
 	for a = 1 : number.antenna
-		ris.bond = 2 .^ (0 : log2(ris.antenna(a))); number.bond = length(ris.bond);
-		channel.forward = shiftdim(sqrt(pathloss.forward), -2) .* fading_rayleigh(ris.antenna(a), transmit.antenna, 1, network.pair);
-		channel.backward = shiftdim(sqrt(pathloss.backward), -2) .* fading_rayleigh(receive.antenna, ris.antenna(a), network.pair, 1);
-		for b = 0 : number.bond
+		ris.bond = 2 .^ [-inf, (0 : log2(ris.antenna(a)))]; number.bond = length(ris.bond);
+		channel.forward = shiftdim(sqrt(channel.pathloss.forward), -2) .* fading_nlos(ris.antenna(a), transmit.antenna, 1, network.pair);
+		channel.backward = shiftdim(sqrt(channel.pathloss.backward), -2) .* fading_nlos(receive.antenna, ris.antenna(a), network.pair, 1);
+		for b = 1 : number.bond
 			[iter.converge, iter.tolerance, iter.counter, iter.leakage] = deal(false, 1e-8, 0, 0);
 			ris.scatter = eye(ris.antenna(a));
 			channel.aggregate = channel_aggregate(channel.direct, channel.forward, channel.backward, ris.scatter);
 			transmit.beamformer = precoder_initialize_ic(channel.aggregate, transmit.stream);
 			receive.beamformer = combiner_leakage_ic(channel.aggregate, transmit.beamformer);
-			receive.leakage(b + 1, a, r) = interference_leakage(channel.aggregate, transmit.beamformer, receive.beamformer);
+			receive.leakage(b, a, r) = interference_leakage(pagemtimes(pagemtimes(receive.beamformer, channel.aggregate), transmit.beamformer));
 			while ~iter.converge
-				iter.leakage = receive.leakage(b + 1, a, r);
-
-
-
-			receive.beamformer = receive_min_interference(channel.aggregate, transmit.beamformer);
-			transmit.beamformer = transmit_min_interference(channel.aggregate, receive.beamformer);
-			[channel.equivalent.direct, channel.equivalent.forward, channel.equivalent.backward] = channel_equivalent(channel.direct, channel.forward, channel.backward, transmit.beamformer, receive.beamformer);
-			ris.scatter = ris_min_interference(channel.equivalent.direct, channel.equivalent.forward, channel.equivalent.backward, ris.scatter, ris.group(b));
-			channel.aggregate = channel_aggregate(channel.direct, channel.forward, channel.backward, ris.scatter);
-			receive.interference.aggregate(b, r) = interference_leakage(pagemtimes(pagemtimes(receive.beamformer, channel.aggregate), transmit.beamformer));
-			iter.converge = (abs(receive.interference.aggregate(b, r) - iter.interference) <= iter.tolerance);
-			iter.counter = iter.counter + 1;
+				iter.leakage = receive.leakage(b, a, r);
+				receive.beamformer = combiner_leakage_ic(channel.aggregate, transmit.beamformer);
+				transmit.beamformer = precoder_leakage_ic(channel.aggregate, receive.beamformer);
+				ris.scatter = reflector_leakage_ic(pagemtimes(pagemtimes(receive.beamformer, channel.direct), transmit.beamformer), pagemtimes(channel.forward, transmit.beamformer), pagemtimes(receive.beamformer, channel.backward), ris.scatter, ris.bond(b));
+				channel.aggregate = channel_aggregate(channel.direct, channel.forward, channel.backward, ris.scatter);
+				receive.leakage(b, a, r) = interference_leakage(pagemtimes(pagemtimes(receive.beamformer, channel.aggregate), transmit.beamformer));
+				iter.converge = (abs(receive.leakage(b, a, r) - iter.leakage) <= iter.tolerance);
+				iter.counter = iter.counter + 1;
 			end
 		end
 	end

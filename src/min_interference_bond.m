@@ -20,9 +20,9 @@ channel.rank = 3;
 [number.bond, number.noise, number.realization] = deal(length(ris.bond), length(receive.noise), 1e1);
 
 for r = 1 : number.realization
-	channel.direct = shiftdim(sqrt(channel.pathloss.direct), -2) .* fading_rayleigh(receive.antenna, transmit.antenna, network.link, network.link);
-	channel.forward = shiftdim(sqrt(channel.pathloss.forward), -2) .* fading_rayleigh(ris.antenna, transmit.antenna, 1, network.link);
-	channel.backward = shiftdim(sqrt(channel.pathloss.backward), -2) .* fading_rayleigh(receive.antenna, ris.antenna, network.link, 1);
+	channel.direct = shiftdim(sqrt(channel.pathloss.direct), -2) .* fading_nlos(receive.antenna, transmit.antenna, network.link, network.link);
+	channel.forward = shiftdim(sqrt(channel.pathloss.forward), -2) .* fading_nlos(ris.antenna, transmit.antenna, 1, network.link);
+	channel.backward = shiftdim(sqrt(channel.pathloss.backward), -2) .* fading_nlos(receive.antenna, ris.antenna, network.link, 1);
 
 	% * No RIS
 	[iter.converge, iter.tolerance, iter.counter] = deal(false, 1e-8, 0);
