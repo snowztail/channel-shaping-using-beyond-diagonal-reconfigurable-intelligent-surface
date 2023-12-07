@@ -15,17 +15,18 @@ for r = 1 : number.realization
 		else
 			ris.bond = 2 .^ (0 : log2(ris.antenna(a))); number.bond = length(ris.bond);
 			for b = 1 : number.bond
-				[ris.scatter, channel.aggregate] = reflector_power_pc(channel.direct, channel.forward, channel.backward, eye(ris.antenna(a)), ris.bond(b));
+				[ris.scatter, channel.aggregate] = scatter_power_pc(channel.direct, channel.forward, channel.backward, eye(ris.antenna(a)), ris.bond(b));
 				channel.power.aggregate(b, a, r) = norm(channel.aggregate, 'fro') ^ 2;
 			end
 		end
 	end
 end
 channel.power.aggregate = mean(channel.power.aggregate, 3);
+save('data/pc_power_sx.mat');
 
 figure('Name', 'Channel Power vs RIS Configuration', 'Position', [0, 0, 500, 400]);
 hold all;
-set(gca, 'XLim', [0, log2(max(ris.antenna))], 'XTick', 0 : log2(max(ris.antenna)), 'XTickLabel', strcat('$2^', string(vec(0 : log2(max(ris.antenna)))), '$'));
+set(gca, 'XLim', [0, log2(max(ris.antenna))], 'XTick', 0 : log2(max(ris.antenna)), 'XTickLabel', '$2^' + string(vec(0 : log2(max(ris.antenna)))) + '$');
 for a = 1 : number.antenna
 	if ris.antenna(a) == 0
 		handle.power(a) = refline(0, channel.power.aggregate(1, a));
@@ -34,8 +35,8 @@ for a = 1 : number.antenna
 		handle.power(a) = plot(log2(ris.bond), channel.power.aggregate(1 : number.bond, a));
 	end
 end
-hold off;
-style_plot(handle.power); set(handle.power(1), 'Color', 'k', 'Marker', 'none');
+hold off; grid on;
+style_plot(handle.power); set(handle.power(find(ris.antenna == 0)), 'Color', 'k', 'Marker', 'none');
 xlabel('RIS Group Size');
 ylabel('Channel Power [W]');
 legend('$N_s = ' + string(vec(ris.antenna)) + '$', 'Location', 'nw');

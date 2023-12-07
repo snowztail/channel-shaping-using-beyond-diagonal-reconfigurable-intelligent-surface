@@ -1,13 +1,15 @@
-function [Theta, H] = ris_max_wsv(H_d, H_f, H_b, rho, Theta, G)
-	[iter.converge, iter.tolerance, iter.counter] = deal(false, 1e-6, 0);
+function [Theta, H] = scatter_singular_pc(H_d, H_f, H_b, rho, Theta, L)
+	G = length(Theta) / L;
 	[G_e, G_r, D] = deal(zeros(size(Theta)));
+	[iter.converge, iter.tolerance, iter.counter] = deal(false, 1e-4, 0);
 	H = channel_aggregate(H_d, H_f, H_b, Theta);
 	J = rho' * svd(H);
 	while ~iter.converge
 		[iter.J, iter.G_r, iter.D] = deal(J, G_r, D);
 		for g = 1 : G
-			S = (g - 1) / G * length(Theta) + 1 : g / G * length(Theta);
-			fun = @(Theta) rho' * svd(channel_aggregate(H_d, H_f(S, :), H_b(:, S), Theta));
+			S = (g - 1) * L + 1 : g * L;
+			S_c = setdiff(1 : length(Theta), S);
+			fun = @(Theta_g) rho' * svd(H_d + H_b(:, S) * Theta_g * H_f(S, :) + H_b(:, S_c) * Theta(S_c, S_c) * H_f(S_c, :));
 			G_e(S, S) = gradient_euclidean(H, H_f(S, :), H_b(:, S), rho);
 			G_r(S, S) = gradient_riemannian(Theta(S, S), G_e(S, S));
 			D(S, S) = direction_conjugate(G_r(S, S), struct('G_r', iter.G_r(S, S), 'D', iter.D(S, S), 'counter', iter.counter));
@@ -15,13 +17,13 @@ function [Theta, H] = ris_max_wsv(H_d, H_f, H_b, rho, Theta, G)
 			H = channel_aggregate(H_d, H_f, H_b, Theta);
 		end
 		J = rho' * svd(H);
-		iter.converge = (abs(J - iter.J) <= iter.tolerance);
+		iter.converge = (abs(J - iter.J) / iter.J <= iter.tolerance);
 		iter.counter = iter.counter + 1;
 	end
 end
 
 function [G_e] = gradient_euclidean(H, H_f, H_b, rho)
 	[U, S, V] = svd(H);
-	S(boolean(eye(length(rho)))) = rho;
+	S(logical(eye(length(rho)))) = rho;
 	G_e = H_b' * U * S * V' * H_f';
 end

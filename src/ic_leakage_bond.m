@@ -23,7 +23,7 @@ for r = 1 : number.realization
 				iter.leakage = receive.leakage(b, a, r);
 				receive.beamformer = combiner_leakage_ic(channel.aggregate, transmit.beamformer);
 				transmit.beamformer = precoder_leakage_ic(channel.aggregate, receive.beamformer);
-				ris.scatter = reflector_leakage_ic(pagemtimes(pagemtimes(receive.beamformer, channel.direct), transmit.beamformer), pagemtimes(channel.forward, transmit.beamformer), pagemtimes(receive.beamformer, channel.backward), ris.scatter, ris.bond(b));
+				ris.scatter = scatter_leakage_ic(pagemtimes(pagemtimes(receive.beamformer, channel.direct), transmit.beamformer), pagemtimes(channel.forward, transmit.beamformer), pagemtimes(receive.beamformer, channel.backward), ris.scatter, ris.bond(b));
 				channel.aggregate = channel_aggregate(channel.direct, channel.forward, channel.backward, ris.scatter);
 				receive.leakage(b, a, r) = interference_leakage(pagemtimes(pagemtimes(receive.beamformer, channel.aggregate), transmit.beamformer));
 				iter.converge = (abs(receive.leakage(b, a, r) - iter.leakage) <= iter.tolerance);

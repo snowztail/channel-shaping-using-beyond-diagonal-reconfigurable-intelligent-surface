@@ -1,47 +1,42 @@
 clc; clear; close; setup;
 
-[transmit.antenna, ris.antenna, receive.antenna] = deal(4, 256, 2);
-ris.bond = 2 .^ (0 : 2 : log2(ris.antenna));
-ris.group = ris.antenna ./ ris.bond;
-% [distance.direct, distance.forward, distance.backward] = deal(-14.7, -10, -6.3);
-% [exponent.direct, exponent.forward, exponent.backward] = deal(-3, -2.4, -2);
-[channel.pathloss.direct, channel.pathloss.forward, channel.pathloss.backward] = deal(db2pow(-65), db2pow(-54), db2pow(-46));
-channel.rank = min(transmit.antenna, receive.antenna);
+[transmit.antenna, ris.antenna, receive.antenna] = deal(4, 16, 2);
+[channel.rank, ris.bond] = deal(min(transmit.antenna, receive.antenna), 2 .^ (0 : 2 : log2(ris.antenna)));
+assert(channel.rank == 2, 'The plot function is only for 2-sv case.');
+[channel.pathloss.direct, channel.pathloss.forward, channel.pathloss.backward] = deal(1, 0.1, 0.1);
 channel.weight = simplex_standard(channel.rank, 0.1);
-[number.bond, number.weight, number.realization] = deal(length(ris.bond), length(channel.weight), 1e1);
+[number.weight, number.bond, number.realization] = deal(size(channel.weight, 2), length(ris.bond), 1e1);
 
 for r = 1 : number.realization
-	channel.direct = sqrt(channel.pathloss.direct) * fading_ricean(receive.antenna, 'ula', transmit.antenna, 'ula');
-	% channel.direct = 0 * channel.direct;
-	channel.forward = sqrt(channel.pathloss.forward) * fading_ricean(ris.antenna, 'upa', transmit.antenna, 'ula');
-	channel.backward = sqrt(channel.pathloss.backward) * fading_ricean(receive.antenna, 'ula', ris.antenna, 'upa');
-	channel.sv.direct(:, r) = svd(channel.direct);
-	for w = 1 : number.weight
-		for b = 1 : number.bond
-			ris.scatter = eye(ris.antenna);
+	channel.direct = sqrt(channel.pathloss.direct) * fading_nlos(receive.antenna, transmit.antenna);
+	channel.forward = sqrt(channel.pathloss.forward) * fading_nlos(ris.antenna, transmit.antenna);
+	channel.backward = sqrt(channel.pathloss.backward) * fading_nlos(receive.antenna, ris.antenna);
+	channel.singular.direct(:, r) = svd(channel.direct);
+	for b = 1 : number.bond
+		ris.scatter = scatter_power_pc(channel.direct, channel.forward, channel.backward, eye(ris.antenna), ris.bond(b));
+		for w = 1 : number.weight
 			channel.aggregate = channel_aggregate(channel.direct, channel.forward, channel.backward, ris.scatter);
-			[ris.scatter, channel.aggregate] = ris_max_wsv(channel.direct, channel.forward, channel.backward, channel.weight(:, w), ris.scatter, ris.group(b));
-			channel.sv.aggregate(:, b, w, r) = svd(channel.aggregate);
+			[ris.scatter, channel.aggregate] = scatter_singular_pc(channel.direct, channel.forward, channel.backward, channel.weight(:, w), ris.scatter, ris.bond(b));
+			channel.singular.aggregate(:, w, b, r) = svd(channel.aggregate);
 		end
 	end
 end
-
-channel.sv.direct = mean(channel.sv.direct, 2);
-channel.sv.aggregate = mean(channel.sv.aggregate, 4);
+channel.singular.direct = mean(channel.singular.direct, 2);
+channel.singular.aggregate = mean(channel.singular.aggregate, 4);
+save('data/pc_singular_bond.mat');
 
 figure('Name', 'Channel Singular Value vs RIS Group Size', 'Position', [0, 0, 500, 400]);
-number.plot = 3;
-handle.window = tiledlayout(number.plot, 1);
-for p = 1 : number.plot
-	w = (p - 1) * (number.weight - 1) / (number.plot - 1) + 1;
-	handle.axis(p) = nexttile;
-	bar([channel.sv.direct, channel.sv.aggregate(:, :, w)]);
-	title('$\rho_1 = ' + string(channel.weight(1, w)) + '$, $\rho_2 = ' + string(channel.weight(2, w)) + '$');
+hold all;
+for s = 1 : channel.rank
+	handle.singular(1, s) = refline(0, channel.singular.direct(s));
+	handle.singular(1, s).DisplayName = '$\sigma_' + string(s) + '(\mathbf{H}^\mathrm{D})$';
+	for b = 1 : number.bond
+		handle.singular(b + 1, s) = plot(channel.weight(1, :), channel.singular.aggregate(s, :, b), 'DisplayName', '$\sigma_' + string(s) + '(\mathbf{H})$, $L = ' + string(ris.bond(b)) + '$');
+	end
 end
-handle.xlabel = xlabel(handle.window, 'Index');
-handle.ylabel = ylabel(handle.window, 'Singular Value');
-handle.xlabel.Interpreter= 'latex'; handle.ylabel.Interpreter= 'latex';
-handle.legend = legend(['No RIS', '$N_g = ' + string(ris.bond) + '$'], 'Orientation', 'horizontal');
-handle.legend.ItemTokenSize = [10, 10]; handle.legend.Layout.Tile = 'north';
-linkaxes(handle.axis);
-savefig('plots/max_wsv_bond.fig');
+hold off; grid on; ylim auto;
+style_plot(handle.singular, number.bond + 1);
+xlabel('$\rho_1$');
+ylabel('Singular Value');
+legend('Location', 'sw');
+savefig('plots/pc_singular_bond.fig');

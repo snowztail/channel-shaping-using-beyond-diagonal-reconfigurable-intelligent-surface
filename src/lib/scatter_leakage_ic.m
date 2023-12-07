@@ -1,6 +1,6 @@
-function [Theta, H] = reflector_leakage_ic(H_d, H_f, H_b, Theta, L)
+function [Theta, H] = scatter_leakage_ic(H_d, H_f, H_b, Theta, L)
 	[K, G] = deal(size(H_d, 3), length(Theta) / L);
-	[iter.converge, iter.tolerance, iter.counter] = deal(false, 1e-9, 0);
+	[iter.converge, iter.tolerance, iter.counter] = deal(false, 1e-4, 0);
 	H = channel_aggregate(H_d, H_f, H_b, Theta);
 	I = interference_leakage(H);
 	while ~iter.converge
@@ -18,7 +18,7 @@ function [Theta, H] = reflector_leakage_ic(H_d, H_f, H_b, Theta, L)
 		end
 		H = channel_aggregate(H_d, H_f, H_b, Theta);
 		I = interference_leakage(H);
-		iter.converge = (abs(I - iter.I) <= iter.tolerance);
+		iter.converge = (abs(I - iter.I) / iter.I <= iter.tolerance);
 		iter.counter = iter.counter + 1;
 	end
 end
