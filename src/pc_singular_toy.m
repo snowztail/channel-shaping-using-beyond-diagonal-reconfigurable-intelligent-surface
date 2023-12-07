@@ -1,14 +1,14 @@
 clc; clear; close; setup;
 
-[transmit.antenna, ris.antenna, receive.antenna, ris.sample] = deal(2, 2, 2, 1e2);
-[ris.azimuth, ris.elevation] = meshgrid(2 * pi * (1 : ris.sample) / ris.sample);
+[transmit.antenna, reflect.antenna, receive.antenna, reflect.sample] = deal(2, 2, 2, 1e2);
+[reflect.azimuth, reflect.elevation] = meshgrid(2 * pi * (1 : reflect.sample) / reflect.sample);
 
-channel.forward = fading_nlos(ris.antenna, transmit.antenna);
-channel.backward = fading_nlos(receive.antenna, ris.antenna);
-for s1 = 1 : ris.sample
-	for s2 = 1 : ris.sample
-		channel.singular.diagonal(s1, s2, :) = svd(channel.backward * scatter_2x2_diagonal(ris.azimuth(s1, s2), ris.elevation(s1, s2)) * channel.forward);
-		channel.singular.symmtary(s1, s2, :) = svd(channel.backward * scatter_2x2_symmtary(ris.azimuth(s1, s2), ris.elevation(s1, s2)) * channel.forward);
+channel.forward = fading_nlos(reflect.antenna, transmit.antenna);
+channel.backward = fading_nlos(receive.antenna, reflect.antenna);
+for s1 = 1 : reflect.sample
+	for s2 = 1 : reflect.sample
+		channel.singular.diagonal(s1, s2, :) = svd(channel.backward * scatter_2x2_diagonal(reflect.azimuth(s1, s2), reflect.elevation(s1, s2)) * channel.forward);
+		channel.singular.symmtary(s1, s2, :) = svd(channel.backward * scatter_2x2_symmtary(reflect.azimuth(s1, s2), reflect.elevation(s1, s2)) * channel.forward);
 	end
 end
 save('data/pc_singular_toy.mat');
@@ -17,7 +17,7 @@ figure('Name', 'Channel Singular Value vs RIS Configuration', 'Position', [0, 0,
 handle.window = tiledlayout(2, 1);
 handle.axis(1) = nexttile;
 for s = 1 : 2
-	handle.mesh(1, s) = mesh(ris.azimuth, ris.elevation, channel.singular.diagonal(:, :, s), 'DisplayName', '$\sigma_' + string(s) + '(\mathbf{H})$');
+	handle.mesh(1, s) = mesh(reflect.azimuth, reflect.elevation, channel.singular.diagonal(:, :, s), 'DisplayName', '$\sigma_' + string(s) + '(\mathbf{H})$');
 	datatip(handle.mesh(1, s), 'DataIndex', find(vec(channel.singular.diagonal(:, :, s)) == max(vec(channel.singular.diagonal(:, :, s))), 1));
 	datatip(handle.mesh(1, s), 'DataIndex', find(vec(channel.singular.diagonal(:, :, s)) == min(vec(channel.singular.diagonal(:, :, s))), 1));
 	handle.mesh(1, s).DataTipTemplate.DataTipRows = handle.mesh(1, s).DataTipTemplate.DataTipRows(end);
@@ -34,7 +34,7 @@ title('Diagonal RIS');
 
 handle.axis(2) = nexttile;
 for s = 1 : 2
-	handle.mesh(2, s) = mesh(ris.azimuth, ris.elevation, channel.singular.symmtary(:, :, s), 'DisplayName', '$\sigma_' + string(s) + '(\mathbf{H})$');
+	handle.mesh(2, s) = mesh(reflect.azimuth, reflect.elevation, channel.singular.symmtary(:, :, s), 'DisplayName', '$\sigma_' + string(s) + '(\mathbf{H})$');
 	datatip(handle.mesh(2, s), 'DataIndex', find(vec(channel.singular.symmtary(:, :, s)) == max(vec(channel.singular.symmtary(:, :, s))), 1));
 	datatip(handle.mesh(2, s), 'DataIndex', find(vec(channel.singular.symmtary(:, :, s)) == min(vec(channel.singular.symmtary(:, :, s))), 1));
 	handle.mesh(2, s).DataTipTemplate.DataTipRows = handle.mesh(2, s).DataTipTemplate.DataTipRows(end);

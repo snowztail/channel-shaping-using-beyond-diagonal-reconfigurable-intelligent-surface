@@ -1,22 +1,22 @@
 clc; clear; close; setup;
 
-[transmit.antenna, ris.antenna, receive.antenna] = deal(4, 16, 2);
-[channel.rank, ris.bond] = deal(min(transmit.antenna, receive.antenna), 2 .^ (0 : 2 : log2(ris.antenna)));
+[transmit.antenna, reflect.antenna, receive.antenna] = deal(4, 16, 2);
+[channel.rank, reflect.bond] = deal(min(transmit.antenna, receive.antenna), 2 .^ (0 : 2 : log2(reflect.antenna)));
 assert(channel.rank == 2, 'The plot function is only for 2-sv case.');
 [channel.pathloss.direct, channel.pathloss.forward, channel.pathloss.backward] = deal(1, 0.1, 0.1);
 channel.weight = simplex_standard(channel.rank, 0.1);
-[number.weight, number.bond, number.realization] = deal(size(channel.weight, 2), length(ris.bond), 1e1);
+[number.weight, number.bond, number.realization] = deal(size(channel.weight, 2), length(reflect.bond), 1e1);
 
 for r = 1 : number.realization
 	channel.direct = sqrt(channel.pathloss.direct) * fading_nlos(receive.antenna, transmit.antenna);
-	channel.forward = sqrt(channel.pathloss.forward) * fading_nlos(ris.antenna, transmit.antenna);
-	channel.backward = sqrt(channel.pathloss.backward) * fading_nlos(receive.antenna, ris.antenna);
+	channel.forward = sqrt(channel.pathloss.forward) * fading_nlos(reflect.antenna, transmit.antenna);
+	channel.backward = sqrt(channel.pathloss.backward) * fading_nlos(receive.antenna, reflect.antenna);
 	channel.singular.direct(:, r) = svd(channel.direct);
 	for b = 1 : number.bond
-		ris.scatter = scatter_power_pc(channel.direct, channel.forward, channel.backward, eye(ris.antenna), ris.bond(b));
+		reflect.beamformer = scatter_power_pc(channel.direct, channel.forward, channel.backward, eye(reflect.antenna), reflect.bond(b));
 		for w = 1 : number.weight
-			channel.aggregate = channel_aggregate(channel.direct, channel.forward, channel.backward, ris.scatter);
-			[ris.scatter, channel.aggregate] = scatter_singular_pc(channel.direct, channel.forward, channel.backward, channel.weight(:, w), ris.scatter, ris.bond(b));
+			channel.aggregate = channel_aggregate(channel.direct, channel.forward, channel.backward, reflect.beamformer);
+			[reflect.beamformer, channel.aggregate] = scatter_singular_pc(channel.direct, channel.forward, channel.backward, channel.weight(:, w), reflect.beamformer, reflect.bond(b));
 			channel.singular.aggregate(:, w, b, r) = svd(channel.aggregate);
 		end
 	end
@@ -31,7 +31,7 @@ for s = 1 : channel.rank
 	handle.singular(1, s) = refline(0, channel.singular.direct(s));
 	handle.singular(1, s).DisplayName = '$\sigma_' + string(s) + '(\mathbf{H}^\mathrm{D})$';
 	for b = 1 : number.bond
-		handle.singular(b + 1, s) = plot(channel.weight(1, :), channel.singular.aggregate(s, :, b), 'DisplayName', '$\sigma_' + string(s) + '(\mathbf{H})$, $L = ' + string(ris.bond(b)) + '$');
+		handle.singular(b + 1, s) = plot(channel.weight(1, :), channel.singular.aggregate(s, :, b), 'DisplayName', '$\sigma_' + string(s) + '(\mathbf{H})$, $L = ' + string(reflect.bond(b)) + '$');
 	end
 end
 hold off; grid on; ylim auto;
