@@ -1,42 +1,25 @@
-function [W] = precoder_rate_ic(H, W, P_n, rho)
-	[d, N_r, N_t, K] = deal(size(W, 2), size(H, 1), size(H, 2), size(H, 3));
-	P_t = norm(W(:, :, :, 1), 'fro') ^ 2;
-	T = pagemtimes(pagemtimes(H, W), 'none', pagemtimes(H, W), 'ctranspose');
-	Q = sum(T, 4) - T(:, :, logical(eye(K))) + P_n * eye(N_r);
-	G = zeros(d, N_r, K);
-	V = zeros(d, d, K);
-	lambda = zeros(K, 1);
-	lambda_ = zeros(K, 1);
-	[iter.converge, iter.tolerance, iter.counter] = deal(false, 1e-4, 0);
+function [W] = precoder_rate_ic(H, W, P_t, P_n, rho)
+	[N_r, N_t, N_e, K] = deal(size(H, 1), size(H, 2), size(W, 2), size(W, 4));
+	[iter.converge, iter.tolerance, iter.counter] = deal(false, eps, 0);
 	iter.J = rho' * rate_mimo_ic(H, W, P_n);
 	while ~iter.converge
-		for k = 1 : K
-			G(:, :, k) = W(:, :, :, k)' * H(:, :, k, k)' / (Q(:, :, k) + T(:, :, k, k));
-		end
-		for k = 1 : K
-			V(:, :, k) = rho(k) \ (eye(d) + W(:, :, :, k)' * H(:, :, k, k)' * Q(:, :, k) * H(:, :, k, k) * W(:, :, :, k));
-		end
-		for k = 1 : K
-			A = 0;
-			for j = 1 : K
-				A = A + H(:, :, j, k)' * G(:, :, j)' * V(:, :, j) * G(:, :, j) * H(:, :, j, k);
-			end
-			lambda(k) = real(trace(V(:, :, k) * G(:, :, k) * Q(:, :, k) * G(:, :, k)') - trace(W(:, :, k)' * (A - H(:, :, k, k)' * G(:, :, k)' * V(:, :, k) * G(:, :, k) * H(:, :, k, k)) * W(:, :, k))) / P_t;
-			B = -trace(V(:, :, k) * G(:, :, k) * P_n * eye(N_r) * G(:, :, k)');
-			for l = setdiff(1 : K, k)
-				B = B + trace(V(:, :, l) * G(:, :, l) * H(:, :, l, k) * W(:, :, k) * W(:, :, k)' * H(:, :, l, k)' * G(:, :, l)') ...
-					  - trace(V(:, :, k) * G(:, :, k) * H(:, :, k, l) * W(:, :, l) * W(:, :, l)' * H(:, :, k, l)' * G(:, :, k)');
-			end
-			lambda_(k) = real(- B / P_t);
-			p = max(lambda(k), 0);
-			W(:, :, :, k) = (A + p * eye(N_t)) \ H(:, :, k, k)' * G(:, :, k)' * V(:, :, k);
-			T = pagemtimes(pagemtimes(H, W), 'none', pagemtimes(H, W), 'ctranspose');
-			Q = sum(T, 4) - T(:, :, logical(eye(K))) + P_n * eye(N_r);
-			norm(W(:, :, :, k), 'fro') ^ 2
-		end
+		T = pagemtimes(pagemtimes(H, W), 'none', pagemtimes(H, W), 'ctranspose');
+		Q = sum(T, 4) - T(:, :, logical(eye(K))) + P_n * eye(N_r);
+		F = pagemtimes(H(:, :, logical(eye(K))), W(:, :, 1 : end));
+		G = pagemrdivide(pagectranspose(F), Q + T(:, :, logical(eye(K))));
+		V = shiftdim(rho, -2) .* (eye(N_e) + pagemtimes(pagemrdivide(pagectranspose(F), Q), F));
+		Y = pagemtimes(pagemtimes(pagemtimes(G, H), 'ctranspose', V, 'none'), pagemtimes(G, H));
+		Z = pagemtimes(pagemtimes(W, 'ctranspose', Y, 'none'), W);
+		lambda = (shiftdim(pagetrace(P_n * pagemtimes(pagemtimes(G, 'ctranspose', V, 'none'), G)) + pagetrace(sum(Z, 4)), -1) - pagetrace(sum(Z, 3))) / P_t;
+		X(:, :, 1, :) = pagemtimes(pagemtimes(G, H(:, :, logical(eye(K)))), 'ctranspose', V, 'none');
+		W = pagemldivide(sum(Y, 3) + lambda .* eye(N_t), X);
 		J = rho' * rate_mimo_ic(H, W, P_n);
 		iter.converge = (abs(J - iter.J) / iter.J <= iter.tolerance);
 		iter.J = J;
 		iter.counter = iter.counter + 1;
 	end
+end
+
+function [b] = pagetrace(A)
+	b = sum(pageeig(A), 1);
 end

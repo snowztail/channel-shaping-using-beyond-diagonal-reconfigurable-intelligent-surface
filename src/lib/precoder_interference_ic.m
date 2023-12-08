@@ -1,6 +1,6 @@
 function [W] = precoder_interference_ic(H, G, P_t)
-	d = size(G, 1);
-    W = sqrt(P_t / d) * reciprocal(combiner_interference_ic(reciprocal(H), reciprocal(G)));
+	N_e = size(G, 1);
+    W = sqrt(P_t / N_e) * reciprocal(combiner_interference_ic(reciprocal(H), reciprocal(G)));
 end
 
 function [Y] = reciprocal(X)

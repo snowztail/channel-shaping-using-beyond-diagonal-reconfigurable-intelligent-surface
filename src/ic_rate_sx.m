@@ -1,7 +1,7 @@
 clc; clear; close; setup;
 
 [transmit.antenna, reflect.antenna, receive.antenna, transmit.stream, network.pair, network.coverage] = deal(8, 2 .^ [-inf, 5, 8], 4, 3, 5, 50);
-[transmit.power, receive.noise, receive.weight] = deal(db2pow(0), db2pow(0 : -10 : -115), ones(network.pair, 1) / network.pair);
+[transmit.power, receive.noise, receive.weight] = deal(db2pow(10), db2pow(0 : -10 : -115), ones(network.pair, 1) / network.pair);
 [channel.pathloss.reference, channel.pathloss.exponent.direct, channel.pathloss.exponent.forward, channel.pathloss.exponent.backward] = deal(db2pow(-30), 3, 2.4, 2.4);
 [channel.pathloss.direct, channel.pathloss.forward, channel.pathloss.backward] = pathloss_disk(network.pair, network.coverage, channel.pathloss.reference, channel.pathloss.exponent.direct, channel.pathloss.exponent.forward, channel.pathloss.exponent.backward);
 [number.bond, number.noise, number.antenna, number.realization] = deal(2, length(receive.noise), length(reflect.antenna), 1e1);
@@ -13,7 +13,7 @@ for r = 1 : number.realization
 		for n = 1 : number.noise
 			if reflect.antenna(a) == 0
 				transmit.beamformer = precoder_initial_ic(channel.direct, transmit.stream, transmit.power);
-				transmit.beamformer = precoder_rate_ic(channel.direct, transmit.beamformer, receive.noise(n), receive.weight);
+				transmit.beamformer = precoder_rate_ic(channel.direct, transmit.beamformer, transmit.power, receive.noise(n), receive.weight);
 
 				while ~iter.converge
 
