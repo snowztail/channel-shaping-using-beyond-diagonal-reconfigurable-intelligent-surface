@@ -11,13 +11,22 @@ for r = 1 : number.realization
 		channel.forward = sqrt(channel.pathloss.forward) .* fading_nlos(reflect.antenna(a), transmit.antenna, 1, network.pair);
 		channel.backward = sqrt(channel.pathloss.backward) .* fading_nlos(receive.antenna, reflect.antenna(a), network.pair, 1);
 		transmit.beamformer = precoder_initial_ic(channel.direct, transmit.stream, transmit.power);
+		transmit.beamformer1 = transmit.beamformer;
 		for n = 1 : number.noise
 			if reflect.antenna(a) == 0
 				% transmit.beamformer = precoder_initial_ic(channel.direct, transmit.stream, transmit.power);
 				% transmit.beamformer = precoder_rate_ic_bisection(channel.direct, transmit.beamformer, transmit.power, receive.noise(n), receive.weight);
 				% F1 = receive.weight' * rate_mimo_ic(channel.direct, transmit.beamformer, receive.noise(n))
+				tic
 				transmit.beamformer = precoder_rate_ic(channel.direct, transmit.beamformer, transmit.power, receive.noise(n), receive.weight);
 				F2 = receive.weight' * rate_mimo_ic(channel.direct, transmit.beamformer, receive.noise(n))
+				toc
+
+				tic
+				transmit.beamformer1 = precoder_rate_ic_h(channel.direct, transmit.beamformer1, transmit.power, receive.noise(n), receive.weight);
+				F3 = receive.weight' * rate_mimo_ic(channel.direct, transmit.beamformer1, receive.noise(n))
+				toc
+
 				receive.rate(1, n, a, r) = receive.weight' * rate_mimo_ic(channel.direct, transmit.beamformer, receive.noise(n));
 			else
 				% reflect.bond = [2, reflect.antenna(a)];
