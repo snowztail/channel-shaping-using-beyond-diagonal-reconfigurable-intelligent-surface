@@ -17,15 +17,8 @@ for r = 1 : number.realization
 				% transmit.beamformer = precoder_initial_ic(channel.direct, transmit.stream, transmit.power);
 				% transmit.beamformer = precoder_rate_ic_bisection(channel.direct, transmit.beamformer, transmit.power, receive.noise(n), receive.weight);
 				% F1 = receive.weight' * rate_mimo_ic(channel.direct, transmit.beamformer, receive.noise(n))
-				tic
 				transmit.beamformer = precoder_rate_ic(channel.direct, transmit.beamformer, transmit.power, receive.noise(n), receive.weight);
 				F2 = receive.weight' * rate_mimo_ic(channel.direct, transmit.beamformer, receive.noise(n))
-				toc
-
-				tic
-				transmit.beamformer1 = precoder_rate_ic_h(channel.direct, transmit.beamformer1, transmit.power, receive.noise(n), receive.weight);
-				F3 = receive.weight' * rate_mimo_ic(channel.direct, transmit.beamformer1, receive.noise(n))
-				toc
 
 				receive.rate(1, n, a, r) = receive.weight' * rate_mimo_ic(channel.direct, transmit.beamformer, receive.noise(n));
 			else
