@@ -1,7 +1,7 @@
 function [Theta, H] = scatter_rate_ic(H_d, H_f, H_b, W, Theta, L, P_n, rho)
 	G = length(Theta) / L;
 	[G_e, G_r, D] = deal(zeros(size(Theta)));
-	[iter.converge, iter.tolerance, iter.counter] = deal(false, 1e-4, 0);
+	[iter.converge, iter.tolerance, iter.counter] = deal(false, 1e-3, 0);
 	H = channel_aggregate(H_d, H_f, H_b, Theta);
 	J = rho' * rate_mimo_ic(H, W, P_n);
 	while ~iter.converge
