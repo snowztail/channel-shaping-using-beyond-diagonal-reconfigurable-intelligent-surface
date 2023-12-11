@@ -17,7 +17,6 @@ function [Theta, H] = scatter_rate_ic(H_d, H_f, H_b, W, Theta, L, P_n, rho)
 			H = channel_aggregate(H_d, H_f, H_b, Theta);
 		end
 		J = rho' * rate_mimo_ic(H, W, P_n);
-J - iter.J
 		iter.converge = (abs(J - iter.J) / iter.J <= iter.tolerance);
 		iter.counter = iter.counter + 1;
 	end
@@ -28,30 +27,10 @@ function [G_e] = gradient_euclidean(H, H_f, H_b, W, P_n, rho)
 	T = pagemtimes(pagemtimes(H, W), 'none', pagemtimes(H, W), 'ctranspose');
 	Q = sum(T, 4) - T(:, :, logical(eye(K))) + P_n * eye(N_r);
 	F = pagemtimes(H(:, :, logical(eye(K))), pageswap(W));
-	E = pageinv(eye(N_e) + pagemtimes(pagemrdivide(pagectranspose(F), Q), F));
-
-
 	A = pagemtimes(pagemtimes(H, W), 'none', pagemtimes(H_f, W), 'ctranspose');
-
-% tic
-% 	G_e1 = sum(shiftdim(rho, -2) .* pagemtimes(pagemtimes(pagemrdivide(pagectranspose(H_b), Q), pagemrdivide(F, eye(N_e) + pagemtimes(pagemrdivide(pagectranspose(F), Q), F))), pagemtimes(pageswap(pagectranspose(W)), pageswap(pagectranspose(H_f)) + pagemtimes(pagemrdivide(pagectranspose(H(:, :, logical(eye(K)))), Q), sum(A, 4) - A(:, :, logical(eye(K)))))), 3);
-% toc
-% tic
-	G_e = 0;
-	for k = 1 : K
-		G_e = G_e + rho(k) * H_b(:, :, k)' * inv(Q(:, :, k)) * H(:, :, k, k) * W(:, :, :, k) * E(:, :, k) * W(:, :, :, k)' * (H_f(:, :, :, k)' + H(:, :, k, k)' * inv(Q(:, :, k)) * sum(A(:, :, k, 1 : end ~= k), 4));
-	end
-% toc
-end
-
-function [b] = pagetrace(A)
-	b = sum(pageeig(A), 1);
+	G_e = sum(shiftdim(rho, -2) .* pagemtimes(pagemtimes(pagemrdivide(pagectranspose(H_b), Q), pagemrdivide(F, eye(N_e) + pagemtimes(pagemrdivide(pagectranspose(F), Q), F))), pagemtimes(pageswap(pagectranspose(W)), pageswap(pagectranspose(H_f)) - pagemtimes(pagemrdivide(pagectranspose(H(:, :, logical(eye(K)))), Q), sum(A, 4) - A(:, :, logical(eye(K)))))), 3);
 end
 
 function [A] = pageswap(A)
 	A = permute(A, [1, 2, 4, 3]);
-end
-
-function [A] = pagehermitize(A)
-	A = 0.5 * (A + pagectranspose(A));
 end
