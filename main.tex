@@ -1,0 +1,194 @@
+\documentclass[journal]{IEEEtran}
+% \documentclass[journal,12pt,onecolumn,draftclsnofoot]{IEEEtran}
+
+\usepackage[table]{xcolor}
+\usepackage{adjustbox}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{bookmark}
+\usepackage{booktabs}
+\usepackage[makeroom]{cancel}
+\usepackage[american]{circuitikz}
+\usepackage{cite}
+\usepackage{fixmath}
+\usepackage[acronym]{glossaries-extra}
+\usepackage{hyperref}
+\usepackage{import}
+\usepackage{mathtools}
+\usepackage{microtype}
+\usepackage[short]{optidef}
+\usepackage{pgfplots}
+\usepackage{ragged2e}
+\usepackage[subtle]{savetrees}
+\usepackage{siunitx}
+\usepackage{stfloats}
+\usepackage[caption=false,font=footnotesize,subrefformat=parens,labelformat=parens]{subfig}
+\usepackage{tabularx}
+\usepackage{tikz}
+
+% page limit hacks
+% \usepackage{setspace}
+% ! \usepackage[top=1cm, bottom=1cm, left=1cm, right=1cm]{geometry}
+% \abovedisplayskip=1mm
+% \belowdisplayskip=1mm
+% \abovedisplayshortskip=1mm
+% \belowdisplayshortskip=1mm
+% \setlength{\jot}{0.1mm}
+% \setlength{\floatsep}{1mm}
+% \setlength{\textfloatsep}{1mm}
+% \setlength{\intextsep}{1mm}
+% \setlength{\skip\footins}{2mm}
+
+
+% amsthm
+\newtheorem{proposition}{Proposition}
+\newtheorem{remark}{Remark}
+
+% PGF/TikZ
+\usetikzlibrary{arrows,calc,matrix,patterns,plotmarks,positioning,shapes}
+\usetikzlibrary{decorations.pathmorphing,decorations.pathreplacing,decorations.shapes,shapes.geometric}
+\usepgfplotslibrary{groupplots,patchplots}
+\pgfplotsset{compat=newest}
+
+% tabularx, ragged2e
+\newcolumntype{L}{>{\RaggedRight}X}
+\newcolumntype{C}{>{\centering\arraybackslash}X}
+\renewcommand\tabularxcolumn[1]{m{#1}}
+
+% algpseudocode
+\makeatletter
+\renewcommand{\fnum@algorithm}{\fname@algorithm{} \thealgorithm:}
+\newcommand\setalgorithmcaptionfont[1]{%
+	\let\my@floatc@ruled\floatc@ruled          % save \floatc@ruled
+	\def\floatc@ruled{%
+		\global\let\floatc@ruled\my@floatc@ruled % restore \floatc@ruled
+		#1\floatc@ruled}}
+\makeatother
+
+\algrenewcommand{\algorithmicrequire}{\textbf{Input:}}
+\algrenewcommand{\algorithmicensure}{\textbf{Output:}}
+\algrenewcommand{\algorithmicwhile}{\textbf{While}}
+\algrenewcommand{\algorithmicend}{\textbf{End}}
+\algrenewcommand{\algorithmicrepeat}{\textbf{Repeat}}
+\algrenewcommand{\algorithmicuntil}{\textbf{Until}}
+\algrenewcommand{\algorithmicdo}{}
+
+% glossaries-extra
+\glsdisablehyper
+\setabbreviationstyle[acronym]{long-short}
+% \newacronym{af}{AF}{Amplify-and-Forward}
+\newacronym{bd}{BD}{Beyond-Diagonal}
+\newacronym{ris}{RIS}{Reconfigurable Intelligent Surface}
+
+\begin{document}
+\title{Channel Shaping Using Reconfigurable Intelligent Surfaces: From Diagonal to Beyond}
+\author{
+	\IEEEauthorblockN{
+		Yang~Zhao,~\IEEEmembership{Member,~IEEE,}
+		Hongyu~Li,~\IEEEmembership{Graduate Student Member,~IEEE,}\\
+		Yijie~Mao,~\IEEEmembership{Member,~IEEE,}
+		Shanpu~Shen,~\IEEEmembership{Member,~IEEE,}
+		and~Bruno~Clerckx,~\IEEEmembership{Fellow,~IEEE}
+	}
+	% \thanks{
+	% 	The authors are with the Department of Electrical and Electronic Engineering, Imperial College London, London SW7 2AZ, U.K. (e-mail: \{yang.zhao18, b.clerckx\}@imperial.ac.uk).
+	% 	B. Clerckx is also with Silicon Austria Labs (SAL), Graz A-8010, Austria.
+	% }
+}
+\maketitle
+
+% \begin{abstract}
+% \end{abstract}
+
+% \begin{IEEEkeywords}
+% \end{IEEEkeywords}
+
+\glsresetall
+
+\begin{section}{Assumption}
+	All proposals in this paper based on assumption of \emph{asymmetric} passive \gls{bd} \gls{ris}, i.e., symmetry constraint $\mathbf{\Theta}_g = \mathbf{\Theta}_g^\mathsf{T}$ is relaxed.
+	This is feasible when asymmetric passive components (e.g., ring hybrids and branch-line hybrids) \cite{Ahn2006} are available.
+	This assumption was also made in Hongyu's papers \cite{Li2023b,Li2023c}.
+	For quadratic problems, the proposed algorithms may be extended to symmetric \gls{bd} \gls{ris} by replacing singular value decomposition with Takagi factorization \cite{Horn2012}.
+\end{section}
+
+\begin{section}{Point-to-Point MIMO}
+	\begin{subsection}{Channel Power Maximization}
+		Consider a \gls{bd} \gls{ris} with $N_\mathrm{s}$ elements, which is divided into $G$ groups of equal $L$ elements.
+		\begin{maxi!}
+			{\scriptstyle{\mathbf{\Theta}}}{\left\lVert \mathbf{H}^\mathrm{D} + \sum_g\nolimits \mathbf{H}_g^\mathrm{B} \mathbf{\Theta}_g \mathbf{H}_g^\mathrm{F} \right\rVert _\mathrm{F}^2}{\label{op:channel_power}}{}
+			\addConstraint{\mathbf{\Theta}_g^\mathsf{H} \mathbf{\Theta}_g=\mathbf{I}_L, \quad \forall g \in \mathcal{G} \triangleq \{1,\ldots,G\}}{}{}
+		\end{maxi!}
+		For \emph{symmetric} BD-RIS, the problem has been solved in
+		\begin{itemize}
+			\item Matteo's paper \cite{Nerini2023}: SISO and equivalent\footnote{Single-stream MIMO with given precoder and combiner.};
+			\item Ignacio's paper \cite{Santamaria2023}: SISO and directless MISO/SIMO.
+		\end{itemize}
+
+		\begin{remark}
+			% The difficulty of \eqref{op:channel_power} is that the \gls{ris} needs to balance the (additive) direct-indirect eigenspace alignment and the (multiplicative) forward-backward eigenspace alignment.
+			The difficulty of \eqref{op:channel_power} is that the \gls{ris} needs to balance the additive (direct-indirect) and multiplicative (backward-forward) eigenspace alignment.
+			% align the direct and indirect eigenspaces while preserving the
+			Interestingly, it has the same form as the \emph{weighted orthogonal Procrustes problem} \cite{Gower2004}:
+			\begin{mini!}
+				{\scriptstyle{\mathbf{\Theta}}}{\lVert \mathbf{C} - \mathbf{A \Theta B} \rVert _\text{F}^2}{\label{op:weighted_orthogonal_procrustes}}{}
+				\addConstraint{\mathbf{\Theta}^\mathsf{H} \mathbf{\Theta}=\mathbf{I}}{}{}
+			\end{mini!}
+			There exists no trivial solution to \eqref{op:weighted_orthogonal_procrustes}.
+			One lossy transformation, by moving $\mathbf{\Theta}$ to one side \cite{Bell2003}, formulates a standard orthogonal Procrustes problem:
+			\begin{mini!}
+				{\scriptstyle{\mathbf{\Theta}}}{\lVert \mathbf{A}^\dagger \mathbf{C} - \mathbf{\Theta B} \rVert _\text{F}^2}{\label{op:standard_orthogonal_procrustes}}{}
+				\addConstraint{\mathbf{\Theta}^\mathsf{H} \mathbf{\Theta}=\mathbf{I}}{}{}
+			\end{mini!}
+			\eqref{op:standard_orthogonal_procrustes} has a global optimal solution $\mathbf{\Theta}^\star = \mathbf{U} \mathbf{V}^\mathsf{H}$, where $\mathbf{U}$ and $\mathbf{V}$ are left and right singular matrix of $\mathbf{\mathbf{A}^\dagger \mathbf{C} \mathbf{B}^\mathsf{H}}$ \cite{Golub2013}.
+			This low-complexity solution will be compared with the one proposed later.
+		\end{remark}
+
+		Inspired by \cite{Nie2017}, we propose an iterative algorithm to solve \eqref{op:channel_power}.
+		The idea is to successively approximate the quadratic objective with a sequence of affine functions and solve the resulting subproblems in closed form.
+
+		\begin{proposition}
+			Start from any $\mathbf{\Theta}^{(0)}$, the sequence
+			\begin{equation}
+				\mathbf{\Theta}_g^{(r+1)} = \mathbf{U}_g^{(r)} \mathbf{V}_g^{(r)}, \quad \forall g \in \mathcal{G}
+			\end{equation}
+			converges to a stationary point of \eqref{op:channel_power}, where $\mathbf{U}_g^{(r)}$ and $\mathbf{V}_g^{(r)}$ are left and right singular matrix of
+			\begin{equation}
+				\begin{split}
+					\mathbf{M}_g^{(r)}
+					& = {\mathbf{H}_g^\mathrm{B}}^\mathsf{H} \mathbf{H}^\mathrm{D} {\mathbf{H}_g^\mathrm{F}}^\mathsf{H} + \sum_{g' < g} {\mathbf{H}_{g'}^\mathrm{B}}^\mathsf{H} \mathbf{H}_{g'}^\mathrm{B} \mathbf{\Theta}_{g'}^{(r+1)} \mathbf{H}_{g'}^\mathrm{F} {\mathbf{H}_{g'}^\mathrm{F}}^\mathsf{H} \\
+					& \quad + \sum_{g' \ge g} {\mathbf{H}_{g'}^\mathrm{B}}^\mathsf{H} \mathbf{H}_{g'}^\mathrm{B} \mathbf{\Theta}_{g'}^{(r)} \mathbf{H}_{g'}^\mathrm{F} {\mathbf{H}_{g'}^\mathrm{F}}^\mathsf{H}.
+				\end{split}
+			\end{equation}
+		\end{proposition}
+
+		\begin{proof}
+			TODO
+		\end{proof}
+
+		% For any $\mathbf{\Theta}$, define the coefficient matrix of group $g \in \mathcal{G}$ as
+		% \begin{equation}
+		% 	\mathbf{M}_g \triangleq
+		% \end{equation}
+		% \begin{
+		% \begin{itemize}
+		% 	\item It becomes orthogonal procrustes problem with {\color{blue}closed-form solution if $\mathbf{\Theta}$ can be moved to one side}
+		% 	\item For example, if $\mathbf{A}$ is unitary, then $\arg \min_\mathbf{\Theta} \lVert \mathbf{C} - \mathbf{A \Theta B} \rVert_\text{F}^2 = \arg \min_\mathbf{\Theta} \lVert \mathbf{A}^\mathsf{H} \mathbf{C} - \mathbf{\Theta B} \rVert_\text{F}^2$
+		% \end{itemize}
+		% The problem is nontrivial because
+		% \begin{itemize}
+		% 	\item $\mathbf{H}_{\text{B},g} \triangleq \mathbf{H}_\text{B}[:, (g-1)Q+1:gQ]$, $\mathbf{H}_{\text{F},g} \triangleq \mathbf{H}_\text{F}[(g-1)Q+1:gQ, :]$
+		% 	\item RIS needs to balance $\lVert \mathbf{H}_\text{B} \mathbf{\Theta} \mathbf{H}_\text{F} \rVert^2$ and $\langle \mathbf{H}_\text{D}, \mathbf{H}_\text{B} \mathbf{\Theta} \mathbf{H}_\text{F} \rangle$
+		% 	\item Same form as \emph{the weighted orthogonal Procrustes problem}, no closed-form solution
+		% \end{itemize}
+	\end{subsection}
+\end{section}
+
+
+\bibliographystyle{IEEEtran}
+\bibliography{library.bib}
+\end{document}
