@@ -118,7 +118,7 @@
 
 \begin{section}{Point-to-Point MIMO}
 	\begin{subsection}{Channel Power Maximization}
-		Consider a \gls{bd} \gls{ris} with $N_\mathrm{s}$ elements, which is divided into $G$ groups of equal $L$ elements.
+		Consider a \gls{bd} \gls{ris} with $N_\mathrm{S}$ elements, which is divided into $G$ groups of equal $L$ elements.
 		\begin{maxi!}
 			{\scriptstyle{\mathbf{\Theta}}}{\left\lVert \mathbf{H}^\mathrm{D} + \sum_g\nolimits \mathbf{H}_g^\mathrm{B} \mathbf{\Theta}_g \mathbf{H}_g^\mathrm{F} \right\rVert _\mathrm{F}^2}{\label{op:channel_power}}{}
 			\addConstraint{\mathbf{\Theta}_g^\mathsf{H} \mathbf{\Theta}_g=\mathbf{I}_L, \quad \forall g \in \mathcal{G} \triangleq \{1,\ldots,G\}}{}{}
@@ -131,7 +131,7 @@
 
 		\begin{remark}
 			% The difficulty of \eqref{op:channel_power} is that the \gls{ris} needs to balance the (additive) direct-indirect eigenspace alignment and the (multiplicative) forward-backward eigenspace alignment.
-			The difficulty of \eqref{op:channel_power} is that the \gls{ris} needs to balance the additive (direct-indirect) and multiplicative (backward-forward) eigenspace alignment.
+			The difficulty of \eqref{op:channel_power} is that the \gls{ris} needs to balance the additive (direct-indirect) and multiplicative (forward-backward) eigenspace alignment.
 			% align the direct and indirect eigenspaces while preserving the
 			Interestingly, it has the same form as the \emph{weighted orthogonal Procrustes problem} \cite{Gower2004}:
 			\begin{mini!}
@@ -167,24 +167,70 @@
 		\end{proposition}
 
 		\begin{proof}
-			TODO
+			To be added.
 		\end{proof}
 
-		% For any $\mathbf{\Theta}$, define the coefficient matrix of group $g \in \mathcal{G}$ as
-		% \begin{equation}
-		% 	\mathbf{M}_g \triangleq
-		% \end{equation}
-		% \begin{
-		% \begin{itemize}
-		% 	\item It becomes orthogonal procrustes problem with {\color{blue}closed-form solution if $\mathbf{\Theta}$ can be moved to one side}
-		% 	\item For example, if $\mathbf{A}$ is unitary, then $\arg \min_\mathbf{\Theta} \lVert \mathbf{C} - \mathbf{A \Theta B} \rVert_\text{F}^2 = \arg \min_\mathbf{\Theta} \lVert \mathbf{A}^\mathsf{H} \mathbf{C} - \mathbf{\Theta B} \rVert_\text{F}^2$
-		% \end{itemize}
-		% The problem is nontrivial because
-		% \begin{itemize}
-		% 	\item $\mathbf{H}_{\text{B},g} \triangleq \mathbf{H}_\text{B}[:, (g-1)Q+1:gQ]$, $\mathbf{H}_{\text{F},g} \triangleq \mathbf{H}_\text{F}[(g-1)Q+1:gQ, :]$
-		% 	\item RIS needs to balance $\lVert \mathbf{H}_\text{B} \mathbf{\Theta} \mathbf{H}_\text{F} \rVert^2$ and $\langle \mathbf{H}_\text{D}, \mathbf{H}_\text{B} \mathbf{\Theta} \mathbf{H}_\text{F} \rangle$
-		% 	\item Same form as \emph{the weighted orthogonal Procrustes problem}, no closed-form solution
-		% \end{itemize}
+		\begin{figure}[!t]
+			\centering
+			\resizebox{0.65\columnwidth}{!}{
+				\input{assets/simulation/pc_power_sx.tex}
+			}
+			\caption{Average channel power versus \gls{ris} elements $N_\mathrm{S}$ and group size $L$ for $(N_\mathrm{T}, N_\mathrm{R}) = (8, 4)$, $(\Lambda^\mathrm{D}, \Lambda^\mathrm{F}, \Lambda^\mathrm{B}) = (65, 54, 46) \unit{dB}$.}
+			\label{sm:pc_power_sx}
+		\end{figure}
+
+		\begin{figure}[!t]
+			\centering
+			\subfloat[Without Direct Link\label{sm:pc_power_bond_nd}]{
+				\resizebox{0.48\columnwidth}{!}{
+					\input{assets/simulation/pc_power_bond_nd.tex}
+				}
+			}
+			\subfloat[With Direct Link\label{sm:pc_power_bond_hd}]{
+				\resizebox{0.48\columnwidth}{!}{
+					\input{assets/simulation/pc_power_bond_hd.tex}
+				}
+			}
+			\caption{Average channel power versus \gls{ris} group size $L$ for $(N_\mathrm{T}, N_\mathrm{S}, N_\mathrm{R}) = (8, 256, 4)$, $(\Lambda^\mathrm{D}, \Lambda^\mathrm{F}, \Lambda^\mathrm{B}) = (65, 54, 46) \unit{dB}$.}
+			\label{sm:pc_power_bond}
+		\end{figure}
+		% Fig.~\ref{sm:pc_power_sx} shows that, apart from numerous reflecting elements, a sufficiently large group size can help
+		% Fig.~\ref{sm:pc_power_sx} shows that increasing the group size can improve the channel power especially for a large \gls{ris}.
+		Fig.~\ref{sm:pc_power_sx} shows that, apart from adding reflecting elements $N_\mathrm{S}$, increasing the group size $L$ also improves the channel power.
+		% The behavior is more obvious for a large \gls{ris}.
+		This behavior is more pronounced for a large \gls{ris}.
+		For example, the gain of pairwise connection is 2.8\% for $N_\mathrm{S} = 16$ and 28\% for $N_\mathrm{S} = 256$.
+		% \gls{bd} \gls{ris} provides a higher channel power than conventional \gls{ris}.
+		% As $L$ increases from 1 to 2,
+		It implies that the channel shaping capability of \gls{bd} \gls{ris} scales with group size $L$.
+
+		Fig.~\ref{sm:pc_power_bond_hd} and \ref{sm:pc_power_bond_nd} compare the average channel power without and with direct link.
+		% where the cascaded channel power available to passive \gls{ris} is $\lVert \mathbf{H}^\mathrm{B} \rVert _\mathrm{F}^2 \lVert \mathbf{H}^\mathrm{F} \rVert _\mathrm{F}^2$.
+		% where the cascaded channel power available to passive \gls{ris} is $\lVert \mathbf{H}^\mathrm{B} \rVert _\mathrm{F}^2 \lVert \mathbf{H}^\mathrm{F} \rVert _\mathrm{F}^2$.
+		% ``Cascaded'' means the maximum power of the cascaded channel, i.e., $\lVert \mathbf{H}^\mathrm{B} \rVert _\mathrm{F}^2 \lVert \mathbf{H}^\mathrm{F} \rVert _\mathrm{F}^2$.
+		% maximum power of the cascaded channel, i.e., $\lVert \mathbf{H}^\mathrm{B} \rVert _\mathrm{F}^2 \lVert \mathbf{H}^\mathrm{F} \rVert _\mathrm{F}^2$.
+		``Cascaded'' means the \emph{power product} of the forward and backward channels.
+		We observe that diagonal \gls{ris} wastes substantial cascaded power and struggles to align the direct-indirect eigenspace.
+		When the direct link is absent, only 2.6\% of available power is utilized by diagonal \gls{ris} while 100\% power is recycled by fully-connected \gls{ris}.
+		When the direct link is present, the proposed \gls{bd} \gls{ris} design can balance the direct-indirect and forward-backward eigenspace alignment for an optimal channel boost.
+		It is worth noting that, when $L$ is sufficiently large, the composite channel power surpasses the power sum of direct and cascaded channels, thanks to the constructive \emph{amplitude superposition} of direct and cascaded channels.
+		This again emphasizes the advantage of in-group connection of \gls{bd} \gls{ris}.
+		% This is because the direct and indirect channels superpose
+		% the proposed \gls{bd} \gls{ris} design can also be applied to conventional \gls{ris} to improve the channel power.
+		% When the direct link is present, a small $L$ cannot align the direct-indirect eigenspace.
+
+		% neither effectively utilizes the cascaded channel power, nor effectively align the direct-indirect eigenspace.
+		% We observe that conventional \gls{ris} neither effectively utilizes the cascaded channel power, nor effectively align the direct-indirect eigenspace.
+		% For conventional \gls{ris},
+		% align the direct-indirect eigenspace.
+		% When the direct link is present, a small $L$ can neither align the direct-indirect eigenspace nor the forward-backward eigenspace.
+		% For a relatively large $N_\mathrm{S}$, conventional \gls{ris} cannot
+		% neither the direct-indirect nor the forward-backward eigenspace can be effectively aligned with a small $L$.
+
+		% When the direct link is present, a small $L$ can neither preserve the
+		% neither align the direct-indirect eigenspace nor the forward-backward eigenspace.
+
+		% When the direct link is absent, a large $L$ can align the forward-backward eigenspace but cannot preserve the forward-backward power balance.
 	\end{subsection}
 \end{section}
 

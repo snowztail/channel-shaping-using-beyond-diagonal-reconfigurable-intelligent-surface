@@ -35,9 +35,10 @@ for a = 1 : number.antenna
 		handle.power(a) = plot(log2(reflect.bond), channel.power.aggregate(1 : number.bond, a));
 	end
 end
-hold off; grid on;
+hold off; grid on; box on;
 style_plot(handle.power); set(handle.power(find(reflect.antenna == 0)), 'Color', 'k', 'Marker', 'none');
 xlabel('RIS Group Size');
 ylabel('Channel Power [W]');
 legend('$N_s = ' + string(vec(reflect.antenna)) + '$', 'Location', 'nw');
 savefig('plots/pc_power_sx.fig');
+matlab2tikz('../assets/simulation/pc_power_sx.tex', 'width', '8cm', 'height', '6cm');
