@@ -75,6 +75,7 @@
 \algrenewcommand{\algorithmicend}{\textbf{End}}
 \algrenewcommand{\algorithmicrepeat}{\textbf{Repeat}}
 \algrenewcommand{\algorithmicuntil}{\textbf{Until}}
+\algrenewcommand{\algorithmicfor}{\textbf{For}}
 \algrenewcommand{\algorithmicdo}{}
 
 % glossaries-extra
@@ -82,8 +83,11 @@
 \setabbreviationstyle[acronym]{long-short}
 \newacronym{ao}{AO}{Alternating Optimization}
 \newacronym{bd}{BD}{Beyond-Diagonal}
+\newacronym{mimo}{MIMO}{Multiple-Input Multiple-Output}
 \newacronym{rcg}{RCG}{Riemannian Conjugate Gradient}
 \newacronym{ris}{RIS}{Reconfigurable Intelligent Surface}
+\newacronym{pc}{PC}{Point-to-point Channel}
+\newacronym{ic}{IC}{Interference Channel}
 
 \begin{document}
 \title{Channel Shaping Using Reconfigurable Intelligent Surfaces: From Diagonal to Beyond}
@@ -111,13 +115,15 @@
 \glsresetall
 
 \begin{section}{Assumption}
-	All proposals in this paper based on assumption of \emph{asymmetric} passive \gls{bd} \gls{ris}, i.e., symmetry constraint $\mathbf{\Theta}_g = \mathbf{\Theta}_g^\mathsf{T}$ is relaxed.
+	We introduce \gls{bd} \gls{ris} in \gls{mimo} \gls{pc} and \gls{ic}.
+	% point-to-point and interference \gls{mimo} channels.
+	All proposals are based on assumption of \emph{asymmetric} passive \gls{bd} \gls{ris}, i.e., symmetry constraint $\mathbf{\Theta}_g = \mathbf{\Theta}_g^\mathsf{T}$ is relaxed.
 	This is feasible when asymmetric passive components (e.g., ring hybrids and branch-line hybrids) \cite{Ahn2006} are available.
 	This assumption was also made in Hongyu's papers \cite{Li2023b,Li2023c}.
 	For quadratic problems, the proposed algorithms may be extended to symmetric \gls{bd} \gls{ris} by replacing singular value decomposition with Takagi factorization \cite{Horn2012}.
 \end{section}
 
-\begin{section}{Point-to-Point MIMO}
+\begin{section}{\glsentryshort{mimo}-\glsentryshort{pc}}
 	\begin{subsection}{Channel Power Maximization}
 		Consider a \gls{bd} \gls{ris} with $N^\mathrm{S}$ elements, which is divided into $G$ groups of equal $L$ elements.
 		\begin{maxi!}
@@ -155,7 +161,7 @@
 		\begin{proposition}
 			Start from any $\mathbf{\Theta}^{(0)}$, the sequence
 			\begin{equation}
-				\mathbf{\Theta}_g^{(r+1)} = \mathbf{U}_g^{(r)} \mathbf{V}_g^{(r)}, \quad \forall g \in \mathcal{G}
+				\mathbf{\Theta}_g^{(r+1)} = \mathbf{U}_g^{(r)} \mathbf{V}_g^{(r)}, \quad \forall g
 			\end{equation}
 			converges to a stationary point of \eqref{op:pc_power}, where $\mathbf{U}_g^{(r)}$ and $\mathbf{V}_g^{(r)}$ are left and right singular matrix of
 			\begin{equation}
@@ -237,7 +243,7 @@
 	\begin{subsection}{Rate Maximization}
 		The problem is formulated w.r.t. precoder (instead of transmit covariance matrix) for reference:
 		\begin{maxi!}
-			{\scriptstyle{\mathbf{W},\mathbf{\Theta}}}{\log \det \Bigl(\mathbf{I} + \frac{\mathbf{W}^\mathsf{H}\mathbf{H}^\mathsf{H}\mathbf{H}\mathbf{W}}{\sigma_n^2}\Bigr)}{\label{op:pc_rate}}{}
+			{\scriptstyle{\mathbf{W},\mathbf{\Theta}}}{\log \det \biggl(\mathbf{I} + \frac{\mathbf{W}^\mathsf{H}\mathbf{H}^\mathsf{H}\mathbf{H}\mathbf{W}}{\sigma_n^2}\biggr)}{\label{op:pc_rate}}{\label{ob:pc_rate}}
 			\addConstraint{\lVert \mathbf{W} \rVert _\mathrm{F}^2 \le P}{}{}
 			\addConstraint{\mathbf{\Theta}_g^\mathsf{H} \mathbf{\Theta}_g=\mathbf{I}, \quad \forall g.}{}{\label{cs:pc_rate_unitary}}
 		\end{maxi!}
@@ -257,36 +263,77 @@
 			% A Geodesics are the locally shortest paths in a Riemannian manifold.
 			% on Riemannian manifold are the shortest path between two points.
 		\end{remark}
-		For optimization problems with block unitary constraint, the adapted \gls{rcg} method at iteration $r$ for block $g$ is summarized below.
+		For general optimization problems with block unitary constraint, the adapted \gls{rcg} method at iteration $r$ for block $g$ is summarized below, where $f^{(r)}$ is evaluated over $\bigl\{ \{\mathbf{\Theta}_{g'}^{(r+1)}\}_{g'=1}^{g-1}, \{\mathbf{\Theta}_{g'}^{(r)}\}_{g'=g}^{G} \bigr\}$.
 		\begin{enumerate}
 			\item Compute the Euclidean gradient
 			\begin{equation}
-				\nabla_{\mathbf{\Theta}_g}^\mathrm{E} f^{(r)} = \frac{\partial f^{(r)}}{\partial \mathbf{\Theta}_g^*}
+				\nabla_g^\mathrm{E} f^{(r)} = \frac{\partial f^{(r)}}{\partial \mathbf{\Theta}_g^*};
+				\label{eq:rcg_gradient_euclidean}
 			\end{equation}
 			\item Translate to the Riemannian gradient
 			\begin{equation}
-				\nabla_{\mathbf{\Theta}_g}^\mathrm{R} f^{(r)} = \nabla_{\mathbf{\Theta}_g}^\mathrm{E} f^{(r)} {\mathbf{\Theta}_g^{(r)}}^\mathsf{H} - \mathbf{\Theta}_g^{(r)} {\nabla_{\mathbf{\Theta}_g}^\mathrm{E} f^{(r)}}^\mathsf{H}
+				\nabla_g^\mathrm{R} f^{(r)} = \nabla_g^\mathrm{E} f^{(r)} {\mathbf{\Theta}_g^{(r)}}^\mathsf{H} - \mathbf{\Theta}_g^{(r)} {\nabla_g^\mathrm{E} f^{(r)}}^\mathsf{H};
+				\label{eq:rcg_gradient_riemannian}
 			\end{equation}
 			\item Determine the weight factor
 			\begin{equation}
-				% \gamma^{(r)} = \frac{\mathrm{tr}\Bigl(\bigl(\mathbf{G}_\mathrm{R}^{(r)} - \mathbf{G}_\mathrm{R}^{(r-1)}\bigr) \mathbf{G}_\mathrm{R}^{(r)\mathsf{H}}\Bigr)}{\mathrm{tr}\Bigl(\mathbf{G}_\mathrm{R}^{(r-1)} \mathbf{G}_\mathrm{R}^{(r-1)\mathsf{H}}\Bigr)}
-				\gamma^{(r)} = \frac{\mathrm{tr}\Bigl(\bigl(\nabla_{\mathbf{\Theta}_g}^\mathrm{R} f^{(r)} - \nabla_{\mathbf{\Theta}_g}^\mathrm{R} f^{(r-1)}\bigr) \nabla_{\mathbf{\Theta}_g}^\mathrm{R} f^{(r)\mathsf{H}}\Bigr)}{\mathrm{tr}\Bigl(\nabla_{\mathbf{\Theta}_g}^\mathrm{R} f^{(r-1)} \nabla_{\mathbf{\Theta}_g}^\mathrm{R} f^{(r-1)\mathsf{H}}\Bigr)}
+				\gamma_g^{(r)} = \frac{\mathrm{tr}\Bigl(\bigl(\nabla_g^\mathrm{R} f^{(r)} - \nabla_g^\mathrm{R} f^{(r-1)}\bigr) \nabla_g^\mathrm{R} {f^{(r)}}^\mathsf{H}\Bigr)}{\mathrm{tr}\Bigl(\nabla_g^\mathrm{R} f^{(r-1)} \nabla_g^\mathrm{R} {f^{(r-1)}}^\mathsf{H}\Bigr)};
+				\label{eq:rcg_weight}
 			\end{equation}
 			\item Compute the conjugate direction
 			\begin{equation}
-				% \mathbf{D}_\mathrm{R}^{(r)} = \mathbf{G}_\mathrm{R}^{(r)} + \gamma^{(r)} \mathbf{D}_\mathrm{R}^{(r-1)}
-				\mathbf{D}^{(r)} = \nabla_{\mathbf{\Theta}_g}^\mathrm{R} f^{(r)} + \gamma^{(r)} \mathbf{D}^{(r-1)}
+				\mathbf{D}_g^{(r)} = \nabla_g^\mathrm{R} f^{(r)} + \gamma_g^{(r)} \mathbf{D}_g^{(r-1)};
+				\label{eq:rcg_direction}
 			\end{equation}
-			\item Determine the Armijo step size
+			\item Determine the Armijo step size\footnote{To double the step size, simply square the argument instead of recomputing the matrix exponential, i.e., $\exp(2 \mu_g \mathbf{D}_g) = \exp^2(\mu_g \mathbf{D}_g)$.}
 			\begin{equation}
-				\mu^{(r)} = \arg\max_\mu f^{(r)}\Bigl(\exp\bigl(-\mu \mathbf{D}^{(r)}\bigr) \mathbf{\Theta}_g^{(r)}\Bigr)
+				\mu_g^{(r)} = \arg\max_{\mu_g} f^{(r)}\Bigl(\exp\bigl(\mu_g \mathbf{D}_g^{(r)}\bigr) \mathbf{\Theta}_g^{(r)}\Bigr);
+				\label{eq:rcg_step}
 			\end{equation}
-			\item Perform multiplicative (rotational) update
+			\item Perform rotational update along local geodesics
 			\begin{equation}
-				\mathbf{\Theta}^{(r+1)} = {\color{gray}\exp}\Bigl(-\mu^{(r)} \mathbf{D}^{(r)}\Bigr) \mathbf{\Theta}_g^{(r)}
+				\mathbf{\Theta}_g^{(r+1)} = \exp\Bigl(\mu_g^{(r)} \mathbf{D}_g^{(r)}\Bigr) \mathbf{\Theta}_g^{(r)}.
+				\label{eq:rcg_update}
 			\end{equation}
 		\end{enumerate}
-		The advantage over general manifold optimization \cite{Absil2009,Pan2022d} is trifold: 1) no retraction is required; 2) no projection is required; 3) no matrix inversion is required.
+
+		\begin{remark}
+			The adapted \gls{rcg} method leverages the fact that block unitary matrices are closed under multiplication (but not necessarily under addition).
+			Its advantage over universal manifold optimization \cite{Absil2009,Pan2022d} is trifold:
+			\begin{itemize}
+				\item No retraction is involved;
+				\item Lower computational complexity per iteration \cite{Abrudan2008};
+				\item Faster convergence thanks appropriate operational space.
+			\end{itemize}
+		\end{remark}
+
+		The complex derivative of \eqref{ob:pc_rate} w.r.t. \gls{ris} block $g$ is
+		\begin{equation}
+			\frac{\partial R}{\partial \mathbf{\Theta}_g^*} = \frac{1}{\sigma_n^2} {\mathbf{H}_g^\mathrm{B}}^\mathsf{H} \mathbf{HW} \biggl(\mathbf{I} + \frac{\mathbf{W}^\mathsf{H}\mathbf{H}^\mathsf{H}\mathbf{H}\mathbf{W}}{\sigma_n^2}\biggr)^{-1} \mathbf{W}^\mathsf{H} {\mathbf{H}_g^\mathrm{F}}^\mathsf{H}.
+			\label{eq:pc_rate_gradient_ris}
+		\end{equation}
+		The adapted \gls{rcg} method for the \gls{ris} rate maximization subproblem is summarized in Algorithm~\ref{ag:pc_rate_ris}.
+
+		\setalgorithmcaptionfont{\small}
+		\begin{algorithm}[!t]
+			\small
+			\caption{\gls{rcg} Method for \gls{ris} \gls{mimo}-\gls{pc} Rate Maximization}
+			\label{ag:pc_rate_ris}
+			\begin{algorithmic}[1]
+				\Require $\mathbf{H}^\mathrm{D}$, $\mathbf{H}^\mathrm{F}$, $\mathbf{H}^\mathrm{B}$, $\mathbf{W}$, $L$, $\sigma_n^2$
+				\Ensure $\mathbf{\Theta}^\star$
+				% \State Initialize $r \gets 0$, $\mathbf{\Theta}^{(0)}$
+				\State $r \gets 0$, $\mathbf{\Theta}^{(0)}$
+				\Repeat
+					% \State Update $r \gets r+1$
+					\State $r \gets r+1$
+					\For {$g \gets 1$ to $G$}
+						% \State Get $\mathbf{\Theta}_g^{(r)}$ by \eqref{eq:pc_rate_gradient_ris}, \eqref{eq:rcg_gradient_riemannian} -- \eqref{eq:rcg_update}
+						\State $\mathbf{\Theta}_g^{(r)} \gets$ \eqref{eq:pc_rate_gradient_ris}, \eqref{eq:rcg_gradient_riemannian}--\eqref{eq:rcg_update}
+					\EndFor
+				\Until $\lvert R^{(r)} - R^{(r-1)} \rvert / R^{(r-1)} \le \epsilon$
+			\end{algorithmic}
+		\end{algorithm}
 	\end{subsection}
 \end{section}
 
