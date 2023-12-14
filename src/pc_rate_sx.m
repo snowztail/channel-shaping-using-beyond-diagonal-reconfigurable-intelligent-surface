@@ -51,10 +51,11 @@ for a = 1 : number.antenna
 		end
 	end
 end
-hold off; grid on;
+hold off; grid on; box on;
 set(handle.rate(1, find(reflect.antenna == 0)), 'Color', 'k', 'Marker', 'none');
 style_plot(handle.rate(:, find(reflect.antenna ~= 0)), number.bond);
 xlabel('Direct SNR [dB]');
 ylabel('Achievable Rate [bit/s/Hz]');
 legend('Location', 'nw');
 savefig('plots/pc_rate_sx.fig');
+matlab2tikz('../assets/simulation/pc_rate_sx.tex', 'width', '8cm', 'height', '6cm');

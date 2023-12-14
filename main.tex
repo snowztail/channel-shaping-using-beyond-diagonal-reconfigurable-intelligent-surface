@@ -88,6 +88,7 @@
 \newacronym{ris}{RIS}{Reconfigurable Intelligent Surface}
 \newacronym{pc}{PC}{Point-to-point Channel}
 \newacronym{ic}{IC}{Interference Channel}
+\newacronym{snr}{SNR}{Signal-to-Noise Ratio}
 
 \begin{document}
 \title{Channel Shaping Using Reconfigurable Intelligent Surfaces: From Diagonal to Beyond}
@@ -206,7 +207,7 @@
 		Fig.~\ref{sm:pc_power_sx} shows that, apart from adding reflecting elements $N^\mathrm{S}$, increasing the group size $L$ also improves the channel power.
 		% The behavior is more obvious for a large \gls{ris}.
 		This behavior is more pronounced for a large \gls{ris}.
-		For example, the gain of pairwise connection is 2.8\% for $N^\mathrm{S} = 16$ and 28\% for $N^\mathrm{S} = 256$.
+		For example, the gain of pairwise connection is \qty{2.8}{\percent} for $N^\mathrm{S} = 16$ and \qty{28}{\percent} for $N^\mathrm{S} = 256$.
 		% \gls{bd} \gls{ris} provides a higher channel power than conventional \gls{ris}.
 		% As $L$ increases from 1 to 2,
 		It implies that the channel shaping capability of \gls{bd} \gls{ris} scales with group size $L$.
@@ -218,7 +219,7 @@
 		% maximum power of the cascaded channel, i.e., $\lVert \mathbf{H}^\mathrm{B} \rVert _\mathrm{F}^2 \lVert \mathbf{H}^\mathrm{F} \rVert _\mathrm{F}^2$.
 		``Cascaded'' means the \emph{power product} of the forward and backward channels.
 		We observe that diagonal \gls{ris} wastes substantial cascaded power and struggles to align the direct-indirect eigenspace.
-		When the direct link is absent, only 2.6\% of available power is utilized by diagonal \gls{ris} while 100\% power is recycled by fully-connected \gls{ris}.
+		When the direct link is absent, only \qty{2.6}{\percent} of available power is utilized by diagonal \gls{ris} while \qty{100}{\percent} power is recycled by fully-connected \gls{ris}.
 		When the direct link is present, the proposed \gls{bd} \gls{ris} design can balance the direct-indirect and forward-backward eigenspace alignment for an optimal channel boost.
 		It is worth noting that, when $L$ is sufficiently large, the composite channel power surpasses the power sum of direct and cascaded channels, thanks to the constructive \emph{amplitude superposition} of direct and cascaded channels.
 		This again emphasizes the advantage of in-group connection of \gls{bd} \gls{ris}.
@@ -263,31 +264,31 @@
 			% A Geodesics are the locally shortest paths in a Riemannian manifold.
 			% on Riemannian manifold are the shortest path between two points.
 		\end{remark}
-		For general optimization problems with block unitary constraint, the adapted \gls{rcg} method at iteration $r$ for block $g$ is summarized below, where $f^{(r)}$ is evaluated over $\bigl\{ \{\mathbf{\Theta}_{g'}^{(r+1)}\}_{g'=1}^{g-1}, \{\mathbf{\Theta}_{g'}^{(r)}\}_{g'=g}^{G} \bigr\}$.
+		For general optimization problems with block unitary constraint, the adapted \gls{rcg} method at iteration $r$ for block $g$ is summarized below, where $f\bigl(\mathbf{\Theta}_g^{(r)}\bigr)$ is the objective function evaluated over $\bigl\{ \{\mathbf{\Theta}_{g'}^{(r+1)}\}_{g'<g}, \{\mathbf{\Theta}_{g'}^{(r)}\}_{g'>g} \bigr\}$.
 		\begin{enumerate}
 			\item Compute the Euclidean gradient
 			\begin{equation}
-				\nabla_g^\mathrm{E} f^{(r)} = \frac{\partial f^{(r)}}{\partial \mathbf{\Theta}_g^*};
+				{\nabla_g^\mathrm{E}}^{(r)} = \frac{\partial f\bigl(\mathbf{\Theta}_g^{(r)}\bigr)}{\partial \mathbf{\Theta}_g^*};
 				\label{eq:rcg_gradient_euclidean}
 			\end{equation}
 			\item Translate to the Riemannian gradient
 			\begin{equation}
-				\nabla_g^\mathrm{R} f^{(r)} = \nabla_g^\mathrm{E} f^{(r)} {\mathbf{\Theta}_g^{(r)}}^\mathsf{H} - \mathbf{\Theta}_g^{(r)} {\nabla_g^\mathrm{E} f^{(r)}}^\mathsf{H};
+				{\nabla_g^\mathrm{R}}^{(r)} = {\nabla_g^\mathrm{E}}^{(r)} {\mathbf{\Theta}_g^{(r)}}^\mathsf{H} - \mathbf{\Theta}_g^{(r)} {{\nabla_g^\mathrm{E}}^{(r)}}^\mathsf{H};
 				\label{eq:rcg_gradient_riemannian}
 			\end{equation}
 			\item Determine the weight factor
 			\begin{equation}
-				\gamma_g^{(r)} = \frac{\mathrm{tr}\Bigl(\bigl(\nabla_g^\mathrm{R} f^{(r)} - \nabla_g^\mathrm{R} f^{(r-1)}\bigr) \nabla_g^\mathrm{R} {f^{(r)}}^\mathsf{H}\Bigr)}{\mathrm{tr}\Bigl(\nabla_g^\mathrm{R} f^{(r-1)} \nabla_g^\mathrm{R} {f^{(r-1)}}^\mathsf{H}\Bigr)};
+				\gamma_g^{(r)} = \frac{\mathrm{tr}\Bigl(\bigl({\nabla_g^\mathrm{R}}^{(r)} - {\nabla_g^\mathrm{R}}^{(r-1)}\bigr) {{\nabla_g^\mathrm{R}}^{(r)}}^\mathsf{H}\Bigr)}{\mathrm{tr}\Bigl({\nabla_g^\mathrm{R}}^{(r-1)} {{\nabla_g^\mathrm{R}}^{(r-1)}}^\mathsf{H}\Bigr)};
 				\label{eq:rcg_weight}
 			\end{equation}
 			\item Compute the conjugate direction
 			\begin{equation}
-				\mathbf{D}_g^{(r)} = \nabla_g^\mathrm{R} f^{(r)} + \gamma_g^{(r)} \mathbf{D}_g^{(r-1)};
+				\mathbf{D}_g^{(r)} = {\nabla_g^\mathrm{R}}^{(r)} + \gamma_g^{(r)} \mathbf{D}_g^{(r-1)};
 				\label{eq:rcg_direction}
 			\end{equation}
 			\item Determine the Armijo step size\footnote{To double the step size, simply square the argument instead of recomputing the matrix exponential, i.e., $\exp(2 \mu_g \mathbf{D}_g) = \exp^2(\mu_g \mathbf{D}_g)$.}
 			\begin{equation}
-				\mu_g^{(r)} = \arg\max_{\mu_g} f^{(r)}\Bigl(\exp\bigl(\mu_g \mathbf{D}_g^{(r)}\bigr) \mathbf{\Theta}_g^{(r)}\Bigr);
+				\mu_g^{(r)} = \arg\max_{\mu_g} f\Bigl(\exp\bigl(\mu_g \mathbf{D}_g^{(r)}\bigr) \mathbf{\Theta}_g^{(r)}\Bigr);
 				\label{eq:rcg_step}
 			\end{equation}
 			\item Perform rotational update along local geodesics
@@ -312,7 +313,7 @@
 			\frac{\partial R}{\partial \mathbf{\Theta}_g^*} = \frac{1}{\sigma_n^2} {\mathbf{H}_g^\mathrm{B}}^\mathsf{H} \mathbf{HW} \biggl(\mathbf{I} + \frac{\mathbf{W}^\mathsf{H}\mathbf{H}^\mathsf{H}\mathbf{H}\mathbf{W}}{\sigma_n^2}\biggr)^{-1} \mathbf{W}^\mathsf{H} {\mathbf{H}_g^\mathrm{F}}^\mathsf{H}.
 			\label{eq:pc_rate_gradient_ris}
 		\end{equation}
-		The adapted \gls{rcg} method for the \gls{ris} rate maximization subproblem is summarized in Algorithm~\ref{ag:pc_rate_ris}.
+		Algorithm~\ref{ag:pc_rate_ris} summarizes the adapted \gls{rcg} method for the \gls{ris} rate maximization subproblem.
 
 		\setalgorithmcaptionfont{\small}
 		\begin{algorithm}[!t]
@@ -322,18 +323,32 @@
 			\begin{algorithmic}[1]
 				\Require $\mathbf{H}^\mathrm{D}$, $\mathbf{H}^\mathrm{F}$, $\mathbf{H}^\mathrm{B}$, $\mathbf{W}$, $L$, $\sigma_n^2$
 				\Ensure $\mathbf{\Theta}^\star$
-				% \State Initialize $r \gets 0$, $\mathbf{\Theta}^{(0)}$
 				\State $r \gets 0$, $\mathbf{\Theta}^{(0)}$
 				\Repeat
-					% \State Update $r \gets r+1$
 					\State $r \gets r+1$
 					\For {$g \gets 1$ to $G$}
-						% \State Get $\mathbf{\Theta}_g^{(r)}$ by \eqref{eq:pc_rate_gradient_ris}, \eqref{eq:rcg_gradient_riemannian} -- \eqref{eq:rcg_update}
 						\State $\mathbf{\Theta}_g^{(r)} \gets$ \eqref{eq:pc_rate_gradient_ris}, \eqref{eq:rcg_gradient_riemannian}--\eqref{eq:rcg_update}
 					\EndFor
 				\Until $\lvert R^{(r)} - R^{(r-1)} \rvert / R^{(r-1)} \le \epsilon$
 			\end{algorithmic}
 		\end{algorithm}
+
+		\begin{figure}[!t]
+			\centering
+			\resizebox{0.65\columnwidth}{!}{
+				\input{assets/simulation/pc_rate_sx.tex}
+			}
+			\caption{Average achievable rate versus \gls{ris} elements $N^\mathrm{S}$ and group size $L$ for $(N^\mathrm{T}, N^\mathrm{R}) = (8, 4)$, $(\Lambda^\mathrm{D}, \Lambda^\mathrm{F}, \Lambda^\mathrm{B}) = (65, 54, 46) \unit{dB}$.}
+			\label{sm:pc_rate_sx}
+		\end{figure}
+
+		Fig.~\ref{sm:pc_rate_sx} illustrates how \gls{ris} configuration influences the \gls{mimo} \gls{pc} achievable rate.
+		To ensure a \qty{20}{bit/s/Hz} transmission, an \gls{snr} of \qty{13.5}{\dB} is required for a 8T4R system.
+		This value decreases to \qty{12.5}{\dB} (resp. \qty{8}{\dB}) when 32- (resp. 256-) element diagonal \gls{ris} is present.
+		If tetrads can be formed in \gls{bd} \gls{ris}, the \gls{snr} can be reduced by another \qty{20}{\percent} (resp. \qty{44}{\percent}).
+		Further increase in $L$ yields a marginal gain and incurs quadratic number of connections.
+		Thus, dyadic or tetradic \gls{bd} \gls{ris} usually strike a good balance between performance and complexity.
+
 	\end{subsection}
 \end{section}
 
