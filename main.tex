@@ -80,8 +80,9 @@
 % glossaries-extra
 \glsdisablehyper
 \setabbreviationstyle[acronym]{long-short}
-% \newacronym{af}{AF}{Amplify-and-Forward}
+\newacronym{ao}{AO}{Alternating Optimization}
 \newacronym{bd}{BD}{Beyond-Diagonal}
+\newacronym{rcg}{RCG}{Riemannian Conjugate Gradient}
 \newacronym{ris}{RIS}{Reconfigurable Intelligent Surface}
 
 \begin{document}
@@ -118,10 +119,10 @@
 
 \begin{section}{Point-to-Point MIMO}
 	\begin{subsection}{Channel Power Maximization}
-		Consider a \gls{bd} \gls{ris} with $N_\mathrm{S}$ elements, which is divided into $G$ groups of equal $L$ elements.
+		Consider a \gls{bd} \gls{ris} with $N^\mathrm{S}$ elements, which is divided into $G$ groups of equal $L$ elements.
 		\begin{maxi!}
-			{\scriptstyle{\mathbf{\Theta}}}{\left\lVert \mathbf{H}^\mathrm{D} + \sum_g\nolimits \mathbf{H}_g^\mathrm{B} \mathbf{\Theta}_g \mathbf{H}_g^\mathrm{F} \right\rVert _\mathrm{F}^2}{\label{op:channel_power}}{}
-			\addConstraint{\mathbf{\Theta}_g^\mathsf{H} \mathbf{\Theta}_g=\mathbf{I}_L, \quad \forall g \in \mathcal{G} \triangleq \{1,\ldots,G\}}{}{}
+			{\scriptstyle{\mathbf{\Theta}}}{\left\lVert \mathbf{H}^\mathrm{D} + \sum_g\nolimits \mathbf{H}_g^\mathrm{B} \mathbf{\Theta}_g \mathbf{H}_g^\mathrm{F} \right\rVert _\mathrm{F}^2}{\label{op:pc_power}}{}
+			\addConstraint{\mathbf{\Theta}_g^\mathsf{H} \mathbf{\Theta}_g=\mathbf{I}, \quad \forall g \in \mathcal{G} \triangleq \{1,\ldots,G\}.}{}{}
 		\end{maxi!}
 		For \emph{symmetric} BD-RIS, the problem has been solved in
 		\begin{itemize}
@@ -130,25 +131,25 @@
 		\end{itemize}
 
 		\begin{remark}
-			% The difficulty of \eqref{op:channel_power} is that the \gls{ris} needs to balance the (additive) direct-indirect eigenspace alignment and the (multiplicative) forward-backward eigenspace alignment.
-			The difficulty of \eqref{op:channel_power} is that the \gls{ris} needs to balance the additive (direct-indirect) and multiplicative (forward-backward) eigenspace alignment.
+			% The difficulty of \eqref{op:pc_power} is that the \gls{ris} needs to balance the (additive) direct-indirect eigenspace alignment and the (multiplicative) forward-backward eigenspace alignment.
+			The difficulty of \eqref{op:pc_power} is that the \gls{ris} needs to balance the additive (direct-indirect) and multiplicative (forward-backward) eigenspace alignment.
 			% align the direct and indirect eigenspaces while preserving the
 			Interestingly, it has the same form as the \emph{weighted orthogonal Procrustes problem} \cite{Gower2004}:
 			\begin{mini!}
-				{\scriptstyle{\mathbf{\Theta}}}{\lVert \mathbf{C} - \mathbf{A \Theta B} \rVert _\text{F}^2}{\label{op:weighted_orthogonal_procrustes}}{}
-				\addConstraint{\mathbf{\Theta}^\mathsf{H} \mathbf{\Theta}=\mathbf{I}}{}{}
+				{\scriptstyle{\mathbf{\Theta}}}{\lVert \mathbf{C} - \mathbf{A \Theta B} \rVert _\mathrm{F}^2}{\label{op:weighted_orthogonal_procrustes}}{}
+				\addConstraint{\mathbf{\Theta}^\mathsf{H} \mathbf{\Theta}=\mathbf{I}.}{}{}
 			\end{mini!}
 			There exists no trivial solution to \eqref{op:weighted_orthogonal_procrustes}.
 			One lossy transformation, by moving $\mathbf{\Theta}$ to one side \cite{Bell2003}, formulates a standard orthogonal Procrustes problem:
 			\begin{mini!}
-				{\scriptstyle{\mathbf{\Theta}}}{\lVert \mathbf{A}^\dagger \mathbf{C} - \mathbf{\Theta B} \rVert _\text{F}^2}{\label{op:standard_orthogonal_procrustes}}{}
-				\addConstraint{\mathbf{\Theta}^\mathsf{H} \mathbf{\Theta}=\mathbf{I}}{}{}
+				{\scriptstyle{\mathbf{\Theta}}}{\lVert \mathbf{A}^\dagger \mathbf{C} - \mathbf{\Theta B} \rVert _\mathrm{F}^2}{\label{op:standard_orthogonal_procrustes}}{}
+				\addConstraint{\mathbf{\Theta}^\mathsf{H} \mathbf{\Theta}=\mathbf{I}.}{}{}
 			\end{mini!}
 			\eqref{op:standard_orthogonal_procrustes} has a global optimal solution $\mathbf{\Theta}^\star = \mathbf{U} \mathbf{V}^\mathsf{H}$, where $\mathbf{U}$ and $\mathbf{V}$ are left and right singular matrix of $\mathbf{\mathbf{A}^\dagger \mathbf{C} \mathbf{B}^\mathsf{H}}$ \cite{Golub2013}.
 			This low-complexity solution will be compared with the one proposed later.
 		\end{remark}
 
-		Inspired by \cite{Nie2017}, we propose an iterative algorithm to solve \eqref{op:channel_power}.
+		Inspired by \cite{Nie2017}, we propose an iterative algorithm to solve \eqref{op:pc_power}.
 		The idea is to successively approximate the quadratic objective with a sequence of affine functions and solve the resulting subproblems in closed form.
 
 		\begin{proposition}
@@ -156,7 +157,7 @@
 			\begin{equation}
 				\mathbf{\Theta}_g^{(r+1)} = \mathbf{U}_g^{(r)} \mathbf{V}_g^{(r)}, \quad \forall g \in \mathcal{G}
 			\end{equation}
-			converges to a stationary point of \eqref{op:channel_power}, where $\mathbf{U}_g^{(r)}$ and $\mathbf{V}_g^{(r)}$ are left and right singular matrix of
+			converges to a stationary point of \eqref{op:pc_power}, where $\mathbf{U}_g^{(r)}$ and $\mathbf{V}_g^{(r)}$ are left and right singular matrix of
 			\begin{equation}
 				\begin{split}
 					\mathbf{M}_g^{(r)}
@@ -175,7 +176,7 @@
 			\resizebox{0.65\columnwidth}{!}{
 				\input{assets/simulation/pc_power_sx.tex}
 			}
-			\caption{Average channel power versus \gls{ris} elements $N_\mathrm{S}$ and group size $L$ for $(N_\mathrm{T}, N_\mathrm{R}) = (8, 4)$, $(\Lambda^\mathrm{D}, \Lambda^\mathrm{F}, \Lambda^\mathrm{B}) = (65, 54, 46) \unit{dB}$.}
+			\caption{Average channel power versus \gls{ris} elements $N^\mathrm{S}$ and group size $L$ for $(N^\mathrm{T}, N^\mathrm{R}) = (8, 4)$, $(\Lambda^\mathrm{D}, \Lambda^\mathrm{F}, \Lambda^\mathrm{B}) = (65, 54, 46) \unit{dB}$.}
 			\label{sm:pc_power_sx}
 		\end{figure}
 
@@ -191,15 +192,15 @@
 					\input{assets/simulation/pc_power_bond_hd.tex}
 				}
 			}
-			\caption{Average channel power versus \gls{ris} group size $L$ for $(N_\mathrm{T}, N_\mathrm{S}, N_\mathrm{R}) = (8, 256, 4)$, $(\Lambda^\mathrm{D}, \Lambda^\mathrm{F}, \Lambda^\mathrm{B}) = (65, 54, 46) \unit{dB}$.}
+			\caption{Average channel power versus \gls{ris} group size $L$ for $(N^\mathrm{T}, N^\mathrm{S}, N^\mathrm{R}) = (8, 256, 4)$, $(\Lambda^\mathrm{D}, \Lambda^\mathrm{F}, \Lambda^\mathrm{B}) = (65, 54, 46) \unit{dB}$.}
 			\label{sm:pc_power_bond}
 		\end{figure}
 		% Fig.~\ref{sm:pc_power_sx} shows that, apart from numerous reflecting elements, a sufficiently large group size can help
 		% Fig.~\ref{sm:pc_power_sx} shows that increasing the group size can improve the channel power especially for a large \gls{ris}.
-		Fig.~\ref{sm:pc_power_sx} shows that, apart from adding reflecting elements $N_\mathrm{S}$, increasing the group size $L$ also improves the channel power.
+		Fig.~\ref{sm:pc_power_sx} shows that, apart from adding reflecting elements $N^\mathrm{S}$, increasing the group size $L$ also improves the channel power.
 		% The behavior is more obvious for a large \gls{ris}.
 		This behavior is more pronounced for a large \gls{ris}.
-		For example, the gain of pairwise connection is 2.8\% for $N_\mathrm{S} = 16$ and 28\% for $N_\mathrm{S} = 256$.
+		For example, the gain of pairwise connection is 2.8\% for $N^\mathrm{S} = 16$ and 28\% for $N^\mathrm{S} = 256$.
 		% \gls{bd} \gls{ris} provides a higher channel power than conventional \gls{ris}.
 		% As $L$ increases from 1 to 2,
 		It implies that the channel shaping capability of \gls{bd} \gls{ris} scales with group size $L$.
@@ -224,13 +225,68 @@
 		% For conventional \gls{ris},
 		% align the direct-indirect eigenspace.
 		% When the direct link is present, a small $L$ can neither align the direct-indirect eigenspace nor the forward-backward eigenspace.
-		% For a relatively large $N_\mathrm{S}$, conventional \gls{ris} cannot
+		% For a relatively large $N^\mathrm{S}$, conventional \gls{ris} cannot
 		% neither the direct-indirect nor the forward-backward eigenspace can be effectively aligned with a small $L$.
 
 		% When the direct link is present, a small $L$ can neither preserve the
 		% neither align the direct-indirect eigenspace nor the forward-backward eigenspace.
 
 		% When the direct link is absent, a large $L$ can align the forward-backward eigenspace but cannot preserve the forward-backward power balance.
+	\end{subsection}
+
+	\begin{subsection}{Rate Maximization}
+		The problem is formulated w.r.t. precoder (instead of transmit covariance matrix) for reference:
+		\begin{maxi!}
+			{\scriptstyle{\mathbf{W},\mathbf{\Theta}}}{\log \det \Bigl(\mathbf{I} + \frac{\mathbf{W}^\mathsf{H}\mathbf{H}^\mathsf{H}\mathbf{H}\mathbf{W}}{\sigma_n^2}\Bigr)}{\label{op:pc_rate}}{}
+			\addConstraint{\lVert \mathbf{W} \rVert _\mathrm{F}^2 \le P}{}{}
+			\addConstraint{\mathbf{\Theta}_g^\mathsf{H} \mathbf{\Theta}_g=\mathbf{I}, \quad \forall g.}{}{\label{cs:pc_rate_unitary}}
+		\end{maxi!}
+
+		\eqref{op:pc_rate} is jointly non-convex and solved by \gls{ao}.
+		For a given $\mathbf{\Theta}$, the optimal precoder is given by
+		\begin{equation}
+			\mathbf{W}^\star = \mathbf{V} {\mathbf{S}^\star}^{1/2},
+		\end{equation}
+		where $\mathbf{V}$ is right singular matrix of $\mathbf{H}$ and $\mathbf{S}^\star$ is a diagonal matrix of the water-filling power allocation.
+		For a given $\mathbf{W}$, we update $\mathbf{\Theta}$ by \gls{rcg} method along the geodesics \cite{Abrudan2009}.
+		\begin{remark}
+			A geodesic refers to the shortest path between two points in a Riemannian manifold.
+			% For unitary constraint \eqref{cs:pc_rate_unitary}, the
+			Unitary constraint \eqref{cs:pc_rate_unitary} translates to a Stiefel manifold where the geodesics have simple expressions described by the exponential map \cite{Abrudan2008}.
+			% Geodesics are the locally shortest paths in a Riemannian manifold.
+			% A Geodesics are the locally shortest paths in a Riemannian manifold.
+			% on Riemannian manifold are the shortest path between two points.
+		\end{remark}
+		For optimization problems with block unitary constraint, the adapted \gls{rcg} method at iteration $r$ for block $g$ is summarized below.
+		\begin{enumerate}
+			\item Compute the Euclidean gradient
+			\begin{equation}
+				\nabla_{\mathbf{\Theta}_g}^\mathrm{E} f^{(r)} = \frac{\partial f^{(r)}}{\partial \mathbf{\Theta}_g^*}
+			\end{equation}
+			\item Translate to the Riemannian gradient
+			\begin{equation}
+				\nabla_{\mathbf{\Theta}_g}^\mathrm{R} f^{(r)} = \nabla_{\mathbf{\Theta}_g}^\mathrm{E} f^{(r)} {\mathbf{\Theta}_g^{(r)}}^\mathsf{H} - \mathbf{\Theta}_g^{(r)} {\nabla_{\mathbf{\Theta}_g}^\mathrm{E} f^{(r)}}^\mathsf{H}
+			\end{equation}
+			\item Determine the weight factor
+			\begin{equation}
+				% \gamma^{(r)} = \frac{\mathrm{tr}\Bigl(\bigl(\mathbf{G}_\mathrm{R}^{(r)} - \mathbf{G}_\mathrm{R}^{(r-1)}\bigr) \mathbf{G}_\mathrm{R}^{(r)\mathsf{H}}\Bigr)}{\mathrm{tr}\Bigl(\mathbf{G}_\mathrm{R}^{(r-1)} \mathbf{G}_\mathrm{R}^{(r-1)\mathsf{H}}\Bigr)}
+				\gamma^{(r)} = \frac{\mathrm{tr}\Bigl(\bigl(\nabla_{\mathbf{\Theta}_g}^\mathrm{R} f^{(r)} - \nabla_{\mathbf{\Theta}_g}^\mathrm{R} f^{(r-1)}\bigr) \nabla_{\mathbf{\Theta}_g}^\mathrm{R} f^{(r)\mathsf{H}}\Bigr)}{\mathrm{tr}\Bigl(\nabla_{\mathbf{\Theta}_g}^\mathrm{R} f^{(r-1)} \nabla_{\mathbf{\Theta}_g}^\mathrm{R} f^{(r-1)\mathsf{H}}\Bigr)}
+			\end{equation}
+			\item Compute the conjugate direction
+			\begin{equation}
+				% \mathbf{D}_\mathrm{R}^{(r)} = \mathbf{G}_\mathrm{R}^{(r)} + \gamma^{(r)} \mathbf{D}_\mathrm{R}^{(r-1)}
+				\mathbf{D}^{(r)} = \nabla_{\mathbf{\Theta}_g}^\mathrm{R} f^{(r)} + \gamma^{(r)} \mathbf{D}^{(r-1)}
+			\end{equation}
+			\item Determine the Armijo step size
+			\begin{equation}
+				\mu^{(r)} = \arg\max_\mu f^{(r)}\Bigl(\exp\bigl(-\mu \mathbf{D}^{(r)}\bigr) \mathbf{\Theta}_g^{(r)}\Bigr)
+			\end{equation}
+			\item Perform multiplicative (rotational) update
+			\begin{equation}
+				\mathbf{\Theta}^{(r+1)} = {\color{gray}\exp}\Bigl(-\mu^{(r)} \mathbf{D}^{(r)}\Bigr) \mathbf{\Theta}_g^{(r)}
+			\end{equation}
+		\end{enumerate}
+		The advantage over general manifold optimization \cite{Absil2009,Pan2022d} is trifold: 1) no retraction is required; 2) no projection is required; 3) no matrix inversion is required.
 	\end{subsection}
 \end{section}
 
