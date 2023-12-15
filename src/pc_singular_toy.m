@@ -25,7 +25,7 @@ for s = 1 : 2
 	handle.mesh(1, s).DataTipTemplate.DataTipRows.Format = '%.3f';
 	hold on;
 end
-hold off; legend;
+hold off; legend('Location', 'northeast');
 xlabel('$\theta_1$');
 ylabel('$\theta_2$');
 zlabel({'Singular Value'});
@@ -42,7 +42,7 @@ for s = 1 : 2
 	handle.mesh(2, s).DataTipTemplate.DataTipRows.Format = '%.3f';
 	hold on;
 end
-hold off; legend;
+hold off;
 xlabel('$\alpha$');
 ylabel('$\psi$');
 zlabel({'Singular Value'});
@@ -50,6 +50,7 @@ set(gca, 'XTick', 0 : pi / 2 : 2 * pi, 'YTick', 0 : pi / 2 : 2 * pi, 'XTickLabel
 title('Symmetry Unitary RIS');
 linkaxes(handle.axis);
 savefig('plots/pc_singular_toy.fig');
+saveas(gcf, '../assets/simulation/pc_singular_toy', 'epsc');
 
 
 function [Theta] = scatter_2x2_diagonal(theta_1, theta_2)

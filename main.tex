@@ -29,6 +29,8 @@
 \usepackage[caption=false,font=footnotesize,subrefformat=parens,labelformat=parens]{subfig}
 \usepackage{tabularx}
 \usepackage{tikz}
+\usepackage{graphicx}
+\usepackage{epstopdf}
 
 % page limit hacks
 % \usepackage{setspace}
@@ -264,7 +266,7 @@
 			% A Geodesics are the locally shortest paths in a Riemannian manifold.
 			% on Riemannian manifold are the shortest path between two points.
 		\end{remark}
-		For general optimization problems with block unitary constraint, the adapted \gls{rcg} method at iteration $r$ for block $g$ is summarized below, where $f\bigl(\mathbf{\Theta}_g^{(r)}\bigr)$ is the objective function evaluated over $\bigl\{ \{\mathbf{\Theta}_{g'}^{(r+1)}\}_{g'<g}, \{\mathbf{\Theta}_{g'}^{(r)}\}_{g'>g} \bigr\}$.
+		For general optimization problems with block unitary constraint, the adapted \gls{rcg} method at iteration $r$ for block $g$ is summarized below, where $f\bigl(\mathbf{\Theta}_g^{(r)}\bigr)$ is the objective function also evaluated over $\bigl\{ \{\mathbf{\Theta}_{g'}^{(r+1)}\}_{g'<g}, \{\mathbf{\Theta}_{g'}^{(r)}\}_{g'>g} \bigr\}$.
 		\begin{enumerate}
 			\item Compute the Euclidean gradient
 			\begin{equation}
@@ -346,9 +348,54 @@
 		To ensure a \qty{20}{bit/s/Hz} transmission, an \gls{snr} of \qty{13.5}{\dB} is required for a 8T4R system.
 		This value decreases to \qty{12.5}{\dB} (resp. \qty{8}{\dB}) when 32- (resp. 256-) element diagonal \gls{ris} is present.
 		If tetrads can be formed in \gls{bd} \gls{ris}, the \gls{snr} can be reduced by another \qty{20}{\percent} (resp. \qty{44}{\percent}).
-		Further increase in $L$ yields a marginal gain and incurs quadratic number of connections.
-		Thus, dyadic or tetradic \gls{bd} \gls{ris} usually strike a good balance between performance and complexity.
+		Further increase in $L$ yields a marginal gain and incurs $\mathcal{O}(L^2)$ connections.
+		We thus conclude dyadic or tetradic \gls{bd} \gls{ris} usually strike a good balance between performance and complexity.
+	\end{subsection}
 
+	\begin{subsection}{Channel Singular Value Redistribution}
+		In this subsection, we first show the channel shaping advantage of \gls{bd} \gls{ris} by a toy example, then analyzes this \emph{capability} under specific setups.
+		Finally, we characterize the \emph{Pareto front} of channel singular values via optimization approach.
+
+		\begin{figure}
+			\centering
+			\includegraphics[width=\columnwidth]{assets/simulation/pc_singular_toy.eps}
+			\caption{Channel singular value shaping by diagonal and symmetry unitary \gls{ris} for $(N^\mathrm{T}, N^\mathrm{S}, N^\mathrm{R}) = (2, 2, 2)$ without direct link.}
+			\label{sm:pc_singular_toy}
+		\end{figure}
+
+		Consider a toy example with $(N^\mathrm{T}, N^\mathrm{S}, N^\mathrm{R}) = (2, 2, 2)$ and assume the direct link is absent.
+		The diagonal \gls{ris} is $\mathbf{\Theta}^\mathrm{D} = \mathrm{diag}(e^{\jmath \theta_1}, e^{\jmath \theta_2})$ while the unitary \gls{ris} has 4 independent angular parameters
+		\begin{equation}
+			% \mathbf{\Theta}^\mathrm{D} =
+			% \begin{bmatrix}
+			% 	e^{\jmath \theta_1} & 0              \\
+			% 	0              & e^{\jmath \theta_2}
+			% \end{bmatrix}, \quad
+			\mathbf{\Theta}^\mathrm{U} = e^{\jmath \phi} \begin{bmatrix}
+				e^{\jmath \alpha} \cos \psi  & e^{\jmath \beta} \sin \psi   \\
+				-e^{-\jmath \beta} \sin \psi & e^{-\jmath \alpha} \cos \psi
+			\end{bmatrix}.
+		\end{equation}
+		When the direct link is absent, $\phi$ has no impact on the singular value because $\mathrm{sv}(e^{\jmath \phi} \mathbf{A}) = \mathrm{sv}(\mathbf{A})$.
+		For a fair comparison, we enforce \emph{symmetry} with $\beta = \pi / 2$.
+		Fig.~\ref{sm:pc_singular_toy} illustrates all possible channel singular values achieved by diagonal and symmetry unitary \gls{ris}.
+		Clearly, \gls{bd} \gls{ris} provides a much wider dynamic range of $\sigma_1(\mathbf{H})$ and $\sigma_2(\mathbf{H})$ than diagonal \gls{ris}, despite using the same number of elements and parameters.
+		A larger gap is expected when the symmetry constraint can be relaxed.
+
+
+
+
+
+		\begin{subsubsection}{Rank-1 Indirect Channel}
+			% When the \gls{ris} is in the vicinity of the transmitter / receiver, the forward / backward channel is often rank-1 and so is the indirect channel.
+			% This is because
+			When the \gls{ris} is in the vicinity of the transmitter / receiver, the forward / backward channel is often rank-1.
+			The indirect channel is also rank-1 because
+			\begin{equation}
+				\mathrm{rank}( \mathbf{H}^\mathrm{B} \mathbf{\Theta} \mathbf{H}^\mathrm{F} ) \le \min \bigl( \mathrm{rank}(\mathbf{H}^\mathrm{B}), \mathrm{rank}(\mathbf{\Theta}), \mathrm{rank}(\mathbf{H}^\mathrm{F}) \bigr).
+			\end{equation}
+			% That is to say, \gls{bd} \gls{ris}
+		\end{subsubsection}
 	\end{subsection}
 \end{section}
 
