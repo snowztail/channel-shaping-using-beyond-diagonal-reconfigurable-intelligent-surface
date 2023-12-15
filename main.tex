@@ -85,6 +85,7 @@
 \setabbreviationstyle[acronym]{long-short}
 \newacronym{ao}{AO}{Alternating Optimization}
 \newacronym{bd}{BD}{Beyond-Diagonal}
+\newacronym{dof}{DoF}{Degree of Freedom}
 \newacronym{mimo}{MIMO}{Multiple-Input Multiple-Output}
 \newacronym{rcg}{RCG}{Riemannian Conjugate Gradient}
 \newacronym{ris}{RIS}{Reconfigurable Intelligent Surface}
@@ -353,24 +354,10 @@
 	\end{subsection}
 
 	\begin{subsection}{Channel Singular Value Redistribution}
-		In this subsection, we first show the channel shaping advantage of \gls{bd} \gls{ris} by a toy example, then analyzes this \emph{capability} under specific setups.
-		Finally, we characterize the \emph{Pareto front} of channel singular values via optimization approach.
-
-		\begin{figure}
-			\centering
-			\includegraphics[width=\columnwidth]{assets/simulation/pc_singular_toy.eps}
-			\caption{Channel singular value shaping by diagonal and symmetry unitary \gls{ris} for $(N^\mathrm{T}, N^\mathrm{S}, N^\mathrm{R}) = (2, 2, 2)$ without direct link.}
-			\label{sm:pc_singular_toy}
-		\end{figure}
-
-		Consider a toy example with $(N^\mathrm{T}, N^\mathrm{S}, N^\mathrm{R}) = (2, 2, 2)$ and assume the direct link is absent.
+		We first show the channel shaping benefit of \gls{bd} \gls{ris} by a toy example.
+		Consider $(N^\mathrm{T}, N^\mathrm{S}, N^\mathrm{R}) = (2, 2, 2)$ and assume the direct link is absent.
 		The diagonal \gls{ris} is $\mathbf{\Theta}^\mathrm{D} = \mathrm{diag}(e^{\jmath \theta_1}, e^{\jmath \theta_2})$ while the unitary \gls{ris} has 4 independent angular parameters
 		\begin{equation}
-			% \mathbf{\Theta}^\mathrm{D} =
-			% \begin{bmatrix}
-			% 	e^{\jmath \theta_1} & 0              \\
-			% 	0              & e^{\jmath \theta_2}
-			% \end{bmatrix}, \quad
 			\mathbf{\Theta}^\mathrm{U} = e^{\jmath \phi} \begin{bmatrix}
 				e^{\jmath \alpha} \cos \psi  & e^{\jmath \beta} \sin \psi   \\
 				-e^{-\jmath \beta} \sin \psi & e^{-\jmath \alpha} \cos \psi
@@ -378,24 +365,73 @@
 		\end{equation}
 		When the direct link is absent, $\phi$ has no impact on the singular value because $\mathrm{sv}(e^{\jmath \phi} \mathbf{A}) = \mathrm{sv}(\mathbf{A})$.
 		For a fair comparison, we enforce \emph{symmetry} with $\beta = \pi / 2$.
+		\begin{figure}
+			\centering
+			\includegraphics[width=\columnwidth]{assets/simulation/pc_singular_toy.eps}
+			\caption{Channel singular value shaping by diagonal and symmetry unitary \gls{ris} for $(N^\mathrm{T}, N^\mathrm{S}, N^\mathrm{R}) = (2, 2, 2)$ without direct link.}
+			\label{sm:pc_singular_toy}
+		\end{figure}
 		Fig.~\ref{sm:pc_singular_toy} illustrates all possible channel singular values achieved by diagonal and symmetry unitary \gls{ris}.
-		Clearly, \gls{bd} \gls{ris} provides a much wider dynamic range of $\sigma_1(\mathbf{H})$ and $\sigma_2(\mathbf{H})$ than diagonal \gls{ris}, despite using the same number of elements and parameters.
-		A larger gap is expected when the symmetry constraint can be relaxed.
+		Despite using the same number of elements and parameters, \gls{bd} \gls{ris} provides much wider dynamic ranges of $\sigma_1(\mathbf{H})$ and $\sigma_2(\mathbf{H})$ than diagonal \gls{ris}.
+		Larger gaps are expected when the symmetry constraint can be relaxed.
 
-
-
+		We then analyze the channel shaping \emph{capability} of \gls{bd} \gls{ris} under specific setups.
+		\begin{subsubsection}{Rank-Deficient Channel}
+			In rank-deficient channels, \gls{bd} \gls{ris} $\mathbf{\Theta}^\mathrm{B}$ cannot achieve a higher \gls{dof} than diagonal \gls{ris} $\mathbf{\Theta}^\mathrm{D}$.
+			This is because $\mathrm{sv}(\mathbf{\Theta}^\mathrm{B}) = \mathrm{sv}(\mathbf{\Theta}^\mathrm{D}) = \boldsymbol{1}$ and
+			\begin{equation}
+				\begin{split}
+					\mathrm{rank}(\mathbf{H})
+					& \le \mathrm{rank}(\mathbf{H}^\mathrm{D}) + \mathrm{rank}(\mathbf{H}^\mathrm{B} \mathbf{\Theta} \mathbf{H}^\mathrm{F}) \\
+					& \le \mathrm{rank}(\mathbf{H}^\mathrm{D}) + \min \bigl( \mathrm{rank}(\mathbf{H}^\mathrm{B}), \mathrm{rank}(\mathbf{\Theta}), \mathrm{rank}(\mathbf{H}^\mathrm{F}) \bigr).
+				\end{split}
+			\end{equation}
+			% However, \gls{bd} \gls{ris} can still guarantee a higher rate at finite \gls{snr}.
+			Note \gls{bd} \gls{ris} can still provide a higher indirect \gls{snr} as shown in Fig.~\ref{sm:pc_power_sx} and \ref{sm:pc_power_bond}.
+		\end{subsubsection}
 
 
 		\begin{subsubsection}{Rank-1 Indirect Channel}
-			% When the \gls{ris} is in the vicinity of the transmitter / receiver, the forward / backward channel is often rank-1 and so is the indirect channel.
-			% This is because
-			When the \gls{ris} is in the vicinity of the transmitter / receiver, the forward / backward channel is often rank-1.
-			The indirect channel is also rank-1 because
+			The indirect channel is rank-1 iff the forward or backward channel is rank-1.
+			Let $\mathbf{H}^\mathrm{F} = \sigma^\mathrm{F} \mathbf{u}^\mathrm{F} {\mathbf{v}^\mathrm{F}}^\mathsf{H}$ without loss of generality.
+			In this case, the channel Gram matrix can be written as Hermitian-plus-rank-1:
 			\begin{equation}
-				\mathrm{rank}( \mathbf{H}^\mathrm{B} \mathbf{\Theta} \mathbf{H}^\mathrm{F} ) \le \min \bigl( \mathrm{rank}(\mathbf{H}^\mathrm{B}), \mathrm{rank}(\mathbf{\Theta}), \mathrm{rank}(\mathbf{H}^\mathrm{F}) \bigr).
+				\mathbf{G} \triangleq \mathbf{H} \mathbf{H}^\mathsf{H} = \mathbf{Y} + \mathbf{z} \mathbf{z}^\mathsf{H},
 			\end{equation}
-			% That is to say, \gls{bd} \gls{ris}
+			where $\mathbf{Y} \triangleq \mathbf{H}^\mathrm{D} (\mathbf{I} - \mathbf{v}^\mathrm{F} {\mathbf{v}^\mathrm{F}}^\mathsf{H}) \mathbf{H}^\mathrm{D} = \mathbf{F} \mathbf{F}^\mathsf{H}$ and $\mathbf{z} \triangleq \sigma^\mathrm{F} \mathbf{H}^\mathrm{B} \mathbf{\Theta} \mathbf{u}^\mathrm{F} + \mathbf{H}^\mathrm{D} \mathbf{v}^\mathrm{F}$.
+			Regardless of \gls{ris} size and structure\footnote{Similar conclusion was made for diagonal \gls{ris} in \cite{Semmler2023}.}, its $n$-th ($n \ge 2$) eigenvalues are bounded by the Cauchy interlacing formula \cite{Golub2013}
+			\begin{equation}
+				\lambda_1(\mathbf{Y}) \ge {\color{blue}\lambda_2(\mathbf{G})} \ge \lambda_2(\mathbf{Y}) \ge \ldots \ge \lambda_{n-1}(\mathbf{Y}) \ge {\color{blue}\lambda_n(\mathbf{G})} \ge \lambda_n(\mathbf{Y}).
+			\end{equation}
+			That is to say, [for sv]
+
+			% \begin{equation}
+			% 	\mathbf{G} = \underbrace{\mathbf{H}_\text{D} (\mathbf{I} - \mathbf{v}_{\text{F}} \mathbf{v}_{\text{F}}^\mathsf{H}) \mathbf{H}_\text{D}^\mathsf{H}}_{\mathbf{C}} +
+			% 	\underbrace{
+			% 		\begin{bsmallmatrix}
+			% 			\sigma_{\text{F}} \mathbf{H}_\text{B} & \mathbf{H}_\text{D} \mathbf{v}_{\text{F}}
+			% 		\end{bsmallmatrix}
+			% 		\begin{bsmallmatrix}
+			% 			\mathbf{\Theta} \mathbf{u}_{\text{F}} \\
+			% 			1
+			% 		\end{bsmallmatrix}
+			% 	}_{\mathbf{z} = \sigma_{\text{F}} \mathbf{H}_\text{B} \mathbf{\Theta} \mathbf{u}_{\text{F}} + \mathbf{H}_\text{D} \mathbf{v}_{\text{F}}}
+			% 	\begin{bsmallmatrix}
+			% 		\mathbf{\Theta} \mathbf{u}_{\text{F}} \\
+			% 		1
+			% 	\end{bsmallmatrix}^\mathsf{H}
+			% 	\begin{bsmallmatrix}
+			% 		\sigma_{\text{F}} \mathbf{H}_\text{B} & \mathbf{H}_\text{D} \mathbf{v}_{\text{F}}
+			% 	\end{bsmallmatrix}^\mathsf{H}
+			% \end{equation}
 		\end{subsubsection}
+
+
+
+
+
+
+		Finally, we characterize the \emph{Pareto front} of channel singular values via optimization approach.
 	\end{subsection}
 \end{section}
 

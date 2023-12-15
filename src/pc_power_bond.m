@@ -3,7 +3,7 @@ clc; clear; close; setup;
 [transmit.antenna, reflect.antenna, receive.antenna] = deal(8, 256, 4);
 [channel.rank, reflect.bond] = deal(min(transmit.antenna, receive.antenna), 2 .^ (0 : 2 : log2(reflect.antenna)));
 [channel.pathloss.direct, channel.pathloss.forward, channel.pathloss.backward] = deal(db2pow(-65), db2pow(-54), db2pow(-46));
-[number.bond, number.realization, flag.direct] = deal(length(reflect.bond), 1e1, false);
+[number.bond, number.realization, flag.direct] = deal(length(reflect.bond), 1e1, true);
 
 for r = 1 : number.realization
 	channel.direct = flag.direct * sqrt(channel.pathloss.direct) * fading_nlos(receive.antenna, transmit.antenna);
