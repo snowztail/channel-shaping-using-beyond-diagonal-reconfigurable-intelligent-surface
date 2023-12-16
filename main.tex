@@ -220,7 +220,9 @@
 		% where the cascaded channel power available to passive \gls{ris} is $\lVert \mathbf{H}^\mathrm{B} \rVert _\mathrm{F}^2 \lVert \mathbf{H}^\mathrm{F} \rVert _\mathrm{F}^2$.
 		% ``Cascaded'' means the maximum power of the cascaded channel, i.e., $\lVert \mathbf{H}^\mathrm{B} \rVert _\mathrm{F}^2 \lVert \mathbf{H}^\mathrm{F} \rVert _\mathrm{F}^2$.
 		% maximum power of the cascaded channel, i.e., $\lVert \mathbf{H}^\mathrm{B} \rVert _\mathrm{F}^2 \lVert \mathbf{H}^\mathrm{F} \rVert _\mathrm{F}^2$.
-		``Cascaded'' means the \emph{power product} of the forward and backward channels.
+		% ? ``Cascaded'' means the \emph{power product} of the forward and backward channels.
+		% ``Cascaded'' means the sum of element-wise product of first $N = \min(N^\mathrm{T}, N^\mathrm{S}, N^\mathrm{R})$ eigenvalues of the forward and backward channels.
+		``Cascaded'' means the sum of element-wise product of first $N = \min(N^\mathrm{T}, N^\mathrm{S}, N^\mathrm{R})$ eigenvalues (i.e., element-wise power product) of the forward and backward channels.
 		We observe that diagonal \gls{ris} wastes substantial cascaded power and struggles to align the direct-indirect eigenspace.
 		When the direct link is absent, only \qty{2.6}{\percent} of available power is utilized by diagonal \gls{ris} while \qty{100}{\percent} power is recycled by fully-connected \gls{ris}.
 		When the direct link is present, the proposed \gls{bd} \gls{ris} design can balance the direct-indirect and forward-backward eigenspace alignment for an optimal channel boost.
@@ -364,7 +366,7 @@
 			\end{bmatrix}.
 		\end{equation}
 		When the direct link is absent, $\phi$ has no impact on the singular value because $\mathrm{sv}(e^{\jmath \phi} \mathbf{A}) = \mathrm{sv}(\mathbf{A})$.
-		For a fair comparison, we enforce \emph{symmetry} with $\beta = \pi / 2$.
+		For a fair comparison, we enforce symmetry with $\beta = \pi / 2$.
 		\begin{figure}
 			\centering
 			\includegraphics[width=\columnwidth]{assets/simulation/pc_singular_toy.eps}
@@ -398,34 +400,55 @@
 			\begin{equation}
 				\mathbf{G} \triangleq \mathbf{H} \mathbf{H}^\mathsf{H} = \mathbf{Y} + \mathbf{z} \mathbf{z}^\mathsf{H},
 			\end{equation}
-			where $\mathbf{Y} \triangleq \mathbf{H}^\mathrm{D} (\mathbf{I} - \mathbf{v}^\mathrm{F} {\mathbf{v}^\mathrm{F}}^\mathsf{H}) \mathbf{H}^\mathrm{D} = \mathbf{F} \mathbf{F}^\mathsf{H}$ and $\mathbf{z} \triangleq \sigma^\mathrm{F} \mathbf{H}^\mathrm{B} \mathbf{\Theta} \mathbf{u}^\mathrm{F} + \mathbf{H}^\mathrm{D} \mathbf{v}^\mathrm{F}$.
-			Regardless of \gls{ris} size and structure\footnote{Similar conclusion was made for diagonal \gls{ris} in \cite{Semmler2023}.}, its $n$-th ($n \ge 2$) eigenvalues are bounded by the Cauchy interlacing formula \cite{Golub2013}
+			where $\mathbf{Y} \triangleq \mathbf{H}^\mathrm{D} (\mathbf{I} - \mathbf{v}^\mathrm{F} {\mathbf{v}^\mathrm{F}}^\mathsf{H}) \mathbf{H}^\mathrm{D} = \mathbf{T} \mathbf{T}^\mathsf{H}$ and $\mathbf{z} \triangleq \sigma^\mathrm{F} \mathbf{H}^\mathrm{B} \mathbf{\Theta} \mathbf{u}^\mathrm{F} + \mathbf{H}^\mathrm{D} \mathbf{v}^\mathrm{F}$.
+			Regardless of \gls{ris} size and structure\footnote{A similar conclusion was made for diagonal \gls{ris} in \cite{Semmler2023}.}, its $n$-th ($n \ge 2$) eigenvalues are bounded by the Cauchy interlacing formula \cite{Golub2013}
 			\begin{equation}
-				\lambda_1(\mathbf{Y}) \ge {\color{blue}\lambda_2(\mathbf{G})} \ge \lambda_2(\mathbf{Y}) \ge \ldots \ge \lambda_{n-1}(\mathbf{Y}) \ge {\color{blue}\lambda_n(\mathbf{G})} \ge \lambda_n(\mathbf{Y}).
+				\lambda_1(\mathbf{Y}) \ge {\color{blue}\lambda_2(\mathbf{G})} \ge \lambda_2(\mathbf{Y}) \ge \ldots \ge \lambda_{N-1}(\mathbf{Y}) \ge {\color{blue}\lambda_N(\mathbf{G})} \ge \lambda_N(\mathbf{Y}).
 			\end{equation}
-			That is to say, [for sv]
-
-			% \begin{equation}
-			% 	\mathbf{G} = \underbrace{\mathbf{H}_\text{D} (\mathbf{I} - \mathbf{v}_{\text{F}} \mathbf{v}_{\text{F}}^\mathsf{H}) \mathbf{H}_\text{D}^\mathsf{H}}_{\mathbf{C}} +
-			% 	\underbrace{
-			% 		\begin{bsmallmatrix}
-			% 			\sigma_{\text{F}} \mathbf{H}_\text{B} & \mathbf{H}_\text{D} \mathbf{v}_{\text{F}}
-			% 		\end{bsmallmatrix}
-			% 		\begin{bsmallmatrix}
-			% 			\mathbf{\Theta} \mathbf{u}_{\text{F}} \\
-			% 			1
-			% 		\end{bsmallmatrix}
-			% 	}_{\mathbf{z} = \sigma_{\text{F}} \mathbf{H}_\text{B} \mathbf{\Theta} \mathbf{u}_{\text{F}} + \mathbf{H}_\text{D} \mathbf{v}_{\text{F}}}
-			% 	\begin{bsmallmatrix}
-			% 		\mathbf{\Theta} \mathbf{u}_{\text{F}} \\
-			% 		1
-			% 	\end{bsmallmatrix}^\mathsf{H}
-			% 	\begin{bsmallmatrix}
-			% 		\sigma_{\text{F}} \mathbf{H}_\text{B} & \mathbf{H}_\text{D} \mathbf{v}_{\text{F}}
-			% 	\end{bsmallmatrix}^\mathsf{H}
-			% \end{equation}
+			The equivalent singular value inequality is
+			\begin{equation}
+				\sigma_1(\mathbf{T}) \ge {\color{blue}\sigma_2(\mathbf{H})} \ge \sigma_2(\mathbf{T}) \ge \ldots \ge \sigma_{N-1}(\mathbf{T}) \ge {\color{blue}\sigma_N(\mathbf{H})} \ge \sigma_N(\mathbf{T}).
+				\label{iq:singular_value_interlacing}
+			\end{equation}
+			\eqref{iq:singular_value_interlacing} implies that, if the indirect channel is rank-1, then the \gls{ris} can at most enlarge the $n$-th ($n \ge 2$) channel singular value to the $(n-1)$-th singular value of $\mathbf{T}$.
+			Note that the largest channel singular value is unbounded with a sufficiently large \gls{ris}.
 		\end{subsubsection}
 
+		\begin{subsubsection}{Fully-Connected \glsentryshort{ris} Without Direct Link}
+			Denote the singular value decomposition of forward / backward channels as $\mathbf{H}^{\mathrm{B}/\mathrm{F}} = \mathbf{U}^{\mathrm{B}/\mathrm{F}} \mathbf{\Sigma}^{\mathrm{B}/\mathrm{F}} {\mathbf{V}^{\mathrm{B}/\mathrm{F}}}^\mathsf{H}$.
+			The composite channel is
+			\begin{equation}
+				\mathbf{H} = \mathbf{H}^\mathrm{B} \mathbf{\Theta} \mathbf{H}^\mathrm{F} = \mathbf{U}^\mathrm{B} \mathbf{\Sigma}^\mathrm{B} \mathbf{X} \mathbf{\Sigma}^\mathrm{F} {\mathbf{V}^\mathrm{F}}^\mathsf{H},
+			\end{equation}
+			where $\mathbf{X} = {\mathbf{V}^\mathrm{B}}^\mathsf{H} \mathbf{\Theta} \mathbf{U}^\mathrm{F}$.
+			% Since unitary matrices are closed under multiplication,
+			\begin{proposition}
+				In this case, the singular value bounds on $\mathbf{H}$ are equivalent to the singular value bounds on $\mathbf{BF}$, where $\mathbf{B}$ and $\mathbf{F}$ are arbitrary matrices with singular values $\mathbf{\Sigma}^\mathrm{B}$ and $\mathbf{\Sigma}^\mathrm{F}$.
+				% The only singular value bounds applied here are those apply to the singular value bound of $\mathbf{F}\mathbf{B}$
+			\end{proposition}
+			\begin{proof}
+				We first observe that singular value control problem can be solved w.r.t. unitary $\mathbf{X}$ and retrieved by $\mathbf{\Theta} = \mathbf{V}^\mathrm{B} \mathbf{X} {\mathbf{U}^\mathrm{F}}^\mathsf{H}$.
+				Also, $\mathrm{sv}(\mathbf{U}^\mathrm{B} \mathbf{\Sigma}^\mathrm{B} \mathbf{X} \mathbf{\Sigma}^\mathrm{F} {\mathbf{V}^\mathrm{F}}^\mathsf{H}) = \mathrm{sv}(\bar{\mathbf{U}}^\mathrm{B} \mathbf{\Sigma}^\mathrm{B} \mathbf{\bar{V}}{{}^\mathrm{B}}^\mathsf{H} \bar{\mathbf{U}}^\mathrm{F} \mathbf{\Sigma}^\mathrm{F} \mathbf{\bar{V}}{{}^\mathrm{F}}^\mathsf{H}) = \mathrm{sv}(\mathbf{BF})$ where $\bar{\mathbf{U}}^{\mathrm{B}/\mathrm{F}}$ and $\bar{\mathbf{V}}^{\mathrm{B}/\mathrm{F}}$ are arbitrary unitary matrices.
+			\end{proof}
+			The problem now becomes, given $\mathbf{\Sigma}^\mathrm{B}$ and $\mathbf{\Sigma}^\mathrm{F}$, what can we say about the singular value of $\mathbf{BF}$.
+			One comprehensive answer is Horn's inequality \cite{Bhatia2001}: for all admissible triples $(I, J, K)$,
+			\begin{equation}
+				\prod_{k \in {K}} \sigma_k(\mathbf{BF}) \leq \prod_{i \in {I}} \sigma_i(\mathbf{B}) \prod_{j \in {J}} \sigma_j(\mathbf{F}).
+			\end{equation}
+			It gives upper bound on the largest singular value and lower bound on the smallest singular value:
+			\begin{align}
+				\sigma_1(\mathbf{BF}) \le \sigma_1(\mathbf{B}) \sigma_1(\mathbf{F}) \label{iq:singular_value_largest}\\
+				\sigma_N(\mathbf{BF}) \geq \sigma_N(\mathbf{B}) \sigma_N(\mathbf{F}) \label{iq:singular_value_smallest}.
+			\end{align}
+			Another useful result is introduced in \cite{Hogben2013}: for all $p>0$,
+			\begin{equation}
+				\sum_n \sigma_n^p(\mathbf{BF}) \leq \sum_n \sigma_n^p(\mathbf{B}) \sigma_n^p(\mathbf{F}) \label{iq:singular_value_power_sum}.
+			\end{equation}
+			When $p=2$, it implies the channel energy is upper bounded by the sum of element-wise power product of the forward and backward channels, as illustrated in Fig.~\subref*{sm:pc_power_bond_nd}.
+			Interestingly, \eqref{iq:singular_value_largest}--\eqref{iq:singular_value_power_sum} are simultaneously tight when $\mathbf{X} = \mathbf{I}$ and $\mathbf{\Theta} = \mathbf{V}^\mathrm{B} {\mathbf{U}^\mathrm{F}}^\mathsf{H}$.
+			This solution was claimed in \cite{Bartoli2023} to achieve channel capacity, but it is not true at moderate \gls{snr}.
+			% In \cite{Bartoli2023}, the authors claimed this solution also achieves channel capacity but it is
+		\end{subsubsection}
 
 
 
