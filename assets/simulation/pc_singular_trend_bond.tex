@@ -1,0 +1,163 @@
+% This file was created by matlab2tikz.
+%
+%The latest updates can be retrieved from
+%  http://www.mathworks.com/matlabcentral/fileexchange/22022-matlab2tikz-matlab2tikz
+%where you can also make suggestions and rate matlab2tikz.
+%
+\definecolor{mycolor1}{rgb}{0.00000,0.44706,0.74118}%
+\definecolor{mycolor2}{rgb}{0.85098,0.32549,0.09804}%
+%
+\begin{tikzpicture}
+
+\begin{axis}[%
+width=7.607cm,
+height=6cm,
+at={(0cm,0cm)},
+scale only axis,
+xmin=0,
+xmax=1,
+xlabel style={font=\color{white!15!black}},
+xlabel={$\rho_1$},
+ymin=1,
+ymax=4.5,
+ylabel style={font=\color{white!15!black}},
+ylabel={Singular Value},
+axis background/.style={fill=white},
+xmajorgrids,
+ymajorgrids,
+legend style={at={(0.03,0.03)}, anchor=south west, legend cell align=left, align=left, draw=white!15!black},
+legend style={font=\small},
+legend columns=2,
+legend style={/tikz/column 2/.style={column sep=5pt}}
+]
+\addplot [color=mycolor1, line width=2.0pt, mark=o, mark options={solid, mycolor1}]
+  table[row sep=crcr]{%
+0	2.31649553420391\\
+1	2.31649553420391\\
+};
+\addlegendentry{$\sigma_1(\mathbf{H}^\mathrm{D})$}
+
+\addplot [color=mycolor1, dashed, line width=2.0pt, mark=o, mark options={solid, mycolor1}]
+  table[row sep=crcr]{%
+1	3.74235614732743\\
+0.9	3.73451505829556\\
+0.8	3.7059547888119\\
+0.7	3.66049340237962\\
+0.6	3.58793369676798\\
+0.5	3.49577381912842\\
+0.4	3.381515285807\\
+0.3	3.24331008350637\\
+0.2	3.09642496380768\\
+0.1	2.87131368230259\\
+0	2.69734709688923\\
+};
+\addlegendentry{$\sigma_1(\mathbf{H})$, $L = 1$}
+
+\addplot [color=mycolor1, dotted, line width=2.0pt, mark=o, mark options={solid, mycolor1}]
+  table[row sep=crcr]{%
+1	3.99295540733344\\
+0.9	3.98899545630553\\
+0.8	3.97696290652962\\
+0.7	3.95733897627544\\
+0.6	3.92777887072274\\
+0.5	3.88858404391228\\
+0.4	3.84380592262669\\
+0.3	3.791240018215\\
+0.2	3.7290102507478\\
+0.1	3.64338378399737\\
+0	3.55092088666089\\
+};
+\addlegendentry{$\sigma_1(\mathbf{H})$, $L = 4$}
+
+\addplot [color=mycolor1, dashdotted, line width=2.0pt, mark=o, mark options={solid, mycolor1}]
+  table[row sep=crcr]{%
+1	4.03212602728871\\
+0.9	4.03085120449437\\
+0.8	4.02600394116318\\
+0.7	4.01657145543752\\
+0.6	4.00259030615463\\
+0.5	3.98426166992214\\
+0.4	3.9585614185856\\
+0.3	3.92739188396189\\
+0.2	3.88911774300444\\
+0.1	3.84884083573119\\
+0	3.80407913999638\\
+};
+\addlegendentry{$\sigma_1(\mathbf{H})$, $L = 16$}
+
+\addplot [color=mycolor2, line width=2.0pt, mark=+, mark options={solid, mycolor2}]
+  table[row sep=crcr]{%
+0	1.06720826099348\\
+1	1.06720826099348\\
+};
+\addlegendentry{$\sigma_2(\mathbf{H}^\mathrm{D})$}
+
+\addplot [color=mycolor2, dashed, line width=2.0pt, mark=+, mark options={solid, mycolor2}]
+  table[row sep=crcr]{%
+1	1.4034820235929\\
+0.9	1.55956376411225\\
+0.8	1.72955812024136\\
+0.7	1.87494432261245\\
+0.6	2.01195800452817\\
+0.5	2.12645845397772\\
+0.4	2.22186452255197\\
+0.3	2.29881531489781\\
+0.2	2.349488953539\\
+0.1	2.39524714566248\\
+0	2.40593061409198\\
+};
+\addlegendentry{$\sigma_2(\mathbf{H})$, $L = 1$}
+
+\addplot [color=mycolor2, dotted, line width=2.0pt, mark=+, mark options={solid, mycolor2}]
+  table[row sep=crcr]{%
+1	2.20399674222319\\
+0.9	2.31054608891947\\
+0.8	2.39304623408658\\
+0.7	2.45790224568254\\
+0.6	2.51480290085058\\
+0.5	2.56471310248791\\
+0.4	2.60267445275296\\
+0.3	2.63211636237409\\
+0.2	2.65374376973718\\
+0.1	2.66979284122131\\
+0	2.67577972953435\\
+};
+\addlegendentry{$\sigma_2(\mathbf{H})$, $L = 4$}
+
+\addplot [color=mycolor2, dashdotted, line width=2.0pt, mark=+, mark options={solid, mycolor2}]
+  table[row sep=crcr]{%
+1	2.57661510960459\\
+0.9	2.60330239581468\\
+0.8	2.63319366633621\\
+0.7	2.6626208238016\\
+0.6	2.68925836633238\\
+0.5	2.71251681260692\\
+0.4	2.73426615557318\\
+0.3	2.75148930064715\\
+0.2	2.76441114320249\\
+0.1	2.77173279790871\\
+0	2.7743629798964\\
+};
+\addlegendentry{$\sigma_2(\mathbf{H})$, $L = 16$}
+
+\end{axis}
+
+\begin{axis}[%
+width=9.816cm,
+height=7.362cm,
+at={(-1.276cm,-0.81cm)},
+scale only axis,
+xmin=0,
+xmax=1,
+ymin=0,
+ymax=1,
+axis line style={draw=none},
+ticks=none,
+axis x line*=bottom,
+axis y line*=left,
+legend style={font=\small},
+legend columns=2,
+legend style={/tikz/column 2/.style={column sep=5pt}}
+]
+\end{axis}
+\end{tikzpicture}%

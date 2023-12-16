@@ -25,18 +25,33 @@ channel.singular.direct = mean(channel.singular.direct, 2);
 channel.singular.aggregate = mean(channel.singular.aggregate, 4);
 save('data/pc_singular_bond.mat');
 
-figure('Name', 'Channel Singular Value vs RIS Group Size', 'Position', [0, 0, 500, 400]);
+figure('Name', 'Channel Singular Value Pareto Front vs RIS Group Size', 'Position', [0, 0, 500, 400]);
+hold all;
+for b = 1 : number.bond
+	handle.singular.pareto(b) = plot(channel.singular.aggregate(1, :, b), channel.singular.aggregate(2, :, b), 'DisplayName', '$L = ' + string(reflect.bond(b)) + '$');
+end
+hold off; grid on; ylim auto; box on;
+style_plot(handle.singular.pareto);
+xlabel('$\sigma_1$');
+ylabel('$\sigma_2$');
+legend('Location', 'sw');
+savefig('plots/pc_singular_pareto_bond.fig');
+matlab2tikz('../assets/simulation/pc_singular_pareto_bond.tex', 'width', '8cm', 'height', '6cm');
+close;
+
+figure('Name', 'Channel Singular Value Trend vs RIS Group Size', 'Position', [0, 0, 500, 400]);
 hold all;
 for s = 1 : channel.rank
-	handle.singular(1, s) = refline(0, channel.singular.direct(s));
-	handle.singular(1, s).DisplayName = '$\sigma_' + string(s) + '(\mathbf{H}^\mathrm{D})$';
+	handle.singular.trend(1, s) = refline(0, channel.singular.direct(s));
+	handle.singular.trend(1, s).DisplayName = '$\sigma_' + string(s) + '(\mathbf{H}^\mathrm{D})$';
 	for b = 1 : number.bond
-		handle.singular(b + 1, s) = plot(channel.weight(1, :), channel.singular.aggregate(s, :, b), 'DisplayName', '$\sigma_' + string(s) + '(\mathbf{H})$, $L = ' + string(reflect.bond(b)) + '$');
+		handle.singular.trend(b + 1, s) = plot(channel.weight(1, :), channel.singular.aggregate(s, :, b), 'DisplayName', '$\sigma_' + string(s) + '(\mathbf{H})$, $L = ' + string(reflect.bond(b)) + '$');
 	end
 end
-hold off; grid on; ylim auto;
-style_plot(handle.singular, number.bond + 1);
+hold off; grid on; ylim auto; box on;
+style_plot(handle.singular.trend, number.bond + 1);
 xlabel('$\rho_1$');
 ylabel('Singular Value');
-legend('Location', 'sw');
-savefig('plots/pc_singular_bond.fig');
+legend('Location', 'sw', 'NumColumns', 2);
+savefig('plots/pc_singular_trend_bond.fig');
+matlab2tikz('../assets/simulation/pc_singular_trend_bond.tex', 'width', '8cm', 'height', '6cm', 'extraaxisoptions', {'legend style={font=\small}', 'legend columns=2', 'legend style={/tikz/column 2/.style={column sep=5pt}}'});

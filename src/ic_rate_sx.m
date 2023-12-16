@@ -61,3 +61,4 @@ xlabel('Direct SNR [dB]');
 ylabel('Weighted Sum-Rate [bit/s/Hz]');
 legend('Location', 'nw');
 savefig('plots/ic_rate_sx.fig');
+matlab2tikz('../assets/simulation/ic_rate_sx.tex', 'width', '8cm', 'height', '6cm');

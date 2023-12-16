@@ -85,6 +85,7 @@
 \setabbreviationstyle[acronym]{long-short}
 \newacronym{ao}{AO}{Alternating Optimization}
 \newacronym{bd}{BD}{Beyond-Diagonal}
+\newacronym{bcd}{BCD}{Block Coordinate Descent}
 \newacronym{dof}{DoF}{Degree of Freedom}
 \newacronym{mimo}{MIMO}{Multiple-Input Multiple-Output}
 \newacronym{rcg}{RCG}{Riemannian Conjugate Gradient}
@@ -92,6 +93,10 @@
 \newacronym{pc}{PC}{Point-to-point Channel}
 \newacronym{ic}{IC}{Interference Channel}
 \newacronym{snr}{SNR}{Signal-to-Noise Ratio}
+\newacronym{wsr}{WSR}{Weighted Sum-Rate}
+\newacronym{mmse}{MMSE}{Minimum Mean-Square Error}
+\newacronym{wmmse}{WMMSE}{Weighted \gls{mmse}}
+\newacronym{mse}{MSE}{Mean-Square Error}
 
 \begin{document}
 \title{Channel Shaping Using Reconfigurable Intelligent Surfaces: From Diagonal to Beyond}
@@ -249,7 +254,7 @@
 	\begin{subsection}{Rate Maximization}
 		The problem is formulated w.r.t. precoder (instead of transmit covariance matrix) for reference:
 		\begin{maxi!}
-			{\scriptstyle{\mathbf{W},\mathbf{\Theta}}}{\log \det \biggl(\mathbf{I} + \frac{\mathbf{W}^\mathsf{H}\mathbf{H}^\mathsf{H}\mathbf{H}\mathbf{W}}{\sigma_n^2}\biggr)}{\label{op:pc_rate}}{\label{ob:pc_rate}}
+			{\scriptstyle{\mathbf{W},\mathbf{\Theta}}}{R = \log \det \biggl(\mathbf{I} + \frac{\mathbf{W}^\mathsf{H}\mathbf{H}^\mathsf{H}\mathbf{H}\mathbf{W}}{\eta}\biggr)}{\label{op:pc_rate}}{\label{ob:pc_rate}}
 			\addConstraint{\lVert \mathbf{W} \rVert _\mathrm{F}^2 \le P}{}{}
 			\addConstraint{\mathbf{\Theta}_g^\mathsf{H} \mathbf{\Theta}_g=\mathbf{I}, \quad \forall g.}{}{\label{cs:pc_rate_unitary}}
 		\end{maxi!}
@@ -379,6 +384,7 @@
 
 		We then analyze the channel shaping \emph{capability} of \gls{bd} \gls{ris} under specific setups.
 		\begin{subsubsection}{Rank-Deficient Channel}
+			\label{sc:pc_rank_deficient}
 			In rank-deficient channels, \gls{bd} \gls{ris} $\mathbf{\Theta}^\mathrm{B}$ cannot achieve a higher \gls{dof} than diagonal \gls{ris} $\mathbf{\Theta}^\mathrm{D}$.
 			This is because $\mathrm{sv}(\mathbf{\Theta}^\mathrm{B}) = \mathrm{sv}(\mathbf{\Theta}^\mathrm{D}) = \boldsymbol{1}$ and
 			\begin{equation}
@@ -447,14 +453,158 @@
 			When $p=2$, it implies the channel energy is upper bounded by the sum of element-wise power product of the forward and backward channels, as illustrated in Fig.~\subref*{sm:pc_power_bond_nd}.
 			Interestingly, \eqref{iq:singular_value_largest}--\eqref{iq:singular_value_power_sum} are simultaneously tight when $\mathbf{X} = \mathbf{I}$ and $\mathbf{\Theta} = \mathbf{V}^\mathrm{B} {\mathbf{U}^\mathrm{F}}^\mathsf{H}$.
 			This solution was claimed in \cite{Bartoli2023} to achieve channel capacity, but it is not true at moderate \gls{snr}.
-			% In \cite{Bartoli2023}, the authors claimed this solution also achieves channel capacity but it is
 		\end{subsubsection}
 
-
-
-
-
 		Finally, we characterize the \emph{Pareto front} of channel singular values via optimization approach.
+		\begin{maxi!}
+			{\scriptstyle{\mathbf{\Theta}}}{J_1 = \sum_n \rho_n \sigma_n(\mathbf{H})}{\label{op:pc_singular}}{\label{ob:pc_singular}}
+			\addConstraint{\mathbf{\Theta}_g^\mathsf{H} \mathbf{\Theta}_g=\mathbf{I}, \quad \forall g,}{}{}
+		\end{maxi!}
+		where $\rho_n$ is the weight of $n$-th singular value.
+		The complex derivative of \eqref{ob:pc_singular} w.r.t. \gls{ris} block $g$ is
+		\begin{equation}
+			\frac{\partial J_1}{\partial \mathbf{\Theta}_g^*} = {\mathbf{H}_g^\mathrm{B}}^\mathsf{H} \mathbf{U} \mathrm{diag}(\boldsymbol{\rho}) \mathbf{V}^\mathsf{H} {\mathbf{H}_g^\mathrm{F}}^\mathsf{H},
+			\label{eq:pc_singular_gradient_ris}
+		\end{equation}
+		where $\mathbf{U}$ and $\mathbf{V}$ are left and right singular matrix of $\mathbf{H}$.
+		\eqref{op:pc_singular} can be solved by \gls{rcg} Algorithm~\ref{ag:pc_rate_ris} with \eqref{eq:pc_rate_gradient_ris} replaced by \eqref{eq:pc_singular_gradient_ris}.
+
+		\begin{figure}[!t]
+			\centering
+			\subfloat[Pareto Front\label{sm:pc_singular_pareto_bond}]{
+				\resizebox{0.48\columnwidth}{!}{
+					\input{assets/simulation/pc_singular_pareto_bond.tex}
+				}
+			}
+			\subfloat[Evolving Trend\label{sm:pc_singular_trend_bond}]{
+				\resizebox{0.48\columnwidth}{!}{
+					\input{assets/simulation/pc_singular_trend_bond.tex}
+				}
+			}
+			\caption{Singular value Pareto front and trend for $(N^\mathrm{T}, N^\mathrm{S}, N^\mathrm{R}) = (2, 16, 2)$.}
+			\label{sm:pc_singular_bond}
+		\end{figure}
+		The Pareto front and evolving trend of channel singular values are shown in Fig.~\subref*{sm:pc_singular_pareto_bond} and \subref*{sm:pc_singular_trend_bond}.
+		Clearly, \gls{bd} \gls{ris} with a larger group size can redistribute the channel singular values to a wider range.
+	\end{subsection}
+\end{section}
+
+\begin{section}{\glsentryshort{mimo}-\glsentryshort{ic}}
+	\begin{subsection}{Leakage Interference Minimization}
+		\begin{mini!}
+			{\scriptstyle{\mathbf{\Theta}, \{\mathbf{G}_k\}, \{\mathbf{W}_k\}}}{\mathop{\sum\sum}_{j \neq k} \left\lVert \mathbf{G}_k (\mathbf{H}_{kj}^\mathrm{D} + \mathbf{H}_k^\mathrm{B} \mathbf{\Theta} \mathbf{H}_j^\mathrm{F}) \mathbf{W}_j \right\rVert _{\mathrm{F}}^2}{}{}
+			\addConstraint{\mathbf{\Theta}_g^\mathsf{H} \mathbf{\Theta}_g=\mathbf{I}, \quad \forall g}{}{}
+			\addConstraint{\mathbf{G}_k \mathbf{G}_k^\mathsf{H}=\mathbf{I}, \quad \mathbf{W}_k^\mathsf{H} \mathbf{W}_k=\mathbf{I}, \quad \forall k.}{}{}
+		\end{mini!}
+		The non-convex problem can be solved by \gls{bcd} method.
+		For a given $\mathbf{\Theta}$, it reduces to conventional linear beamforming problem, for which an iterative algorithm alternating between the original and reciprocal networks is proposed in \cite{Gomadam2011,Clerckx2013}.
+		At iteration $r$, the combiner at receiver $k$ is updated as
+		\begin{equation}
+			\mathbf{G}_k^{(r)} = {\mathbf{U}_{k,N}^{(r-1)}}^\mathsf{H},
+		\end{equation}
+		where $\mathbf{U}_{k,N}^{(r-1)}$ is the eigenvectors corresponding to $N$ smallest eigenvalues of interference covariance matrix $\mathbf{Q}_k^{(r-1)} = \sum_{j \ne k} \mathbf{H}_{kj} \mathbf{W}_j^{(r-1)} {\mathbf{W}_j^{(r-1)}}^\mathsf{H} \mathbf{H}_{kj}^\mathsf{H}$.
+		The precoder at transmitter $j$ is updated as
+		\begin{equation}
+			\mathbf{W}_j^{(r)} = \bar{\mathbf{U}}_{j,N}^{(r)},
+		\end{equation}
+		where $\bar{\mathbf{U}}_{j,N}^{(r)}$ corresponds to interference covariance matrix $\bar{\mathbf{Q}}_j^{(r)} = \sum_{k \ne j} \mathbf{H}_{kj}^\mathsf{H} {\mathbf{G}_k^{(r)}}^\mathsf{H} \mathbf{G}_k^{(r)} \mathbf{H}_{kj}$ in the reciprocal network.
+		Once $\{\mathbf{G}_k\}$ and $\{\mathbf{W}_k\}$ are determined, we define $\bar{\mathbf{H}}_{kj}^\mathrm{D} \triangleq \mathbf{G}_k \mathbf{H}_{kj}^\mathrm{D} \mathbf{W}_j$, $\bar{\mathbf{H}}_k^\mathrm{B} \triangleq \mathbf{G}_k \mathbf{H}_k^\mathrm{B}$, and $\bar{\mathbf{H}}_j^\mathrm{F} \triangleq \mathbf{H}_j^\mathrm{F} \mathbf{W}_j$.
+		The \gls{bd} \gls{ris} subproblem reduces to
+		\begin{mini!}
+			{\scriptstyle{\mathbf{\Theta}}}{\mathop{\sum\sum}_{j \neq k} \left\lVert (\bar{\mathbf{H}}_{kj}^\mathrm{D} + \bar{\mathbf{H}}_k^\mathrm{B} \mathbf{\Theta} \bar{\mathbf{H}}_j^\mathrm{F}) \right\rVert _{\mathrm{F}}^2}{\label{op:ic_interference_ris}}{}
+			\addConstraint{\mathbf{\Theta}_g^\mathsf{H} \mathbf{\Theta}_g=\mathbf{I}, \quad \forall g.}{}{}
+		\end{mini!}
+
+		\begin{proposition}
+			Start from any $\mathbf{\Theta}^{(0)}$, the sequence
+			\begin{equation}
+				\mathbf{\Theta}_g^{(r+1)} = \mathbf{U}_g^{(r)} \mathbf{V}_g^{(r)}, \quad \forall g
+			\end{equation}
+			converges to a stationary point of \eqref{op:ic_interference_ris}, where $\mathbf{U}_g^{(r)}$ and $\mathbf{V}_g^{(r)}$ are left and right singular matrix of
+			\begin{equation}
+				\mathbf{M}_g^{(r)} = \mathop{\sum\sum}_{j \neq k} \bigl(\mathbf{B}_{k,g} \mathbf{\Theta}_g^{(r)} \mathbf{H}_{j,g}^\mathrm{F} - {\mathbf{H}_{k,g}^\mathrm{B}}^\mathsf{H} \mathbf{D}_{kj,g}^{(r)}\bigr) {\mathbf{H}_{j,g}^\mathrm{F}}^\mathsf{H},
+			\end{equation}
+			where $\mathbf{B}_{k,g} = \lambda_1\bigl(\mathbf{H}_{k,g}^\mathrm{B} {\mathbf{H}_{k,g}^\mathrm{B}}^\mathsf{H}\bigr) \mathbf{I} - \mathbf{H}_{k,g}^\mathrm{B} {\mathbf{H}_{k,g}^\mathrm{B}}^\mathsf{H}$ and
+			\begin{equation}
+				\mathbf{D}_{kj,g}^{(r)} = \mathbf{H}_{jk}^\mathrm{D} + \sum_{g'<g} {\mathbf{H}_{k,g'}^\mathrm{B}}^\mathsf{H} \mathbf{\Theta}_{g'}^{(r+1)} \mathbf{H}_{k,g'}^\mathrm{F} + \sum_{g'>g} {\mathbf{H}_{k,g'}^\mathrm{B}}^\mathsf{H} \mathbf{\Theta}_{g'}^{(r)} \mathbf{H}_{k,g'}^\mathrm{F}.
+			\end{equation}
+		\end{proposition}
+		\begin{proof}
+			To be added.
+		\end{proof}
+
+		\begin{figure}[!t]
+			\centering
+			\resizebox{0.65\columnwidth}{!}{
+				\input{assets/simulation/ic_interference_sx.tex}
+			}
+			\caption{Average leakage interference versus \gls{ris} elements $N^\mathrm{S}$ and group size $L$ for $(N^\mathrm{T}, N^\mathrm{R}, N^\mathrm{E}, K) = (8, 4, 3, 5)$. Transmitters and receivers are randomly generated in a disk of radius 50 m centered at the \gls{ris}. Reference pathloss at \qty{1}{\meter} is \qty{-30}{\dB} and $(\gamma^\mathrm{D}, \gamma^\mathrm{F}, \gamma^\mathrm{B}) = (3, 2.4, 2.4)$.}
+			\label{sm:ic_interference_sx}
+		\end{figure}
+		Fig.~\ref{sm:ic_interference_sx} illustrates how \gls{bd} \gls{ris} helps to reduce the leakage interference.
+		In this case, a fully-connected $2^n$-element \gls{bd} \gls{ris} is almost as good as a diagonal $2^{n+2}$-element \gls{ris} in terms of leakage interference.
+		Interestingly, the result suggests that \gls{bd} \gls{ris} can achieve a higher \gls{dof} than diagonal \gls{ris} in \gls{mimo}-\gls{ic}, which is not the case in \gls{mimo}-\gls{pc} (as discussed in \ref{sc:pc_rank_deficient}).
+	\end{subsection}
+
+	\begin{subsection}{Weighted Sum-Rate Maximization}
+		\begin{maxi!}
+			{\scriptstyle{\mathbf{\Theta}, \{\mathbf{W}_k\}}}{J_2 = \sum_k \rho_k \log \det \biggl(\mathbf{I} + \mathbf{W}_k \mathbf{H}_{kj}^\mathsf{H} \mathbf{Q}_k^{-1} \mathbf{H}_{kj} \mathbf{W}_k\biggr)}{\label{op:ic_rate}}{\label{ob:ic_rate}}
+			\addConstraint{\mathbf{\Theta}_g^\mathsf{H} \mathbf{\Theta}_g=\mathbf{I}, \quad \forall g}{}{}
+			\addConstraint{\lVert \mathbf{W}_k \rVert _\mathrm{F}^2 \le P_k. \quad \forall k}{}{}
+		\end{maxi!}
+		where $\rho_k$ is the weight of user $k$ and $\mathbf{Q}_k$ is the interference-plus-noise covariance matrix
+		\begin{equation}
+			\mathbf{Q}_k = \sum_{j \ne k} \mathbf{H}_{kj} \mathbf{W}_j {\mathbf{W}_j}^\mathsf{H} \mathbf{H}_{kj}^\mathsf{H} + \eta \mathbf{I}.
+		\end{equation}
+		For a given $\mathbf{\Theta}$, \eqref{op:ic_rate} reduces to conventional linear beamforming problem, for which a closed-form iterative solution based on \gls{wsr}-\gls{wmmse} relationship is proposed in \cite{Negro2010}.
+		At iteration $r$, the \gls{mmse} combiner at receiver $k$ is
+		\begin{equation}
+			\mathbf{G}_k^{(r)} = {\mathbf{W}_k^{(r-1)}}^\mathsf{H} \mathbf{H}_{kk}^\mathsf{H} \bigl(\mathbf{Q}_k^{(r-1)} + \mathbf{H}_{kk} \mathbf{W}_k^{(r-1)} {\mathbf{W}_k^{(r-1)}}^\mathsf{H} \mathbf{H}_{kk}^\mathsf{H}\bigr)^{-1},
+		\end{equation}
+		the corresponding error matrix is
+		\begin{equation}
+			\mathbf{E}_k^{(r)} = \bigl(\mathbf{I} + {\mathbf{W}_k^{(r-1)}}^\mathsf{H} \mathbf{H}_{kk}^\mathsf{H} \mathbf{Q}_k^{(r-1)} \mathbf{H}_{kk} \mathbf{W}_k^{(r-1)}\bigr)^{-1},
+		\end{equation}
+		the \gls{mse} weight is
+		\begin{equation}
+			\mathbf{\Omega}_k^{(r)} = \rho_k {\mathbf{E}_k^{(r)}}^{-1},
+		\end{equation}
+		the Lagrange multiplier is
+		% \begin{equation}
+		% 	\begin{split}
+		% 		\lambda_k^{(r)}
+		% 		& = \frac{\sum_{j \ne k} \mathrm{tr}(\mathbf{\Omega}_k^{(r)}\mathbf{F}_{kj}^{(r)} {\mathbf{F}_{kj}^{(r)}}^\mathsf{H}) - \sum_{j \ne k} \mathrm{tr}(\mathbf{\Omega}_j^{(r)}\mathbf{F}_{jk}^{(r)} {\mathbf{F}_{jk}^{(r)}}^\mathsf{H})}{P_k} \\
+		% 		& \quad + \frac{\mathrm{tr}(\eta \mathbf{\Omega}_k^{(r)} \mathbf{G}_k^{(r)}{\mathbf{G}_k^{(r)}}^\mathsf{H})}{P_k}
+		% 	\end{split}
+		% \end{equation}
+		\begin{equation}
+			\lambda_k^{(r)} = \frac{\mathrm{tr}\bigl(\eta \mathbf{\Omega}_k^{(r)} \mathbf{G}_k^{(r)}{\mathbf{G}_k^{(r)}}^\mathsf{H} + \sum_j \mathbf{\Omega}_k^{(r)}\mathbf{T}_{kj}^{(r)} {\mathbf{T}_{kj}^{(r)}}^\mathsf{H} - \mathbf{\Omega}_j^{(r)}\mathbf{T}_{jk}^{(r)} {\mathbf{T}_{jk}^{(r)}}^\mathsf{H} \bigr)}{P_k},
+		\end{equation}
+		where $\mathbf{T}_{kj}^{(r)} = \mathbf{G}_k^{(r)} \mathbf{H}_{kj} \mathbf{W}_j^{(r)}$.
+		The precoder at transmitter $k$ is
+		\begin{equation}
+			\mathbf{W}_k^{(r)} = \Bigl(\sum_j \mathbf{H}_{jk}^\mathsf{H} {\mathbf{G}_j^{(r)}}^\mathsf{H} \mathbf{\Omega}_k^{(r)} \mathbf{G}_j^{(r)} \mathbf{H}_{jk} + \lambda_k^{(r)} \mathbf{I} \Bigr)^{-1} \mathbf{H}_{kk}^\mathsf{H} {\mathbf{G}_j^{(r)}}^\mathsf{H} \mathbf{\Omega}_k^{(r)}.
+		\end{equation}
+		Once $\{\mathbf{W}_k\}$ is determined, the complex derivative of \eqref{ob:ic_rate} w.r.t. \gls{ris} block $g$ is
+		\begin{equation}
+			\begin{split}
+				\frac{\partial J_2}{\partial \mathbf{\Theta}_g^*}
+				& = \sum_k \rho_k {\mathbf{H}_{k,g}^\mathrm{B}}^\mathsf{H} \mathbf{Q}_k^{-1} \mathbf{H}_{kk} \mathbf{W}_k \mathbf{E}_k \mathbf{W}_k^\mathsf{H} \\
+				& \quad \times \bigl({\mathbf{H}_{k,g}^\mathrm{F}}^\mathsf{H} - \mathbf{H}_{kk}^\mathsf{H} \mathbf{Q}_k^{-1} \sum_{j \ne k} \mathbf{H}_{kj} \mathbf{W}_j \mathbf{W}_j^\mathsf{H} {\mathbf{H}_{j,g}^\mathrm{F}}^\mathsf{H}\bigr).
+			\end{split}
+			\label{eq:ic_rate_gradient_ris}
+		\end{equation}
+		The \gls{ris} subproblem can be solved by \gls{rcg} Algorithm~\ref{ag:pc_rate_ris} with \eqref{eq:pc_rate_gradient_ris} replaced by \eqref{eq:ic_rate_gradient_ris}.
+
+		\begin{figure}[!t]
+			\centering
+			\resizebox{0.65\columnwidth}{!}{
+				\input{assets/simulation/ic_rate_sx.tex}
+			}
+			\caption{Average weighted sum-rate versus \gls{ris} elements $N^\mathrm{S}$ and group size $L$ for $(N^\mathrm{T}, N^\mathrm{R}, N^\mathrm{E}, K) = (8, 4, 3, 5)$, $(\Lambda^\mathrm{D}, \Lambda^\mathrm{F}, \Lambda^\mathrm{B}) = (65, 54, 46) \unit{dB}$, $\rho_k = 1, \ \forall k$.}
+			\label{sm:ic_rate_sx}
+		\end{figure}
+		A new observation from Fig.~\ref{sm:ic_rate_sx} that the interference alignment capability of \gls{bd} \gls{ris} scales much faster with group size than number of elements.\footnote{The results are not very stable and depend heavily on initialization.}
 	\end{subsection}
 \end{section}
 

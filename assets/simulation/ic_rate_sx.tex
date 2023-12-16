@@ -1,0 +1,99 @@
+% This file was created by matlab2tikz.
+%
+%The latest updates can be retrieved from
+%  http://www.mathworks.com/matlabcentral/fileexchange/22022-matlab2tikz-matlab2tikz
+%where you can also make suggestions and rate matlab2tikz.
+%
+\definecolor{mycolor1}{rgb}{0.00000,0.44706,0.74118}%
+\definecolor{mycolor2}{rgb}{0.85098,0.32549,0.09804}%
+%
+\begin{tikzpicture}
+
+\begin{axis}[%
+width=7.607cm,
+height=6cm,
+at={(0cm,0cm)},
+scale only axis,
+xmin=-10,
+xmax=30,
+xlabel style={font=\color{white!15!black}},
+xlabel={Direct SNR [dB]},
+ymin=0,
+ymax=201.14780886592,
+ylabel style={font=\color{white!15!black}},
+ylabel={Weighted Sum-Rate [bit/s/Hz]},
+axis background/.style={fill=white},
+axis x line*=bottom,
+axis y line*=left,
+xmajorgrids,
+ymajorgrids,
+legend style={at={(0.03,0.97)}, anchor=north west, legend cell align=left, align=left, draw=white!15!black}
+]
+\addplot [color=black, line width=2.0pt]
+  table[row sep=crcr]{%
+-10	6.17824283627682\\
+0	20.4682171545284\\
+10	43.6776808502878\\
+20	70.4388345324009\\
+30	97.9206415691928\\
+};
+\addlegendentry{$N_s = 0$}
+
+\addplot [color=mycolor1, line width=2.0pt, mark=o, mark options={solid, mycolor1}]
+  table[row sep=crcr]{%
+-10	6.67726001977615\\
+0	21.742087890507\\
+10	45.302450030812\\
+20	71.6704178516905\\
+30	98.5162045107698\\
+};
+\addlegendentry{$(N_s, L) = (32, 1)$}
+
+\addplot [color=mycolor1, dashed, line width=2.0pt, mark=o, mark options={solid, mycolor1}]
+  table[row sep=crcr]{%
+-10	7.51072208931833\\
+0	24.4467591159193\\
+10	50.6727168148861\\
+20	80.1819038379404\\
+30	110.323522343862\\
+};
+\addlegendentry{$(N_s, L) = (32, 32)$}
+
+\addplot [color=mycolor2, line width=2.0pt, mark=+, mark options={solid, mycolor2}]
+  table[row sep=crcr]{%
+-10	10.1854506665966\\
+0	29.9008986140248\\
+10	56.203671085199\\
+20	83.8982035421248\\
+30	111.779616399008\\
+};
+\addlegendentry{$(N_s, L) = (256, 1)$}
+
+\addplot [color=mycolor2, dashed, line width=2.0pt, mark=+, mark options={solid, mycolor2}]
+  table[row sep=crcr]{%
+-10	20.5665807788874\\
+0	55.9384955636562\\
+10	102.14329909405\\
+20	151.457101723379\\
+30	201.14780886592\\
+};
+\addlegendentry{$(N_s, L) = (256, 256)$}
+
+\end{axis}
+
+\begin{axis}[%
+width=9.816cm,
+height=7.362cm,
+at={(-1.276cm,-0.81cm)},
+scale only axis,
+xmin=0,
+xmax=1,
+ymin=0,
+ymax=1,
+axis line style={draw=none},
+ticks=none,
+axis x line*=bottom,
+axis y line*=left
+]
+\end{axis}
+\end{tikzpicture}%

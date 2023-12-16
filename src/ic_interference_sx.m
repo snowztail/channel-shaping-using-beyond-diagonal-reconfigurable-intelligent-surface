@@ -64,5 +64,7 @@ hold off; grid on;
 style_plot(handle.interference); set(handle.interference(find(reflect.antenna == 0)), 'Color', 'k', 'Marker', 'none');
 xlabel('RIS Group Size');
 ylabel('Leakage Interference [W]');
-legend('$N_s = ' + string(vec(reflect.antenna)) + '$', 'Location', 'sw');
+legend('$N_s = ' + string(vec(reflect.antenna)) + '$', 'Location', 'ne');
 savefig('plots/ic_interference_sx.fig');
+matlab2tikz('../assets/simulation/ic_interference_sx.tex', 'width', '8cm', 'height', '6cm');
+

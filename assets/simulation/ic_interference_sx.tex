@@ -1,0 +1,95 @@
+% This file was created by matlab2tikz.
+%
+%The latest updates can be retrieved from
+%  http://www.mathworks.com/matlabcentral/fileexchange/22022-matlab2tikz-matlab2tikz
+%where you can also make suggestions and rate matlab2tikz.
+%
+\definecolor{mycolor1}{rgb}{0.85098,0.32549,0.09804}%
+\definecolor{mycolor2}{rgb}{0.92941,0.69412,0.12549}%
+\definecolor{mycolor3}{rgb}{0.49412,0.18431,0.55686}%
+\definecolor{mycolor4}{rgb}{0.46667,0.67451,0.18824}%
+\definecolor{mycolor5}{rgb}{0.30196,0.74510,0.93333}%
+%
+\begin{tikzpicture}
+
+\begin{axis}[%
+width=7.607cm,
+height=6cm,
+at={(0cm,0cm)},
+scale only axis,
+xmin=0,
+xmax=8,
+xtick={0,1,2,3,4,5,6,7,8},
+xticklabels={{$2^0$},{$2^1$},{$2^2$},{$2^3$},{$2^4$},{$2^5$},{$2^6$},{$2^7$},{$2^8$}},
+xlabel style={font=\color{white!15!black}},
+xlabel={RIS Group Size},
+ymin=1e-08,
+ymax=8e-08,
+ylabel style={font=\color{white!15!black}},
+ylabel={Leakage Interference [W]},
+axis background/.style={fill=white},
+axis x line*=bottom,
+axis y line*=left,
+xmajorgrids,
+ymajorgrids,
+legend style={legend cell align=left, align=left, draw=white!15!black}
+]
+\addplot [color=black, line width=2.0pt]
+  table[row sep=crcr]{%
+0	7.54406012540465e-08\\
+8	7.54406012540465e-08\\
+};
+\addlegendentry{$N_s = 0$}
+
+\addplot [color=mycolor1, dashed, line width=2.0pt, mark=+, mark options={solid, mycolor1}]
+  table[row sep=crcr]{%
+0	7.51560587010326e-08\\
+};
+\addlegendentry{$N_s = 1$}
+
+\addplot [color=mycolor2, dotted, line width=2.0pt, mark=square, mark options={solid, mycolor2}]
+  table[row sep=crcr]{%
+0	7.44010563566841e-08\\
+1	7.39599766610279e-08\\
+2	7.35011240690166e-08\\
+};
+\addlegendentry{$N_s = 4$}
+
+\addplot [color=mycolor3, dashdotted, line width=2.0pt, mark=x, mark options={solid, mycolor3}]
+  table[row sep=crcr]{%
+0	7.0682836532401e-08\\
+1	6.91259059346635e-08\\
+2	6.73399339452099e-08\\
+3	6.58826727554268e-08\\
+4	6.4772329143783e-08\\
+};
+\addlegendentry{$N_s = 16$}
+
+\addplot [color=mycolor4, line width=2.0pt, mark=triangle, mark options={solid, mycolor4}]
+  table[row sep=crcr]{%
+0	5.85827519517016e-08\\
+1	5.48913732122811e-08\\
+2	5.09211795564605e-08\\
+3	4.71704072314567e-08\\
+4	4.43757011088692e-08\\
+5	4.23930209240791e-08\\
+6	4.18804617381024e-08\\
+};
+\addlegendentry{$N_s = 64$}
+
+\addplot [color=mycolor5, dashed, line width=2.0pt, mark=triangle, mark options={solid, rotate=180, mycolor5}]
+  table[row sep=crcr]{%
+0	3.73428048939829e-08\\
+1	3.23105906046668e-08\\
+2	2.68276700790737e-08\\
+3	2.16846877071024e-08\\
+4	1.80064666190288e-08\\
+5	1.63492512187511e-08\\
+6	1.5590691222907e-08\\
+7	1.56330765841932e-08\\
+8	1.55289144569855e-08\\
+};
+\addlegendentry{$N_s = 256$}
+
+\end{axis}
+\end{tikzpicture}%
