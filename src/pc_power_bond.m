@@ -6,19 +6,22 @@ clc; clear; close; setup;
 [number.bond, number.realization, flag.direct] = deal(length(reflect.bond), 1e1, true);
 
 for r = 1 : number.realization
+	% * No RIS
 	channel.direct = flag.direct * sqrt(channel.pathloss.direct) * fading_nlos(receive.antenna, transmit.antenna);
+	channel.power.direct(r) = norm(channel.direct, 'fro') ^ 2;
+	% * Have RIS
 	channel.forward = sqrt(channel.pathloss.forward) * fading_nlos(reflect.antenna, transmit.antenna);
 	channel.backward = sqrt(channel.pathloss.backward) * fading_nlos(receive.antenna, reflect.antenna);
-	channel.power.direct(r) = norm(channel.direct, 'fro') ^ 2;
 	channel.power.cascaded(r) = sum(svds(channel.backward, channel.rank) .^ 2 .* svds(channel.forward, channel.rank) .^ 2);
+	clear scatter_power_max_pc;
 	for b = 1 : number.bond
-		[reflect.beamformer, channel.aggregate] = scatter_power_pc(channel.direct, channel.forward, channel.backward, eye(reflect.antenna), reflect.bond(b));
+		[reflect.beamformer, channel.aggregate] = scatter_power_max_pc(channel.direct, channel.forward, channel.backward, reflect.bond(b));
 		channel.power.aggregate(b, r) = norm(channel.aggregate, 'fro') ^ 2;
 	end
 end
-channel.power.direct = mean(channel.power.direct, 2);
-channel.power.cascaded = mean(channel.power.cascaded, 2);
-channel.power.aggregate = mean(channel.power.aggregate, 2);
+channel.power.direct = mean(channel.power.direct, ndims(channel.power.direct));
+channel.power.cascaded = mean(channel.power.cascaded, ndims(channel.power.cascaded));
+channel.power.aggregate = mean(channel.power.aggregate, ndims(channel.power.aggregate));
 if flag.direct == true
 	save('data/pc_power_bond_hd.mat');
 else
@@ -26,19 +29,16 @@ else
 end
 
 figure('Name', 'Channel Power vs RIS Group Size', 'Position', [0, 0, 500, 400]);
+set(gca, 'XLim', [0, number.bond + 1], 'XTick', 1 : number.bond, 'XTickLabel', reflect.bond);
 hold all;
-handle.power(1) = bar(channel.power.aggregate, 'FaceColor', '#77AC30');
-handle.power(2) = refline(0, channel.power.direct);
-handle.power(3) = refline(0, channel.power.cascaded);
-hold off; grid on; box on;
-set(handle.power(2), 'Color', 'k', 'Marker', 'none');
-set(handle.power(3), 'Color', '#ED8198', 'Marker', 'none');
-xlim([0, number.bond + 1]);
-xticks(1 : number.bond);
-xticklabels(reflect.bond);
+handle.power.aggregate = bar(channel.power.aggregate, 'FaceColor', '#77AC30');
+handle.power.direct = refline(0, channel.power.direct);
+handle.power.cascaded = refline(0, channel.power.cascaded);
+set(handle.power.direct, 'Color', 'k', 'Marker', 'none', 'LineStyle', '-');
+set(handle.power.cascaded, 'Color', '#ED8198', 'Marker', 'none', 'LineStyle', '--');
+hold off; grid on; box on; legend('Composite', 'Direct', 'Cascaded', 'Location', 'nw');
 xlabel('RIS Group Size');
 ylabel('Channel Power [W]');
-legend(handle.power, {'Composite'; 'Direct'; 'Cascaded'}, 'Location', 'nw');
 if flag.direct == true
 	savefig('plots/pc_power_bond_hd.fig');
 	matlab2tikz('../assets/simulation/pc_power_bond_hd.tex', 'width', '8cm', 'height', '6cm');

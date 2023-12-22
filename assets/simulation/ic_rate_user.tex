@@ -14,14 +14,14 @@ width=9.509cm,
 height=7.5cm,
 at={(0cm,0cm)},
 scale only axis,
-xmin=-10,
-xmax=30,
+xmin=2,
+xmax=10,
 xlabel style={font=\color{white!15!black}},
-xlabel={Direct SNR [dB]},
-ymin=0,
-ymax=60,
+xlabel={User Pairs},
+ymin=24.0366620568765,
+ymax=62.9320178950178,
 ylabel style={font=\color{white!15!black}},
-ylabel={Achievable Rate [bit/s/Hz]},
+ylabel={Weighted Sum-Rate [bit/s/Hz]},
 axis background/.style={fill=white},
 xmajorgrids,
 ymajorgrids,
@@ -29,89 +29,73 @@ legend style={at={(0.03,0.97)}, anchor=north west, legend cell align=left, align
 ]
 \addplot [color=black, line width=2.0pt]
   table[row sep=crcr]{%
--10	1.56187406999523\\
-0	6.23295532679222\\
-10	16.2843611075538\\
-20	29.0985448133738\\
-30	42.3364873073222\\
+2	24.0366620568765\\
+4	34.2503871208668\\
+6	41.622749643327\\
+8	44.0380050877313\\
+10	43.8795026226494\\
 };
 \addlegendentry{$N^\mathrm{S} = 0$}
 
 \addplot [color=mycolor1, line width=2.0pt, mark=o, mark options={solid, mycolor1}]
   table[row sep=crcr]{%
--10	1.79403005594775\\
-0	6.8098358611215\\
-10	17.3483481001009\\
-20	30.2902015018505\\
-30	43.5423539886115\\
+2	25.3990077780911\\
+4	36.3182517013294\\
+6	42.844297578367\\
+8	46.9811600018883\\
+10	47.4095039520004\\
 };
-\addlegendentry{$(N^\mathrm{S}, L) = (32, 1)$}
+\addlegendentry{$(N^\mathrm{S}, L) = (16, 1)$}
 
 \addplot [color=mycolor1, dashed, line width=2.0pt, mark=o, mark options={solid, mycolor1}]
   table[row sep=crcr]{%
--10	1.89438152702937\\
-0	7.29195763868557\\
-10	18.263799283564\\
-20	31.2683950185117\\
-30	44.5273711067635\\
+2	26.1302675490509\\
+4	37.2433314642391\\
+6	43.8241685215847\\
+8	48.7515778844427\\
+10	50.0262345258606\\
 };
-\addlegendentry{$(N^\mathrm{S}, L) = (32, 4)$}
+\addlegendentry{$(N^\mathrm{S}, L) = (16, 4)$}
 
 \addplot [color=mycolor1, dotted, line width=2.0pt, mark=o, mark options={solid, mycolor1}]
   table[row sep=crcr]{%
--10	1.92343952356708\\
-0	7.54110875822535\\
-10	18.7215302432174\\
-20	31.7486185374994\\
-30	45.0095773639065\\
+2	26.5005433882963\\
+4	37.8529809047498\\
+6	44.5290585688344\\
+8	50.1996330401944\\
+10	51.8865599593385\\
 };
-\addlegendentry{$(N^\mathrm{S}, L) = (32, 32)$}
+\addlegendentry{$(N^\mathrm{S}, L) = (16, 16)$}
 
 \addplot [color=mycolor2, line width=2.0pt, mark=+, mark options={solid, mycolor2}]
   table[row sep=crcr]{%
--10	3.23524840027798\\
-0	10.4732909366393\\
-10	22.9609501734511\\
-20	36.1430515763993\\
-30	49.4201986024039\\
+2	29.0139251001163\\
+4	39.8325157791058\\
+6	47.087891457604\\
+8	52.0445486861005\\
+10	53.9856612942705\\
 };
-\addlegendentry{$(N^\mathrm{S}, L) = (256, 1)$}
+\addlegendentry{$(N^\mathrm{S}, L) = (64, 1)$}
 
 \addplot [color=mycolor2, dashed, line width=2.0pt, mark=+, mark options={solid, mycolor2}]
   table[row sep=crcr]{%
--10	3.98868943719332\\
-0	12.8610741472271\\
-10	26.1986080126589\\
-20	39.4301968233646\\
-30	52.7116073420547\\
+2	31.3276950788263\\
+4	42.7749665094192\\
+6	50.0160405682383\\
+8	56.5092293329805\\
+10	59.5047215843355\\
 };
-\addlegendentry{$(N^\mathrm{S}, L) = (256, 4)$}
+\addlegendentry{$(N^\mathrm{S}, L) = (64, 4)$}
 
 \addplot [color=mycolor2, dotted, line width=2.0pt, mark=+, mark options={solid, mycolor2}]
   table[row sep=crcr]{%
--10	4.95164015944269\\
-0	15.3108768293702\\
-10	28.201929438041\\
-20	41.4467820962475\\
-30	54.7294483831401\\
+2	32.6664816559571\\
+4	44.5042904532228\\
+6	51.6271886078106\\
+8	58.8237458788222\\
+10	62.9320178950178\\
 };
-\addlegendentry{$(N^\mathrm{S}, L) = (256, 256)$}
+\addlegendentry{$(N^\mathrm{S}, L) = (64, 64)$}
 
-\end{axis}
-
-\begin{axis}[%
-width=12.27cm,
-height=9.202cm,
-at={(-1.595cm,-1.012cm)},
-scale only axis,
-xmin=0,
-xmax=1,
-ymin=0,
-ymax=1,
-axis line style={draw=none},
-ticks=none,
-axis x line*=bottom,
-axis y line*=left
-]
 \end{axis}
 \end{tikzpicture}%

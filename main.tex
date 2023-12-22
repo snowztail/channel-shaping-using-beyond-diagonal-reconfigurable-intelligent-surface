@@ -80,6 +80,40 @@
 \algrenewcommand{\algorithmicfor}{\textbf{For}}
 \algrenewcommand{\algorithmicdo}{}
 
+% optidef
+\DeclareDocumentEnvironment{customopti}{D||{\defaultProblemFormat} O{\defaultConstraintFormat} D<>{} m m m m m}{%
+	\ifthenelse{\equal{#3}{b}}{%
+		\ifthenelse{\equal{#1}{s}}%
+		% Short version problem
+		{\setFormatShort{#4}{#5}\BaseMiniStar{#2}{#5}{#6}{#8}{#4}{#3}}%
+		% Long version problem
+		{\setFormatLong{#4}{#5}\BaseMiniStar{#2}{#5}{#6}{#8}{#4}{#3}}%
+	}{%
+		\ifthenelse{\equal{#1}{s}}%
+		% Short version problem
+		{\setFormatShort{#4}{#5}\BaseMini{#2}{#5}{#6}{#7}{#8}{#4}}%
+		% Long version problem
+		{\setFormatLong{#4}{#5}\BaseMini{#2}{#5}{#6}{#7}{#8}{#4}}%
+	}%
+}%
+{\endBaseMini\toggletrue{bodyCon}}
+
+\DeclareDocumentEnvironment{customopti*}{D||{\defaultProblemFormat} O{\defaultConstraintFormat} D<>{} m m m m m}{%
+	\ifthenelse{\equal{#1}{s}}%
+	% Short version problem
+	{\setFormatShort{#4}{#5}\BaseMiniStar{#2}{#5}{#6}{#8}{#4}{#3}}%
+	% Long version problem
+	{\setFormatLong{#4}{#5}\BaseMiniStar{#2}{#5}{#6}{#8}{#4}{#3}}%
+}{\endBaseMiniStar\toggletrue{bodyCon}}
+
+\DeclareDocumentEnvironment{customopti!}{D||{\defaultProblemFormat} O{\defaultConstraintFormat} D<>{} m m m m m}{%
+	\ifthenelse{\equal{#1}{s}}%
+	% Short version problem
+	{\setFormatShort{#4}{#5}\BaseMiniExclam{#2}{#5}{#6}{#7}{#8}{#4}{#3}}%
+	% Long version problem
+	{\setFormatLong{#4}{#5}\BaseMiniExclam{#2}{#5}{#6}{#7}{#8}{#4}{#3}}%
+}{\endBaseMiniExclam\toggletrue{bodyCon}}
+
 % glossaries-extra
 \glsdisablehyper
 \setabbreviationstyle[acronym]{long-short}
@@ -97,6 +131,7 @@
 \newacronym{mmse}{MMSE}{Minimum Mean-Square Error}
 \newacronym{wmmse}{WMMSE}{Weighted \gls{mmse}}
 \newacronym{mse}{MSE}{Mean-Square Error}
+
 
 \begin{document}
 \title{Channel Shaping Using Reconfigurable Intelligent Surfaces: From Diagonal to Beyond}
@@ -191,7 +226,7 @@
 			\resizebox{0.65\columnwidth}{!}{
 				\input{assets/simulation/pc_power_sx.tex}
 			}
-			\caption{Average channel power versus \gls{ris} elements $N^\mathrm{S}$ and group size $L$ for $(N^\mathrm{T}, N^\mathrm{R}) = (8, 4)$, $(\Lambda^\mathrm{D}, \Lambda^\mathrm{F}, \Lambda^\mathrm{B}) = (65, 54, 46) \unit{dB}$.}
+			\caption{Average channel power versus \gls{ris} elements $N^\mathrm{S}$ and group size $L$. $(N^\mathrm{T}, N^\mathrm{R}) = (8, 4)$, $(\Lambda^\mathrm{D}, \Lambda^\mathrm{F}, \Lambda^\mathrm{B}) = (65, 54, 46) \unit{dB}$.}
 			\label{sm:pc_power_sx}
 		\end{figure}
 
@@ -207,7 +242,7 @@
 					\input{assets/simulation/pc_power_bond_hd.tex}
 				}
 			}
-			\caption{Average channel power versus \gls{ris} group size $L$ for $(N^\mathrm{T}, N^\mathrm{S}, N^\mathrm{R}) = (8, 256, 4)$, $(\Lambda^\mathrm{D}, \Lambda^\mathrm{F}, \Lambda^\mathrm{B}) = (65, 54, 46) \unit{dB}$.}
+			\caption{Average channel power versus \gls{ris} group size $L$. $(N^\mathrm{T}, N^\mathrm{S}, N^\mathrm{R}) = (8, 256, 4)$, $(\Lambda^\mathrm{D}, \Lambda^\mathrm{F}, \Lambda^\mathrm{B}) = (65, 54, 46) \unit{dB}$.}
 			\label{sm:pc_power_bond}
 		\end{figure}
 		% Fig.~\ref{sm:pc_power_sx} shows that, apart from numerous reflecting elements, a sufficiently large group size can help
@@ -320,7 +355,7 @@
 
 		The complex derivative of \eqref{ob:pc_rate} w.r.t. \gls{ris} block $g$ is
 		\begin{equation}
-			\frac{\partial R}{\partial \mathbf{\Theta}_g^*} = \frac{1}{\sigma_n^2} {\mathbf{H}_g^\mathrm{B}}^\mathsf{H} \mathbf{HW} \biggl(\mathbf{I} + \frac{\mathbf{W}^\mathsf{H}\mathbf{H}^\mathsf{H}\mathbf{H}\mathbf{W}}{\sigma_n^2}\biggr)^{-1} \mathbf{W}^\mathsf{H} {\mathbf{H}_g^\mathrm{F}}^\mathsf{H}.
+			\frac{\partial R}{\partial \mathbf{\Theta}_g^*} = \frac{1}{\eta} {\mathbf{H}_g^\mathrm{B}}^\mathsf{H} \mathbf{HW} \biggl(\mathbf{I} + \frac{\mathbf{W}^\mathsf{H}\mathbf{H}^\mathsf{H}\mathbf{H}\mathbf{W}}{\eta}\biggr)^{-1} \mathbf{W}^\mathsf{H} {\mathbf{H}_g^\mathrm{F}}^\mathsf{H}.
 			\label{eq:pc_rate_gradient_ris}
 		\end{equation}
 		Algorithm~\ref{ag:pc_rate_ris} summarizes the adapted \gls{rcg} method for the \gls{ris} rate maximization subproblem.
@@ -331,7 +366,7 @@
 			\caption{\gls{rcg} Method for \gls{ris} \gls{mimo}-\gls{pc} Rate Maximization}
 			\label{ag:pc_rate_ris}
 			\begin{algorithmic}[1]
-				\Require $\mathbf{H}^\mathrm{D}$, $\mathbf{H}^\mathrm{F}$, $\mathbf{H}^\mathrm{B}$, $\mathbf{W}$, $L$, $\sigma_n^2$
+				\Require $\mathbf{H}^\mathrm{D}$, $\mathbf{H}^\mathrm{F}$, $\mathbf{H}^\mathrm{B}$, $\mathbf{W}$, $L$, $\eta$
 				\Ensure $\mathbf{\Theta}^\star$
 				\State $r \gets 0$, $\mathbf{\Theta}^{(0)}$
 				\Repeat
@@ -345,11 +380,18 @@
 
 		\begin{figure}[!t]
 			\centering
-			\resizebox{0.65\columnwidth}{!}{
-				\input{assets/simulation/pc_rate_sx.tex}
+			\subfloat[\gls{ris} Elements, $N^\mathrm{T} = 8$\label{sm:pc_rate_sx}]{
+				\resizebox{0.48\columnwidth}{!}{
+					\input{assets/simulation/pc_rate_sx.tex}
+				}
 			}
-			\caption{Average achievable rate versus \gls{ris} elements $N^\mathrm{S}$ and group size $L$ for $(N^\mathrm{T}, N^\mathrm{R}) = (8, 4)$, $(\Lambda^\mathrm{D}, \Lambda^\mathrm{F}, \Lambda^\mathrm{B}) = (65, 54, 46) \unit{dB}$.}
-			\label{sm:pc_rate_sx}
+			\subfloat[Transmit Antenna, $N^\mathrm{S} = 256$\label{sm:pc_rate_tx}]{
+				\resizebox{0.48\columnwidth}{!}{
+					\input{assets/simulation/pc_rate_tx.tex}
+				}
+			}
+			\caption{Average achievable rate versus group size $L$. $N^\mathrm{R} = 4$, $(\Lambda^\mathrm{D}, \Lambda^\mathrm{F}, \Lambda^\mathrm{B}) = (65, 54, 46) \unit{dB}$.}
+			\label{sm:pc_rate}
 		\end{figure}
 
 		Fig.~\ref{sm:pc_rate_sx} illustrates how \gls{ris} configuration influences the \gls{mimo} \gls{pc} achievable rate.
@@ -375,7 +417,7 @@
 		\begin{figure}
 			\centering
 			\includegraphics[width=\columnwidth]{assets/simulation/pc_singular_toy.eps}
-			\caption{Channel singular value shaping by diagonal and symmetry unitary \gls{ris} for $(N^\mathrm{T}, N^\mathrm{S}, N^\mathrm{R}) = (2, 2, 2)$ without direct link.}
+			\caption{Channel singular value shaping by diagonal and symmetry unitary \gls{ris}. $(N^\mathrm{T}, N^\mathrm{S}, N^\mathrm{R}) = (2, 2, 2)$. Direct link is absent.}
 			\label{sm:pc_singular_toy}
 		\end{figure}
 		Fig.~\ref{sm:pc_singular_toy} illustrates all possible channel singular values achieved by diagonal and symmetry unitary \gls{ris}.
@@ -456,10 +498,17 @@
 		\end{subsubsection}
 
 		Finally, we characterize the \emph{Pareto front} of channel singular values via optimization approach.
-		\begin{maxi!}
-			{\scriptstyle{\mathbf{\Theta}}}{J_1 = \sum_n \rho_n \sigma_n(\mathbf{H})}{\label{op:pc_singular}}{\label{ob:pc_singular}}
+		% \begin{maxi!}
+		% 	{\scriptstyle{\mathbf{\Theta}}}{J_1 = \sum_n \rho_n \sigma_n(\mathbf{H})}{\label{op:pc_singular}}{\label{ob:pc_singular}}
+		% 	\addConstraint{\mathbf{\Theta}_g^\mathsf{H} \mathbf{\Theta}_g=\mathbf{I}, \quad \forall g,}{}{}
+		% \end{maxi!}
+
+
+		\begin{customopti!}
+			{\underset{\scriptstyle{\mathbf{\Theta}}}{max / min}}{}{J_1 = \sum_n \rho_n \sigma_n(\mathbf{H})}{\label{op:pc_singular}}{\label{ob:pc_singular}}
 			\addConstraint{\mathbf{\Theta}_g^\mathsf{H} \mathbf{\Theta}_g=\mathbf{I}, \quad \forall g,}{}{}
-		\end{maxi!}
+		\end{customopti!}
+
 		where $\rho_n$ is the weight of $n$-th singular value.
 		The complex derivative of \eqref{ob:pc_singular} w.r.t. \gls{ris} block $g$ is
 		\begin{equation}
@@ -471,20 +520,23 @@
 
 		\begin{figure}[!t]
 			\centering
-			\subfloat[Pareto Front\label{sm:pc_singular_pareto_bond}]{
-				\resizebox{0.48\columnwidth}{!}{
-					\input{assets/simulation/pc_singular_pareto_bond.tex}
-				}
+			\resizebox{0.65\columnwidth}{!}{
+				\input{assets/simulation/pc_singular_pareto.tex}
 			}
-			\subfloat[Evolving Trend\label{sm:pc_singular_trend_bond}]{
-				\resizebox{0.48\columnwidth}{!}{
-					\input{assets/simulation/pc_singular_trend_bond.tex}
-				}
-			}
-			\caption{Singular value Pareto front and trend for $(N^\mathrm{T}, N^\mathrm{S}, N^\mathrm{R}) = (2, 16, 2)$.}
-			\label{sm:pc_singular_bond}
+			\caption{Singular value Pareto front. $(N^\mathrm{T}, N^\mathrm{S}, N^\mathrm{R}) = (4, 64, 2)$, $(\Lambda^\mathrm{D}, \Lambda^\mathrm{F}, \Lambda^\mathrm{B}) = (0, -17.5, -17.5) \unit{dB}$.}
+			\label{sm:pc_singular_pareto}
 		\end{figure}
-		The Pareto front and evolving trend of channel singular values are shown in Fig.~\subref*{sm:pc_singular_pareto_bond} and \subref*{sm:pc_singular_trend_bond}.
+
+		\begin{figure}[!t]
+			\centering
+			\resizebox{0.65\columnwidth}{!}{
+				\input{assets/simulation/pc_singular_bound.tex}
+			}
+			\caption{Singular value bounds for rank-1 indirect channel. $(N^\mathrm{T}, N^\mathrm{S}, N^\mathrm{R}) = (4, 32, 4)$, $(\Lambda^\mathrm{D}, \Lambda^\mathrm{F}, \Lambda^\mathrm{B}) = (0, -17.5, -17.5) \unit{dB}$.}
+			\label{sm:pc_singular_bound}
+		\end{figure}
+
+		The Pareto front and evolving trend of channel singular values are shown in Fig.~\ref{sm:pc_singular_pareto} and \ref{sm:pc_singular_bound}.
 		Clearly, \gls{bd} \gls{ris} with a larger group size can redistribute the channel singular values to a wider range.
 	\end{subsection}
 \end{section}
@@ -524,7 +576,7 @@
 			\begin{equation}
 				\mathbf{M}_g^{(r)} = \mathop{\sum\sum}_{j \neq k} \bigl(\mathbf{B}_{k,g} \mathbf{\Theta}_g^{(r)} \mathbf{H}_{j,g}^\mathrm{F} - {\mathbf{H}_{k,g}^\mathrm{B}}^\mathsf{H} \mathbf{D}_{kj,g}^{(r)}\bigr) {\mathbf{H}_{j,g}^\mathrm{F}}^\mathsf{H},
 			\end{equation}
-			where $\mathbf{B}_{k,g} = \lambda_1\bigl(\mathbf{H}_{k,g}^\mathrm{B} {\mathbf{H}_{k,g}^\mathrm{B}}^\mathsf{H}\bigr) \mathbf{I} - \mathbf{H}_{k,g}^\mathrm{B} {\mathbf{H}_{k,g}^\mathrm{B}}^\mathsf{H}$ and
+			where $\mathbf{B}_{k,g} = \lambda_1\bigl(\mathbf{H}_{k,g}^\mathrm{B} {\mathbf{H}_{k,g}^\mathrm{B}}^\mathsf{H}\bigr) \mathbf{I} - {\mathbf{H}_{k,g}^\mathrm{B}}^\mathsf{H} \mathbf{H}_{k,g}^\mathrm{B}$ and
 			\begin{equation}
 				\mathbf{D}_{kj,g}^{(r)} = \mathbf{H}_{jk}^\mathrm{D} + \sum_{g'<g} {\mathbf{H}_{k,g'}^\mathrm{B}}^\mathsf{H} \mathbf{\Theta}_{g'}^{(r+1)} \mathbf{H}_{k,g'}^\mathrm{F} + \sum_{g'>g} {\mathbf{H}_{k,g'}^\mathrm{B}}^\mathsf{H} \mathbf{\Theta}_{g'}^{(r)} \mathbf{H}_{k,g'}^\mathrm{F}.
 			\end{equation}
@@ -538,7 +590,7 @@
 			\resizebox{0.65\columnwidth}{!}{
 				\input{assets/simulation/ic_interference_sx.tex}
 			}
-			\caption{Average leakage interference versus \gls{ris} elements $N^\mathrm{S}$ and group size $L$ for $(N^\mathrm{T}, N^\mathrm{R}, N^\mathrm{E}, K) = (8, 4, 3, 5)$. Transmitters and receivers are randomly generated in a disk of radius 50 m centered at the \gls{ris}. Reference pathloss at \qty{1}{\meter} is \qty{-30}{\dB} and $(\gamma^\mathrm{D}, \gamma^\mathrm{F}, \gamma^\mathrm{B}) = (3, 2.4, 2.4)$.}
+			\caption{Average leakage interference versus \gls{ris} elements $N^\mathrm{S}$ and group size $L$. Transmitters and receivers are randomly generated in a disk of radius 50 m centered at the \gls{ris}. $(N^\mathrm{T}, N^\mathrm{R}, N^\mathrm{E}, K) = (8, 4, 3, 5)$, $(\gamma^\mathrm{D}, \gamma^\mathrm{F}, \gamma^\mathrm{B}) = (3, 2.4, 2.4)$, and reference pathloss at \qty{1}{\meter} is \qty{-30}{\dB}.}
 			\label{sm:ic_interference_sx}
 		\end{figure}
 		Fig.~\ref{sm:ic_interference_sx} illustrates how \gls{bd} \gls{ris} helps to reduce the leakage interference.
@@ -601,9 +653,19 @@
 			\resizebox{0.65\columnwidth}{!}{
 				\input{assets/simulation/ic_rate_sx.tex}
 			}
-			\caption{Average weighted sum-rate versus \gls{ris} elements $N^\mathrm{S}$ and group size $L$ for $(N^\mathrm{T}, N^\mathrm{R}, N^\mathrm{E}, K) = (8, 4, 3, 5)$, $(\Lambda^\mathrm{D}, \Lambda^\mathrm{F}, \Lambda^\mathrm{B}) = (65, 54, 46) \unit{dB}$, $\rho_k = 1, \ \forall k$.}
+			\caption{Average weighted sum-rate versus \gls{snr}, \gls{ris} elements $N^\mathrm{S}$ and group size $L$. $(N^\mathrm{T}, N^\mathrm{R}, N^\mathrm{E}, K) = (8, 4, 3, 5)$, $(\Lambda^\mathrm{D}, \Lambda^\mathrm{F}, \Lambda^\mathrm{B}) = (65, 54, 46) \unit{dB}$, $\rho_k = 1, \ \forall k$.}
 			\label{sm:ic_rate_sx}
 		\end{figure}
+
+		\begin{figure}[!t]
+			\centering
+			\resizebox{0.65\columnwidth}{!}{
+				\input{assets/simulation/ic_rate_user.tex}
+			}
+			\caption{Average weighted sum-rate versus user pairs $K$, \gls{ris} elements $N^\mathrm{S}$ and group size $L$ at $\mathrm{SNR} = \qty{15}{dB}$. $(N^\mathrm{T}, N^\mathrm{R}, N^\mathrm{E}) = (4, 4, 3)$, $\rho_k = 1, \ \forall k$.}
+			\label{sm:ic_rate_user}
+		\end{figure}
+
 		A new observation from Fig.~\ref{sm:ic_rate_sx} that the interference alignment capability of \gls{bd} \gls{ris} scales much faster with group size than number of elements.\footnote{The results are not very stable and depend heavily on initialization.}
 	\end{subsection}
 \end{section}

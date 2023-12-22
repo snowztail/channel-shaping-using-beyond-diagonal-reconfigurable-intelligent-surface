@@ -31,11 +31,11 @@ ymajorgrids,
 legend style={at={(0.03,0.97)}, anchor=north west, legend cell align=left, align=left, draw=white!15!black}
 ]
 \addplot[ybar, bar width=0.8, fill=mycolor1, draw=black, area legend] table[row sep=crcr] {%
-1	7.67624350482862e-07\\
-2	1.32530638063741e-06\\
-3	3.06197930445936e-06\\
-4	9.39519835024894e-06\\
-5	3.02284526139409e-05\\
+1	7.73646737868486e-07\\
+2	1.29578759477113e-06\\
+3	3.26134246923197e-06\\
+4	8.76364407754596e-06\\
+5	3.04057776451317e-05\\
 };
 \addplot[forget plot, color=white!15!black] table[row sep=crcr] {%
 0	0\\
@@ -45,15 +45,15 @@ legend style={at={(0.03,0.97)}, anchor=north west, legend cell align=left, align
 
 \addplot [color=black, line width=2.0pt]
   table[row sep=crcr]{%
--0.2	0\\
-6.2	0\\
+0	0\\
+6	0\\
 };
 \addlegendentry{Direct}
 
-\addplot [color=mycolor2, line width=2.0pt]
+\addplot [color=mycolor2, dashed, line width=2.0pt]
   table[row sep=crcr]{%
--0.2	3.04194803196479e-05\\
-6.2	3.04194803196479e-05\\
+0	3.05527094461938e-05\\
+6	3.05527094461938e-05\\
 };
 \addlegendentry{Cascaded}
 

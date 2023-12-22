@@ -1,11 +1,18 @@
-function [Theta, H] = scatter_singular_pc(H_d, H_f, H_b, rho, Theta, L)
+function [Theta, H] = scatter_singular_max_pc(H_d, H_f, H_b, rho, L)
+	persistent iter;
+	if isempty(iter)
+		clear scatter_power_max_pc;
+		Theta = scatter_power_max_pc(H_d, H_f, H_b, L);
+	else
+		Theta = iter.Theta;
+	end
+
 	G = length(Theta) / L;
-	[G_e, G_r, D] = deal(zeros(size(Theta)));
-	[iter.converge, iter.tolerance, iter.counter] = deal(false, 1e-4, 0);
 	H = channel_aggregate(H_d, H_f, H_b, Theta);
-	J = rho' * svd(H);
+	[G_e, G_r, D] = deal(zeros(size(Theta)));
+	[iter.converge, iter.tolerance, iter.counter, iter.J] = deal(false, 1e-4, 0, rho' * svd(H));
 	while ~iter.converge
-		[iter.J, iter.G_r, iter.D] = deal(J, G_r, D);
+		[iter.G_r, iter.D] = deal(G_r, D);
 		for g = 1 : G
 			S = (g - 1) * L + 1 : g * L;
 			S_c = setdiff(1 : length(Theta), S);
@@ -18,8 +25,10 @@ function [Theta, H] = scatter_singular_pc(H_d, H_f, H_b, rho, Theta, L)
 		end
 		J = rho' * svd(H);
 		iter.converge = (abs(J - iter.J) / iter.J <= iter.tolerance);
+		iter.J = J;
 		iter.counter = iter.counter + 1;
 	end
+	iter.Theta = Theta;
 end
 
 function [G_e] = gradient_euclidean(H, H_f, H_b, rho)

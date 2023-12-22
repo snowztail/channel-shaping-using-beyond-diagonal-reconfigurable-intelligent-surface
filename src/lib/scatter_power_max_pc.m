@@ -1,8 +1,14 @@
-function [Theta, H] = scatter_power_pc(H_d, H_f, H_b, Theta, L)
+function [Theta, H] = scatter_power_max_pc(H_d, H_f, H_b, L)
+	persistent iter;
+	if isempty(iter)
+		Theta = eye(size(H_f, 1));
+	else
+		Theta = iter.Theta;
+	end
+
 	G = length(Theta) / L;
 	H = channel_aggregate(H_d, H_f, H_b, Theta);
-	[iter.converge, iter.tolerance, iter.counter] = deal(false, 1e-4, 0);
-	iter.P = norm(H, 'fro') ^ 2;
+	[iter.converge, iter.tolerance, iter.counter, iter.P] = deal(false, 1e-4, 0, norm(H, 'fro') ^ 2);
 	while ~iter.converge
 		for g = 1 : G
 			S = (g - 1) * L + 1 : g * L;
@@ -16,4 +22,5 @@ function [Theta, H] = scatter_power_pc(H_d, H_f, H_b, Theta, L)
 		iter.P = P;
 		iter.counter = iter.counter + 1;
 	end
+	iter.Theta = Theta;
 end

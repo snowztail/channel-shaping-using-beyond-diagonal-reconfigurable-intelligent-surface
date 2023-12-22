@@ -1,6 +1,6 @@
-function [W] = precoder_rate_ic_bisection(H, W, P_t, P_n, rho)
+function [W] = precoder_rate_bisection_ic(H, W, P_t, P_n, rho)
 	[N_r, N_t, N_e, K] = deal(size(H, 1), size(H, 2), size(W, 2), size(W, 4));
-	[iter.converge, iter.tolerance, iter.counter] = deal(false, 1e-3, 0);
+	[iter.converge, iter.tolerance, iter.counter] = deal(false, 1e-4, 0);
 	iter.J = rho' * rate_mimo(H, W, P_n);
 	while ~iter.converge
 		T = pagemtimes(pagemtimes(H, W), 'none', pagemtimes(H, W), 'ctranspose');
