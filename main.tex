@@ -121,6 +121,8 @@
 \newacronym{bd}{BD}{Beyond-Diagonal}
 \newacronym{bcd}{BCD}{Block Coordinate Descent}
 \newacronym{dof}{DoF}{Degree of Freedom}
+\newacronym{siso}{SISO}{Single-Input Single-Output}
+\newacronym{miso}{MISO}{Multiple-Input Single-Output}
 \newacronym{mimo}{MIMO}{Multiple-Input Multiple-Output}
 \newacronym{rcg}{RCG}{Riemannian Conjugate Gradient}
 \newacronym{ris}{RIS}{Reconfigurable Intelligent Surface}
@@ -150,12 +152,13 @@
 \maketitle
 
 \begin{abstract}
-	\gls{ris} is a promising technology that recycles and redistributes ambient waves for improved wireless performance.
+	\gls{ris} recycles and redistributes ambient waves for improved wireless performance.
+	% \gls{ris} is a promising technology that recycles and redistributes ambient waves for improved wireless performance.
 	% \gls{ris} is a real-time programmable reflector that recycles and redistributes ambient waves for improved wireless performance.
 	This paper investigates the use of passive \gls{ris} for channel shaping in \gls{mimo} \gls{pc} and \gls{ic}.
 	We depart from the widely-adapted diagonal phase shift model and focus on a general asymmetric \gls{bd} architecture, which allows off-diagonal entries by in-group connections between elements.
 	For arbitrary group size, we propose a closed-form iterative algorithm for quadratic problems and a \gls{rcg} algorithm for general problems.
-	Various case studies are then conducted, including rate maximization and Pareto singular value characterization for \gls{pc}, and interference alignment and \gls{wsr} maximization for \gls{ic}.
+	Various case studies are then conducted, including Pareto singular value characterization and rate maximization for \gls{pc}, and interference alignment and \gls{wsr} maximization for \gls{ic}.
 	To quantify channel shaping capability, we also derive analytical bounds under specific scenarios and validate those by aforementioned methods.
 	Simulation results suggest the advantage of \gls{bd} \gls{ris} scales with group size, while dyadic or tetradic architecture usually strikes a good balance between performance and complexity.
 	% Through theoretical analysis and numerical evaluation,
@@ -171,20 +174,38 @@
 \glsresetall
 
 \begin{section}{Introduction}
-	The quest for reliable, high-speed, and ubiquitous wireless connectivity has been long-standing since Marconi's illuminating radio in 1895.
-	Great successes have been made at transmitter and receiver sides over the past century, and the society is unprecedentedly close to the Shannon limit \cite{Shannon1948}.
-	Today we are witnessing a paradigm shift from \emph{connectivity} to \emph{intelligence}, where the wireless environment is no longer a chaotic medium but a conscious agent that serves on demand.
-	This is made possible by the recent advances in \gls{ris}, a real-time programmable metasurface made of low-power reflecting elements.
+	% The quest for reliable, high-speed, and ubiquitous wireless connectivity has been long-standing since Marconi's illuminating radio in 1895.
+	% Great successes have been made at transmitter and receiver sides over the past century, and the society is unprecedentedly close to the Shannon limit \cite{Shannon1948}.
+	Today we are witnessing a paradigm shift from {connectivity} to {intelligence}, where the wireless environment is no longer a chaotic medium but a conscious agent that serves on demand.
+	This is made possible by the recent advances in \gls{ris}, a real-time programmable metasurface made of numerous non-resonant sub-wavelength scattering elements.
 	It can manipulate the amplitude, phase, frequency, and polarization of the scattered waves \cite{Basar2019} with a higher energy efficiency, lower cost, lighter footprint, and greater scalability than conventional relays.
-	Using \gls{ris} for \emph{passive beamforming} has attracted significant interest in wireless communication, backscatter, sensing, and power transfer literature \cite{Wu2019,Wu2020c,Yang2020,Zheng2021,Jia2020,Liang2022,Liu2022a,Hua2023,Wu2021d,Feng2022,Zhao2022}, reporting a second-order array gain and fourth-order power scaling law (with proper waveform).
-	On the other hand, \gls{ris} also enables \emph{backscatter modulation} by dynamically switching between different patterns, as already investigated \cite{Liu2019d,Karasik2020,Basar2020,Ma2020a,Zhang2021d,Hua2022,Zhao2022a} and prototyped \cite{Tang2019a,Dai2020a}.
-	Although fruitful outcomes have been harvested by fancy optimization tools, one fundamental yet critical unanswered question is the \emph{channel shaping} capability of \gls{ris}: To what extent can \gls{ris} reshape the wireless channel?
+	Using \gls{ris} for \emph{passive beamforming} has attracted significant interest in wireless communication \cite{Wu2019,Wu2020c,Yang2020,Zheng2021}, backscatter \cite{Jia2020,Liang2022}, sensing \cite{Liu2022a,Hua2023}, and power transfer literature \cite{Wu2021d,Feng2022,Zhao2022}, reporting a second-order array gain and fourth-order power scaling law (with proper waveform).
+	On the other hand, \gls{ris} also enables \emph{backscatter modulation} by dynamically switching between different patterns, as already investigated \cite{Karasik2020,Basar2020,Zhao2022a} and prototyped \cite{Tang2019a,Dai2020a}.
+	Although fruitful outcomes have been harvested over optimization tools, one fundamental yet critical question is the \emph{channel shaping} capability: To what extent can a passive \gls{ris} reshape the wireless channel?
+	The answer indeed depends on the hardware architecture and scattering model.
+
+	In conventional (a.k.a. diagonal) \gls{ris}, each scattering element is tuned by a dedicated impedance and functions as an \emph{individual} phase shifter \cite{Wu2020}.
+	% , accounting for a diagonal phase shift model with unit magnitude.
+	The idea is extended to \gls{bd} \gls{ris} \cite{Shen2020a,Li2023b} featuring in-group connections between elements.
+	This allows \emph{cooperative} reflection --- wave impinging on one element can propagate within the circuit and depart partially from all elements.
+	\gls{bd} \gls{ris} can thus control both amplitude and phase of the reflected wave, generalizing the scattering matrix from diagonal with unit-magnitude entries to block diagonal with  unitary blocks.
+	Its benefit has been recently shown in receive power maximization \cite{Nerini2023,Santamaria2023,Fang2023,Nerini2023a}, transmit power minimization \cite{Zhou2023}, and rate maximization \cite{Zhou2023,Nerini2023a,Li2023d,Li2023c,Bartoli2023}.
+	The channel estimation \cite{Li2023e} and mutual coupling \cite{Li2023f} issues have also been investigated.
+	Therefore, \gls{bd} \gls{ris} is envisioned as the next generation channel shaper with stronger signal processing flexibility \cite{Li2023g}.
+
+	% Attempts to characterize the channel shaping capability can be classified into \emph{singular value centric} and \emph{power centric} methods.
+	Metrics of channel shaping can be classified into \emph{singular value centric} and \emph{power centric}.
+	For diagonal \gls{ris}, the former has been studied in terms of minimum singular value \cite{ElMossallamy2021}, effective rank \cite{ElMossallamy2021,Meng2023}, condition number \cite{Zheng2022,Huang2023} in \gls{pc}, and degree of freedom \cite{Bafghi2022,Zheng2023,Chae2023} in \gls{ic}.
+	The latter has been studied in terms of channel power \cite{Wu2019} in \gls{pc} and leakage interference \cite{Santamaria2023a} in \gls{ic}.
+	When it comes to \gls{bd} \gls{ris}, the only metric analyzed is the channel power \cite{Nerini2023,Santamaria2023} where the \gls{mimo} case is still unexplored.\footnote{Single-stream \gls{mimo} with given precoder and combiner was considered in \cite{Nerini2023}. It is equivalent \gls{siso} channel shaping.}
+	Although insightful, the answers are far from complete and the optimization techniques are limited to very specific scenarios.
+	In this paper, we aim to quantify the channel shaping capability of \gls{bd} \gls{ris} through theoretical analysis and numerical evaluation.
+	The contributions are summarized below.
+
+
 
 	% we aim to answer this question by a simple yet insightful approach: \emph{from diagonal to beyond}.
 	% The answer depends heavily on the phase shift model of \gls{ris}.
-	Before answering the question, we first need to revisit the \gls{ris} architecture.
-
-	% Despite the fruitful results, the existing literature on \gls{ris} is still limited to the diagonal phase shift model, where the phase shifters are constrained to be diagonal matrices.
 
 	% \gls{ris} also offers a new degree of freedom for \emph{channel shaping}, i.e., to reshape the wireless channel to a desired form.
 \end{section}
