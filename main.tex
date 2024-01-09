@@ -189,25 +189,48 @@
 	The idea is extended to \gls{bd} \gls{ris} \cite{Shen2020a,Li2023b} featuring in-group connections between elements.
 	This allows \emph{cooperative} reflection --- wave impinging on one element can propagate within the circuit and depart partially from all elements.
 	\gls{bd} \gls{ris} can thus control both amplitude and phase of the reflected wave, generalizing the scattering matrix from diagonal with unit-magnitude entries to block diagonal with  unitary blocks.
-	Its benefit has been recently shown in receive power maximization \cite{Nerini2023,Santamaria2023,Fang2023,Nerini2023a}, transmit power minimization \cite{Zhou2023}, and rate maximization \cite{Zhou2023,Nerini2023a,Li2023d,Li2023c,Bartoli2023}.
+	Its benefit has been recently shown in receive power maximization \cite{Nerini2023,Santamaria2023,Fang2023,Nerini2023a}, transmit power minimization \cite{Zhou2023}, and rate maximization \cite{Zhou2023,Nerini2023a,Li2023d,Bartoli2023,Li2023c}.
 	The channel estimation \cite{Li2023e} and mutual coupling \cite{Li2023f} issues have also been investigated.
 	Therefore, \gls{bd} \gls{ris} is envisioned as the next generation channel shaper with stronger signal processing flexibility \cite{Li2023g}.
 
 	% Attempts to characterize the channel shaping capability can be classified into \emph{singular value centric} and \emph{power centric} methods.
-	Metrics of channel shaping can be classified into \emph{singular value centric} and \emph{power centric}.
+	Channel shaping metrics can be classified into \emph{singular value centric} and \emph{power centric}.
 	For diagonal \gls{ris}, the former has been studied in terms of minimum singular value \cite{ElMossallamy2021}, effective rank \cite{ElMossallamy2021,Meng2023}, condition number \cite{Zheng2022,Huang2023} in \gls{pc}, and degree of freedom \cite{Bafghi2022,Zheng2023,Chae2023} in \gls{ic}.
 	The latter has been studied in terms of channel power \cite{Wu2019} in \gls{pc} and leakage interference \cite{Santamaria2023a} in \gls{ic}.
-	When it comes to \gls{bd} \gls{ris}, the only metric analyzed is the channel power \cite{Nerini2023,Santamaria2023} where the \gls{mimo} case is still unexplored.\footnote{Single-stream \gls{mimo} with given precoder and combiner was considered in \cite{Nerini2023}. It is equivalent \gls{siso} channel shaping.}
-	Although insightful, the answers are far from complete and the optimization techniques are limited to very specific scenarios.
-	In this paper, we aim to quantify the channel shaping capability of \gls{bd} \gls{ris} through theoretical analysis and numerical evaluation.
+	When it comes to \gls{bd} \gls{ris}, the only metric analyzed is the channel power \cite{Nerini2023,Santamaria2023} while the \gls{mimo} case is still unexplored.\footnote{Single-stream \gls{mimo} with given precoder and combiner was considered in \cite{Nerini2023}. In terms of channel shaping, it is equivalent to \gls{siso}.}
+	Although insightful, those attempts are far from complete and the methods are limited to specific scenarios.
+	% This paper aims to quantify the channel shaping capability of asymmetric \gls{bd} \gls{ris} through theoretical analysis and numerical evaluation.
+	This paper aims for a comprehensive answer to the channel shaping question through theoretical analysis and numerical optimization.
+	% quantify the channel shaping capability of asymmetric \gls{bd} \gls{ris} through theoretical analysis and numerical evaluation.
 	The contributions are summarized below.
 
+	First, we examine the capability of \gls{bd} \gls{ris} to redistribute the channel singular values in \gls{mimo} \gls{pc}.
+	The Pareto frontiers are characterized by optimizing the \emph{weighted sum of singular values}, where the weights can be positive, zero, or negative.
+	It generalizes all singular value metrics and provides a powerful design framework.
+	We then discuss analytical singular value bounds under rank-deficient and no-direct scenarios.
+
+	% and demonstrate the channel shaping advantage of \gls{bd} \gls{ris} over diagonal \gls{ris}.
+
+	Second, we tailor a \gls{rcg} algorithm for asymmetric\footnote{Although the constraint of symmetric scattering parameters is widely respected in the literature \cite{Shen2020a,Nerini2023,Santamaria2023,Fang2023,Nerini2023a,Zhou2023,Li2023d,Bartoli2023}, it can be relaxed when the \gls{bd} \gls{ris} involves asymmetric passive components \cite{Ahn2006}, as previously assumed in \cite{Li2023b,Li2023c}. Symmetry can be enforced by projection if necessary.} \gls{bd} \gls{ris} optimization.
+	Specifically, block-wise update is performed along the geodesics\footnote{A geodesic refers to the shortest path between two points in a Riemannian manifold.} of the Stiefel manifold and concisely evaluated as matrix exponential.
+	The proposed method not only features lower complexity and faster convergence than universal manifold optimization \cite{Absil2009,Pan2022d}, but also applies to any \gls{bd} \gls{ris} problem where gradient exists.
+	% It is used to solve the Pareto singular problem, as well as rate maximization in \gls{mimo} \gls{pc} and \gls{wsr} maximization in \gls{mimo} \gls{ic}.
+	% It effectively solves the Pareto singular problem.
+
+	% , as well as rate maximization in \gls{mimo} \gls{pc} and \gls{wsr} maximization in \gls{mimo} \gls{ic}.
+
+	% It helps to solve the aforementioned Pareto singular value problem.
+	% We exploit it to solve the Pareto singular value problem and
 
 
-	% we aim to answer this question by a simple yet insightful approach: \emph{from diagonal to beyond}.
-	% The answer depends heavily on the phase shift model of \gls{ris}.
+	% It is exploited for the Pareto singular value problem, as well as rate maximization in \gls{mimo} \gls{pc} and \gls{wsr} maximization in \gls{mimo} \gls{ic}.
+	% It is used to solve the Pareto singular value problem,
 
-	% \gls{ris} also offers a new degree of freedom for \emph{channel shaping}, i.e., to reshape the wireless channel to a desired form.
+	Third, we consider power centric design
+	% Second, we consider power centric design
+	% exploit \gls{bd} \gls{ris} to power centric
+	% maximize channel power in \gls{mimo} \gls{pc} and minimize leakage interference in \gls{mimo} \gls{ic}.
+
 \end{section}
 
 \begin{section}{Assumption}
@@ -220,6 +243,144 @@
 \end{section}
 
 \begin{section}{\glsentryshort{mimo}-\glsentryshort{pc}}
+
+	\begin{subsection}{Channel Singular Value Redistribution}
+		We first show the channel shaping benefit of \gls{bd} \gls{ris} by a toy example.
+		Consider $(N^\mathrm{T}, N^\mathrm{S}, N^\mathrm{R}) = (2, 2, 2)$ and assume the direct link is absent.
+		The diagonal \gls{ris} is $\mathbf{\Theta}^\mathrm{D} = \mathrm{diag}(e^{\jmath \theta_1}, e^{\jmath \theta_2})$ while the unitary \gls{ris} has 4 independent angular parameters
+		\begin{equation}
+			\mathbf{\Theta}^\mathrm{U} = e^{\jmath \phi} \begin{bmatrix}
+				e^{\jmath \alpha} \cos \psi  & e^{\jmath \beta} \sin \psi   \\
+				-e^{-\jmath \beta} \sin \psi & e^{-\jmath \alpha} \cos \psi
+			\end{bmatrix}.
+		\end{equation}
+		When the direct link is absent, $\phi$ has no impact on the singular value because $\mathrm{sv}(e^{\jmath \phi} \mathbf{A}) = \mathrm{sv}(\mathbf{A})$.
+		For a fair comparison, we enforce symmetry with $\beta = \pi / 2$.
+		\begin{figure}
+			\centering
+			\includegraphics[width=\columnwidth]{assets/simulation/pc_singular_toy.eps}
+			\caption{Channel singular value shaping by diagonal and symmetry unitary \gls{ris}. $(N^\mathrm{T}, N^\mathrm{S}, N^\mathrm{R}) = (2, 2, 2)$. Direct link is absent.}
+			\label{sm:pc_singular_toy}
+		\end{figure}
+		Fig.~\ref{sm:pc_singular_toy} illustrates all possible channel singular values achieved by diagonal and symmetry unitary \gls{ris}.
+		Despite using the same number of elements and parameters, \gls{bd} \gls{ris} provides much wider dynamic ranges of $\sigma_1(\mathbf{H})$ and $\sigma_2(\mathbf{H})$ than diagonal \gls{ris}.
+		Larger gaps are expected when the symmetry constraint can be relaxed.
+
+		We then analyze the channel shaping \emph{capability} of \gls{bd} \gls{ris} under specific setups.
+		\begin{subsubsection}{Rank-Deficient Channel}
+			\label{sc:pc_rank_deficient}
+			In rank-deficient channels, \gls{bd} \gls{ris} $\mathbf{\Theta}^\mathrm{B}$ cannot achieve a higher \gls{dof} than diagonal \gls{ris} $\mathbf{\Theta}^\mathrm{D}$.
+			This is because $\mathrm{sv}(\mathbf{\Theta}^\mathrm{B}) = \mathrm{sv}(\mathbf{\Theta}^\mathrm{D}) = \boldsymbol{1}$ and
+			\begin{equation}
+				\begin{split}
+					\mathrm{rank}(\mathbf{H})
+					& \le \mathrm{rank}(\mathbf{H}^\mathrm{D}) + \mathrm{rank}(\mathbf{H}^\mathrm{B} \mathbf{\Theta} \mathbf{H}^\mathrm{F}) \\
+					& \le \mathrm{rank}(\mathbf{H}^\mathrm{D}) + \min \bigl( \mathrm{rank}(\mathbf{H}^\mathrm{B}), \mathrm{rank}(\mathbf{\Theta}), \mathrm{rank}(\mathbf{H}^\mathrm{F}) \bigr).
+				\end{split}
+			\end{equation}
+			% However, \gls{bd} \gls{ris} can still guarantee a higher rate at finite \gls{snr}.
+			Note \gls{bd} \gls{ris} can still provide a higher indirect \gls{snr} as shown in Fig.~\ref{sm:pc_power_sx} and \ref{sm:pc_power_bond}.
+		\end{subsubsection}
+
+
+		\begin{subsubsection}{Rank-1 Indirect Channel}
+			The indirect channel is rank-1 iff the forward or backward channel is rank-1.
+			Let $\mathbf{H}^\mathrm{F} = \sigma^\mathrm{F} \mathbf{u}^\mathrm{F} {\mathbf{v}^\mathrm{F}}^\mathsf{H}$ without loss of generality.
+			In this case, the channel Gram matrix can be written as Hermitian-plus-rank-1:
+			\begin{equation}
+				\mathbf{G} \triangleq \mathbf{H} \mathbf{H}^\mathsf{H} = \mathbf{Y} + \mathbf{z} \mathbf{z}^\mathsf{H},
+			\end{equation}
+			where $\mathbf{Y} \triangleq \mathbf{H}^\mathrm{D} (\mathbf{I} - \mathbf{v}^\mathrm{F} {\mathbf{v}^\mathrm{F}}^\mathsf{H}) \mathbf{H}^\mathrm{D} = \mathbf{T} \mathbf{T}^\mathsf{H}$ and $\mathbf{z} \triangleq \sigma^\mathrm{F} \mathbf{H}^\mathrm{B} \mathbf{\Theta} \mathbf{u}^\mathrm{F} + \mathbf{H}^\mathrm{D} \mathbf{v}^\mathrm{F}$.
+			Regardless of \gls{ris} size and structure\footnote{A similar conclusion was made for diagonal \gls{ris} in \cite{Semmler2023}.}, its $n$-th ($n \ge 2$) eigenvalues are bounded by the Cauchy interlacing formula \cite{Golub2013}
+			\begin{equation}
+				\lambda_1(\mathbf{Y}) \ge {\color{blue}\lambda_2(\mathbf{G})} \ge \lambda_2(\mathbf{Y}) \ge \ldots \ge \lambda_{N-1}(\mathbf{Y}) \ge {\color{blue}\lambda_N(\mathbf{G})} \ge \lambda_N(\mathbf{Y}).
+			\end{equation}
+			The equivalent singular value inequality is
+			\begin{equation}
+				\sigma_1(\mathbf{T}) \ge {\color{blue}\sigma_2(\mathbf{H})} \ge \sigma_2(\mathbf{T}) \ge \ldots \ge \sigma_{N-1}(\mathbf{T}) \ge {\color{blue}\sigma_N(\mathbf{H})} \ge \sigma_N(\mathbf{T}).
+				\label{iq:singular_value_interlacing}
+			\end{equation}
+			\eqref{iq:singular_value_interlacing} implies that, if the indirect channel is rank-1, then the \gls{ris} can at most enlarge the $n$-th ($n \ge 2$) channel singular value to the $(n-1)$-th singular value of $\mathbf{T}$.
+			Note that the largest channel singular value is unbounded with a sufficiently large \gls{ris}.
+		\end{subsubsection}
+
+		\begin{subsubsection}{Fully-Connected \glsentryshort{ris} Without Direct Link}
+			Denote the singular value decomposition of forward / backward channels as $\mathbf{H}^{\mathrm{B}/\mathrm{F}} = \mathbf{U}^{\mathrm{B}/\mathrm{F}} \mathbf{\Sigma}^{\mathrm{B}/\mathrm{F}} {\mathbf{V}^{\mathrm{B}/\mathrm{F}}}^\mathsf{H}$.
+			The composite channel is
+			\begin{equation}
+				\mathbf{H} = \mathbf{H}^\mathrm{B} \mathbf{\Theta} \mathbf{H}^\mathrm{F} = \mathbf{U}^\mathrm{B} \mathbf{\Sigma}^\mathrm{B} \mathbf{X} \mathbf{\Sigma}^\mathrm{F} {\mathbf{V}^\mathrm{F}}^\mathsf{H},
+			\end{equation}
+			where $\mathbf{X} = {\mathbf{V}^\mathrm{B}}^\mathsf{H} \mathbf{\Theta} \mathbf{U}^\mathrm{F}$.
+			% Since unitary matrices are closed under multiplication,
+			\begin{proposition}
+				In this case, the singular value bounds on $\mathbf{H}$ are equivalent to the singular value bounds on $\mathbf{BF}$, where $\mathbf{B}$ and $\mathbf{F}$ are arbitrary matrices with singular values $\mathbf{\Sigma}^\mathrm{B}$ and $\mathbf{\Sigma}^\mathrm{F}$.
+				% The only singular value bounds applied here are those apply to the singular value bound of $\mathbf{F}\mathbf{B}$
+			\end{proposition}
+			\begin{proof}
+				We first observe that singular value control problem can be solved w.r.t. unitary $\mathbf{X}$ and retrieved by $\mathbf{\Theta} = \mathbf{V}^\mathrm{B} \mathbf{X} {\mathbf{U}^\mathrm{F}}^\mathsf{H}$.
+				Also, $\mathrm{sv}(\mathbf{U}^\mathrm{B} \mathbf{\Sigma}^\mathrm{B} \mathbf{X} \mathbf{\Sigma}^\mathrm{F} {\mathbf{V}^\mathrm{F}}^\mathsf{H}) = \mathrm{sv}(\bar{\mathbf{U}}^\mathrm{B} \mathbf{\Sigma}^\mathrm{B} \mathbf{\bar{V}}{{}^\mathrm{B}}^\mathsf{H} \bar{\mathbf{U}}^\mathrm{F} \mathbf{\Sigma}^\mathrm{F} \mathbf{\bar{V}}{{}^\mathrm{F}}^\mathsf{H}) = \mathrm{sv}(\mathbf{BF})$ where $\bar{\mathbf{U}}^{\mathrm{B}/\mathrm{F}}$ and $\bar{\mathbf{V}}^{\mathrm{B}/\mathrm{F}}$ are arbitrary unitary matrices.
+			\end{proof}
+			The problem now becomes, given $\mathbf{\Sigma}^\mathrm{B}$ and $\mathbf{\Sigma}^\mathrm{F}$, what can we say about the singular value of $\mathbf{BF}$.
+			One comprehensive answer is Horn's inequality \cite{Bhatia2001}: for all admissible triples $(I, J, K)$,
+			\begin{equation}
+				\prod_{k \in {K}} \sigma_k(\mathbf{BF}) \leq \prod_{i \in {I}} \sigma_i(\mathbf{B}) \prod_{j \in {J}} \sigma_j(\mathbf{F}).
+			\end{equation}
+			It gives upper bound on the largest singular value and lower bound on the smallest singular value:
+			\begin{align}
+				\sigma_1(\mathbf{BF}) \le \sigma_1(\mathbf{B}) \sigma_1(\mathbf{F}) \label{iq:singular_value_largest}\\
+				\sigma_N(\mathbf{BF}) \geq \sigma_N(\mathbf{B}) \sigma_N(\mathbf{F}) \label{iq:singular_value_smallest}.
+			\end{align}
+			Another useful result is introduced in \cite{Hogben2013}: for all $p>0$,
+			\begin{equation}
+				\sum_n \sigma_n^p(\mathbf{BF}) \leq \sum_n \sigma_n^p(\mathbf{B}) \sigma_n^p(\mathbf{F}) \label{iq:singular_value_power_sum}.
+			\end{equation}
+			When $p=2$, it implies the channel energy is upper bounded by the sum of element-wise power product of the forward and backward channels, as illustrated in Fig.~\subref*{sm:pc_power_bond_nd}.
+			Interestingly, \eqref{iq:singular_value_largest}--\eqref{iq:singular_value_power_sum} are simultaneously tight when $\mathbf{X} = \mathbf{I}$ and $\mathbf{\Theta} = \mathbf{V}^\mathrm{B} {\mathbf{U}^\mathrm{F}}^\mathsf{H}$.
+			This solution was claimed in \cite{Bartoli2023} to achieve channel capacity, but it is not true at moderate \gls{snr}.
+		\end{subsubsection}
+
+		Finally, we characterize the \emph{Pareto frontier} of channel singular values via optimization approach.
+		% \begin{maxi!}
+		% 	{\scriptstyle{\mathbf{\Theta}}}{J_1 = \sum_n \rho_n \sigma_n(\mathbf{H})}{\label{op:pc_singular}}{\label{ob:pc_singular}}
+		% 	\addConstraint{\mathbf{\Theta}_g^\mathsf{H} \mathbf{\Theta}_g=\mathbf{I}, \quad \forall g,}{}{}
+		% \end{maxi!}
+
+
+		\begin{customopti!}
+			{\underset{\scriptstyle{\mathbf{\Theta}}}{max / min}}{}{J_1 = \sum_n \rho_n \sigma_n(\mathbf{H})}{\label{op:pc_singular}}{\label{ob:pc_singular}}
+			\addConstraint{\mathbf{\Theta}_g^\mathsf{H} \mathbf{\Theta}_g=\mathbf{I}, \quad \forall g,}{}{}
+		\end{customopti!}
+
+		where $\rho_n$ is the weight of $n$-th singular value.
+		The complex derivative of \eqref{ob:pc_singular} w.r.t. \gls{ris} block $g$ is
+		\begin{equation}
+			\frac{\partial J_1}{\partial \mathbf{\Theta}_g^*} = {\mathbf{H}_g^\mathrm{B}}^\mathsf{H} \mathbf{U} \mathrm{diag}(\boldsymbol{\rho}) \mathbf{V}^\mathsf{H} {\mathbf{H}_g^\mathrm{F}}^\mathsf{H},
+			\label{eq:pc_singular_gradient_ris}
+		\end{equation}
+		where $\mathbf{U}$ and $\mathbf{V}$ are left and right singular matrix of $\mathbf{H}$.
+		\eqref{op:pc_singular} can be solved by \gls{rcg} Algorithm~\ref{ag:pc_rate_ris} with \eqref{eq:pc_rate_gradient_ris} replaced by \eqref{eq:pc_singular_gradient_ris}.
+
+		\begin{figure}[!t]
+			\centering
+			\resizebox{0.65\columnwidth}{!}{
+				\input{assets/simulation/pc_singular_pareto.tex}
+			}
+			\caption{Singular value Pareto frontier. $(N^\mathrm{T}, N^\mathrm{S}, N^\mathrm{R}) = (4, 64, 2)$, $(\Lambda^\mathrm{D}, \Lambda^\mathrm{F}, \Lambda^\mathrm{B}) = (0, -17.5, -17.5) \unit{dB}$.}
+			\label{sm:pc_singular_pareto}
+		\end{figure}
+
+		\begin{figure}[!t]
+			\centering
+			\resizebox{0.65\columnwidth}{!}{
+				\input{assets/simulation/pc_singular_bound.tex}
+			}
+			\caption{Singular value bounds for rank-1 indirect channel. $(N^\mathrm{T}, N^\mathrm{S}, N^\mathrm{R}) = (4, 32, 4)$, $(\Lambda^\mathrm{D}, \Lambda^\mathrm{F}, \Lambda^\mathrm{B}) = (0, -17.5, -17.5) \unit{dB}$.}
+			\label{sm:pc_singular_bound}
+		\end{figure}
+
+		The Pareto frontier and evolving trend of channel singular values are shown in Fig.~\ref{sm:pc_singular_pareto} and \ref{sm:pc_singular_bound}.
+		Clearly, \gls{bd} \gls{ris} with a larger group size can redistribute the channel singular values to a wider range.
+	\end{subsection}
 	\begin{subsection}{Channel Power Maximization}
 		Consider a \gls{bd} \gls{ris} with $N^\mathrm{S}$ elements, which is divided into $G$ groups of equal $L$ elements.
 		\begin{maxi!}
@@ -454,143 +615,6 @@
 		We thus conclude dyadic or tetradic \gls{bd} \gls{ris} usually strike a good balance between performance and complexity.
 	\end{subsection}
 
-	\begin{subsection}{Channel Singular Value Redistribution}
-		We first show the channel shaping benefit of \gls{bd} \gls{ris} by a toy example.
-		Consider $(N^\mathrm{T}, N^\mathrm{S}, N^\mathrm{R}) = (2, 2, 2)$ and assume the direct link is absent.
-		The diagonal \gls{ris} is $\mathbf{\Theta}^\mathrm{D} = \mathrm{diag}(e^{\jmath \theta_1}, e^{\jmath \theta_2})$ while the unitary \gls{ris} has 4 independent angular parameters
-		\begin{equation}
-			\mathbf{\Theta}^\mathrm{U} = e^{\jmath \phi} \begin{bmatrix}
-				e^{\jmath \alpha} \cos \psi  & e^{\jmath \beta} \sin \psi   \\
-				-e^{-\jmath \beta} \sin \psi & e^{-\jmath \alpha} \cos \psi
-			\end{bmatrix}.
-		\end{equation}
-		When the direct link is absent, $\phi$ has no impact on the singular value because $\mathrm{sv}(e^{\jmath \phi} \mathbf{A}) = \mathrm{sv}(\mathbf{A})$.
-		For a fair comparison, we enforce symmetry with $\beta = \pi / 2$.
-		\begin{figure}
-			\centering
-			\includegraphics[width=\columnwidth]{assets/simulation/pc_singular_toy.eps}
-			\caption{Channel singular value shaping by diagonal and symmetry unitary \gls{ris}. $(N^\mathrm{T}, N^\mathrm{S}, N^\mathrm{R}) = (2, 2, 2)$. Direct link is absent.}
-			\label{sm:pc_singular_toy}
-		\end{figure}
-		Fig.~\ref{sm:pc_singular_toy} illustrates all possible channel singular values achieved by diagonal and symmetry unitary \gls{ris}.
-		Despite using the same number of elements and parameters, \gls{bd} \gls{ris} provides much wider dynamic ranges of $\sigma_1(\mathbf{H})$ and $\sigma_2(\mathbf{H})$ than diagonal \gls{ris}.
-		Larger gaps are expected when the symmetry constraint can be relaxed.
-
-		We then analyze the channel shaping \emph{capability} of \gls{bd} \gls{ris} under specific setups.
-		\begin{subsubsection}{Rank-Deficient Channel}
-			\label{sc:pc_rank_deficient}
-			In rank-deficient channels, \gls{bd} \gls{ris} $\mathbf{\Theta}^\mathrm{B}$ cannot achieve a higher \gls{dof} than diagonal \gls{ris} $\mathbf{\Theta}^\mathrm{D}$.
-			This is because $\mathrm{sv}(\mathbf{\Theta}^\mathrm{B}) = \mathrm{sv}(\mathbf{\Theta}^\mathrm{D}) = \boldsymbol{1}$ and
-			\begin{equation}
-				\begin{split}
-					\mathrm{rank}(\mathbf{H})
-					& \le \mathrm{rank}(\mathbf{H}^\mathrm{D}) + \mathrm{rank}(\mathbf{H}^\mathrm{B} \mathbf{\Theta} \mathbf{H}^\mathrm{F}) \\
-					& \le \mathrm{rank}(\mathbf{H}^\mathrm{D}) + \min \bigl( \mathrm{rank}(\mathbf{H}^\mathrm{B}), \mathrm{rank}(\mathbf{\Theta}), \mathrm{rank}(\mathbf{H}^\mathrm{F}) \bigr).
-				\end{split}
-			\end{equation}
-			% However, \gls{bd} \gls{ris} can still guarantee a higher rate at finite \gls{snr}.
-			Note \gls{bd} \gls{ris} can still provide a higher indirect \gls{snr} as shown in Fig.~\ref{sm:pc_power_sx} and \ref{sm:pc_power_bond}.
-		\end{subsubsection}
-
-
-		\begin{subsubsection}{Rank-1 Indirect Channel}
-			The indirect channel is rank-1 iff the forward or backward channel is rank-1.
-			Let $\mathbf{H}^\mathrm{F} = \sigma^\mathrm{F} \mathbf{u}^\mathrm{F} {\mathbf{v}^\mathrm{F}}^\mathsf{H}$ without loss of generality.
-			In this case, the channel Gram matrix can be written as Hermitian-plus-rank-1:
-			\begin{equation}
-				\mathbf{G} \triangleq \mathbf{H} \mathbf{H}^\mathsf{H} = \mathbf{Y} + \mathbf{z} \mathbf{z}^\mathsf{H},
-			\end{equation}
-			where $\mathbf{Y} \triangleq \mathbf{H}^\mathrm{D} (\mathbf{I} - \mathbf{v}^\mathrm{F} {\mathbf{v}^\mathrm{F}}^\mathsf{H}) \mathbf{H}^\mathrm{D} = \mathbf{T} \mathbf{T}^\mathsf{H}$ and $\mathbf{z} \triangleq \sigma^\mathrm{F} \mathbf{H}^\mathrm{B} \mathbf{\Theta} \mathbf{u}^\mathrm{F} + \mathbf{H}^\mathrm{D} \mathbf{v}^\mathrm{F}$.
-			Regardless of \gls{ris} size and structure\footnote{A similar conclusion was made for diagonal \gls{ris} in \cite{Semmler2023}.}, its $n$-th ($n \ge 2$) eigenvalues are bounded by the Cauchy interlacing formula \cite{Golub2013}
-			\begin{equation}
-				\lambda_1(\mathbf{Y}) \ge {\color{blue}\lambda_2(\mathbf{G})} \ge \lambda_2(\mathbf{Y}) \ge \ldots \ge \lambda_{N-1}(\mathbf{Y}) \ge {\color{blue}\lambda_N(\mathbf{G})} \ge \lambda_N(\mathbf{Y}).
-			\end{equation}
-			The equivalent singular value inequality is
-			\begin{equation}
-				\sigma_1(\mathbf{T}) \ge {\color{blue}\sigma_2(\mathbf{H})} \ge \sigma_2(\mathbf{T}) \ge \ldots \ge \sigma_{N-1}(\mathbf{T}) \ge {\color{blue}\sigma_N(\mathbf{H})} \ge \sigma_N(\mathbf{T}).
-				\label{iq:singular_value_interlacing}
-			\end{equation}
-			\eqref{iq:singular_value_interlacing} implies that, if the indirect channel is rank-1, then the \gls{ris} can at most enlarge the $n$-th ($n \ge 2$) channel singular value to the $(n-1)$-th singular value of $\mathbf{T}$.
-			Note that the largest channel singular value is unbounded with a sufficiently large \gls{ris}.
-		\end{subsubsection}
-
-		\begin{subsubsection}{Fully-Connected \glsentryshort{ris} Without Direct Link}
-			Denote the singular value decomposition of forward / backward channels as $\mathbf{H}^{\mathrm{B}/\mathrm{F}} = \mathbf{U}^{\mathrm{B}/\mathrm{F}} \mathbf{\Sigma}^{\mathrm{B}/\mathrm{F}} {\mathbf{V}^{\mathrm{B}/\mathrm{F}}}^\mathsf{H}$.
-			The composite channel is
-			\begin{equation}
-				\mathbf{H} = \mathbf{H}^\mathrm{B} \mathbf{\Theta} \mathbf{H}^\mathrm{F} = \mathbf{U}^\mathrm{B} \mathbf{\Sigma}^\mathrm{B} \mathbf{X} \mathbf{\Sigma}^\mathrm{F} {\mathbf{V}^\mathrm{F}}^\mathsf{H},
-			\end{equation}
-			where $\mathbf{X} = {\mathbf{V}^\mathrm{B}}^\mathsf{H} \mathbf{\Theta} \mathbf{U}^\mathrm{F}$.
-			% Since unitary matrices are closed under multiplication,
-			\begin{proposition}
-				In this case, the singular value bounds on $\mathbf{H}$ are equivalent to the singular value bounds on $\mathbf{BF}$, where $\mathbf{B}$ and $\mathbf{F}$ are arbitrary matrices with singular values $\mathbf{\Sigma}^\mathrm{B}$ and $\mathbf{\Sigma}^\mathrm{F}$.
-				% The only singular value bounds applied here are those apply to the singular value bound of $\mathbf{F}\mathbf{B}$
-			\end{proposition}
-			\begin{proof}
-				We first observe that singular value control problem can be solved w.r.t. unitary $\mathbf{X}$ and retrieved by $\mathbf{\Theta} = \mathbf{V}^\mathrm{B} \mathbf{X} {\mathbf{U}^\mathrm{F}}^\mathsf{H}$.
-				Also, $\mathrm{sv}(\mathbf{U}^\mathrm{B} \mathbf{\Sigma}^\mathrm{B} \mathbf{X} \mathbf{\Sigma}^\mathrm{F} {\mathbf{V}^\mathrm{F}}^\mathsf{H}) = \mathrm{sv}(\bar{\mathbf{U}}^\mathrm{B} \mathbf{\Sigma}^\mathrm{B} \mathbf{\bar{V}}{{}^\mathrm{B}}^\mathsf{H} \bar{\mathbf{U}}^\mathrm{F} \mathbf{\Sigma}^\mathrm{F} \mathbf{\bar{V}}{{}^\mathrm{F}}^\mathsf{H}) = \mathrm{sv}(\mathbf{BF})$ where $\bar{\mathbf{U}}^{\mathrm{B}/\mathrm{F}}$ and $\bar{\mathbf{V}}^{\mathrm{B}/\mathrm{F}}$ are arbitrary unitary matrices.
-			\end{proof}
-			The problem now becomes, given $\mathbf{\Sigma}^\mathrm{B}$ and $\mathbf{\Sigma}^\mathrm{F}$, what can we say about the singular value of $\mathbf{BF}$.
-			One comprehensive answer is Horn's inequality \cite{Bhatia2001}: for all admissible triples $(I, J, K)$,
-			\begin{equation}
-				\prod_{k \in {K}} \sigma_k(\mathbf{BF}) \leq \prod_{i \in {I}} \sigma_i(\mathbf{B}) \prod_{j \in {J}} \sigma_j(\mathbf{F}).
-			\end{equation}
-			It gives upper bound on the largest singular value and lower bound on the smallest singular value:
-			\begin{align}
-				\sigma_1(\mathbf{BF}) \le \sigma_1(\mathbf{B}) \sigma_1(\mathbf{F}) \label{iq:singular_value_largest}\\
-				\sigma_N(\mathbf{BF}) \geq \sigma_N(\mathbf{B}) \sigma_N(\mathbf{F}) \label{iq:singular_value_smallest}.
-			\end{align}
-			Another useful result is introduced in \cite{Hogben2013}: for all $p>0$,
-			\begin{equation}
-				\sum_n \sigma_n^p(\mathbf{BF}) \leq \sum_n \sigma_n^p(\mathbf{B}) \sigma_n^p(\mathbf{F}) \label{iq:singular_value_power_sum}.
-			\end{equation}
-			When $p=2$, it implies the channel energy is upper bounded by the sum of element-wise power product of the forward and backward channels, as illustrated in Fig.~\subref*{sm:pc_power_bond_nd}.
-			Interestingly, \eqref{iq:singular_value_largest}--\eqref{iq:singular_value_power_sum} are simultaneously tight when $\mathbf{X} = \mathbf{I}$ and $\mathbf{\Theta} = \mathbf{V}^\mathrm{B} {\mathbf{U}^\mathrm{F}}^\mathsf{H}$.
-			This solution was claimed in \cite{Bartoli2023} to achieve channel capacity, but it is not true at moderate \gls{snr}.
-		\end{subsubsection}
-
-		Finally, we characterize the \emph{Pareto front} of channel singular values via optimization approach.
-		% \begin{maxi!}
-		% 	{\scriptstyle{\mathbf{\Theta}}}{J_1 = \sum_n \rho_n \sigma_n(\mathbf{H})}{\label{op:pc_singular}}{\label{ob:pc_singular}}
-		% 	\addConstraint{\mathbf{\Theta}_g^\mathsf{H} \mathbf{\Theta}_g=\mathbf{I}, \quad \forall g,}{}{}
-		% \end{maxi!}
-
-
-		\begin{customopti!}
-			{\underset{\scriptstyle{\mathbf{\Theta}}}{max / min}}{}{J_1 = \sum_n \rho_n \sigma_n(\mathbf{H})}{\label{op:pc_singular}}{\label{ob:pc_singular}}
-			\addConstraint{\mathbf{\Theta}_g^\mathsf{H} \mathbf{\Theta}_g=\mathbf{I}, \quad \forall g,}{}{}
-		\end{customopti!}
-
-		where $\rho_n$ is the weight of $n$-th singular value.
-		The complex derivative of \eqref{ob:pc_singular} w.r.t. \gls{ris} block $g$ is
-		\begin{equation}
-			\frac{\partial J_1}{\partial \mathbf{\Theta}_g^*} = {\mathbf{H}_g^\mathrm{B}}^\mathsf{H} \mathbf{U} \mathrm{diag}(\boldsymbol{\rho}) \mathbf{V}^\mathsf{H} {\mathbf{H}_g^\mathrm{F}}^\mathsf{H},
-			\label{eq:pc_singular_gradient_ris}
-		\end{equation}
-		where $\mathbf{U}$ and $\mathbf{V}$ are left and right singular matrix of $\mathbf{H}$.
-		\eqref{op:pc_singular} can be solved by \gls{rcg} Algorithm~\ref{ag:pc_rate_ris} with \eqref{eq:pc_rate_gradient_ris} replaced by \eqref{eq:pc_singular_gradient_ris}.
-
-		\begin{figure}[!t]
-			\centering
-			\resizebox{0.65\columnwidth}{!}{
-				\input{assets/simulation/pc_singular_pareto.tex}
-			}
-			\caption{Singular value Pareto front. $(N^\mathrm{T}, N^\mathrm{S}, N^\mathrm{R}) = (4, 64, 2)$, $(\Lambda^\mathrm{D}, \Lambda^\mathrm{F}, \Lambda^\mathrm{B}) = (0, -17.5, -17.5) \unit{dB}$.}
-			\label{sm:pc_singular_pareto}
-		\end{figure}
-
-		\begin{figure}[!t]
-			\centering
-			\resizebox{0.65\columnwidth}{!}{
-				\input{assets/simulation/pc_singular_bound.tex}
-			}
-			\caption{Singular value bounds for rank-1 indirect channel. $(N^\mathrm{T}, N^\mathrm{S}, N^\mathrm{R}) = (4, 32, 4)$, $(\Lambda^\mathrm{D}, \Lambda^\mathrm{F}, \Lambda^\mathrm{B}) = (0, -17.5, -17.5) \unit{dB}$.}
-			\label{sm:pc_singular_bound}
-		\end{figure}
-
-		The Pareto front and evolving trend of channel singular values are shown in Fig.~\ref{sm:pc_singular_pareto} and \ref{sm:pc_singular_bound}.
-		Clearly, \gls{bd} \gls{ris} with a larger group size can redistribute the channel singular values to a wider range.
-	\end{subsection}
 \end{section}
 
 \begin{section}{\glsentryshort{mimo}-\glsentryshort{ic}}
