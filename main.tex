@@ -130,6 +130,7 @@
 \newacronym{ic}{IC}{Interference Channel}
 \newacronym{snr}{SNR}{Signal-to-Noise Ratio}
 \newacronym{wsr}{WSR}{Weighted Sum-Rate}
+\newacronym{svd}{SVD}{Singular Value Decomposition}
 \newacronym{mmse}{MMSE}{Minimum Mean-Square Error}
 \newacronym{wmmse}{WMMSE}{Weighted \gls{mmse}}
 \newacronym{mse}{MSE}{Mean-Square Error}
@@ -186,7 +187,7 @@
 
 	In conventional (a.k.a. diagonal) \gls{ris}, each scattering element is tuned by a dedicated impedance and functions as an \emph{individual} phase shifter \cite{Wu2020}.
 	% , accounting for a diagonal phase shift model with unit magnitude.
-	The idea is extended to \gls{bd} \gls{ris} \cite{Shen2020a,Li2023b} featuring in-group connections between elements.
+	The concept is generalized to \gls{bd} \gls{ris} \cite{Shen2020a,Li2023b} featuring in-group connections between elements.
 	This allows \emph{cooperative} reflection --- wave impinging on one element can propagate within the circuit and depart partially from all elements.
 	\gls{bd} \gls{ris} can thus control both amplitude and phase of the reflected wave, generalizing the scattering matrix from diagonal with unit-magnitude entries to block diagonal with  unitary blocks.
 	Its benefit has been recently shown in receive power maximization \cite{Nerini2023,Santamaria2023,Fang2023,Nerini2023a}, transmit power minimization \cite{Zhou2023}, and rate maximization \cite{Zhou2023,Nerini2023a,Li2023d,Bartoli2023,Li2023c}.
@@ -197,50 +198,40 @@
 	Channel shaping metrics can be classified into \emph{singular value centric} and \emph{power centric}.
 	For diagonal \gls{ris}, the former has been studied in terms of minimum singular value \cite{ElMossallamy2021}, effective rank \cite{ElMossallamy2021,Meng2023}, condition number \cite{Zheng2022,Huang2023} in \gls{pc}, and degree of freedom \cite{Bafghi2022,Zheng2023,Chae2023} in \gls{ic}.
 	The latter has been studied in terms of channel power \cite{Wu2019} in \gls{pc} and leakage interference \cite{Santamaria2023a} in \gls{ic}.
-	When it comes to \gls{bd} \gls{ris}, the only metric analyzed is the channel power \cite{Nerini2023,Santamaria2023} while the \gls{mimo} case is still unexplored.\footnote{Single-stream \gls{mimo} with given precoder and combiner was considered in \cite{Nerini2023}. In terms of channel shaping, it is equivalent to \gls{siso}.}
-	Although insightful, those attempts are far from complete and the methods are limited to specific scenarios.
-	% This paper aims to quantify the channel shaping capability of asymmetric \gls{bd} \gls{ris} through theoretical analysis and numerical evaluation.
+	For \gls{bd} \gls{ris}, the only metric analyzed is the channel power \cite{Nerini2023,Santamaria2023} while the \gls{mimo} case is still unexplored.\footnote{Single-stream \gls{mimo} with given precoder and combiner was considered in \cite{Nerini2023}. In terms of channel shaping, it is equivalent to \gls{siso}.}
+	Although insightful, those attempts are far from complete and the techniques are limited to specific scenarios.
 	This paper aims for a comprehensive answer to the channel shaping question through theoretical analysis and numerical optimization.
-	% quantify the channel shaping capability of asymmetric \gls{bd} \gls{ris} through theoretical analysis and numerical evaluation.
 	The contributions are summarized below.
 
 	First, we examine the capability of \gls{bd} \gls{ris} to redistribute the channel singular values in \gls{mimo} \gls{pc}.
 	The Pareto frontiers are characterized by optimizing the \emph{weighted sum of singular values}, where the weights can be positive, zero, or negative.
 	It generalizes all singular value metrics and provides a powerful design framework.
-	We then discuss analytical singular value bounds under rank-deficient and no-direct scenarios.
+	We then discuss some analytical singular value bounds under rank-deficient and no-direct scenarios.
 
 	% and demonstrate the channel shaping advantage of \gls{bd} \gls{ris} over diagonal \gls{ris}.
 
-	Second, we tailor a \gls{rcg} algorithm for asymmetric\footnote{Although the constraint of symmetric scattering parameters is widely respected in the literature \cite{Shen2020a,Nerini2023,Santamaria2023,Fang2023,Nerini2023a,Zhou2023,Li2023d,Bartoli2023}, it can be relaxed when the \gls{bd} \gls{ris} involves asymmetric passive components \cite{Ahn2006}, as previously assumed in \cite{Li2023b,Li2023c}. Symmetry can be enforced by projection if necessary.} \gls{bd} \gls{ris} optimization.
+	Second, we tailor a \gls{rcg} algorithm for asymmetric\footnote{Although the constraint of symmetric scattering parameters is widely respected in the literature \cite{Shen2020a,Nerini2023,Santamaria2023,Fang2023,Nerini2023a,Zhou2023,Li2023d,Bartoli2023}, it can be relaxed when the \gls{bd} \gls{ris} involves asymmetric passive components (e.g., ring hybrids and branch-line hybrids) \cite{Ahn2006}, as previously assumed in \cite{Li2023b,Li2023c}. Symmetry can be enforced by projection if necessary.} \gls{bd} \gls{ris} optimization.
 	Specifically, block-wise update is performed along the geodesics\footnote{A geodesic refers to the shortest path between two points in a Riemannian manifold.} of the Stiefel manifold and concisely evaluated as matrix exponential.
 	The proposed method not only features lower complexity and faster convergence than universal manifold optimization \cite{Absil2009,Pan2022d}, but also applies to any \gls{bd} \gls{ris} problem where gradient exists.
-	% It is used to solve the Pareto singular problem, as well as rate maximization in \gls{mimo} \gls{pc} and \gls{wsr} maximization in \gls{mimo} \gls{ic}.
-	% It effectively solves the Pareto singular problem.
+	It effectively solves the Pareto singular problem.
 
-	% , as well as rate maximization in \gls{mimo} \gls{pc} and \gls{wsr} maximization in \gls{mimo} \gls{ic}.
+	Third, we propose a closed-form iterative algorithm for power centric channel shaping problems.
+	The idea is to successively approximate the quadratic objective by a sequence of affines and solve the local problems by \gls{svd}.
+	Case studies are conducted for channel power maximization in \gls{pc} and leakage interference minimization in \gls{ic}.
 
-	% It helps to solve the aforementioned Pareto singular value problem.
-	% We exploit it to solve the Pareto singular value problem and
-
-
-	% It is exploited for the Pareto singular value problem, as well as rate maximization in \gls{mimo} \gls{pc} and \gls{wsr} maximization in \gls{mimo} \gls{ic}.
-	% It is used to solve the Pareto singular value problem,
-
-	Third, we consider power centric design
-	% Second, we consider power centric design
-	% exploit \gls{bd} \gls{ris} to power centric
-	% maximize channel power in \gls{mimo} \gls{pc} and minimize leakage interference in \gls{mimo} \gls{ic}.
-
+	Fourth, we perform extensive simulations to validate and quantify the signal processing advantage of \gls{bd} \gls{ris}.
+	Besides channel shaping, we also consider typical joint active and passive beamforming problems, including rate maximization in \gls{pc} and \gls{wsr} maximization in \gls{ic}.
+	Results suggest that \gls{bd} \gls{ris} achieves a larger array gain in \gls{pc} and a higher \gls{dof} in \gls{ic}.
 \end{section}
 
-\begin{section}{Assumption}
-	We introduce \gls{bd} \gls{ris} in \gls{mimo} \gls{pc} and \gls{ic}.
-	% point-to-point and interference \gls{mimo} channels.
-	All proposals are based on assumption of \emph{asymmetric} passive \gls{bd} \gls{ris}, i.e., symmetry constraint $\mathbf{\Theta}_g = \mathbf{\Theta}_g^\mathsf{T}$ is relaxed.
-	This is feasible when asymmetric passive components (e.g., ring hybrids and branch-line hybrids) \cite{Ahn2006} are available.
-	This assumption was also made in Hongyu's papers \cite{Li2023b,Li2023c}.
-	For quadratic problems, the proposed algorithms may be extended to symmetric \gls{bd} \gls{ris} by replacing singular value decomposition with Takagi factorization \cite{Horn2012}.
-\end{section}
+% \begin{section}{Assumption}
+% 	We introduce \gls{bd} \gls{ris} in \gls{mimo} \gls{pc} and \gls{ic}.
+% 	% point-to-point and interference \gls{mimo} channels.
+% 	All proposals are based on assumption of \emph{asymmetric} passive \gls{bd} \gls{ris}, i.e., symmetry constraint $\mathbf{\Theta}_g = \mathbf{\Theta}_g^\mathsf{T}$ is relaxed.
+% 	This is feasible when asymmetric passive components (e.g., ring hybrids and branch-line hybrids) \cite{Ahn2006} are available.
+% 	This assumption was also made in Hongyu's papers \cite{Li2023b,Li2023c}.
+% 	For quadratic problems, the proposed algorithms may be extended to symmetric \gls{bd} \gls{ris} by replacing singular value decomposition with Takagi factorization \cite{Horn2012}.
+% \end{section}
 
 \begin{section}{\glsentryshort{mimo}-\glsentryshort{pc}}
 
