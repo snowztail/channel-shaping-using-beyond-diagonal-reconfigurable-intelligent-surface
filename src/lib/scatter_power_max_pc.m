@@ -12,7 +12,7 @@ function [Theta, H] = scatter_power_max_pc(H_d, H_f, H_b, L)
 	while ~iter.converge
 		for g = 1 : G
 			S = (g - 1) * L + 1 : g * L;
-			M = H_b(:, S)' * (H_d + H_b(:, S) * Theta(S, S) * H_f(S, :)) * H_f(S, :)';
+			M = H_b(:, S)' * (H_d + H_b * Theta * H_f) * H_f(S, :)';
 			[U, ~, V] = svd(M);
 			Theta(S, S) = U * V';
 		end
