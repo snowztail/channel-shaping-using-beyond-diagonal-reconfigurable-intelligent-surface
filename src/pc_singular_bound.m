@@ -14,10 +14,11 @@ for r = 1 : number.realization
 	channel.singular.direct(:, r) = svd(channel.direct);
 	channel.singular.auxiliary(:, r) = svd(channel.auxiliary);
 	for w = 1 : number.weight
-		clear scatter_singular_min_pc scatter_singular_max_pc;
 		for b = 1 : number.bond
-			[reflect.beamformer.min, channel.aggregate.min] = scatter_singular_min_pc(channel.direct, channel.forward, channel.backward, channel.weight(:, w), reflect.bond(b));
-			[reflect.beamformer.max, channel.aggregate.max] = scatter_singular_max_pc(channel.direct, channel.forward, channel.backward, channel.weight(:, w), reflect.bond(b));
+			clear scatter_singular_pc;
+			[reflect.beamformer.min, channel.aggregate.min] = scatter_singular_pc(channel.direct, channel.forward, channel.backward, -channel.weight(:, w), reflect.bond(b));
+			clear scatter_singular_pc;
+			[reflect.beamformer.max, channel.aggregate.max] = scatter_singular_pc(channel.direct, channel.forward, channel.backward, channel.weight(:, w), reflect.bond(b));
 			channel.singular.aggregate.min(:, w, b, r) = svd(channel.aggregate.min);
 			channel.singular.aggregate.max(:, w, b, r) = svd(channel.aggregate.max);
 		end

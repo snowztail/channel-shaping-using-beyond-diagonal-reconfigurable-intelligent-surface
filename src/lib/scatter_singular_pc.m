@@ -1,8 +1,14 @@
-function [Theta, H] = scatter_singular_max_pc(H_d, H_f, H_b, rho, L)
+function [Theta, H] = scatter_singular_pc(H_d, H_f, H_b, rho, L)
 	persistent iter;
 	if isempty(iter)
-		clear scatter_power_max_pc;
-		Theta = scatter_power_max_pc(H_d, H_f, H_b, L);
+		clear scatter_power_max_pc scatter_power_min_pc;
+		if all(rho >= 0)
+			Theta = scatter_power_max_pc(H_d, H_f, H_b, L);
+		elseif all(rho <= 0)
+			Theta = scatter_power_min_pc(H_d, H_f, H_b, L);
+		else
+			Theta = eye(size(H_f, 1));
+		end
 	else
 		Theta = iter.Theta;
 	end
@@ -10,7 +16,7 @@ function [Theta, H] = scatter_singular_max_pc(H_d, H_f, H_b, rho, L)
 	G = length(Theta) / L;
 	H = channel_aggregate(H_d, H_f, H_b, Theta);
 	[G_e, G_r, D] = deal(zeros(size(Theta)));
-	[iter.converge, iter.tolerance, iter.counter, iter.J] = deal(false, 1e-4, 0, rho' * svd(H));
+	[iter.converge, iter.tolerance, iter.counter, iter.J] = deal(false, 1e-9, 0, rho' * svd(H));
 	while ~iter.converge
 		[iter.G_r, iter.D] = deal(G_r, D);
 		for g = 1 : G
