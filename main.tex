@@ -156,11 +156,13 @@
 \begin{abstract}
 	This paper investigates how a passive \gls{ris} can reshape the \gls{mimo} point-to-point channel in terms of singular values.
 	We depart from the widely-adapted diagonal phase shift model to a general \gls{bd} architecture, which provides superior shaping capability thanks to in-group connections between elements.
-	An efficient \gls{rcg} algorithm is tailored for smooth optimization problems of asymmetric \gls{bd} \gls{ris} with arbitrary group size, then invoked for the Pareto frontier of channel singular values.
+	An efficient \gls{rcg} algorithm is tailored for smooth optimization problems of asymmetric \gls{bd}-\gls{ris} with arbitrary group size, then invoked for the Pareto frontier of channel singular values.
 	To understand the gain from off-diagonal entries, we also derive analytical singular value bounds in \gls{los} and fully-connected scenarios.
 	As a side product, we tackle \gls{mimo} rate maximization problem by alternating between active beamformer (eigenmode transmission) and passive beamformer (\gls{rcg} algorithm) until convergence.
-	A low-complexity suboptimal solution decoupling both blocks is also proposed, where the channel shaping subproblem is formulated as channel power maximization and solved iteratively in closed form.
-	Theoretical analysis and numerical evaluation reveal that the shaping advantage of \gls{bd} \gls{ris} increases with group size and stems from stronger subchannel rearrangement and subspace alignment capabilities.
+	A low-complexity suboptimal solution based on channel shaping is also proposed, where the decoupled problem is formulated as channel power maximization and solved iteratively in closed form.
+	% We then show how channel shaping decouples the design and amounts to a low-complexity suboptimal solution.
+	% A low-complexity suboptimal solution decoupling both blocks is also proposed, where the channel shaping subproblem is formulated as channel power maximization and solved iteratively in closed form.
+	Theoretical analysis and numerical evaluation reveal that the shaping advantage of \gls{bd}-\gls{ris} increases with group size and stems from stronger subchannel rearrangement and subspace alignment capabilities.
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -181,61 +183,60 @@
 
 	The answer indeed depends on the hardware architecture and scattering model.
 	In conventional (a.k.a. diagonal) \gls{ris}, each scattering element is tuned by a dedicated impedance and acts as an \emph{individual} phase shifter \cite{Wu2020}.
-	The concept is generalized to \gls{bd} \gls{ris} \cite{Shen2020a,Li2023b} which groups adjacent elements using passive components.
+	The concept is generalized to \gls{bd}-\gls{ris} \cite{Shen2020a,Li2023b} which groups adjacent elements using passive components.
 	This allows \emph{cooperative} scattering --- wave impinging on one element can propagate within the circuit and depart partially from any element in the same group.
-	\gls{bd} \gls{ris} can thus control both amplitude and phase of the reflected wave, generalizing the scattering matrix from diagonal with unit-magnitude entries to block diagonal with  unitary blocks.
+	\gls{bd}-\gls{ris} can thus control both amplitude and phase of the reflected wave, generalizing the scattering matrix from diagonal with unit-magnitude entries to block diagonal with  unitary blocks.
 	Its benefit has been recently shown in receive power maximization \cite{Nerini2023,Santamaria2023,Fang2023,Nerini2023a}, transmit power minimization \cite{Zhou2023}, and rate maximization \cite{Zhou2023,Nerini2023a,Li2023d,Bartoli2023,Li2023c}.
 	Practical issues such as channel estimation \cite{Li2023e} and mutual coupling \cite{Li2023f} have also been investigated.
-	Therefore, \gls{bd} \gls{ris} is envisioned as the next generation channel shaper with stronger signal processing flexibility \cite{Li2023g}.
+	Therefore, \gls{bd}-\gls{ris} is envisioned as the next generation channel shaper with stronger signal processing flexibility \cite{Li2023g}.
 
 	% Attempts to characterize the channel shaping capability can be classified into \emph{singular value centric} and \emph{power centric} methods.
 	% Channel shaping is different from passive beamforming as it seeks to modify the inherent properties of the channel itself, allowing one to decouple \gls{ris} and transceiver design.
 	Channel shaping is different from passive beamforming as it seeks to modify the inherent properties of the channel itself.
 	This allows one to decouple the \gls{ris}-transceiver design and explore the fundamental limits of channel manipulation.
 	For example, diagonal \gls{ris} has been proved useful for improving channel power \cite{Ning2020}, degree of freedom \cite{Ozdogan2020,Li2023h}, condition number \cite{Zheng2022,Huang2023}, and effective rank \cite{ElMossallamy2021,Meng2023} in \gls{mimo}.
-	On the other hand, \gls{bd} \gls{ris} can provide a higher channel power but the results are limited to \gls{siso} \cite{Nerini2023} and \gls{miso} \cite{Santamaria2023}.
-	While these studies offer promising glimpses into the channel shaping potential of passive \gls{ris}, a comprehensive understanding of its capabilities and limitations is desired, and a universal design framework is still missing.
-	% \footnote{In terms of channel shaping, single-stream \gls{mimo} with given precoder and combiner \cite{Nerini2023} is equivalent to \gls{siso}.}.
-	% Although insightful, those attempts are far from complete and the techniques are limited to specific scenarios.
+	In contrast, \gls{bd}-\gls{ris} provides a higher channel power but the results are limited to \gls{siso}\footnote{In terms of channel shaping, single-stream \gls{mimo} with given precoder and combiner \cite{Nerini2023} is equivalent to \gls{siso}.}. \cite{Nerini2023} and \gls{miso} \cite{Santamaria2023}.
+	While these studies offer promising glimpses into the channel shaping potential of passive \gls{ris}, a comprehensive understanding of its capabilities and limitations is desired, and a universal design framework is missing.
 	This paper aims to answer the channel shaping question through theoretical analysis and numerical optimization.
 	The contributions are summarized below.
 
-	First, we examine the capability of \gls{bd} \gls{ris} to redistribute the channel singular values in \gls{mimo} \gls{pc}.
+	First, we quantify the capability of \gls{bd}-\gls{ris} to manipulate the channel singular values in \gls{mimo} point-to-point channel.
 	The Pareto frontiers are characterized by optimizing the \emph{weighted sum of singular values}, where the weights can be positive, zero, or negative.
-	It generalizes all singular value metrics and provides a powerful design framework.
-	We then discuss some analytical singular value bounds under rank-deficient and no-direct scenarios.
+	% This generalizes most singular value metrics and provides a powerful design framework.
+	The resulting region provides a comprehensive and intuitive channel shaping benchmark in terms of singular values.
+	We then discuss some analytical singular value bounds in \gls{los} and fully-connected scenarios.
+	This is the first paper to answer the channel shaping question and highlight the \gls{bd}-\gls{ris} gain from a Pareto perspective.
 
-	% and demonstrate the channel shaping advantage of \gls{bd} \gls{ris} over diagonal \gls{ris}.
+	% and the first to analytically characterize the singular value bounds of \gls{bd}-\gls{ris}.
+	% characterize the Pareto frontier of channel singular values in the presence of \gls{ris}.
 
-	Second, we tailor a \gls{rcg} algorithm for asymmetric\footnote{Although the constraint of symmetric scattering parameters is widely respected in the literature \cite{Shen2020a,Nerini2023,Santamaria2023,Fang2023,Nerini2023a,Zhou2023,Li2023d,Bartoli2023}, it can be relaxed when the \gls{bd} \gls{ris} involves asymmetric passive components (e.g., ring hybrids and branch-line hybrids) \cite{Ahn2006}, as previously assumed in \cite{Li2023b,Li2023c}. Symmetry can be enforced by projection if necessary.} \gls{bd} \gls{ris} optimization.
-	Specifically, block-wise update is performed along the geodesics\footnote{A geodesic refers to the shortest path between two points in a Riemannian manifold.} of the Stiefel manifold and concisely evaluated as matrix exponential.
-	The proposed method not only features lower complexity and faster convergence than universal manifold optimization \cite{Absil2009,Pan2022d}, but also applies to any \gls{bd} \gls{ris} problem where gradient exists.
-	It effectively solves the Pareto singular problem.
+	Second, we propose a \gls{rcg} algorithm for smooth optimization problems of asymmetric\footnote{Although the constraint of symmetric scattering parameters is widely respected in the literature \cite{Shen2020a,Nerini2023,Santamaria2023,Fang2023,Nerini2023a,Zhou2023,Li2023d,Bartoli2023}, it can be relaxed when the \gls{bd}-\gls{ris} involves asymmetric passive components (e.g., ring hybrids and branch-line hybrids) \cite{Ahn2006}. This assumption has been previously adopted in \cite{Li2023b,Li2023c} and symmetry can be enforced on solutions by projection if necessary.} \gls{bd}-\gls{ris} with arbitrary group size.
+	Specifically, blockwise update is performed along the geodesics\footnote{A geodesic refers to the shortest path between two points in a Riemannian manifold.} of the Stiefel manifold and evaluated compactly as matrix exponential.
+	% The proposed method not only features lower complexity and faster convergence than general manifold optimization \cite{Absil2009,Pan2022d}, but also applies to any \gls{bd}-\gls{ris} problem where gradient exists.
+	The proposed method features lower complexity and faster convergence than general manifold optimization \cite{Absil2009,Pan2022d}, which effectively addresses the Pareto singular value problem.
+	This is the first paper to tailor an efficient optimization framework that unleashes the design potential of asymmetric \gls{bd}-\gls{ris}.
 
-	Third, we propose a closed-form iterative algorithm for power centric channel shaping problems.
-	The idea is to successively approximate the quadratic objective by a sequence of affines and solve the local problems by \gls{svd}.
-	Case studies are conducted for channel power maximization in \gls{pc} and leakage interference minimization in \gls{ic}.
+	Third, we tackle \gls{bd}-\gls{ris} \gls{mimo} rate maximization with two solutions: an optimal approach via \gls{ao} and a low-complexity approach over channel shaping.
+	The former updates active and passive beamformers by eigenmode transmission and \gls{rcg} algorithm, respectively.
+	The latter suboptimally decouples both blocks, recasts the shaping problem as channel power maximization, and solves it iteratively in closed form.
+	We then highlight the corresponding channel singular values on the Pareto frontier and compare with analytical bounds.
 
-	Fourth, we perform extensive simulations to validate and quantify the signal processing advantage of \gls{bd} \gls{ris}.
+	% Third, we propose a closed-form iterative algorithm for power centric channel shaping problems.
+	% The idea is to successively approximate the quadratic objective by a sequence of affines and solve the local problems by \gls{svd}.
+	% Case studies are conducted for channel power maximization in \gls{pc} and leakage interference minimization in \gls{ic}.
+
+	Fourth, we perform extensive simulations to validate and quantify the signal processing advantage of \gls{bd}-\gls{ris}.
 	Besides channel shaping, we also consider typical joint active and passive beamforming problems, including rate maximization in \gls{pc} and \gls{wsr} maximization in \gls{ic}.
-	Results suggest that \gls{bd} \gls{ris} achieves a larger array gain in \gls{pc} and a higher \gls{dof} in \gls{ic}.
+	Results suggest that \gls{bd}-\gls{ris} achieves a larger array gain in \gls{pc} and a higher \gls{dof} in \gls{ic}.
+	We discover that the shaping advantage of \gls{bd}-\gls{ris} increases with group size and stems from stronger subchannel rearrangement and subspace alignment capabilities.
 \end{section}
-
-% \begin{section}{Assumption}
-% 	We introduce \gls{bd} \gls{ris} in \gls{mimo} \gls{pc} and \gls{ic}.
-% 	% point-to-point and interference \gls{mimo} channels.
-% 	All proposals are based on assumption of \emph{asymmetric} passive \gls{bd} \gls{ris}, i.e., symmetry constraint $\mathbf{\Theta}_g = \mathbf{\Theta}_g^\mathsf{T}$ is relaxed.
-% 	This is feasible when asymmetric passive components (e.g., ring hybrids and branch-line hybrids) \cite{Ahn2006} are available.
-% 	This assumption was also made in Hongyu's papers \cite{Li2023b,Li2023c}.
-% 	For quadratic problems, the proposed algorithms may be extended to symmetric \gls{bd} \gls{ris} by replacing singular value decomposition with Takagi factorization \cite{Horn2012}.
-% \end{section}
 
 % ! Evaluate the rate performance of RIS that maximizes channel power (should coincide at low and high snr)
 
 \begin{section}{\glsentryshort{mimo}-\glsentryshort{pc}}
 
 	\begin{subsection}{Channel Singular Value Redistribution}
-		We first show the channel shaping benefit of \gls{bd} \gls{ris} by a toy example.
+		We first show the channel shaping benefit of \gls{bd}-\gls{ris} by a toy example.
 		Consider $(N^\mathrm{T}, N^\mathrm{S}, N^\mathrm{R}) = (2, 2, 2)$ and assume the direct link is absent.
 		The diagonal \gls{ris} is $\mathbf{\Theta}^\mathrm{D} = \mathrm{diag}(e^{\jmath \theta_1}, e^{\jmath \theta_2})$ while the unitary \gls{ris} has 4 independent angular parameters
 		\begin{equation}
@@ -253,13 +254,13 @@
 			\label{sm:pc_singular_toy}
 		\end{figure}
 		Fig.~\ref{sm:pc_singular_toy} illustrates all possible channel singular values achieved by diagonal and symmetry unitary \gls{ris}.
-		Despite using the same number of elements and parameters, \gls{bd} \gls{ris} provides much wider dynamic ranges of $\sigma_1(\mathbf{H})$ and $\sigma_2(\mathbf{H})$ than diagonal \gls{ris}.
+		Despite using the same number of elements and parameters, \gls{bd}-\gls{ris} provides much wider dynamic ranges of $\sigma_1(\mathbf{H})$ and $\sigma_2(\mathbf{H})$ than diagonal \gls{ris}.
 		Larger gaps are expected when the symmetry constraint can be relaxed.
 
-		We then analyze the channel shaping \emph{capability} of \gls{bd} \gls{ris} under specific setups.
+		We then analyze the channel shaping \emph{capability} of \gls{bd}-\gls{ris} under specific setups.
 		\begin{subsubsection}{Rank-Deficient Channel}
 			\label{sc:pc_rank_deficient}
-			In rank-deficient channels, \gls{bd} \gls{ris} $\mathbf{\Theta}^\mathrm{B}$ cannot achieve a higher \gls{dof} than diagonal \gls{ris} $\mathbf{\Theta}^\mathrm{D}$.
+			In rank-deficient channels, \gls{bd}-\gls{ris} $\mathbf{\Theta}^\mathrm{B}$ cannot achieve a higher \gls{dof} than diagonal \gls{ris} $\mathbf{\Theta}^\mathrm{D}$.
 			This is because $\mathrm{sv}(\mathbf{\Theta}^\mathrm{B}) = \mathrm{sv}(\mathbf{\Theta}^\mathrm{D}) = \boldsymbol{1}$ and
 			\begin{equation}
 				\begin{split}
@@ -268,8 +269,8 @@
 					& \le \mathrm{rank}(\mathbf{H}^\mathrm{D}) + \min \bigl( \mathrm{rank}(\mathbf{H}^\mathrm{B}), \mathrm{rank}(\mathbf{\Theta}), \mathrm{rank}(\mathbf{H}^\mathrm{F}) \bigr).
 				\end{split}
 			\end{equation}
-			% However, \gls{bd} \gls{ris} can still guarantee a higher rate at finite \gls{snr}.
-			Note \gls{bd} \gls{ris} can still provide a higher indirect \gls{snr} as shown in Fig.~\ref{sm:pc_power_sx} and \ref{sm:pc_power_bond}.
+			% However, \gls{bd}-\gls{ris} can still guarantee a higher rate at finite \gls{snr}.
+			Note \gls{bd}-\gls{ris} can still provide a higher indirect \gls{snr} as shown in Fig.~\ref{sm:pc_power_sx} and \ref{sm:pc_power_bond}.
 		\end{subsubsection}
 
 
@@ -369,10 +370,10 @@
 		\end{figure}
 
 		The Pareto frontier and evolving trend of channel singular values are shown in Fig.~\ref{sm:pc_singular_pareto} and \ref{sm:pc_singular_bound}.
-		Clearly, \gls{bd} \gls{ris} with a larger group size can redistribute the channel singular values to a wider range.
+		Clearly, \gls{bd}-\gls{ris} with a larger group size can redistribute the channel singular values to a wider range.
 	\end{subsection}
 	\begin{subsection}{Channel Power Maximization}
-		Consider a \gls{bd} \gls{ris} with $N^\mathrm{S}$ elements, which is divided into $G$ groups of equal $L$ elements.
+		Consider a \gls{bd}-\gls{ris} with $N^\mathrm{S}$ elements, which is divided into $G$ groups of equal $L$ elements.
 		\begin{maxi!}
 			{\scriptstyle{\mathbf{\Theta}}}{\left\lVert \mathbf{H}^\mathrm{D} + \sum_g\nolimits \mathbf{H}_g^\mathrm{B} \mathbf{\Theta}_g \mathbf{H}_g^\mathrm{F} \right\rVert _\mathrm{F}^2}{\label{op:pc_power}}{}
 			\addConstraint{\mathbf{\Theta}_g^\mathsf{H} \mathbf{\Theta}_g=\mathbf{I}, \quad \forall g \in \mathcal{G} \triangleq \{1,\ldots,G\}.}{}{}
@@ -454,9 +455,9 @@
 		% The behavior is more obvious for a large \gls{ris}.
 		This behavior is more pronounced for a large \gls{ris}.
 		For example, the gain of pairwise connection is \qty{2.8}{\percent} for $N^\mathrm{S} = 16$ and \qty{28}{\percent} for $N^\mathrm{S} = 256$.
-		% \gls{bd} \gls{ris} provides a higher channel power than conventional \gls{ris}.
+		% \gls{bd}-\gls{ris} provides a higher channel power than conventional \gls{ris}.
 		% As $L$ increases from 1 to 2,
-		It implies that the channel shaping capability of \gls{bd} \gls{ris} scales with group size $L$.
+		It implies that the channel shaping capability of \gls{bd}-\gls{ris} scales with group size $L$.
 
 		Fig.~\ref{sm:pc_power_bond_hd} and \ref{sm:pc_power_bond_nd} compare the average channel power without and with direct link.
 		% where the cascaded channel power available to passive \gls{ris} is $\lVert \mathbf{H}^\mathrm{B} \rVert _\mathrm{F}^2 \lVert \mathbf{H}^\mathrm{F} \rVert _\mathrm{F}^2$.
@@ -468,11 +469,11 @@
 		``Cascaded'' means the sum of element-wise product of first $N = \min(N^\mathrm{T}, N^\mathrm{S}, N^\mathrm{R})$ eigenvalues (i.e., element-wise power product) of the forward and backward channels.
 		We observe that diagonal \gls{ris} wastes substantial cascaded power and struggles to align the direct-indirect eigenspace.
 		When the direct link is absent, only \qty{2.6}{\percent} of available power is utilized by diagonal \gls{ris} while \qty{100}{\percent} power is recycled by fully-connected \gls{ris}.
-		When the direct link is present, the proposed \gls{bd} \gls{ris} design can balance the direct-indirect and forward-backward eigenspace alignment for an optimal channel boost.
+		When the direct link is present, the proposed \gls{bd}-\gls{ris} design can balance the direct-indirect and forward-backward eigenspace alignment for an optimal channel boost.
 		It is worth noting that, when $L$ is sufficiently large, the composite channel power surpasses the power sum of direct and cascaded channels, thanks to the constructive \emph{amplitude superposition} of direct and cascaded channels.
-		This again emphasizes the advantage of in-group connection of \gls{bd} \gls{ris}.
+		This again emphasizes the advantage of in-group connection of \gls{bd}-\gls{ris}.
 		% This is because the direct and indirect channels superpose
-		% the proposed \gls{bd} \gls{ris} design can also be applied to conventional \gls{ris} to improve the channel power.
+		% the proposed \gls{bd}-\gls{ris} design can also be applied to conventional \gls{ris} to improve the channel power.
 		% When the direct link is present, a small $L$ cannot align the direct-indirect eigenspace.
 
 		% neither effectively utilizes the cascaded channel power, nor effectively align the direct-indirect eigenspace.
@@ -600,9 +601,9 @@
 		Fig.~\ref{sm:pc_rate_sx} illustrates how \gls{ris} configuration influences the \gls{mimo} \gls{pc} achievable rate.
 		To ensure a \qty{20}{bit/s/Hz} transmission, an \gls{snr} of \qty{13.5}{\dB} is required for a 8T4R system.
 		This value decreases to \qty{12.5}{\dB} (resp. \qty{8}{\dB}) when 32- (resp. 256-) element diagonal \gls{ris} is present.
-		If tetrads can be formed in \gls{bd} \gls{ris}, the \gls{snr} can be reduced by another \qty{20}{\percent} (resp. \qty{44}{\percent}).
+		If tetrads can be formed in \gls{bd}-\gls{ris}, the \gls{snr} can be reduced by another \qty{20}{\percent} (resp. \qty{44}{\percent}).
 		Further increase in $L$ yields a marginal gain and incurs $\mathcal{O}(L^2)$ connections.
-		We thus conclude dyadic or tetradic \gls{bd} \gls{ris} usually strike a good balance between performance and complexity.
+		We thus conclude dyadic or tetradic \gls{bd}-\gls{ris} usually strike a good balance between performance and complexity.
 	\end{subsection}
 
 \end{section}
@@ -627,7 +628,7 @@
 		\end{equation}
 		where $\bar{\mathbf{U}}_{j,N}^{(r)}$ corresponds to interference covariance matrix $\bar{\mathbf{Q}}_j^{(r)} = \sum_{k \ne j} \mathbf{H}_{kj}^\mathsf{H} {\mathbf{G}_k^{(r)}}^\mathsf{H} \mathbf{G}_k^{(r)} \mathbf{H}_{kj}$ in the reciprocal network.
 		Once $\{\mathbf{G}_k\}$ and $\{\mathbf{W}_k\}$ are determined, we define $\bar{\mathbf{H}}_{kj}^\mathrm{D} \triangleq \mathbf{G}_k \mathbf{H}_{kj}^\mathrm{D} \mathbf{W}_j$, $\bar{\mathbf{H}}_k^\mathrm{B} \triangleq \mathbf{G}_k \mathbf{H}_k^\mathrm{B}$, and $\bar{\mathbf{H}}_j^\mathrm{F} \triangleq \mathbf{H}_j^\mathrm{F} \mathbf{W}_j$.
-		The \gls{bd} \gls{ris} subproblem reduces to
+		The \gls{bd}-\gls{ris} subproblem reduces to
 		\begin{mini!}
 			{\scriptstyle{\mathbf{\Theta}}}{\mathop{\sum\sum}_{j \neq k} \left\lVert (\bar{\mathbf{H}}_{kj}^\mathrm{D} + \bar{\mathbf{H}}_k^\mathrm{B} \mathbf{\Theta} \bar{\mathbf{H}}_j^\mathrm{F}) \right\rVert _{\mathrm{F}}^2}{\label{op:ic_interference_ris}}{}
 			\addConstraint{\mathbf{\Theta}_g^\mathsf{H} \mathbf{\Theta}_g=\mathbf{I}, \quad \forall g.}{}{}
@@ -659,9 +660,9 @@
 			\caption{Average leakage interference versus \gls{ris} elements $N^\mathrm{S}$ and group size $L$. Transmitters and receivers are randomly generated in a disk of radius 50 m centered at the \gls{ris}. $(N^\mathrm{T}, N^\mathrm{R}, N^\mathrm{E}, K) = (8, 4, 3, 5)$, $(\gamma^\mathrm{D}, \gamma^\mathrm{F}, \gamma^\mathrm{B}) = (3, 2.4, 2.4)$, and reference pathloss at \qty{1}{\meter} is \qty{-30}{\dB}.}
 			\label{sm:ic_interference_sx}
 		\end{figure}
-		Fig.~\ref{sm:ic_interference_sx} illustrates how \gls{bd} \gls{ris} helps to reduce the leakage interference.
-		In this case, a fully-connected $2^n$-element \gls{bd} \gls{ris} is almost as good as a diagonal $2^{n+2}$-element \gls{ris} in terms of leakage interference.
-		Interestingly, the result suggests that \gls{bd} \gls{ris} can achieve a higher \gls{dof} than diagonal \gls{ris} in \gls{mimo}-\gls{ic}, which is not the case in \gls{mimo}-\gls{pc} (as discussed in \ref{sc:pc_rank_deficient}).
+		Fig.~\ref{sm:ic_interference_sx} illustrates how \gls{bd}-\gls{ris} helps to reduce the leakage interference.
+		In this case, a fully-connected $2^n$-element \gls{bd}-\gls{ris} is almost as good as a diagonal $2^{n+2}$-element \gls{ris} in terms of leakage interference.
+		Interestingly, the result suggests that \gls{bd}-\gls{ris} can achieve a higher \gls{dof} than diagonal \gls{ris} in \gls{mimo}-\gls{ic}, which is not the case in \gls{mimo}-\gls{pc} (as discussed in \ref{sc:pc_rank_deficient}).
 	\end{subsection}
 
 	\begin{subsection}{Weighted Sum-Rate Maximization}
@@ -732,7 +733,7 @@
 			\label{sm:ic_rate_user}
 		\end{figure}
 
-		A new observation from Fig.~\ref{sm:ic_rate_sx} that the interference alignment capability of \gls{bd} \gls{ris} scales much faster with group size than number of elements.\footnote{The results are not very stable and depend heavily on initialization.}
+		A new observation from Fig.~\ref{sm:ic_rate_sx} that the interference alignment capability of \gls{bd}-\gls{ris} scales much faster with group size than number of elements.\footnote{The results are not very stable and depend heavily on initialization.}
 	\end{subsection}
 \end{section}
 
