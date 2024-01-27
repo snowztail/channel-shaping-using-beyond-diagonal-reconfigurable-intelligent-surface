@@ -135,6 +135,8 @@
 \newacronym{wmmse}{WMMSE}{Weighted \gls{mmse}}
 \newacronym{mse}{MSE}{Mean-Square Error}
 \newacronym{los}{LoS}{Line-of-Sight}
+\newacronym{csi}{CSI}{Channel State Information}
+\newacronym{cscg}{CSCG}{Circularly Symmetric Complex Gaussian}
 
 
 \begin{document}
@@ -215,7 +217,7 @@
 	Third, we tackle \gls{bd}-\gls{ris} \gls{mimo} rate maximization with two solutions: a local-optimal approach through \gls{ao} and a low-complexity approach over channel shaping.
 	The former updates active and passive beamformers by eigenmode transmission and \gls{rcg} algorithm, respectively.
 	The latter suboptimally decouples both blocks, recasts the shaping problem as channel power maximization, and solves it in closed form iteratively.
-	Interestingly, the gap vanishes as \gls{bd}-\gls{ris} evolves from single-connected (diagonal) to fully-connected (unitary).
+	Interestingly, the gap vanishes as \gls{bd}-\gls{ris} evolves from diagonal (single-connected) to unitary (fully-connected).
 	It suggests that channel shaping offers a crucial guideline for joint \gls{ris}-transceiver designs.
 
 	% Third, we propose a closed-form iterative algorithm for power centric channel shaping problems.
@@ -226,36 +228,80 @@
 	In terms of channel power, fully-connected \gls{bd}-\gls{ris} boosts up to 62\%, 312\%, 537\% over single-connected in $1 \times 1$, $4 \times 4$, $16 \times 16$ configuration under Rayleigh fading.
 	The superiority stems from stronger \emph{subchannel rearrangement} and \emph{subspace alignment} capabilities empowered by in-group cooperation.
 	It emphasizes the importance of \gls{bd}-\gls{ris} in large-scale \gls{mimo} systems.
+
+
+	\emph{Notation:}
+	Italic, bold lower-case, and bold upper-case letters indicate scalars, vectors and matrices, respectively.
+	$\jmath$ denotes the imaginary unit.
+	$\mathbb{C}$ represents the set of complex numbers.
+	% $\mathrm{U}(n)$ is the group of $n \times n$ unitary matrices.
+	$\mathbb{U}^{n \times n}$ denotes the set of $n \times n$ unitary matrices.
+	$\mathbf{0}$ and $\mathbf{I}$ are the all-zero and identity matrices with appropriate size, respectively.
+	$\mathrm{tr}(\cdot)$ and $\det(\cdot)$ evaluates the trace and determinant of a square matrix, respectively.
+	$\mathrm{diag}(\cdot)$ constructs a square matrix with arguments on the main diagonal and zeros elsewhere.
+	$\mathrm{sv}(\cdot)$ returns the singular value vector.
+	$\sigma_n(\cdot)$ and $\lambda_n(\cdot)$ is the $n$-th largest singular value and eigenvalue, respectively.
+	% $\boldsymbol{\sigma}(\cdot)$ and $\boldsymbol{\lambda}(\cdot)$ are the corresponding vectors.
+	$(\cdot)^*$, $(\cdot)^\mathsf{T}$, $(\cdot)^\mathsf{H}$, $(\cdot)^{(r)}$, $(\cdot)^{\star}$ denote the conjugate, transpose, conjugate transpose, $r$-th iterated, and final results, respectively.
+	$\lvert \cdot \rvert$ denotes the absolute value.
+	$\lVert \cdot \rVert _p$ means the $p$-norm and $\lVert \cdot \rVert$ suggests $p = 2$.
+	$\lVert \cdot \rVert _\mathrm{F}$ represents the Frobenius norm.
+	% $(\cdot)^{(r)}$ and $(\cdot)^{\star}$ denote the $r$-th iterated and optimal results, respectively.
+	% The distribution of a \gls{cscg} random variable with zero mean and variance $\sigma^2$ is denoted by $\mathcal{CN}(0,\sigma^2)$, and $\sim$ means ``distributed as''.
+	$\sim$ means ``distributed as''.
+	$\mathcal{CN}(\mathbf{0}, \mathbf{\Sigma})$ is the multivariate \gls{cscg} distribution with mean $\mathbf{0}$ and covariance $\mathbf{\Sigma}$.
+	% The \gls{cscg} distribution with zero mean and variance $\sigma^2$ is denoted by $\mathcal{CN}(0,\sigma^2)$.
 \end{section}
 
-\begin{section}{System Model}
-	Consider a \gls{bd}-\gls{ris} aided point-to-point \gls{mimo} system with $N_\mathrm{T}$, $N_\mathrm{S}$, $N_\mathrm{R}$ transmit, scatter, receive antennas, respectively.
+\begin{section}{\gls{bd}-\gls{ris} Model}
+	Consider a \gls{bd}-\gls{ris} aided point-to-point \gls{mimo} system with $N_\mathrm{T}$, $N_\mathrm{S}$, $N_\mathrm{R}$ transmit, scatter, and receive antennas, respectively.
+	This configuration is denoted as $N_\mathrm{T} \times N_\mathrm{S} \times N_\mathrm{R}$.
 	The \gls{bd}-\gls{ris} is modeled as an $N_\mathrm{S}$-port network \cite{Ivrlac2010} that further divides into $G$ independent groups.
 	Each group contains $L \triangleq N_\mathrm{S} / G$ elements interconnected by real-time reconfigurable components \cite{Shen2020a}.
-	To simplify the analysis, we assume the \gls{bd}-\gls{ris} features lossless asymmetric\footnote{While symmetric (impedance) network is often considered in the literature \cite{Shen2020a,Nerini2023,Santamaria2023,Fang2023,Nerini2023a,Zhou2023,Li2023d,Bartoli2023}, asymmetric passive components (e.g., ring hybrids and branch-line hybrids) may also be reconfigured in real time \cite{Ahn2006}. Asymmetric \gls{bd}-\gls{ris} has been discussed in \cite{Li2023b,Li2023c,Bartoli2023}. Symmetry can be enforced by projection \cite{Fang2023} if necessary.} in-group connections without mutual coupling.
-	The overall scattering matrix is thus a block diagonal matrix $\mathbf{\Theta} = \mathrm{diag}(\mathbf{\Theta}_1,\ldots,\mathbf{\Theta}_G)$, where $\mathbf{\Theta}_g \in \mathbb{U}^{L \times L}$ is a unitary matrix corresponding to group $g \in \mathcal{G} \triangleq \{1,\ldots,G\}$.
+	To simplify the analysis, we assume the \gls{bd}-\gls{ris} features lossless asymmetric\footnote{While symmetric (impedance) network is often considered in the literature \cite{Shen2020a,Nerini2023,Santamaria2023,Fang2023,Nerini2023a,Zhou2023,Li2023d,Bartoli2023}, asymmetric passive components (e.g., ring hybrids and branch-line hybrids) may also be reconfigured in real time \cite{Ahn2006} and asymmetric \gls{bd}-\gls{ris} has been discussed in \cite{Li2023b,Li2023c,Bartoli2023}.} in-group connections without mutual coupling.
+	The overall scattering matrix is thus block diagonal $\mathbf{\Theta} = \mathrm{diag}(\mathbf{\Theta}_1,\ldots,\mathbf{\Theta}_G) \in \mathbb{U}^{N_\mathrm{S} \times N_\mathrm{S}}$, where $\mathbf{\Theta}_g \in \mathbb{U}^{L \times L}$ is a unitary matrix corresponding to group $g \in \mathcal{G} \triangleq \{1,\ldots,G\}$.
+	Consider a quasi-static block fading model where $\mathbf{H}_\mathrm{D} \in \mathbb{C}^{N_\mathrm{R} \times N_\mathrm{T}}$, $\mathbf{H}_\mathrm{F} \in \mathbb{C}^{N_\mathrm{S} \times N_\mathrm{T}}$, $\mathbf{H}_\mathrm{B} \in \mathbb{C}^{N_\mathrm{R} \times N_\mathrm{S}}$ denote the direct (transmitter-receiver), forward (transmitter-\gls{ris}), and backward (\gls{ris}-receiver) channels, respectively.
+	The equivalent channel is
+	\begin{equation}
+		\mathbf{H} = \mathbf{H}_\mathrm{D} + \mathbf{H}_\mathrm{B} \mathbf{\Theta} \mathbf{H}_\mathrm{F} = \mathbf{H}_\mathrm{D} + \sum_g \mathbf{H}_{\mathrm{B},g} \mathbf{\Theta}_g \mathbf{H}_{\mathrm{F},g},
+		\label{eq:channel_equivalent}
+	\end{equation}
+	where $\mathbf{H}_{\mathrm{B},g} \in \mathbb{C}^{N_\mathrm{R} \times L}$ and $\mathbf{H}_{\mathrm{F},g} \in \mathbb{C}^{L \times N_\mathrm{T}}$ are the backward and forward channels of \gls{ris} group $g$, respectively.
+	\begin{remark}
+		\gls{bd}-\gls{ris} reduces to diagonal \gls{ris} and unitary \gls{ris} with group size 1 and $N_\mathrm{S}$, respectively.
+	\end{remark}
+	\begin{remark}
+		Individual forward and backward \gls{csi} are generally required for \gls{bd}-\gls{ris} designs.
+		This is different from diagonal \gls{ris} where estimating their product is usually sufficient.
+	\end{remark}
+\end{section}
 
-	\begin{subsection}{Channel Singular Value Redistribution}
-		We first show the channel shaping benefit of \gls{bd}-\gls{ris} by a toy example.
-		Consider $(N^\mathrm{T}, N^\mathrm{S}, N^\mathrm{R}) = (2, 2, 2)$ and assume the direct link is absent.
-		The diagonal \gls{ris} is $\mathbf{\Theta}^\mathrm{D} = \mathrm{diag}(e^{\jmath \theta_1}, e^{\jmath \theta_2})$ while the unitary \gls{ris} has 4 independent angular parameters
+\begin{section}{Channel Singular Value Redistribution}
+	\begin{subsection}{A Toy Example}
+		% We first show the channel shaping advantage of \gls{bd}-\gls{ris} by a toy example.
+		We first use a toy example to illustrate that \gls{bd}-\gls{ris} can provide a wider dynamic range of channel singular values.
+		Consider a $2 \times 2 \times 2$ setup where the direct link is blocked.
+		The diagonal \gls{ris} is modeled by $\mathbf{\Theta}_\mathrm{D} = \mathrm{diag}(e^{\jmath \theta_1}, e^{\jmath \theta_2})$ while the unitary \gls{ris} has 4 independent angular parameters
 		\begin{equation}
-			\mathbf{\Theta}^\mathrm{U} = e^{\jmath \phi} \begin{bmatrix}
+			\mathbf{\Theta}_\mathrm{U} = e^{\jmath \phi} \begin{bmatrix}
 				e^{\jmath \alpha} \cos \psi  & e^{\jmath \beta} \sin \psi   \\
 				-e^{-\jmath \beta} \sin \psi & e^{-\jmath \alpha} \cos \psi
 			\end{bmatrix}.
 		\end{equation}
-		When the direct link is absent, $\phi$ has no impact on the singular value because $\mathrm{sv}(e^{\jmath \phi} \mathbf{A}) = \mathrm{sv}(\mathbf{A})$.
-		For a fair comparison, we enforce symmetry with $\beta = \pi / 2$.
+		In particular, $\phi$ has no impact on the singular value because $\mathrm{sv}(e^{\jmath \phi} \mathbf{A}) = \mathrm{sv}(\mathbf{A})$.
+		For a fair comparison, we also consider symmetric impedance network with $\beta = \pi / 2$.
+		% For a fair comparison, we also consider symmetric impedance network with $\beta = \pi / 2$ such that both architectures have the same number of angular parameters.
+		% also enforce symmetry with $\beta = \pi / 2$.
 		\begin{figure}
 			\centering
 			\includegraphics[width=\columnwidth]{assets/simulation/pc_singular_toy.eps}
 			\caption{Channel singular value shaping by diagonal and symmetry unitary \gls{ris}. $(N^\mathrm{T}, N^\mathrm{S}, N^\mathrm{R}) = (2, 2, 2)$. Direct link is absent.}
 			\label{sm:pc_singular_toy}
 		\end{figure}
-		Fig.~\ref{sm:pc_singular_toy} illustrates all possible channel singular values achieved by diagonal and symmetry unitary \gls{ris}.
-		Despite using the same number of elements and parameters, \gls{bd}-\gls{ris} provides much wider dynamic ranges of $\sigma_1(\mathbf{H})$ and $\sigma_2(\mathbf{H})$ than diagonal \gls{ris}.
-		Larger gaps are expected when the symmetry constraint can be relaxed.
+		Fig.~\ref{sm:pc_singular_toy} shows the channel singular values achieved by an exhaustive grid search over $(\theta_1, \theta_2)$ for diagonal \gls{ris} and $(\alpha, \psi)$ for symmetric unitary \gls{ris}.
+		Interestingly, both singular values can be manipulated up to $9\%$ using diagonal \gls{ris} and $42\%$ using symmetric \gls{bd}-\gls{ris}, despite both architectures have the same number of angular parameters and scattering elements.
+		A larger performance gap is expected for asymmetric \gls{bd}-\gls{ris}.
+		This example emphasizes the importance of cooperative scattering and motivates further studies on channel shaping.
 
 		We then analyze the channel shaping \emph{capability} of \gls{bd}-\gls{ris} under specific setups.
 		\begin{subsubsection}{Rank-Deficient Channel}
