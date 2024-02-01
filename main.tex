@@ -241,7 +241,6 @@
 	Italic, bold lower-case, and bold upper-case letters indicate scalars, vectors and matrices, respectively.
 	$\jmath$ denotes the imaginary unit.
 	$\mathbb{C}$ represents the set of complex numbers.
-	% $\mathrm{U}(n)$ is the group of $n \times n$ unitary matrices.
 	$\mathbb{U}^{n \times n}$ denotes the set of $n \times n$ unitary matrices.
 	$\mathbf{0}$ and $\mathbf{I}$ are the all-zero and identity matrices with appropriate size, respectively.
 	$\mathrm{tr}(\cdot)$ and $\det(\cdot)$ evaluates the trace and determinant of a square matrix, respectively.
@@ -253,11 +252,8 @@
 	$\lvert \cdot \rvert$ denotes the absolute value.
 	$\lVert \cdot \rVert _p$ means the $p$-norm and $\lVert \cdot \rVert$ suggests $p = 2$.
 	$\lVert \cdot \rVert _\mathrm{F}$ represents the Frobenius norm.
-	% $(\cdot)^{(r)}$ and $(\cdot)^{\star}$ denote the $r$-th iterated and optimal results, respectively.
-	% The distribution of a \gls{cscg} random variable with zero mean and variance $\sigma^2$ is denoted by $\mathcal{CN}(0,\sigma^2)$, and $\sim$ means ``distributed as''.
 	$\sim$ means ``distributed as''.
 	$\mathcal{CN}(\mathbf{0}, \mathbf{\Sigma})$ is the multivariate \gls{cscg} distribution with mean $\mathbf{0}$ and covariance $\mathbf{\Sigma}$.
-	% The \gls{cscg} distribution with zero mean and variance $\sigma^2$ is denoted by $\mathcal{CN}(0,\sigma^2)$.
 \end{section}
 
 \begin{section}{\gls{bd}-\gls{ris} Model}
@@ -265,7 +261,6 @@
 	This configuration is denoted as $N_\mathrm{T} \times N_\mathrm{S} \times N_\mathrm{R}$.
 	The \gls{bd}-\gls{ris} is modeled as an $N_\mathrm{S}$-port network \cite{Ivrlac2010} that further divides into $G$ individual groups.
 	Each group contains $L \triangleq N_\mathrm{S} / G$ elements interconnected by real-time reconfigurable components \cite{Shen2020a}.
-	% To simplify the analysis, we assume the \gls{bd}-\gls{ris} features lossless asymmetric\footnote{While symmetric impedance network is often considered in the literature \cite{Shen2020a,Nerini2023,Santamaria2023,Fang2023,Nerini2023a,Zhou2023,Li2023d,Bartoli2023}, asymmetric passive components (e.g., ring hybrids and branch-line hybrids) may also be reconfigured in real time \cite{Ahn2006}. Asymmetric \gls{bd}-\gls{ris} has been discussed in \cite{Li2023b,Li2023c,Bartoli2023}.} in-group connections without mutual coupling.
 	To simplify the analysis, we assume there are no mutual coupling and the in-group connections can be lossless and asymmetric\footnote{While symmetric impedance network is often considered in the literature \cite{Shen2020a,Nerini2023,Santamaria2023,Fang2023,Nerini2023a,Zhou2023,Li2023d,Bartoli2023}, asymmetric passive components (e.g., ring hybrids and branch-line hybrids) may also be reconfigured in real time \cite{Ahn2006}. Asymmetric \gls{bd}-\gls{ris} has been discussed in \cite{Li2023b,Li2023c,Bartoli2023}.}.
 	The overall scattering matrix is thus block diagonal $\mathbf{\Theta} = \mathrm{diag}(\mathbf{\Theta}_1,\ldots,\mathbf{\Theta}_G) \in \mathbb{U}^{N_\mathrm{S} \times N_\mathrm{S}}$, where $\mathbf{\Theta}_g \in \mathbb{U}^{L \times L}$ is a unitary matrix corresponding to group $g \in \mathcal{G} \triangleq \{1,\ldots,G\}$.
 	Let $\mathbf{H}_\mathrm{D} \in \mathbb{C}^{N_\mathrm{R} \times N_\mathrm{T}}$, $\mathbf{H}_\mathrm{F} \in \mathbb{C}^{N_\mathrm{S} \times N_\mathrm{T}}$, $\mathbf{H}_\mathrm{B} \in \mathbb{C}^{N_\mathrm{R} \times N_\mathrm{S}}$ denote the direct (transmitter-receiver), forward (transmitter-\gls{ris}), and backward (\gls{ris}-receiver) channels, respectively.
@@ -298,13 +293,11 @@
 			\end{bmatrix}.
 		\end{equation}
 		In particular, $\phi$ has no impact on the singular value because $\mathrm{sv}(e^{\jmath \phi} \mathbf{A}) = \mathrm{sv}(\mathbf{A})$.
-		% For a fair comparison, we also consider symmetric impedance network with $\beta = \pi / 2$.
 		We also enforce symmetry by $\beta = \pi / 2$ such that both architectures have the same number of angular parameters.
-		% also enforce symmetry with $\beta = \pi / 2$.
 		\begin{figure}
 			\centering
 			\includegraphics[width=\columnwidth]{assets/simulation/pc_singular_toy.eps}
-			\caption{Channel singular value shaping by diagonal and symmetry unitary \gls{ris}. $(N^\mathrm{T}, N^\mathrm{S}, N^\mathrm{R}) = (2, 2, 2)$. Direct link is absent.}
+			\caption{$2 \times 2 \times 2$ channel singular value shaping by diagonal and symmetry unitary \gls{ris}. Direct link is absent.}
 			\label{sm:pc_singular_toy}
 		\end{figure}
 		Fig.~\ref{sm:pc_singular_toy} shows the channel singular values achieved by an exhaustive grid search over $(\theta_1, \theta_2)$ for diagonal \gls{ris} and $(\alpha, \psi)$ for symmetric unitary \gls{ris}.
@@ -322,13 +315,8 @@
 		where $n \in \{1,\ldots,\min(N_\mathrm{T}, N_\mathrm{R})\}$ and $\rho_n$ is the weight of the $n$-th singular value that can be positive, zero, or negative.
 		Varying $\{\rho_n\}$ unveils the entire achievable singular value region.
 		Thus, the Pareto frontier problem~\eqref{op:pareto} generalizes most relevant metrics and provides a powerful shaping framework.
-		% For group $g$, the objective \eqref{ob:pareto} is smooth in $\mathbf{\Theta}_g$ and the feasible domain \eqref{co:pareto.unitary} corresponds to the Stiefel manifold.
 		The objective \eqref{ob:pareto} is smooth in $\mathbf{\Theta}$ and the feasible domain \eqref{co:pareto_unitary} for group $g$ corresponds to the Stiefel manifold.
-		% Next, we zoom out to solve general smooth optimization problems of asymmetric \gls{bd}-\gls{ris} with arbitrary group size.
-		% Those properties motivate us to propose a \gls{rcg} algorithm for smooth optimization problems of asymmetric \gls{bd}-\gls{ris} with arbitrary group size.
-		% Those motivate us to propose a general \gls{rcg} algorithm for asymmetric \gls{bd}-\gls{ris} with arbitrary group size, which will be detailed in Section~\ref{sc:rcg}.
-		% Those properties motivate us to zoom out to general smooth optimization problems of asymmetric \gls{bd}-\gls{ris} with arbitrary group size.
-		Next, we zoom out to general smooth maximization problems of asymmetric \gls{bd}-\gls{ris} with arbitrary group size.
+		Next, we zoom out to general smooth maximization problems of asymmetric \gls{bd}-\gls{ris}.
 
 		Inspired by \cite{Abrudan2008,Abrudan2009}, we propose a block-wise \gls{rcg} algorithm along the geodesics on the Lie group of unitary matrices $\mathbb{U}^{L \times L}$.
 		It leverages the fact that unitary matrices are closed under multiplication.
@@ -347,32 +335,24 @@
 			\mathbf{D}_g^{(r)} = \nabla_{\mathrm{R},g}^{(r)} + \gamma_g^{(r)} \mathbf{D}_g^{(r-1)}.
 			\label{eq:direction_cg}
 		\end{equation}
-		% In the Stiefel manifold, the geodesic emanating from $\mathbf{\Theta}_g^{(r)}$ with velocity $\mathbf{D}_g^{(r)}$ and step size $\mu_g$ is described compactly by the exponential map \cite{Edelman1998}
-		% In the Stiefel manifold, the geodesic emanating from $\mathbf{\Theta}_g^{(r)}$ with velocity $\mathbf{D}_g^{(r)}$ and step size $\mu_g^{(r)}$ is described compactly by the exponential map \cite{Edelman1998}
 		In the Stiefel manifold, the geodesic emanating from $\mathbf{\Theta}_g^{(r)}$ with velocity $\mathbf{D}_g^{(r)}$ and step size $\mu$ is described compactly by the exponential map \cite{Edelman1998}
 		\begin{equation}
 			\mathbf{G}_g^{(r)}(\mu) = \exp(\mu \mathbf{D}_g^{(r)}) \mathbf{\Theta}_g^{(r)}.
 			\label{eq:geodesic}
 		\end{equation}
-		% \begin{gather}
-		% 	\mathbf{T}_g^{(r)}(\mu) = \exp(\mu \mathbf{D}_g^{(r)}),\label{eq:exponential_map}\\
-		% 	\mathbf{G}_g^{(r)}(\mu) = \mathbf{T}_g^{(r)}(\mu) \mathbf{\Theta}_g^{(r)}.\label{eq:geodesic}
-		% \end{gather}
 		An appropriate $\mu^\star$ can be obtained by the Armijo rule \cite{Armijo1966}.\footnote{To double the step size, one only need to square the rotation matrix instead of recomputing the matrix exponential, i.e., $\exp(2 \mu \mathbf{D}_g^{(r)}) = \exp^2(\mu \mathbf{D}_g^{(r)})$.}
 		Finally, the scattering matrix is updated along the geodesic as
 		\begin{equation}
 			\mathbf{\Theta}_g^{(r+1)} = \mathbf{G}_g^{(r)}(\mu^\star).
 			\label{eq:update_geodesic}
 		\end{equation}
-		% Algorithm~\ref{ag:rcg} summarizes the proposed block-wise geodesic \gls{rcg} update for asymmetric \gls{bd}-\gls{ris} with arbitrary group size.
-		Algorithm~\ref{ag:rcg} summarizes the proposed block-wise geodesic \gls{rcg} method for general smooth maximization problems of asymmetric \gls{bd}-\gls{ris}.
+		Algorithm~\ref{ag:rcg} summarizes the proposed block-wise geodesic \gls{rcg} method for smooth maximization problems of asymmetric \gls{bd}-\gls{ris}.
 		Convergence to stationary points is guaranteed as updating each block iteratively does not reduce the objective function.
 
 		\begin{remark}
 			Compared with universal manifold optimization \cite{Absil2009,Pan2022d}, Algorithm~\ref{ag:rcg} inherits a trifold benefit from \cite{Abrudan2008,Abrudan2009}:
-			% The advantage of the proposed block-wise \gls{rcg} algorithm over universal manifold optimization \cite{Absil2009,Pan2022d} is trifold:
 			\begin{enumerate}
-				\item No retraction thanks to rotational update;
+				\item No retraction thanks to rotational update \eqref{eq:geodesic}, \eqref{eq:update_geodesic};
 				\item Lower computational complexity per iteration;
 				\item Faster convergence thanks to proper parameter space.
 			\end{enumerate}
@@ -389,12 +369,15 @@
 				\Initialize {$r \gets 0$, $\mathbf{\Theta}^{(0)}$}
 				\Repeat
 					\For {$g \gets 1$ to $G$}
-						\State $\nabla_{\mathrm{R},g}^{(r)} \gets$ \eqref{eq:gradient_euclidean}, \eqref{eq:gradient_riemannian} \label{ln:gradient_euclidean}
-						\State $\mathbf{D}_g^{(r)} \gets$ \eqref{eq:parameter_cg}, \eqref{eq:direction_cg}
+						\State $\nabla_{\mathrm{E},g}^{(r)} \gets$ \eqref{eq:gradient_euclidean} \label{ln:gradient_euclidean}
+						\State $\nabla_{\mathrm{R},g}^{(r)} \gets$ \eqref{eq:gradient_riemannian}
+						\State $\gamma_g^{(r)} \gets$ \eqref{eq:parameter_cg}
+						\State $\mathbf{D}_g^{(r)} \gets$ \eqref{eq:direction_cg}
 						\If {$\Re\bigl\{\mathrm{tr}({\mathbf{D}_g^{(r)}}^\mathsf{H} \nabla_{\mathrm{R},g}^{(r)})\bigr\} < 0$} \Comment{not an ascent direction}
 							\State $\mathbf{D}_g^{(r)} \gets \nabla_{\mathrm{R},g}^{(r)}$
 						\EndIf
 						\State $\mu \gets 1$
+						\State $\mathbf{G}_g^{(r)}(\mu) \gets$ \eqref{eq:geodesic}
 						\While {$f\bigl(\mathbf{G}_g^{(r)}(2\mu)\bigr) - f(\mathbf{\Theta}_g^{(r)}) \ge \mu \cdot \mathrm{tr}(\mathbf{D}_g^{(r)} {\mathbf{D}_g^{(r)}}^\mathsf{H}) / 2$}
 							\State $\mu \gets 2 \mu$
 						\EndWhile
@@ -408,103 +391,89 @@
 			\end{algorithmic}
 		\end{algorithm}
 
-
-
-		% \setalgorithmcaptionfont{\small}
-		% \begin{algorithm}[!t]
-		% 	\small
-		% 	\caption{Block-wise geodesic \gls{rcg} for asymmetric \gls{bd}-\gls{ris}}
-		% 	\label{ag:rcg}
-		% 	\begin{algorithmic}[1]
-		% 		\Require $f(\mathbf{\Theta})$, $G$
-		% 		\Ensure $\mathbf{\Theta}^\star$
-		% 		\State $r \gets 0$, $\mathbf{\Theta}^{(0)}$
-		% 		\Repeat
-		% 			\State $r \gets r+1$
-		% 			\For {$g \gets 1$ to $G$}
-		% 				\State $\nabla_{\mathrm{R},g}^{(r)} \gets$ \eqref{eq:gradient_euclidean}, \eqref{eq:gradient_riemannian} \label{ln:gradient_euclidean}
-		% 				\State $\gamma_g^{(r)} \gets \begin{cases} 0, & \text{if } r = 1\\ \eqref{eq:parameter_cg}, & \text{otherwise} \end{cases}$
-		% 				% \If {$r = 1$}
-		% 				% 	\State $\gamma_g^{(r)} \gets 0$
-		% 				% \Else
-		% 				% 	\State $\gamma_g^{(r)} \gets$ \eqref{eq:parameter_cg}
-		% 				% \EndIf
-		% 				% \State $\mathbf{D}_g^{(r)} \gets$ \eqref{eq:direction_cg}
-		% 				% \If {$\Re\{\mathrm{tr}({\mathbf{D}_g^{(r)}}^\mathsf{H} \nabla_{\mathrm{R},g}^{(r)})\} < 0$}
-		% 				% 	\State $\mathbf{D}_g^{(r)} \gets \nabla_{\mathrm{R},g}^{(r)}$
-		% 				% \EndIf
-		% 				% \State $\nabla_{\mathrm{R},g}^{(r)} \gets \nabla_{\mathrm{E},g}^{(r)} {\mathbf{\Theta}_g^{(r)}}^\mathsf{H} - \mathbf{\Theta}_g^{(r)} {\nabla_{\mathrm{E},g}^{(r)}}^\mathsf{H}$\label{ln:gradient_riemannian}
-		% 				% \State $\gamma_g^{(r)} \gets {\mathrm{tr}\bigl((\nabla_{\mathrm{R},g}^{(r)} - \nabla_{\mathrm{R},g}^{(r-1)}) {\nabla_{\mathrm{R},g}^{(r)}}^\mathsf{H}\bigr)}/{\mathrm{tr}\bigl(\nabla_{\mathrm{R},g}^{(r-1)} {\nabla_{\mathrm{R},g}^{(r-1)}}^\mathsf{H}\bigr)}$\label{ln:parameter_polak_approx}
-		% 				% \State $\mathbf{D}_g^{(r)} \gets \nabla_{\mathrm{R},g}^{(r)} + \gamma_g^{(r)} \mathbf{D}_g^{(r-1)}$\label{ln:direction_conjugate}
-		% 				% \State $\mu_g^{(r)} \gets \arg\max_{\mu_g} f\bigl(\exp\bigl(\mu_g \mathbf{D}_g^{(r)}\bigr) \mathbf{\Theta}_g^{(r)}\bigr)$\label{ln:step_armijo}
-		% 				% \State $\mathbf{\Theta}_g^{(r+1)} \gets \exp\bigl(\mu_g^{(r)} \mathbf{D}_g^{(r)}\bigr) \mathbf{\Theta}_g^{(r)}$\label{ln:update_geodesic}
-		% 			\EndFor
-		% 		\Until $\lvert R^{(r)} - R^{(r-1)} \rvert / R^{(r-1)} \le \epsilon$
-		% 	\end{algorithmic}
-		% \end{algorithm}
-
-		% For general optimization problems with block unitary constraint, the adapted \gls{rcg} method at iteration $r$ for block $g$ is summarized below, where $f\bigl(\mathbf{\Theta}_g^{(r)}\bigr)$ is the objective function also evaluated over $\bigl\{ \{\mathbf{\Theta}_{g'}^{(r+1)}\}_{g'<g}, \{\mathbf{\Theta}_{g'}^{(r)}\}_{g'>g} \bigr\}$.
-		% \begin{enumerate}
-		% 	\item Compute the Euclidean gradient
-		% 	\begin{equation}
-		% 		{\nabla_g^\mathrm{E}}^{(r)} = \frac{\partial f\bigl(\mathbf{\Theta}_g^{(r)}\bigr)}{\partial \mathbf{\Theta}_g^*};
-		% 		\label{eq:rcg_gradient_euclidean}
-		% 	\end{equation}
-		% 	\item Translate to the Riemannian gradient
-		% 	\begin{equation}
-		% 		{\nabla_g^\mathrm{R}}^{(r)} = {\nabla_g^\mathrm{E}}^{(r)} {\mathbf{\Theta}_g^{(r)}}^\mathsf{H} - \mathbf{\Theta}_g^{(r)} {{\nabla_g^\mathrm{E}}^{(r)}}^\mathsf{H};
-		% 		\label{eq:rcg_gradient_riemannian}
-		% 	\end{equation}
-		% 	\item Determine the weight factor
-		% 	\begin{equation}
-		% 		\gamma_g^{(r)} = \frac{\mathrm{tr}\Bigl(\bigl({\nabla_g^\mathrm{R}}^{(r)} - {\nabla_g^\mathrm{R}}^{(r-1)}\bigr) {{\nabla_g^\mathrm{R}}^{(r)}}^\mathsf{H}\Bigr)}{\mathrm{tr}\Bigl({\nabla_g^\mathrm{R}}^{(r-1)} {{\nabla_g^\mathrm{R}}^{(r-1)}}^\mathsf{H}\Bigr)};
-		% 		\label{eq:rcg_weight}
-		% 	\end{equation}
-		% 	\item Compute the conjugate direction
-		% 	\begin{equation}
-		% 		\mathbf{D}_g^{(r)} = {\nabla_g^\mathrm{R}}^{(r)} + \gamma_g^{(r)} \mathbf{D}_g^{(r-1)};
-		% 		\label{eq:rcg_direction}
-		% 	\end{equation}
-		% 	\item Determine the Armijo step size\footnote{To double the step size, simply square the argument instead of recomputing the matrix exponential, i.e., $\exp(2 \mu_g \mathbf{D}_g) = \exp^2(\mu_g \mathbf{D}_g)$.}
-		% 	\begin{equation}
-		% 		\mu_g^{(r)} = \arg\max_{\mu_g} f\Bigl(\exp\bigl(\mu_g \mathbf{D}_g^{(r)}\bigr) \mathbf{\Theta}_g^{(r)}\Bigr);
-		% 		\label{eq:rcg_step}
-		% 	\end{equation}
-		% 	\item Perform rotational update along local geodesics
-		% 	\begin{equation}
-		% 		\mathbf{\Theta}_g^{(r+1)} = \exp\Bigl(\mu_g^{(r)} \mathbf{D}_g^{(r)}\Bigr) \mathbf{\Theta}_g^{(r)}.
-		% 		\label{eq:rcg_update}
-		% 	\end{equation}
-		% \end{enumerate}
-
-		% \begin{remark}
-		% 	The adapted \gls{rcg} method leverages the fact that block unitary matrices are closed under multiplication (but not necessarily under addition).
-		% 	Its advantage over universal manifold optimization \cite{Absil2009,Pan2022d} is trifold:
-		% 	\begin{itemize}
-		% 		\item No retraction is involved;
-		% 		\item Lower computational complexity per iteration \cite{Abrudan2008};
-		% 		\item Faster convergence thanks appropriate operational space.
-		% 	\end{itemize}
-		% \end{remark}
-
+		Back to the Pareto channel singular value problem \eqref{op:pareto}. The Euclidean gradient of \gls{bd}-\gls{ris} group $g$ is computed as
+		\begin{equation}
+			\frac{\partial \sum_n \rho_n \sigma_n(\mathbf{H})}{\partial \mathbf{\Theta}_g^*} = \mathbf{H}_{\mathrm{B},g}^\mathsf{H} \mathbf{U} \mathrm{diag}(\rho_1,\ldots,\rho_N) \mathbf{V}^\mathsf{H} \mathbf{H}_{\mathrm{F},g}^\mathsf{H},
+			\label{eq:pareto_gradient}
+		\end{equation}
+		where $\mathbf{U} \in \mathbb{C}^{N_\mathrm{R} \times N}$ and $\mathbf{V} \in \mathbb{C}^{N_\mathrm{T} \times N}$ are the left and right compact singular matrices of $\mathbf{H}$, respectively.
+		Algorithm~\ref{ag:rcg} can thus be invoked for the Pareto singular value problem \eqref{op:pareto}, where expression \eqref{eq:pareto_gradient} should be used in line \ref{ln:gradient_euclidean}.
 	\end{subsection}
 
-	\begin{subsection}{Analytical Bounds}
-		We then analyze the channel shaping \emph{capability} of \gls{bd}-\gls{ris} under specific setups.
-		\begin{subsubsection}{Rank-Deficient Channel}
-			\label{sc:pc_rank_deficient}
-			In rank-deficient channels, \gls{bd}-\gls{ris} $\mathbf{\Theta}^\mathrm{B}$ cannot achieve a higher \gls{dof} than diagonal \gls{ris} $\mathbf{\Theta}^\mathrm{D}$.
-			This is because $\mathrm{sv}(\mathbf{\Theta}^\mathrm{B}) = \mathrm{sv}(\mathbf{\Theta}^\mathrm{D}) = \boldsymbol{1}$ and
-			\begin{equation}
-				\begin{split}
-					\mathrm{rank}(\mathbf{H})
-					& \le \mathrm{rank}(\mathbf{H}^\mathrm{D}) + \mathrm{rank}(\mathbf{H}^\mathrm{B} \mathbf{\Theta} \mathbf{H}^\mathrm{F}) \\
-					& \le \mathrm{rank}(\mathbf{H}^\mathrm{D}) + \min \bigl( \mathrm{rank}(\mathbf{H}^\mathrm{B}), \mathrm{rank}(\mathbf{\Theta}), \mathrm{rank}(\mathbf{H}^\mathrm{F}) \bigr).
-				\end{split}
-			\end{equation}
-			% However, \gls{bd}-\gls{ris} can still guarantee a higher rate at finite \gls{snr}.
-			Note \gls{bd}-\gls{ris} can still provide a higher indirect \gls{snr} as shown in Fig.~\ref{sm:pc_power_sx} and \ref{sm:pc_power_bond}.
-		\end{subsubsection}
+	\begin{subsection}{Some Analytical Bounds}
+		% We then analyze the channel shaping \emph{capability} of \gls{bd}-\gls{ris} under specific setups.
+		We then discuss some analytical bounds related to channel singular values.
+			% \gls{bd}-\gls{ris} cannot achieve a higher \gls{dof} than diagonal \gls{ris}.
+			\begin{proposition}
+				In rank-deficient point-to-point channel, \gls{bd}-\gls{ris} cannot achieve a higher \gls{dof} than diagonal \gls{ris}.
+			\end{proposition}
+			\begin{proof}
+				The scattering matrix of \gls{bd}-\gls{ris} can be decomposed as
+				\begin{equation}
+					\mathbf{\Theta} = \mathbf{L} \mathbf{\Theta}_\mathrm{D} \mathbf{R}^\mathsf{H},
+				\end{equation}
+				where $\mathbf{L}, \mathbf{R} \in \mathbb{U}^{N_\mathrm{S} \times N_\mathrm{S}}$ are block diagonal matrices of $L \times L$ unitary blocks and $\mathbf{\Theta}_\mathrm{D} \in \mathbb{U}^{N_\mathrm{S} \times N_\mathrm{S}}$ corresponds to diagonal \gls{ris}.
+				% However, manipulating $\mathbf{L}$ and $\mathbf{R}$ does not change the rank of $\bar{\mathbf{H}}_\mathrm{B} \triangleq \mathbf{H}_\mathrm{B} \mathbf{L}$ and $\bar{\mathbf{H}}_\mathrm{F} \triangleq \mathbf{R}^\mathsf{H} \mathbf{H}_\mathrm{F}$.
+				Manipulating $\mathbf{L}$ and $\mathbf{R}$ only rotates the linear spans of $\bar{\mathbf{H}}_\mathrm{B} \triangleq \mathbf{H}_\mathrm{B} \mathbf{L}$ and $\bar{\mathbf{H}}_\mathrm{F} \triangleq \mathbf{R}^\mathsf{H} \mathbf{H}_\mathrm{F}$ and keeps their rank.
+				On the other hand, there exists
+				\begin{equation}
+					\arg_{\mathbf{\Theta}_\mathrm{D}} \max \ \mathrm{rank}(\mathbf{H}_\mathrm{B} \mathbf{\Theta}_\mathrm{D} \mathbf{H}_\mathrm{F}) = \min \bigl( \mathrm{rank}(\bar{\mathbf{H}}_\mathrm{B}), \mathrm{rank}(\mathbf{\Theta}_\mathrm{D}), \mathrm{rank}(\bar{\mathbf{H}}_\mathrm{F}) \bigr).
+				\end{equation}
+				% Therefore,
+				% \begin{align}
+				% 	\mathrm{rank}(\mathbf{H}_\mathrm{B} \mathbf{\Theta} \mathbf{H}_\mathrm{F}) & = \mathrm{rank}(\mathbf{H}_\mathrm{B} \mathbf{L} \mathbf{\Theta}_\mathrm{D} \mathbf{R}^\mathsf{H} \mathbf{H}_\mathrm{F}) \\
+				% 	& = \mathrm{rank}(\bar{\mathbf{H}}_\mathrm{B} \mathbf{\Theta}_\mathrm{D} \bar{\mathbf{H}}_\mathrm{F}) \\
+				% 	& \le \min \bigl( \mathrm{rank}(\bar{\mathbf{H}}_\mathrm{B}), \mathrm{rank}(\mathbf{\Theta}_\mathrm{D}), \mathrm{rank}(\bar{\mathbf{H}}_\mathrm{F}) \bigr).
+				% \end{align}
+				% On the other hand, we have
+				% \begin{align}
+				% 	\mathrm{rank}(\mathbf{H}_\mathrm{B} \mathbf{\Theta} \mathbf{H}_\mathrm{F})
+				% \end{align}
+				% Therefore,
+				% \begin{align}
+				% 	& \arg_\mathbf{\Theta} \max \ \mathrm{rank}(\mathbf{H}_\mathrm{B} \mathbf{\Theta} \mathbf{H}_\mathrm{F}) \\
+				% 	= & \arg_{\mathbf{\Theta}_\mathrm{D},\mathbf{L},\mathbf{R}} \max \ \mathrm{rank}(\bar{\mathbf{H}}_\mathrm{B} \mathbf{\Theta}_\mathrm{D} \bar{\mathbf{H}}_\mathrm{F}) \\
+				% 	= & \arg_{\mathbf{L},\mathbf{R}} \max \  \min \bigl( \mathrm{rank}(\bar{\mathbf{H}}_\mathrm{B}), \mathrm{rank}(\mathbf{\Theta}_\mathrm{D}), \mathrm{rank}(\bar{\mathbf{H}}_\mathrm{F}) \bigr) \\
+				% 	= & \min \bigl( \mathrm{rank}(\mathbf{H}_\mathrm{B}), \mathrm{rank}(\mathbf{\Theta}_\mathrm{D}), \mathrm{rank}(\mathbf{H}_\mathrm{F}) \bigr).
+				% \end{align}
+				% That is, $\mathrm{rank}(\mathbf{H}_\mathrm{B} \mathbf{\Theta} \mathbf{H}_\mathrm{F}) = \mathrm{rank}(\mathbf{H}_\mathrm{B} \mathbf{\Theta}_\mathrm{D} \mathbf{H}_\mathrm{F})$
+				% That is, $\mathrm{rank}(\mathbf{H}) = \mathrm{rank}(\mathbf{H}_\mathrm{D}) + \mathrm{rank}(\bar{\mathbf{H}}_\mathrm{B} \mathbf{\Theta}_\mathrm{D} \bar{\mathbf{H}}_\mathrm{F})$.
+				% When direct link is present,
+				% does not change the rank of $\bar{\mathbf{H}}_\mathrm{B} \triangleq \mathbf{H}_\mathrm{B} \mathbf{L}$ and $\bar{\mathbf{H}}_\mathrm{F} \triangleq \mathbf{R}^\mathsf{H} \mathbf{H}_\mathrm{F}$.
+				% Although \gls{bd}-\gls{ris} can
+				% It follows straightforwardly from the rank inequality
+				% \begin{equation}
+				% 	\begin{split}
+				% 		\mathrm{rank}(\mathbf{H})
+				% 		& \le \mathrm{rank}(\mathbf{H}_\mathrm{D}) + \mathrm{rank}(\mathbf{H}_\mathrm{B} \mathbf{\Theta} \mathbf{H}_\mathrm{F}) \\
+				% 		& \le \mathrm{rank}(\mathbf{H}_\mathrm{D}) + \min \bigl( \mathrm{rank}(\mathbf{H}_\mathrm{B}), \mathrm{rank}(\mathbf{\Theta}), \mathrm{rank}(\mathbf{H}^\mathrm{F}) \bigr).
+				% 	\end{split}
+				% \end{equation}
+				% % The \gls{dof} upper bound of \gls{bd}-\gls{ris} $\mathbf{\Theta}_\mathrm{B}$ and diagonal \gls{ris} $\mathbf{\Theta}_\mathrm{D}$ coincide as they are both full-rank with repeating singular value 1.
+				% The \gls{dof} upper bound of \gls{bd}-\gls{ris} and diagonal \gls{ris} coincide because their scattering matrices are both full-rank (with all singular values equal to 1).
+				% On the other hand, diagonal \gls{ris} can already achieve the maximum \gls{dof} $\max(N, U)$
+
+				% ?
+				% \gls{bd}-\gls{ris} and diagonal \gls{ris} are both full-rank with all singular values equal 1, so their \gls{dof} upper bound coincide.
+				% On the other hand, a diagonal $\mathrm{span}(\mathbf{H}_\mathrm{D}) \cap \mathrm{span}(\mathbf{H}_\mathrm{B} \mathbf{\Theta} \mathbf{H}_\mathrm{F}) = \varnothing$
+				% On the other hand, a diagonal $\mathrm{span}(\mathbf{H}_\mathrm{D}) \cap \mathrm{span}(\mathbf{H}_\mathrm{B} \mathbf{\Theta} \mathbf{H}_\mathrm{F}) = \varnothing$
+				% diagonal \gls{ris} can already achieve $\mathrm{span}(\mathbf{H}_\mathrm{D}) \cap \mathrm{span}(\mathbf{H}_\mathrm{B} \mathbf{\Theta} \mathbf{H}_\mathrm{F}) = \varnothing$ by designing the diagonal phase shift matrix.
+				% $\mathrm{span}(\mathbf{H}_\mathrm{D}) \cap \mathrm{span}(\mathbf{H}_\mathrm{B} \mathbf{\Theta} \mathbf{H}_\mathrm{F}) = \varnothing$
+				% $\mathrm{span}(\mathbf{H}_\mathrm{D})$ and $\mathrm{span}(\mathbf{H}_\mathrm{B} \mathbf{\Theta} \mathbf{H}_\mathrm{F})$ can be made disjoint by choosing $\mathbf{\Theta}$ properly, so the \gls{dof} lower bound of \gls{bd}-\gls{ris} is no larger than that of diagonal \gls{ris}.
+				% are disjoint, so the \gls{dof} lower bound of \gls{bd}-\gls{ris} is no larger than that of diagonal \gls{ris}.
+				% the linear spans of $\mathbf{H}_\mathrm{D}$ and $\mathbf{H}_\mathrm{B} \mathbf{\Theta} \mathbf{H}_\mathrm{F}$ are disjoint, so the \gls{dof} lower bound of \gls{bd}-\gls{ris} is no larger than that of diagonal \gls{ris}.
+				% using diagonal \gls{ris} can already achieve the upper bound.
+			\end{proof}
+
+		% \begin{subsubsection}{Rank-Deficient Channel}
+		% 	\label{sc:pc_rank_deficient}
+
+		% 	% % In rank-deficient channels, \gls{bd}-\gls{ris} $\mathbf{\Theta}^\mathrm{B}$ cannot achieve a higher \gls{dof} than diagonal \gls{ris} $\mathbf{\Theta}^\mathrm{D}$.
+		% 	% % This is because $\mathrm{sv}(\mathbf{\Theta}^\mathrm{B}) = \mathrm{sv}(\mathbf{\Theta}^\mathrm{D}) = \boldsymbol{1}$ and
+
+		% 	% % However, \gls{bd}-\gls{ris} can still guarantee a higher rate at finite \gls{snr}.
+		% 	% Note \gls{bd}-\gls{ris} can still provide a higher indirect \gls{snr} as shown in Fig.~\ref{sm:pc_power_sx} and \ref{sm:pc_power_bond}.
+		% \end{subsubsection}
 
 
 		\begin{subsubsection}{Rank-1 Indirect Channel}
@@ -577,10 +546,10 @@
 
 		where $\rho_n$ is the weight of $n$-th singular value.
 		The complex derivative of \eqref{ob:pc_singular} w.r.t. \gls{ris} block $g$ is
-		\begin{equation}
-			\frac{\partial J_1}{\partial \mathbf{\Theta}_g^*} = {\mathbf{H}_g^\mathrm{B}}^\mathsf{H} \mathbf{U} \mathrm{diag}(\boldsymbol{\rho}) \mathbf{V}^\mathsf{H} {\mathbf{H}_g^\mathrm{F}}^\mathsf{H},
-			\label{eq:pc_singular_gradient_ris}
-		\end{equation}
+		% \begin{equation}
+		% 	\frac{\partial J_1}{\partial \mathbf{\Theta}_g^*} = {\mathbf{H}_g^\mathrm{B}}^\mathsf{H} \mathbf{U} \mathrm{diag}(\boldsymbol{\rho}) \mathbf{V}^\mathsf{H} {\mathbf{H}_g^\mathrm{F}}^\mathsf{H},
+		% 	\label{eq:pc_singular_gradient_ris}
+		% \end{equation}
 		where $\mathbf{U}$ and $\mathbf{V}$ are left and right singular matrix of $\mathbf{H}$.
 		\eqref{op:pc_singular} can be solved by \gls{rcg} Algorithm~\ref{ag:pc_rate_ris} with \eqref{eq:pc_rate_gradient_ris} replaced by \eqref{eq:pc_singular_gradient_ris}.
 
