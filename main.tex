@@ -401,80 +401,62 @@
 	\end{subsection}
 
 	\begin{subsection}{Some Analytical Bounds}
-		% We then analyze the channel shaping \emph{capability} of \gls{bd}-\gls{ris} under specific setups.
 		We then discuss some analytical bounds related to channel singular values.
-			% \gls{bd}-\gls{ris} cannot achieve a higher \gls{dof} than diagonal \gls{ris}.
-			\begin{proposition}
-				In rank-deficient point-to-point channel, \gls{bd}-\gls{ris} cannot achieve a higher \gls{dof} than diagonal \gls{ris}.
-			\end{proposition}
-			\begin{proof}
-				The scattering matrix of \gls{bd}-\gls{ris} can be decomposed as
-				\begin{equation}
-					\mathbf{\Theta} = \mathbf{L} \mathbf{\Theta}_\mathrm{D} \mathbf{R}^\mathsf{H},
-				\end{equation}
-				where $\mathbf{L}, \mathbf{R} \in \mathbb{U}^{N_\mathrm{S} \times N_\mathrm{S}}$ are block diagonal matrices of $L \times L$ unitary blocks and $\mathbf{\Theta}_\mathrm{D} \in \mathbb{U}^{N_\mathrm{S} \times N_\mathrm{S}}$ corresponds to diagonal \gls{ris}.
-				% However, manipulating $\mathbf{L}$ and $\mathbf{R}$ does not change the rank of $\bar{\mathbf{H}}_\mathrm{B} \triangleq \mathbf{H}_\mathrm{B} \mathbf{L}$ and $\bar{\mathbf{H}}_\mathrm{F} \triangleq \mathbf{R}^\mathsf{H} \mathbf{H}_\mathrm{F}$.
-				Manipulating $\mathbf{L}$ and $\mathbf{R}$ only rotates the linear spans of $\bar{\mathbf{H}}_\mathrm{B} \triangleq \mathbf{H}_\mathrm{B} \mathbf{L}$ and $\bar{\mathbf{H}}_\mathrm{F} \triangleq \mathbf{R}^\mathsf{H} \mathbf{H}_\mathrm{F}$ and keeps their rank.
-				On the other hand, there exists
-				\begin{equation}
-					\arg_{\mathbf{\Theta}_\mathrm{D}} \max \ \mathrm{rank}(\mathbf{H}_\mathrm{B} \mathbf{\Theta}_\mathrm{D} \mathbf{H}_\mathrm{F}) = \min \bigl( \mathrm{rank}(\bar{\mathbf{H}}_\mathrm{B}), \mathrm{rank}(\mathbf{\Theta}_\mathrm{D}), \mathrm{rank}(\bar{\mathbf{H}}_\mathrm{F}) \bigr).
-				\end{equation}
-				% Therefore,
-				% \begin{align}
-				% 	\mathrm{rank}(\mathbf{H}_\mathrm{B} \mathbf{\Theta} \mathbf{H}_\mathrm{F}) & = \mathrm{rank}(\mathbf{H}_\mathrm{B} \mathbf{L} \mathbf{\Theta}_\mathrm{D} \mathbf{R}^\mathsf{H} \mathbf{H}_\mathrm{F}) \\
-				% 	& = \mathrm{rank}(\bar{\mathbf{H}}_\mathrm{B} \mathbf{\Theta}_\mathrm{D} \bar{\mathbf{H}}_\mathrm{F}) \\
-				% 	& \le \min \bigl( \mathrm{rank}(\bar{\mathbf{H}}_\mathrm{B}), \mathrm{rank}(\mathbf{\Theta}_\mathrm{D}), \mathrm{rank}(\bar{\mathbf{H}}_\mathrm{F}) \bigr).
-				% \end{align}
-				% On the other hand, we have
-				% \begin{align}
-				% 	\mathrm{rank}(\mathbf{H}_\mathrm{B} \mathbf{\Theta} \mathbf{H}_\mathrm{F})
-				% \end{align}
-				% Therefore,
-				% \begin{align}
-				% 	& \arg_\mathbf{\Theta} \max \ \mathrm{rank}(\mathbf{H}_\mathrm{B} \mathbf{\Theta} \mathbf{H}_\mathrm{F}) \\
-				% 	= & \arg_{\mathbf{\Theta}_\mathrm{D},\mathbf{L},\mathbf{R}} \max \ \mathrm{rank}(\bar{\mathbf{H}}_\mathrm{B} \mathbf{\Theta}_\mathrm{D} \bar{\mathbf{H}}_\mathrm{F}) \\
-				% 	= & \arg_{\mathbf{L},\mathbf{R}} \max \  \min \bigl( \mathrm{rank}(\bar{\mathbf{H}}_\mathrm{B}), \mathrm{rank}(\mathbf{\Theta}_\mathrm{D}), \mathrm{rank}(\bar{\mathbf{H}}_\mathrm{F}) \bigr) \\
-				% 	= & \min \bigl( \mathrm{rank}(\mathbf{H}_\mathrm{B}), \mathrm{rank}(\mathbf{\Theta}_\mathrm{D}), \mathrm{rank}(\mathbf{H}_\mathrm{F}) \bigr).
-				% \end{align}
-				% That is, $\mathrm{rank}(\mathbf{H}_\mathrm{B} \mathbf{\Theta} \mathbf{H}_\mathrm{F}) = \mathrm{rank}(\mathbf{H}_\mathrm{B} \mathbf{\Theta}_\mathrm{D} \mathbf{H}_\mathrm{F})$
-				% That is, $\mathrm{rank}(\mathbf{H}) = \mathrm{rank}(\mathbf{H}_\mathrm{D}) + \mathrm{rank}(\bar{\mathbf{H}}_\mathrm{B} \mathbf{\Theta}_\mathrm{D} \bar{\mathbf{H}}_\mathrm{F})$.
-				% When direct link is present,
-				% does not change the rank of $\bar{\mathbf{H}}_\mathrm{B} \triangleq \mathbf{H}_\mathrm{B} \mathbf{L}$ and $\bar{\mathbf{H}}_\mathrm{F} \triangleq \mathbf{R}^\mathsf{H} \mathbf{H}_\mathrm{F}$.
-				% Although \gls{bd}-\gls{ris} can
-				% It follows straightforwardly from the rank inequality
-				% \begin{equation}
-				% 	\begin{split}
-				% 		\mathrm{rank}(\mathbf{H})
-				% 		& \le \mathrm{rank}(\mathbf{H}_\mathrm{D}) + \mathrm{rank}(\mathbf{H}_\mathrm{B} \mathbf{\Theta} \mathbf{H}_\mathrm{F}) \\
-				% 		& \le \mathrm{rank}(\mathbf{H}_\mathrm{D}) + \min \bigl( \mathrm{rank}(\mathbf{H}_\mathrm{B}), \mathrm{rank}(\mathbf{\Theta}), \mathrm{rank}(\mathbf{H}^\mathrm{F}) \bigr).
-				% 	\end{split}
-				% \end{equation}
-				% % The \gls{dof} upper bound of \gls{bd}-\gls{ris} $\mathbf{\Theta}_\mathrm{B}$ and diagonal \gls{ris} $\mathbf{\Theta}_\mathrm{D}$ coincide as they are both full-rank with repeating singular value 1.
-				% The \gls{dof} upper bound of \gls{bd}-\gls{ris} and diagonal \gls{ris} coincide because their scattering matrices are both full-rank (with all singular values equal to 1).
-				% On the other hand, diagonal \gls{ris} can already achieve the maximum \gls{dof} $\max(N, U)$
+		\begin{proposition}[rank-deficient channel]
+			In point-to-point \gls{mimo}, \gls{bd}-\gls{ris} cannot achieve a higher \gls{dof} than diagonal \gls{ris}.
+		\end{proposition}
+		\begin{proof}
+			The scattering matrix of \gls{bd}-\gls{ris} can be decomposed as
+			\begin{equation}
+				\mathbf{\Theta} = \mathbf{L} \mathbf{\Theta}_\mathrm{D} \mathbf{R}^\mathsf{H},
+			\end{equation}
+			where $\mathbf{\Theta}_\mathrm{D} \in \mathbb{U}^{N_\mathrm{S} \times N_\mathrm{S}}$ corresponds to diagonal \gls{ris} and $\mathbf{L}, \mathbf{R} \in \mathbb{U}^{N_\mathrm{S} \times N_\mathrm{S}}$ are block diagonal matrices of $L \times L$ unitary blocks.
+			Manipulating $\mathbf{L}$ and $\mathbf{R}$ rotates the linear spans of $\bar{\mathbf{H}}_\mathrm{B} \triangleq \mathbf{H}_\mathrm{B} \mathbf{L}$ and $\bar{\mathbf{H}}_\mathrm{F} \triangleq \mathbf{R}^\mathsf{H} \mathbf{H}_\mathrm{F}$ and maintains their rank.
+			On the other hand, there exists a $\mathbf{\Theta}_\mathrm{D}$ such that
+			\begin{equation*}
+				\begin{split}
+					\mathrm{rank}(\mathbf{H}_\mathrm{B} \mathbf{\Theta}_\mathrm{D} \mathbf{H}_\mathrm{F})
+					& = \min \bigl( \mathrm{rank}(\mathbf{H}_\mathrm{B}), \mathrm{rank}(\mathbf{\Theta}_\mathrm{D}), \mathrm{rank}(\mathbf{H}_\mathrm{F}) \bigr) \\
+					& = \min \bigl( \mathrm{rank}(\bar{\mathbf{H}}_\mathrm{B}), N_\mathrm{S}, \mathrm{rank}(\bar{\mathbf{H}}_\mathrm{F}) \bigr) \\
+					& = \max_\mathbf{\Theta} \ \mathrm{rank}(\mathbf{H}_\mathrm{B} \mathbf{\Theta} \mathbf{H}_\mathrm{F})
+				\end{split}
+			\end{equation*}
+			The same result holds if the direct link is present.
+		\end{proof}
 
-				% ?
-				% \gls{bd}-\gls{ris} and diagonal \gls{ris} are both full-rank with all singular values equal 1, so their \gls{dof} upper bound coincide.
-				% On the other hand, a diagonal $\mathrm{span}(\mathbf{H}_\mathrm{D}) \cap \mathrm{span}(\mathbf{H}_\mathrm{B} \mathbf{\Theta} \mathbf{H}_\mathrm{F}) = \varnothing$
-				% On the other hand, a diagonal $\mathrm{span}(\mathbf{H}_\mathrm{D}) \cap \mathrm{span}(\mathbf{H}_\mathrm{B} \mathbf{\Theta} \mathbf{H}_\mathrm{F}) = \varnothing$
-				% diagonal \gls{ris} can already achieve $\mathrm{span}(\mathbf{H}_\mathrm{D}) \cap \mathrm{span}(\mathbf{H}_\mathrm{B} \mathbf{\Theta} \mathbf{H}_\mathrm{F}) = \varnothing$ by designing the diagonal phase shift matrix.
-				% $\mathrm{span}(\mathbf{H}_\mathrm{D}) \cap \mathrm{span}(\mathbf{H}_\mathrm{B} \mathbf{\Theta} \mathbf{H}_\mathrm{F}) = \varnothing$
-				% $\mathrm{span}(\mathbf{H}_\mathrm{D})$ and $\mathrm{span}(\mathbf{H}_\mathrm{B} \mathbf{\Theta} \mathbf{H}_\mathrm{F})$ can be made disjoint by choosing $\mathbf{\Theta}$ properly, so the \gls{dof} lower bound of \gls{bd}-\gls{ris} is no larger than that of diagonal \gls{ris}.
-				% are disjoint, so the \gls{dof} lower bound of \gls{bd}-\gls{ris} is no larger than that of diagonal \gls{ris}.
-				% the linear spans of $\mathbf{H}_\mathrm{D}$ and $\mathbf{H}_\mathrm{B} \mathbf{\Theta} \mathbf{H}_\mathrm{F}$ are disjoint, so the \gls{dof} lower bound of \gls{bd}-\gls{ris} is no larger than that of diagonal \gls{ris}.
-				% using diagonal \gls{ris} can already achieve the upper bound.
-			\end{proof}
+		\begin{proposition}[\gls{los} forward\footnote{A similar result holds for \gls{los} backward channel.} channel]
+			If the forward channel is rank-1, then \gls{bd}-\gls{ris} can at most enlarge (resp. suppress) the $n$-th ($n \ge 2$) channel singular value to the $(n-1)$-th (resp. $n$-th) singular value of $\mathbf{T}$, that is,
+			\begin{equation}
+				\sigma_1(\mathbf{T}) \ge {\color{orange}\sigma_2(\mathbf{H})} \ge \sigma_2(\mathbf{T}) \ge \ldots \ge \sigma_{N-1}(\mathbf{T}) \ge {\color{orange}\sigma_N(\mathbf{H})} \ge \sigma_N(\mathbf{T}),
+				\label{iq:sv_bound_los}
+			\end{equation}
+			where $\mathbf{T} \mathbf{T}^\mathsf{H} = \mathbf{H}_\mathrm{D} (\mathbf{I} - \mathbf{v}_\mathrm{F} \mathbf{v}_\mathrm{F}^\mathsf{H}) \mathbf{H}_\mathrm{D}$ and $\mathbf{v}_\mathrm{F}$ is the right compact singular vector of $\mathbf{H}_\mathrm{F}$.
+			Note that $\sigma_1(\mathbf{H})$ is unbounded with a sufficiently large \gls{ris}.
+		\end{proposition}
+		\begin{proof}
+			Let $\mathbf{H}_\mathrm{F} = \sigma_\mathrm{F} \mathbf{u}_\mathrm{F} \mathbf{v}_\mathrm{F}^\mathsf{H}$ be the compact \gls{svd} of the forward channel.
+			The channel Gram matrix can be written as Hermitian-plus-rank-1:
+			\begin{equation}
+				\mathbf{G} \triangleq \mathbf{H} \mathbf{H}^\mathsf{H} = \mathbf{Y} + \mathbf{z} \mathbf{z}^\mathsf{H},
+			\end{equation}
+			where $\mathbf{Y} \triangleq \mathbf{H}_\mathrm{D}^\mathsf{H} (\mathbf{I} - \mathbf{v}_\mathrm{F} \mathbf{v}_\mathrm{F}^\mathsf{H}) \mathbf{H}_\mathrm{D}$ and $\mathbf{z} \triangleq \sigma_\mathrm{F} \mathbf{H}_\mathrm{B} \mathbf{\Theta} \mathbf{u}_\mathrm{F} + \mathbf{H}_\mathrm{D} \mathbf{v}_\mathrm{F}$.
+			By the Cauchy interlacing formula \cite{Golub2013}, the $n$-th ($n \ge 2$) eigenvalues of $\mathbf{G}$ are bounded by
+			\begin{equation}
+				\lambda_1(\mathbf{Y}) \ge \lambda_2(\mathbf{G}) \ge \lambda_2(\mathbf{Y}) \ge \ldots \ge \lambda_{N-1}(\mathbf{Y}) \ge \lambda_N(\mathbf{G}) \ge \lambda_N(\mathbf{Y}).
+				\label{iq:ev_bound_los}
+			\end{equation}
+			Since $\mathbf{Y} = \mathbf{T} \mathbf{T}^\mathsf{H}$ is positive semi-definite, the eigenvalues are non-negative and taking the square root of \eqref{iq:ev_bound_los} gives \eqref{iq:sv_bound_los}.
+		\end{proof}
+		It is worth notice that a similar conclusion holds for diagonal \gls{ris} \cite{Semmler2023}.
+		We will later show that for a finite $N_\mathrm{S}$, using a larger group size can better approach those bounds.
 
-		% \begin{subsubsection}{Rank-Deficient Channel}
-		% 	\label{sc:pc_rank_deficient}
-
-		% 	% % In rank-deficient channels, \gls{bd}-\gls{ris} $\mathbf{\Theta}^\mathrm{B}$ cannot achieve a higher \gls{dof} than diagonal \gls{ris} $\mathbf{\Theta}^\mathrm{D}$.
-		% 	% % This is because $\mathrm{sv}(\mathbf{\Theta}^\mathrm{B}) = \mathrm{sv}(\mathbf{\Theta}^\mathrm{D}) = \boldsymbol{1}$ and
-
-		% 	% % However, \gls{bd}-\gls{ris} can still guarantee a higher rate at finite \gls{snr}.
-		% 	% Note \gls{bd}-\gls{ris} can still provide a higher indirect \gls{snr} as shown in Fig.~\ref{sm:pc_power_sx} and \ref{sm:pc_power_bond}.
-		% \end{subsubsection}
-
+		\begin{proposition}[fully-connected \gls{ris} without direct link]
+			If the \gls{bd}-\gls{ris} is fully-connected and the direct link is absent, then the singular value bounds on $\mathbf{H}$ are equivalent to the singular value bounds on $\mathbf{BF}$, where $\mathbf{B}$ and $\mathbf{F}$ are arbitrary matrices with the same singular values as $\mathbf{H}_\mathrm{B}$ and $\mathbf{H}_\mathrm{F}$, respectively,
+			% \begin{equation}
+			% 	\prod_{k \in {K}} \sigma_k(\mathbf{H}) \leq \prod_{i \in {I}} \sigma_i(\mathbf{B}) \prod_{j \in {J}} \sigma_j(\mathbf{F}),
+			% \end{equation}
+			% where $\mathbf{B}$ and $\mathbf{F}$ are arbitrary matrices with the same singular values as $\mathbf{H}_\mathrm{B}$ and $\mathbf{H}_\mathrm{F}$, respectively,
+		\end{proposition}
 
 		\begin{subsubsection}{Rank-1 Indirect Channel}
 			The indirect channel is rank-1 iff the forward or backward channel is rank-1.
