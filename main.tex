@@ -406,7 +406,7 @@
 			In point-to-point \gls{mimo}, \gls{bd}-\gls{ris} cannot achieve a higher \gls{dof} than diagonal \gls{ris}.
 		\end{proposition}
 		\begin{proof}
-			The scattering matrix of \gls{bd}-\gls{ris} can be decomposed as
+			The scattering matrix of \gls{bd}-\gls{ris} can be decomposed as\footnote{This is because (block) unitary matrices are closed under multiplication.}
 			\begin{equation}
 				\mathbf{\Theta} = \mathbf{L} \mathbf{\Theta}_\mathrm{D} \mathbf{R}^\mathsf{H},
 			\end{equation}
@@ -427,7 +427,7 @@
 		\begin{proposition}[\gls{los} forward\footnote{A similar result holds for \gls{los} backward channel.} channel]
 			If the forward channel is rank-1, then \gls{bd}-\gls{ris} can at most enlarge (resp. suppress) the $n$-th ($n \ge 2$) channel singular value to the $(n-1)$-th (resp. $n$-th) singular value of $\mathbf{T}$, that is,
 			\begin{equation}
-				\sigma_1(\mathbf{T}) \ge {\color{orange}\sigma_2(\mathbf{H})} \ge \sigma_2(\mathbf{T}) \ge \ldots \ge \sigma_{N-1}(\mathbf{T}) \ge {\color{orange}\sigma_N(\mathbf{H})} \ge \sigma_N(\mathbf{T}),
+				\sigma_1(\mathbf{T}) \ge {\sigma_2(\mathbf{H})} \ge \sigma_2(\mathbf{T}) \ge \ldots \ge \sigma_{N-1}(\mathbf{T}) \ge {\sigma_N(\mathbf{H})} \ge \sigma_N(\mathbf{T}),
 				\label{iq:sv_bound_los}
 			\end{equation}
 			where $\mathbf{T} \mathbf{T}^\mathsf{H} = \mathbf{H}_\mathrm{D} (\mathbf{I} - \mathbf{v}_\mathrm{F} \mathbf{v}_\mathrm{F}^\mathsf{H}) \mathbf{H}_\mathrm{D}$ and $\mathbf{v}_\mathrm{F}$ is the right compact singular vector of $\mathbf{H}_\mathrm{F}$.
@@ -448,92 +448,94 @@
 			Since $\mathbf{Y} = \mathbf{T} \mathbf{T}^\mathsf{H}$ is positive semi-definite, the eigenvalues are non-negative and taking the square root of \eqref{iq:ev_bound_los} gives \eqref{iq:sv_bound_los}.
 		\end{proof}
 		It is worth notice that a similar conclusion holds for diagonal \gls{ris} \cite{Semmler2023}.
-		We will later show that for a finite $N_\mathrm{S}$, using a larger group size can better approach those bounds.
+		We will later show that for a finite $N_\mathrm{S}$, using a larger group size can approach those bounds better.
 
 		\begin{proposition}[fully-connected \gls{ris} without direct link]
-			If the \gls{bd}-\gls{ris} is fully-connected and the direct link is absent, then the singular value bounds on $\mathbf{H}$ are equivalent to the singular value bounds on $\mathbf{BF}$, where $\mathbf{B}$ and $\mathbf{F}$ are arbitrary matrices with the same singular values as $\mathbf{H}_\mathrm{B}$ and $\mathbf{H}_\mathrm{F}$, respectively,
-			% \begin{equation}
-			% 	\prod_{k \in {K}} \sigma_k(\mathbf{H}) \leq \prod_{i \in {I}} \sigma_i(\mathbf{B}) \prod_{j \in {J}} \sigma_j(\mathbf{F}),
-			% \end{equation}
-			% where $\mathbf{B}$ and $\mathbf{F}$ are arbitrary matrices with the same singular values as $\mathbf{H}_\mathrm{B}$ and $\mathbf{H}_\mathrm{F}$, respectively,
+			% If the \gls{bd}-\gls{ris} is fully-connected and the direct link is absent, then the singular value bounds on $\mathbf{H}$ are equivalent to the singular value bounds on $\mathbf{BF}$, where $\mathbf{B}$ and $\mathbf{F}$ are arbitrary matrices with the same singular values as $\mathbf{H}_\mathrm{B}$ and $\mathbf{H}_\mathrm{F}$, respectively,
+			If the \gls{bd}-\gls{ris} is fully-connected and the direct link is absent, then
+			\begin{equation}
+				\mathrm{sv}(\mathbf{H}) = \mathrm{sv}(\mathbf{BF}),
+			\end{equation}
+			where $\mathbf{B}$ and $\mathbf{F}$ are arbitrary matrices with the same singular values as $\mathbf{H}_\mathrm{B}$ and $\mathbf{H}_\mathrm{F}$, respectively,
 		\end{proposition}
 
-		\begin{subsubsection}{Rank-1 Indirect Channel}
-			The indirect channel is rank-1 iff the forward or backward channel is rank-1.
-			Let $\mathbf{H}^\mathrm{F} = \sigma^\mathrm{F} \mathbf{u}^\mathrm{F} {\mathbf{v}^\mathrm{F}}^\mathsf{H}$ without loss of generality.
-			In this case, the channel Gram matrix can be written as Hermitian-plus-rank-1:
+		\begin{proof}
+			Let $\mathbf{H}_\mathrm{B} = \mathbf{U}_\mathrm{B} \mathbf{\Sigma}_\mathrm{B} \mathbf{V}_\mathrm{B}^\mathsf{H}$ and $\mathbf{H}_\mathrm{F} = \mathbf{U}_\mathrm{F} \mathbf{\Sigma}_\mathrm{F} \mathbf{V}_\mathrm{F}^\mathsf{H}$ be the \gls{svd} of the backward and forward channels, respectively.
+			The scattering matrix of fully-connected \gls{ris} can be decomposed as
 			\begin{equation}
-				\mathbf{G} \triangleq \mathbf{H} \mathbf{H}^\mathsf{H} = \mathbf{Y} + \mathbf{z} \mathbf{z}^\mathsf{H},
+				\mathbf{\Theta} = \mathbf{V}_\mathrm{B} \mathbf{X} \mathbf{U}_\mathrm{F}^\mathsf{H},
+				\label{eq:scattering_fc}
 			\end{equation}
-			where $\mathbf{Y} \triangleq \mathbf{H}^\mathrm{D} (\mathbf{I} - \mathbf{v}^\mathrm{F} {\mathbf{v}^\mathrm{F}}^\mathsf{H}) \mathbf{H}^\mathrm{D} = \mathbf{T} \mathbf{T}^\mathsf{H}$ and $\mathbf{z} \triangleq \sigma^\mathrm{F} \mathbf{H}^\mathrm{B} \mathbf{\Theta} \mathbf{u}^\mathrm{F} + \mathbf{H}^\mathrm{D} \mathbf{v}^\mathrm{F}$.
-			Regardless of \gls{ris} size and structure\footnote{A similar conclusion was made for diagonal \gls{ris} in \cite{Semmler2023}.}, its $n$-th ($n \ge 2$) eigenvalues are bounded by the Cauchy interlacing formula \cite{Golub2013}
+			where $\mathbf{X} \in \mathbb{U}^{N_\mathrm{S} \times N_\mathrm{S}}$ is a unitary matrix to be designed.
+			The equivalent channel is thus a function of $\mathbf{X}$
 			\begin{equation}
-				\lambda_1(\mathbf{Y}) \ge {\color{blue}\lambda_2(\mathbf{G})} \ge \lambda_2(\mathbf{Y}) \ge \ldots \ge \lambda_{N-1}(\mathbf{Y}) \ge {\color{blue}\lambda_N(\mathbf{G})} \ge \lambda_N(\mathbf{Y}).
+				\mathbf{H} = \mathbf{H}_\mathrm{B} \mathbf{\Theta} \mathbf{H}_\mathrm{F} = \mathbf{U}_\mathrm{B} \mathbf{\Sigma}_\mathrm{B} \mathbf{X} \mathbf{\Sigma}_\mathrm{F} \mathbf{V}_\mathrm{F}^\mathsf{H}.
+				\label{eq:channel_equivalent_fc}
 			\end{equation}
-			The equivalent singular value inequality is
-			\begin{equation}
-				\sigma_1(\mathbf{T}) \ge {\color{blue}\sigma_2(\mathbf{H})} \ge \sigma_2(\mathbf{T}) \ge \ldots \ge \sigma_{N-1}(\mathbf{T}) \ge {\color{blue}\sigma_N(\mathbf{H})} \ge \sigma_N(\mathbf{T}).
-				\label{iq:singular_value_interlacing}
-			\end{equation}
-			\eqref{iq:singular_value_interlacing} implies that, if the indirect channel is rank-1, then the \gls{ris} can at most enlarge the $n$-th ($n \ge 2$) channel singular value to the $(n-1)$-th singular value of $\mathbf{T}$.
-			Note that the largest channel singular value is unbounded with a sufficiently large \gls{ris}.
-		\end{subsubsection}
+			Since $\mathrm{sv}(\mathbf{U} \mathbf{A} \mathbf{V}^\mathsf{H}) = \mathrm{sv}(\mathbf{A})$ for unitary $\mathbf{U}$ and $\mathbf{V}$, we have
+			\begin{align*}
+				\mathrm{sv}(\mathbf{H}) & = \mathrm{sv}(\mathbf{U}_\mathrm{B} \mathbf{\Sigma}_\mathrm{B} \mathbf{X} \mathbf{\Sigma}_\mathrm{F} \mathbf{V}_\mathrm{F}^\mathsf{H})\\
+				& = \mathrm{sv}(\mathbf{\Sigma}_\mathrm{B} \mathbf{X} \mathbf{\Sigma}_\mathrm{F})\\
+				& = \mathrm{sv}(\bar{\mathbf{U}}_\mathrm{B} \mathbf{\Sigma}_\mathrm{B} \mathbf{\bar{V}}_\mathrm{B}^\mathsf{H} \bar{\mathbf{U}}_\mathrm{F} \mathbf{\Sigma}_\mathrm{F} \mathbf{\bar{V}}_\mathrm{F}^\mathsf{H})\\
+				& = \mathrm{sv}(\mathbf{BF}),
+			\end{align*}
+			where $\bar{\mathbf{U}}_{\mathrm{B}/\mathrm{F}}$ and $\bar{\mathbf{V}}_{\mathrm{B}/\mathrm{F}}$ are arbitrary unitary matrices.
+		\end{proof}
 
-		\begin{subsubsection}{Fully-Connected \glsentryshort{ris} Without Direct Link}
-			Denote the singular value decomposition of forward / backward channels as $\mathbf{H}^{\mathrm{B}/\mathrm{F}} = \mathbf{U}^{\mathrm{B}/\mathrm{F}} \mathbf{\Sigma}^{\mathrm{B}/\mathrm{F}} {\mathbf{V}^{\mathrm{B}/\mathrm{F}}}^\mathsf{H}$.
-			The composite channel is
+		There exist many singular value bounds on the product of two matrices in terms of their own singular values.
+		One comprehensive answer is \cite{Fulton2000}
+		\begin{equation}
+			\prod_{k \in {K}} \sigma_k(\mathbf{H}) \le \prod_{i \in {I}} \sigma_i(\mathbf{H}_\mathrm{B}) \prod_{j \in {J}} \sigma_j(\mathbf{H}_\mathrm{F}),
+			\label{iq:sv_bound_fc}
+		\end{equation}
+		for all admissible triples $(I, J, K) \in T_r^n$ with $r < n$, where
+		\begin{equation}
+			\begin{gathered}
+				% T_r^n \triangleq \Bigl\{(I, J, K) \in U_r^n \mid \text{for all } p < r \text{ and all } (F, G, H) \text{ in } T_p^r,\\
+				% \sum_{f \in F} i_f + \sum_{g \in G} j_g \le \sum_{h \in H} k_h + p(p+1)/2 \Bigr\},
+				T_r^n \triangleq \Bigl\{(I, J, K) \in U_r^n \mid \forall p < r, (F, G, H) \in T_p^r,\\
+				\sum_{f \in F} i_f + \sum_{g \in G} j_g \le \sum_{h \in H} k_h + p(p+1)/2 \Bigr\},
+			\end{gathered}
+		\end{equation}
+		\begin{equation}
+			U_r^n = \Bigl\{(I, J, K) \mid \sum_{i \in I} i + \sum_{j \in J} j = \sum_{k \in K} k + r(r+1)/2\Bigr\}.
+		\end{equation}
+		It implies the following special cases:
+		\begin{itemize}
+			\item upper bound on the largest singular value
 			\begin{equation}
-				\mathbf{H} = \mathbf{H}^\mathrm{B} \mathbf{\Theta} \mathbf{H}^\mathrm{F} = \mathbf{U}^\mathrm{B} \mathbf{\Sigma}^\mathrm{B} \mathbf{X} \mathbf{\Sigma}^\mathrm{F} {\mathbf{V}^\mathrm{F}}^\mathsf{H},
+				\sigma_1(\mathbf{H}) \le \sigma_1(\mathbf{H}_\mathrm{B}) \sigma_1(\mathbf{H}_\mathrm{F});
 			\end{equation}
-			where $\mathbf{X} = {\mathbf{V}^\mathrm{B}}^\mathsf{H} \mathbf{\Theta} \mathbf{U}^\mathrm{F}$.
-			% Since unitary matrices are closed under multiplication,
-			\begin{proposition}
-				In this case, the singular value bounds on $\mathbf{H}$ are equivalent to the singular value bounds on $\mathbf{BF}$, where $\mathbf{B}$ and $\mathbf{F}$ are arbitrary matrices with singular values $\mathbf{\Sigma}^\mathrm{B}$ and $\mathbf{\Sigma}^\mathrm{F}$.
-				% The only singular value bounds applied here are those apply to the singular value bound of $\mathbf{F}\mathbf{B}$
-			\end{proposition}
-			\begin{proof}
-				We first observe that singular value control problem can be solved w.r.t. unitary $\mathbf{X}$ and retrieved by $\mathbf{\Theta} = \mathbf{V}^\mathrm{B} \mathbf{X} {\mathbf{U}^\mathrm{F}}^\mathsf{H}$.
-				Also, $\mathrm{sv}(\mathbf{U}^\mathrm{B} \mathbf{\Sigma}^\mathrm{B} \mathbf{X} \mathbf{\Sigma}^\mathrm{F} {\mathbf{V}^\mathrm{F}}^\mathsf{H}) = \mathrm{sv}(\bar{\mathbf{U}}^\mathrm{B} \mathbf{\Sigma}^\mathrm{B} \mathbf{\bar{V}}{{}^\mathrm{B}}^\mathsf{H} \bar{\mathbf{U}}^\mathrm{F} \mathbf{\Sigma}^\mathrm{F} \mathbf{\bar{V}}{{}^\mathrm{F}}^\mathsf{H}) = \mathrm{sv}(\mathbf{BF})$ where $\bar{\mathbf{U}}^{\mathrm{B}/\mathrm{F}}$ and $\bar{\mathbf{V}}^{\mathrm{B}/\mathrm{F}}$ are arbitrary unitary matrices.
-			\end{proof}
-			The problem now becomes, given $\mathbf{\Sigma}^\mathrm{B}$ and $\mathbf{\Sigma}^\mathrm{F}$, what can we say about the singular value of $\mathbf{BF}$.
-			One comprehensive answer is Horn's inequality \cite{Bhatia2001}: for all admissible triples $(I, J, K)$,
+			\item lower bound on the smallest singular value
 			\begin{equation}
-				\prod_{k \in {K}} \sigma_k(\mathbf{BF}) \leq \prod_{i \in {I}} \sigma_i(\mathbf{B}) \prod_{j \in {J}} \sigma_j(\mathbf{F}).
+				\sigma_N(\mathbf{H}) \ge \sigma_N(\mathbf{H}_\mathrm{B}) \sigma_N(\mathbf{H}_\mathrm{F});
 			\end{equation}
-			It gives upper bound on the largest singular value and lower bound on the smallest singular value:
-			\begin{align}
-				\sigma_1(\mathbf{BF}) \le \sigma_1(\mathbf{B}) \sigma_1(\mathbf{F})\label{iq:singular_value_largest}\\
-				\sigma_N(\mathbf{BF}) \geq \sigma_N(\mathbf{B}) \sigma_N(\mathbf{F})\label{iq:singular_value_smallest}.
-			\end{align}
-			Another useful result is introduced in \cite{Hogben2013}: for all $p>0$,
+			\item upper bound on the product of first $k$ singular values
 			\begin{equation}
-				\sum_n \sigma_n^p(\mathbf{BF}) \leq \sum_n \sigma_n^p(\mathbf{B}) \sigma_n^p(\mathbf{F})\label{iq:singular_value_power_sum}.
+				\prod_{n=1}^k \sigma_n(\mathbf{H}) \le \prod_{n=1}^k \sigma_n(\mathbf{H}_\mathrm{B}) \prod_{n=1}^k \sigma_n(\mathbf{H}_\mathrm{F});
 			\end{equation}
-			When $p=2$, it implies the channel energy is upper bounded by the sum of element-wise power product of the forward and backward channels, as illustrated in Fig.~\subref*{sm:pc_power_bond_nd}.
-			Interestingly, \eqref{iq:singular_value_largest}--\eqref{iq:singular_value_power_sum} are simultaneously tight when $\mathbf{X} = \mathbf{I}$ and $\mathbf{\Theta} = \mathbf{V}^\mathrm{B} {\mathbf{U}^\mathrm{F}}^\mathsf{H}$.
-			This solution was claimed in \cite{Bartoli2023} to achieve channel capacity, but it is not true at moderate \gls{snr}.
-		\end{subsubsection}
+			\item lower bound on the product of last $k$ singular values
+			\begin{equation}
+				\prod_{n=N}^{N-k+1} \sigma_n(\mathbf{H}) \ge \prod_{n=N}^{N-k+1} \sigma_n(\mathbf{H}_\mathrm{B}) \prod_{n=N}^{N-k+1} \sigma_n(\mathbf{H}_\mathrm{F});
+			\end{equation}
+			\item upper bound on the sum of first $k$ singular values to the power of $p > 0$
+			\begin{equation}
+				\sum_{n=1}^k \sigma_n^p(\mathbf{H}) \le \sum_{n=1}^k \sigma_n^p(\mathbf{H}_\mathrm{B}) \sigma_n^p(\mathbf{H}_\mathrm{F});
+				\label{iq:sv_bound_fc_power}
+			\end{equation}
+			when $k = N$ and $p = 2$, it suggests the channel power is upper bounded by the sum of element-wise product of backward and forward subchannel power.
+		\end{itemize}
 
-		Finally, we characterize the \emph{Pareto frontier} of channel singular values via optimization approach.
-		% \begin{maxi!}
-		% 	{\scriptstyle{\mathbf{\Theta}}}{J_1 = \sum_n \rho_n \sigma_n(\mathbf{H})}{\label{op:pc_singular}}{\label{ob:pc_singular}}
-		% 	\addConstraint{\mathbf{\Theta}_g^\mathsf{H} \mathbf{\Theta}_g=\mathbf{I}, \quad \forall g,}{}{}
-		% \end{maxi!}
+		\begin{remark}
+			Interestingly, \eqref{iq:sv_bound_fc}--\eqref{iq:sv_bound_fc_power} are simultaneously tight when $\mathbf{\Theta} = \mathbf{V}_\mathrm{B} \mathbf{U}_\mathrm{F}^\mathsf{H}$.
+			From \eqref{eq:scattering_fc} and \eqref{eq:channel_equivalent_fc}, we conclude the off-diagonal entries can enhance the capabilities of
+			\begin{itemize}
+				\item subspace alignment: $\mathbf{V}_\mathrm{B}$ and $\mathbf{U}_\mathrm{F}^\mathsf{H}$ in \eqref{eq:scattering_fc} fully align the subspaces of $\mathbf{H}_\mathrm{B}$ and $\mathbf{H}_\mathrm{F}$ by rotation;
+				\item subchannel rearrangement: $\mathbf{X} = \mathbf{I}$ in \eqref{eq:channel_equivalent_fc} pairs the components of $\mathbf{H}_\mathrm{B}$ and $\mathbf{H}_\mathrm{F}$ by strength, which is optimal by rearrangement inequality.
+			\end{itemize}
+		\end{remark}
 
-
-		% \begin{customopti!}
-		% 	{\underset{\scriptstyle{\mathbf{\Theta}}}{max / min}}{}{J_1 = \sum_n \rho_n \sigma_n(\mathbf{H})}{\label{op:pc_singular}}{\label{ob:pc_singular}}
-		% 	\addConstraint{\mathbf{\Theta}_g^\mathsf{H} \mathbf{\Theta}_g=\mathbf{I}, \quad \forall g,}{}{}
-		% \end{customopti!}
-
-		where $\rho_n$ is the weight of $n$-th singular value.
-		The complex derivative of \eqref{ob:pc_singular} w.r.t. \gls{ris} block $g$ is
-		% \begin{equation}
-		% 	\frac{\partial J_1}{\partial \mathbf{\Theta}_g^*} = {\mathbf{H}_g^\mathrm{B}}^\mathsf{H} \mathbf{U} \mathrm{diag}(\boldsymbol{\rho}) \mathbf{V}^\mathsf{H} {\mathbf{H}_g^\mathrm{F}}^\mathsf{H},
-		% 	\label{eq:pc_singular_gradient_ris}
-		% \end{equation}
-		where $\mathbf{U}$ and $\mathbf{V}$ are left and right singular matrix of $\mathbf{H}$.
-		\eqref{op:pc_singular} can be solved by \gls{rcg} Algorithm~\ref{ag:pc_rate_ris} with \eqref{eq:pc_rate_gradient_ris} replaced by \eqref{eq:pc_singular_gradient_ris}.
+		Tight bounds are generally unavailable when the direct link exists, as the \gls{ris} needs to balance the backward-forward (multiplicative) and direct-indirect (additive) alignments.
 
 		\begin{figure}[!t]
 			\centering
