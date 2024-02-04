@@ -50,6 +50,7 @@
 % amsthm
 \newtheorem{proposition}{Proposition}
 \newtheorem{remark}{Remark}
+\newtheorem{lemma}{Lemma}
 
 % PGF/TikZ
 \usetikzlibrary{arrows,calc,matrix,patterns,plotmarks,positioning,shapes}
@@ -391,13 +392,41 @@
 			\end{algorithmic}
 		\end{algorithm}
 
-		Back to the Pareto channel singular value problem \eqref{op:pareto}. The Euclidean gradient of \gls{bd}-\gls{ris} group $g$ is computed as
-		\begin{equation}
-			\frac{\partial \sum_n \rho_n \sigma_n(\mathbf{H})}{\partial \mathbf{\Theta}_g^*} = \mathbf{H}_{\mathrm{B},g}^\mathsf{H} \mathbf{U} \mathrm{diag}(\rho_1,\ldots,\rho_N) \mathbf{V}^\mathsf{H} \mathbf{H}_{\mathrm{F},g}^\mathsf{H},
-			\label{eq:pareto_gradient}
-		\end{equation}
-		where $\mathbf{U} \in \mathbb{C}^{N_\mathrm{R} \times N}$ and $\mathbf{V} \in \mathbb{C}^{N_\mathrm{T} \times N}$ are the left and right compact singular matrices of $\mathbf{H}$, respectively.
-		Algorithm~\ref{ag:rcg} can thus be invoked for the Pareto singular value problem \eqref{op:pareto}, where expression \eqref{eq:pareto_gradient} should be used in line \ref{ln:gradient_euclidean}.
+		% The Pareto singular value problem \eqref{op:pareto} can thus be solved by Algorithm~\ref{ag:rcg}.
+		\begin{lemma}
+			The Euclidean gradient of \eqref{ob:pareto} w.r.t. \gls{bd}-\gls{ris} group $g$ is
+			\begin{equation}
+				\frac{\partial \sum_n \rho_n \sigma_n(\mathbf{H})}{\partial \mathbf{\Theta}_g^*} = \mathbf{H}_{\mathrm{B},g}^\mathsf{H} \mathbf{U} \mathrm{diag}(\rho_1,\ldots,\rho_N) \mathbf{V}^\mathsf{H} \mathbf{H}_{\mathrm{F},g}^\mathsf{H},
+				\label{eq:pareto_gradient}
+			\end{equation}
+			where $\mathbf{U} \in \mathbb{C}^{N_\mathrm{R} \times N}$ and $\mathbf{V} \in \mathbb{C}^{N_\mathrm{T} \times N}$ are the left and right compact singular matrices of $\mathbf{H}$, respectively.
+		\end{lemma}
+		\begin{proof}
+			Let $\mathbf{H} = \sum_n \mathbf{u}_n \sigma_n \mathbf{v}_n^\mathsf{H}$ be the compact \gls{svd} of the equivalent channel.
+			Since the singular vectors are orthonormal, the $n$-th singular value can be expressed as
+			\begin{equation}
+				\sigma_n = \mathbf{u}_n^\mathsf{H} \mathbf{H} \mathbf{v}_n = \mathbf{u}_n^\mathsf{T} \mathbf{H}^* \mathbf{v}_n^*,
+			\end{equation}
+			whose differential w.r.t. $\mathbf{\Theta}_g^*$ is
+			\begin{align*}
+				\partial \sigma_n
+				& = \partial \mathbf{u}_n^\mathsf{T} \underbrace{\mathbf{H}^* \mathbf{v}_n^*}_{\sum_m \mathbf{u}_m^* \sigma_m \mathbf{v}_m^\mathsf{T} \mathbf{v}_n} + \mathbf{u}_n^\mathsf{T} \cdot \partial \mathbf{H}^* \cdot \mathbf{v}_n^* + \underbrace{\mathbf{u}_n^\mathsf{T} \mathbf{H}^*}_{\mathbf{u}_n^\mathsf{T} \sum_m \mathbf{u}_m^* \sigma_m \mathbf{v}_m^\mathsf{T}} \partial \mathbf{v}_n^*\\
+				& = \underbrace{\partial \mathbf{u}_n^\mathsf{T} \mathbf{u}_n^*}_{\partial 1 = 0} \cdot \sigma_n + \mathbf{u}_n^\mathsf{T} \cdot \partial \mathbf{H}^* \cdot \mathbf{v}_n^* + \sigma_n \cdot \underbrace{\mathbf{v}_n^\mathsf{T} \partial \mathbf{v}_n^*}_{\partial 1 = 0}\\
+				& = \mathbf{u}_n^\mathsf{T} \mathbf{H}_{\mathrm{B},g}^\mathsf{H} \cdot \partial \mathbf{\Theta}_g^* \cdot \mathbf{H}_{\mathrm{F},g}^* \mathbf{v}_n^*\\
+				& = \mathrm{tr}(\mathbf{H}_{\mathrm{F},g}^* \mathbf{v}_n^*\mathbf{u}_n^\mathsf{T} \mathbf{H}_{\mathrm{B},g}^\mathsf{H} \cdot \partial \mathbf{\Theta}_g^*).
+			\end{align*}
+			According to \cite{Hjorungnes2007}, the corresponding complex derivative is
+			\begin{equation}
+				\frac{\partial \sigma_n}{\partial \mathbf{\Theta}_g^*} = \mathbf{H}_{\mathrm{B},g}^\mathsf{H} \mathbf{u}_n \mathbf{v}_n^\mathsf{H} \mathbf{H}_{\mathrm{F},g}^\mathsf{H}.
+				\label{eq:derivative_sv}
+			\end{equation}
+			Linear combination of \eqref{eq:derivative_sv} yields \eqref{eq:pareto_gradient}.
+		\end{proof}
+
+		%  The Euclidean gradient of \gls{bd}-\gls{ris} group $g$ is computed as
+		% where $\mathbf{U} \in \mathbb{C}^{N_\mathrm{R} \times N}$ and $\mathbf{V} \in \mathbb{C}^{N_\mathrm{T} \times N}$ are the left and right compact singular matrices of $\mathbf{H}$, respectively.
+		Algorithm~\ref{ag:rcg} can thus be invoked for the Pareto singular value problem \eqref{op:pareto}, where line \ref{ln:gradient_euclidean} uses explicit expression \eqref{eq:pareto_gradient}.
+		% \eqref{eq:pareto_gradient} is used in line \ref{ln:gradient_euclidean}.
 	\end{subsection}
 
 	\begin{subsection}{Some Analytical Bounds}
@@ -498,7 +527,7 @@
 			\end{gathered}
 		\end{equation}
 		\begin{equation}
-			U_r^n = \Bigl\{(I, J, K) \mid \sum_{i \in I} i + \sum_{j \in J} j = \sum_{k \in K} k + r(r+1)/2\Bigr\}.
+			U_r^n \triangleq \Bigl\{(I, J, K) \mid \sum_{i \in I} i + \sum_{j \in J} j = \sum_{k \in K} k + r(r+1)/2\Bigr\}.
 		\end{equation}
 		It implies the following special cases:
 		\begin{itemize}
@@ -523,7 +552,7 @@
 				\sum_{n=1}^k \sigma_n^p(\mathbf{H}) \le \sum_{n=1}^k \sigma_n^p(\mathbf{H}_\mathrm{B}) \sigma_n^p(\mathbf{H}_\mathrm{F});
 				\label{iq:sv_bound_fc_power}
 			\end{equation}
-			when $k = N$ and $p = 2$, it suggests the channel power is upper bounded by the sum of element-wise product of backward and forward subchannel power.
+			when $k = N$ and $p = 2$, it suggests the channel power is upper bounded by the sum of (sorted) element-wise power product of backward and forward subchannel.
 		\end{itemize}
 
 		\begin{remark}
@@ -531,33 +560,110 @@
 			From \eqref{eq:scattering_fc} and \eqref{eq:channel_equivalent_fc}, we conclude the off-diagonal entries can enhance the capabilities of
 			\begin{itemize}
 				\item subspace alignment: $\mathbf{V}_\mathrm{B}$ and $\mathbf{U}_\mathrm{F}^\mathsf{H}$ in \eqref{eq:scattering_fc} fully align the subspaces of $\mathbf{H}_\mathrm{B}$ and $\mathbf{H}_\mathrm{F}$ by rotation;
-				\item subchannel rearrangement: $\mathbf{X} = \mathbf{I}$ in \eqref{eq:channel_equivalent_fc} pairs the components of $\mathbf{H}_\mathrm{B}$ and $\mathbf{H}_\mathrm{F}$ by strength, which is optimal by rearrangement inequality.
+				\item subchannel rearrangement: $\mathbf{X} = \mathbf{I}$ in \eqref{eq:channel_equivalent_fc} pairs the subchannels of $\mathbf{H}_\mathrm{B}$ and $\mathbf{H}_\mathrm{F}$ from strongest to weakest, which is optimal by rearrangement inequality.
 			\end{itemize}
 		\end{remark}
 
-		Tight bounds are generally unavailable when the direct link exists, as the \gls{ris} needs to balance the backward-forward (multiplicative) and direct-indirect (additive) alignments.
+		Tight bounds are generally unavailable when \gls{mimo} direct link is present.
+		This is because the \gls{ris} needs to balance the backward-forward (multiplicative) and direct-indirect (additive) subspace alignments.
 
-		\begin{figure}[!t]
-			\centering
-			\resizebox{0.65\columnwidth}{!}{
-				\input{assets/simulation/pc_singular_pareto.tex}
-			}
-			\caption{Singular value Pareto frontier. $(N^\mathrm{T}, N^\mathrm{S}, N^\mathrm{R}) = (4, 64, 2)$, $(\Lambda^\mathrm{D}, \Lambda^\mathrm{F}, \Lambda^\mathrm{B}) = (0, -17.5, -17.5) \unit{dB}$.}
-			\label{sm:pc_singular_pareto}
-		\end{figure}
+		% \begin{figure}[!t]
+		% 	\centering
+		% 	\resizebox{0.65\columnwidth}{!}{
+		% 		\input{assets/simulation/pc_singular_pareto.tex}
+		% 	}
+		% 	\caption{Singular value Pareto frontier. $(N^\mathrm{T}, N^\mathrm{S}, N^\mathrm{R}) = (4, 64, 2)$, $(\Lambda^\mathrm{D}, \Lambda^\mathrm{F}, \Lambda^\mathrm{B}) = (0, -17.5, -17.5) \unit{dB}$.}
+		% 	\label{sm:pc_singular_pareto}
+		% \end{figure}
 
-		\begin{figure}[!t]
-			\centering
-			\resizebox{0.65\columnwidth}{!}{
-				\input{assets/simulation/pc_singular_bound.tex}
-			}
-			\caption{Singular value bounds for rank-1 indirect channel. $(N^\mathrm{T}, N^\mathrm{S}, N^\mathrm{R}) = (4, 32, 4)$, $(\Lambda^\mathrm{D}, \Lambda^\mathrm{F}, \Lambda^\mathrm{B}) = (0, -17.5, -17.5) \unit{dB}$.}
-			\label{sm:pc_singular_bound}
-		\end{figure}
+		% \begin{figure}[!t]
+		% 	\centering
+		% 	\resizebox{0.65\columnwidth}{!}{
+		% 		\input{assets/simulation/pc_singular_bound.tex}
+		% 	}
+		% 	\caption{Singular value bounds for rank-1 indirect channel. $(N^\mathrm{T}, N^\mathrm{S}, N^\mathrm{R}) = (4, 32, 4)$, $(\Lambda^\mathrm{D}, \Lambda^\mathrm{F}, \Lambda^\mathrm{B}) = (0, -17.5, -17.5) \unit{dB}$.}
+		% 	\label{sm:pc_singular_bound}
+		% \end{figure}
 
-		The Pareto frontier and evolving trend of channel singular values are shown in Fig.~\ref{sm:pc_singular_pareto} and \ref{sm:pc_singular_bound}.
-		Clearly, \gls{bd}-\gls{ris} with a larger group size can redistribute the channel singular values to a wider range.
+		% The Pareto frontier and evolving trend of channel singular values are shown in Fig.~\ref{sm:pc_singular_pareto} and \ref{sm:pc_singular_bound}.
+		% Clearly, \gls{bd}-\gls{ris} with a larger group size can redistribute the channel singular values to a wider range.
 	\end{subsection}
+
+\end{section}
+
+\begin{section}{Rate Maximization}
+	The \gls{mimo} rate maximization problem is formulated w.r.t. joint active and passive beamforming
+	\begin{maxi!}
+		{\scriptstyle{\mathbf{W},\mathbf{\Theta}}}{R = \log \det \biggl(\mathbf{I} + \frac{\mathbf{W}^\mathsf{H}\mathbf{H}^\mathsf{H}\mathbf{H}\mathbf{W}}{\eta}\biggr)}{\label{op:rate}}{\label{ob:rate}}
+		\addConstraint{\lVert \mathbf{W} \rVert _\mathrm{F}^2 \le P}{}{}
+		\addConstraint{\mathbf{\Theta}_g^\mathsf{H} \mathbf{\Theta}_g=\mathbf{I}, \quad \forall g,}{}{}
+	\end{maxi!}
+	where $\mathbf{W}$ is the transmit precoder, $R$ is the achievable rate, $\eta$ is the noise power, and $P$ is the transmit power budget.
+	Two methods are proposed below to solve problem \eqref{op:rate}.
+
+	\begin{subsection}{Alternating Optimization}
+		We first consider an \gls{ao} approach that updates $\mathbf{\Theta}$ and $\mathbf{W}$ iteratively.
+		For a given $\mathbf{W}$, the passive beamforming subproblem is
+		\begin{maxi!}
+			% {\scriptstyle{\mathbf{\Theta}}}{\log \det \biggl(\mathbf{I} + \frac{(\mathbf{H}_\mathrm{D} + \mathbf{H}_\mathrm{B} \mathbf{\Theta} \mathbf{H}_\mathrm{F}) \mathbf{Q} (\mathbf{H}_\mathrm{D}^\mathsf{H} + \mathbf{H}_\mathrm{F}^\mathsf{H} \mathbf{\Theta}^\mathsf{H} \mathbf{H}_\mathrm{B}^\mathsf{H})}{\eta}\biggr)}{\label{op:rate_passive}}{\label{ob:rate_passive}}
+			{\scriptstyle{\mathbf{\Theta}}}{\log \det \biggl(\mathbf{I} + \frac{\mathbf{H} \mathbf{Q} \mathbf{H}^\mathsf{H}}{\eta}\biggr)}{\label{op:rate_passive}}{\label{ob:rate_passive}}
+			\addConstraint{\mathbf{\Theta}_g^\mathsf{H} \mathbf{\Theta}_g=\mathbf{I}, \quad \forall g,}{}{}
+		\end{maxi!}
+		where $\mathbf{Q} \triangleq \mathbf{W} \mathbf{W}^\mathsf{H}$ is the transmit covariance matrix.
+		\begin{lemma}
+			The Euclidean gradient of \eqref{ob:rate_passive} w.r.t. \gls{bd}-\gls{ris} block $g$ is
+			\begin{equation}
+				\frac{\partial R}{\partial \mathbf{\Theta}_g^*} = \frac{1}{\eta} \mathbf{H}_{\mathrm{B},g}^\mathsf{H} \biggl(\mathbf{I} + \frac{\mathbf{H}\mathbf{Q}\mathbf{H}^\mathsf{H}}{\eta}\biggr)^{-1} \mathbf{H} \mathbf{Q} \mathbf{H}_{\mathrm{F},g}^\mathsf{H}.
+				\label{eq:rate_gradient}
+			\end{equation}
+		\end{lemma}
+
+		\begin{proof}
+			The differential of $R$ w.r.t. $\mathbf{\Theta}_g^*$ is \cite{Hjorungnes2007}
+			\begin{align*}
+				\partial R
+				& = \frac{1}{\eta} \mathrm{tr} \biggl\{ \partial \mathbf{H}^* \cdot \mathbf{Q}^\mathsf{T} \mathbf{H}^\mathsf{T} \Bigl(\mathbf{I} + \frac{\mathbf{H}^* \mathbf{Q}^\mathsf{T} \mathbf{H}^\mathsf{T}}{\eta}\Bigr)^{-1} \biggr\}\\
+				& = \frac{1}{\eta} \mathrm{tr} \biggl\{ \mathbf{H}_{\mathrm{B},g}^* \cdot \partial \mathbf{\Theta}_g^* \cdot \mathbf{H}_{\mathrm{F},g}^* \mathbf{Q}^\mathsf{T} \mathbf{H}^\mathsf{T} \Bigl(\mathbf{I} + \frac{\mathbf{H}^* \mathbf{Q}^\mathsf{T} \mathbf{H}^\mathsf{T}}{\eta}\Bigr)^{-1} \biggr\}\\
+				& = \frac{1}{\eta} \mathrm{tr} \biggl\{ \mathbf{H}_{\mathrm{F},g}^* \mathbf{Q}^\mathsf{T} \mathbf{H}^\mathsf{T} \Bigl(\mathbf{I} + \frac{\mathbf{H}^* \mathbf{Q}^\mathsf{T} \mathbf{H}^\mathsf{T}}{\eta}\Bigr)^{-1} \mathbf{H}_{\mathrm{B},g}^* \cdot \partial \mathbf{\Theta}_g^* \biggr\},
+			\end{align*}
+			and the corresponding complex derivative is \eqref{eq:rate_gradient}.
+		\end{proof}
+		Problem \eqref{op:rate_passive} is then solved by Algorithm \ref{ag:rcg}, where line \ref{ln:gradient_euclidean} uses explicit expression \eqref{eq:rate_gradient}.
+		For a given $\mathbf{\Theta}$, the optimal transmit precoder is given by eigenmode transmission \cite{Clerckx2013}
+		\begin{equation}
+			\mathbf{W}^\star = \mathbf{V} {\mathbf{S}^\star}^{1/2},
+		\end{equation}
+		where $\mathbf{V}$ is the right singular matrix of $\mathbf{H}$ and $\mathbf{S}^\star$ is the optimal power allocation matrix obtained by the water-filling algorithm.
+	\end{subsection}
+
+	\begin{subsection}{Low-Complexity Solution}
+
+	\end{subsection}
+
+	% \begin{figure}[!t]
+	% 	\centering
+	% 	\subfloat[\gls{ris} Elements, $N^\mathrm{T} = 8$\label{sm:pc_rate_sx}]{
+	% 		\resizebox{0.48\columnwidth}{!}{
+	% 			\input{assets/simulation/pc_rate_sx.tex}
+	% 		}
+	% 	}
+	% 	\subfloat[Transmit Antenna, $N^\mathrm{S} = 256$\label{sm:pc_rate_tx}]{
+	% 		\resizebox{0.48\columnwidth}{!}{
+	% 			\input{assets/simulation/pc_rate_tx.tex}
+	% 		}
+	% 	}
+	% 	\caption{Average achievable rate versus group size $L$. $N^\mathrm{R} = 4$, $(\Lambda^\mathrm{D}, \Lambda^\mathrm{F}, \Lambda^\mathrm{B}) = (65, 54, 46) \unit{dB}$.}
+	% 	\label{sm:pc_rate}
+	% \end{figure}
+
+	% Fig.~\ref{sm:pc_rate_sx} illustrates how \gls{ris} configuration influences the \gls{mimo} \gls{pc} achievable rate.
+	% To ensure a \qty{20}{bit/s/Hz} transmission, an \gls{snr} of \qty{13.5}{\dB} is required for a 8T4R system.
+	% This value decreases to \qty{12.5}{\dB} (resp. \qty{8}{\dB}) when 32- (resp. 256-) element diagonal \gls{ris} is present.
+	% If tetrads can be formed in \gls{bd}-\gls{ris}, the \gls{snr} can be reduced by another \qty{20}{\percent} (resp. \qty{44}{\percent}).
+	% Further increase in $L$ yields a marginal gain and incurs $\mathcal{O}(L^2)$ connections.
+	% We thus conclude dyadic or tetradic \gls{bd}-\gls{ris} usually strike a good balance between performance and complexity.
+
+
 	\begin{subsection}{Channel Power Maximization}
 		Consider a \gls{bd}-\gls{ris} with $N^\mathrm{S}$ elements, which is divided into $G$ groups of equal $L$ elements.
 		\begin{maxi!}
@@ -676,71 +782,8 @@
 		% When the direct link is absent, a large $L$ can align the forward-backward eigenspace but cannot preserve the forward-backward power balance.
 	\end{subsection}
 
-	\begin{subsection}{Rate Maximization}
-		The problem is formulated w.r.t. precoder (instead of transmit covariance matrix) for reference:
-		\begin{maxi!}
-			{\scriptstyle{\mathbf{W},\mathbf{\Theta}}}{R = \log \det \biggl(\mathbf{I} + \frac{\mathbf{W}^\mathsf{H}\mathbf{H}^\mathsf{H}\mathbf{H}\mathbf{W}}{\eta}\biggr)}{\label{op:pc_rate}}{\label{ob:pc_rate}}
-			\addConstraint{\lVert \mathbf{W} \rVert _\mathrm{F}^2 \le P}{}{}
-			\addConstraint{\mathbf{\Theta}_g^\mathsf{H} \mathbf{\Theta}_g=\mathbf{I}, \quad \forall g.}{}{\label{cs:pc_rate_unitary}}
-		\end{maxi!}
-
-		\eqref{op:pc_rate} is jointly non-convex and solved by \gls{ao}.
-		For a given $\mathbf{\Theta}$, the optimal precoder is given by
-		\begin{equation}
-			\mathbf{W}^\star = \mathbf{V} {\mathbf{S}^\star}^{1/2},
-		\end{equation}
-		where $\mathbf{V}$ is right singular matrix of $\mathbf{H}$ and $\mathbf{S}^\star$ is a diagonal matrix of the water-filling power allocation.
-		For a given $\mathbf{W}$,
-		The complex derivative of \eqref{ob:pc_rate} w.r.t. \gls{ris} block $g$ is
-		\begin{equation}
-			\frac{\partial R}{\partial \mathbf{\Theta}_g^*} = \frac{1}{\eta} {\mathbf{H}_g^\mathrm{B}}^\mathsf{H} \mathbf{HW} \biggl(\mathbf{I} + \frac{\mathbf{W}^\mathsf{H}\mathbf{H}^\mathsf{H}\mathbf{H}\mathbf{W}}{\eta}\biggr)^{-1} \mathbf{W}^\mathsf{H} {\mathbf{H}_g^\mathrm{F}}^\mathsf{H}.
-			\label{eq:pc_rate_gradient_ris}
-		\end{equation}
-		Algorithm~\ref{ag:pc_rate_ris} summarizes the adapted \gls{rcg} method for the \gls{ris} rate maximization subproblem.
-
-		\setalgorithmcaptionfont{\small}
-		\begin{algorithm}[!t]
-			\small
-			\caption{\gls{rcg} Method for \gls{ris} \gls{mimo}-\gls{pc} Rate Maximization}
-			\label{ag:pc_rate_ris}
-			\begin{algorithmic}[1]
-				\Require $\mathbf{H}^\mathrm{D}$, $\mathbf{H}^\mathrm{F}$, $\mathbf{H}^\mathrm{B}$, $\mathbf{W}$, $L$, $\eta$
-				\Ensure $\mathbf{\Theta}^\star$
-				\State $r \gets 0$, $\mathbf{\Theta}^{(0)}$
-				\Repeat
-					\State $r \gets r+1$
-					\For {$g \gets 1$ to $G$}
-						\State $\mathbf{\Theta}_g^{(r)} \gets$ \eqref{eq:pc_rate_gradient_ris}, \eqref{eq:rcg_gradient_riemannian}--\eqref{eq:rcg_update}
-					\EndFor
-				\Until $\lvert R^{(r)} - R^{(r-1)} \rvert / R^{(r-1)} \le \epsilon$
-			\end{algorithmic}
-		\end{algorithm}
-
-		\begin{figure}[!t]
-			\centering
-			\subfloat[\gls{ris} Elements, $N^\mathrm{T} = 8$\label{sm:pc_rate_sx}]{
-				\resizebox{0.48\columnwidth}{!}{
-					\input{assets/simulation/pc_rate_sx.tex}
-				}
-			}
-			\subfloat[Transmit Antenna, $N^\mathrm{S} = 256$\label{sm:pc_rate_tx}]{
-				\resizebox{0.48\columnwidth}{!}{
-					\input{assets/simulation/pc_rate_tx.tex}
-				}
-			}
-			\caption{Average achievable rate versus group size $L$. $N^\mathrm{R} = 4$, $(\Lambda^\mathrm{D}, \Lambda^\mathrm{F}, \Lambda^\mathrm{B}) = (65, 54, 46) \unit{dB}$.}
-			\label{sm:pc_rate}
-		\end{figure}
-
-		Fig.~\ref{sm:pc_rate_sx} illustrates how \gls{ris} configuration influences the \gls{mimo} \gls{pc} achievable rate.
-		To ensure a \qty{20}{bit/s/Hz} transmission, an \gls{snr} of \qty{13.5}{\dB} is required for a 8T4R system.
-		This value decreases to \qty{12.5}{\dB} (resp. \qty{8}{\dB}) when 32- (resp. 256-) element diagonal \gls{ris} is present.
-		If tetrads can be formed in \gls{bd}-\gls{ris}, the \gls{snr} can be reduced by another \qty{20}{\percent} (resp. \qty{44}{\percent}).
-		Further increase in $L$ yields a marginal gain and incurs $\mathcal{O}(L^2)$ connections.
-		We thus conclude dyadic or tetradic \gls{bd}-\gls{ris} usually strike a good balance between performance and complexity.
-	\end{subsection}
-
 \end{section}
+
 
 \begin{section}{\glsentryshort{mimo}-\glsentryshort{ic}}
 	\begin{subsection}{Leakage Interference Minimization}
