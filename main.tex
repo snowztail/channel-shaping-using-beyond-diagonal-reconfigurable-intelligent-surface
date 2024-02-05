@@ -145,6 +145,7 @@
 \newacronym{los}{LoS}{Line-of-Sight}
 \newacronym{csi}{CSI}{Channel State Information}
 \newacronym{cscg}{CSCG}{Circularly Symmetric Complex Gaussian}
+\newacronym{sca}{SCA}{Successive Convex Approximation}
 
 
 \begin{document}
@@ -250,11 +251,13 @@
 	$\sigma_n(\cdot)$ and $\lambda_n(\cdot)$ is the $n$-th largest singular value and eigenvalue, respectively.
 	% $\boldsymbol{\sigma}(\cdot)$ and $\boldsymbol{\lambda}(\cdot)$ are the corresponding vectors.
 	$(\cdot)^*$, $(\cdot)^\mathsf{T}$, $(\cdot)^\mathsf{H}$, $(\cdot)^{(r)}$, $(\cdot)^{\star}$ denote the conjugate, transpose, conjugate transpose (Hermitian), $r$-th iterated point, and final solution, respectively.
+	$(\cdot)_{[x:y]}$ is a shortcut for $(\cdot)_x,(\cdot)_{x+1},\ldots,(\cdot)_y$.
 	$\lvert \cdot \rvert$ denotes the absolute value.
-	$\lVert \cdot \rVert _p$ means the $p$-norm and $\lVert \cdot \rVert$ suggests $p = 2$.
+	% $\lVert \cdot \rVert _p$ means the $p$-norm and $\lVert \cdot \rVert$ suggests $p = 2$.
+	$\lVert \cdot \rVert$ means the Euclidean norm.
 	$\lVert \cdot \rVert _\mathrm{F}$ represents the Frobenius norm.
-	$\sim$ means ``distributed as''.
 	$\mathcal{CN}(\mathbf{0}, \mathbf{\Sigma})$ is the multivariate \gls{cscg} distribution with mean $\mathbf{0}$ and covariance $\mathbf{\Sigma}$.
+	$\sim$ means ``distributed as''.
 \end{section}
 
 \begin{section}{\gls{bd}-\gls{ris} Model}
@@ -348,7 +351,7 @@
 			\label{eq:update_geodesic}
 		\end{equation}
 		Algorithm~\ref{ag:rcg} summarizes the proposed block-wise geodesic \gls{rcg} method for smooth maximization problems of asymmetric \gls{bd}-\gls{ris}.
-		Convergence to stationary points is guaranteed as updating each block iteratively does not reduce the objective function.
+		Convergence to stationary points is guaranteed.
 
 		\begin{remark}
 			Compared with universal manifold optimization \cite{Absil2009,Pan2022d}, Algorithm~\ref{ag:rcg} inherits a trifold benefit from \cite{Abrudan2008,Abrudan2009}:
@@ -425,7 +428,7 @@
 
 		%  The Euclidean gradient of \gls{bd}-\gls{ris} group $g$ is computed as
 		% where $\mathbf{U} \in \mathbb{C}^{N_\mathrm{R} \times N}$ and $\mathbf{V} \in \mathbb{C}^{N_\mathrm{T} \times N}$ are the left and right compact singular matrices of $\mathbf{H}$, respectively.
-		Algorithm~\ref{ag:rcg} can thus be invoked for the Pareto singular value problem \eqref{op:pareto}, where line \ref{ln:gradient_euclidean} uses explicit expression \eqref{eq:pareto_gradient}.
+		Algorithm~\ref{ag:rcg} can thus be invoked for the Pareto singular value problem \eqref{op:pareto} where line \ref{ln:gradient_euclidean} uses \eqref{eq:pareto_gradient} explicitly.
 		% \eqref{eq:pareto_gradient} is used in line \ref{ln:gradient_euclidean}.
 	\end{subsection}
 
@@ -560,7 +563,7 @@
 			From \eqref{eq:scattering_fc} and \eqref{eq:channel_equivalent_fc}, we conclude the off-diagonal entries can enhance the capabilities of
 			\begin{itemize}
 				\item subspace alignment: $\mathbf{V}_\mathrm{B}$ and $\mathbf{U}_\mathrm{F}^\mathsf{H}$ in \eqref{eq:scattering_fc} fully align the subspaces of $\mathbf{H}_\mathrm{B}$ and $\mathbf{H}_\mathrm{F}$ by rotation;
-				\item subchannel rearrangement: $\mathbf{X} = \mathbf{I}$ in \eqref{eq:channel_equivalent_fc} pairs the subchannels of $\mathbf{H}_\mathrm{B}$ and $\mathbf{H}_\mathrm{F}$ from strongest to weakest, which is optimal by rearrangement inequality.
+				\item subchannel rearrangement: $\mathbf{X} = \mathbf{I}$ in \eqref{eq:channel_equivalent_fc} pairs the subchannels of $\mathbf{H}_\mathrm{B}$ and $\mathbf{H}_\mathrm{F}$ from strongest to weakest, which attains maximal in rearrangement inequality.
 			\end{itemize}
 		\end{remark}
 
@@ -602,7 +605,7 @@
 	Two methods are proposed below to solve problem \eqref{op:rate}.
 
 	\begin{subsection}{Alternating Optimization}
-		We first consider an \gls{ao} approach that updates $\mathbf{\Theta}$ and $\mathbf{W}$ iteratively.
+		Consider an \gls{ao} approach that updates $\mathbf{\Theta}$ and $\mathbf{W}$ iteratively.
 		For a given $\mathbf{W}$, the passive beamforming subproblem is
 		\begin{maxi!}
 			% {\scriptstyle{\mathbf{\Theta}}}{\log \det \biggl(\mathbf{I} + \frac{(\mathbf{H}_\mathrm{D} + \mathbf{H}_\mathrm{B} \mathbf{\Theta} \mathbf{H}_\mathrm{F}) \mathbf{Q} (\mathbf{H}_\mathrm{D}^\mathsf{H} + \mathbf{H}_\mathrm{F}^\mathsf{H} \mathbf{\Theta}^\mathsf{H} \mathbf{H}_\mathrm{B}^\mathsf{H})}{\eta}\biggr)}{\label{op:rate_passive}}{\label{ob:rate_passive}}
@@ -628,16 +631,60 @@
 			\end{align*}
 			and the corresponding complex derivative is \eqref{eq:rate_gradient}.
 		\end{proof}
-		Problem \eqref{op:rate_passive} is then solved by Algorithm \ref{ag:rcg}, where line \ref{ln:gradient_euclidean} uses explicit expression \eqref{eq:rate_gradient}.
-		For a given $\mathbf{\Theta}$, the optimal transmit precoder is given by eigenmode transmission \cite{Clerckx2013}
+		% Problem \eqref{op:rate_passive} is then solved by Algorithm \ref{ag:rcg} where line \ref{ln:gradient_euclidean} uses \eqref{eq:rate_gradient} explicitly.
+		% Problem \eqref{op:rate_passive} is then solved by Algorithm \ref{ag:rcg} where line \ref{ln:gradient_euclidean} uses \eqref{eq:rate_gradient} explicitly.
+		Algorithm \ref{ag:rcg} is then invoked to solve problem \eqref{op:rate} where line \ref{ln:gradient_euclidean} uses \eqref{eq:rate_gradient} explicitly.
+		Since \eqref{ob:rate_passive} is a concave function of $\mathbf{\Theta}$, convergence to local-optimal points is guaranteed.
+		On the other hand, the global optimal transmit precoder for a fixed $\mathbf{\Theta}$ is given by the eigenmode transmission \cite{Clerckx2013}
+		% For a given $\mathbf{\Theta}$, the global optimal transmit precoder is given by eigenmode transmission \cite{Clerckx2013}
 		\begin{equation}
 			\mathbf{W}^\star = \mathbf{V} {\mathbf{S}^\star}^{1/2},
+			\label{eq:precoder_eigenmode}
 		\end{equation}
-		where $\mathbf{V}$ is the right singular matrix of $\mathbf{H}$ and $\mathbf{S}^\star$ is the optimal power allocation matrix obtained by the water-filling algorithm.
+		where $\mathbf{V}$ is the right channel singular matrix and $\mathbf{S}^\star$ is the optimal water-filling power allocation matrix.
+		The overall \gls{ao} algorithm converges to local-optimal points of problem \eqref{op:rate} since each subproblem is solved optimally and the objective is bounded from above.
+		% is a first-order method to \eqref{op:rate_passive} and the water-filling algorithm is a global optimal solution to the convex problem \eqref{op:rate}.
 	\end{subsection}
 
 	\begin{subsection}{Low-Complexity Solution}
+		We then propose a low-complexity solution to problem \eqref{op:rate} inspired by channel shaping.
+		The passive beamforming subproblem \eqref{op:rate_passive} involves transmit covariance matrix $\mathbf{Q}$ and thus requires iterative \gls{rcg} update.
+		Instead, we decouple the joint \gls{ris}-transceiver design by recasting \eqref{op:rate_passive} as channel power maximization
+		\begin{maxi!}
+			{\scriptstyle{\mathbf{\Theta}}}{\lVert \mathbf{H}_\mathrm{D} + \mathbf{H}_\mathrm{B} \mathbf{\Theta} \mathbf{H}_\mathrm{F} \rVert _\mathrm{F}^2}{\label{op:power_passive}}{\label{ob:power_passive}}
+			\addConstraint{\mathbf{\Theta}_g^\mathsf{H} \mathbf{\Theta}_g=\mathbf{I}, \quad \forall g,}{}{}
+		\end{maxi!}
+		which only accounts for channel characteristics but is still non-trivial.
+		Inspired by \cite{Nie2017}, we successively approximate the quadratic objective \eqref{ob:power_passive} by local Taylor expansions and solve each iteration in closed form.
+		% approximate the quadratic objective \eqref{ob:power_passive} with a sequence of affines and solve each problem
+		% iterative algorithm to solve \eqref{op:pc_power}.
+		% The idea is to successively approximate the quadratic objective with a sequence of affine functions and solve the resulting subproblems in closed form.
 
+		\begin{proposition}
+			Start from any $\mathbf{\Theta}^{(0)} \in \mathbb{U}^{N_\mathrm{S} \times N_\mathrm{S}}$, the sequence
+			\begin{equation}
+				\mathbf{\Theta}_g^{(r+1)} = \mathbf{U}_g^{(r)} \mathbf{V}_g^{(r)}, \quad \forall g
+			\end{equation}
+			converges to a local-optimal point of \eqref{op:pc_power}, where $\mathbf{U}_g^{(r)}$ and $\mathbf{V}_g^{(r)}$ are the left and right singular matrix of
+			\begin{equation}
+				% \mathbf{M}_g^{(r)} = \mathbf{H}_{\mathrm{B},g}^\mathsf{H} (\mathbf{H}_\mathrm{D} + \mathbf{H}_\mathrm{B} \mathbf{\Phi}_g^{(r)} \mathbf{H}_\mathrm{F}) \mathbf{H}_{\mathrm{F},g}^\mathsf{H}
+				% \mathbf{M}_g^{(r)} = \mathbf{H}_{\mathrm{B},g}^\mathsf{H} (\mathbf{H}_\mathrm{D} + \mathbf{H}_\mathrm{B} \mathrm{diag}(\mathbf{\Theta}_1^{(r+1)},\ldots,\mathbf{\Theta}_{g-1}^{(r+1)},\mathbf{\Theta}_g^{(r)},\ldots,\mathbf{\Theta}_G^{(r)}) \mathbf{H}_\mathrm{F}) \mathbf{H}_{\mathrm{F},g}^\mathsf{H}
+				\mathbf{M}_g^{(r)} = \mathbf{H}_{\mathrm{B},g}^\mathsf{H} \Bigl(\mathbf{H}_\mathrm{D} + \mathbf{H}_\mathrm{B} \mathrm{diag}\bigl(\mathbf{\Theta}_{[1:g-1]}^{(r+1)},\mathbf{\Theta}_{[g:G]}^{(r)}\bigr) \mathbf{H}_\mathrm{F}\Bigr) \mathbf{H}_{\mathrm{F},g}^\mathsf{H}
+				% \mathbf{M}_g^{(r)} = \mathbf{H}_{\mathrm{B},g}^\mathsf{H} \mathbf{H}_g^{(r)} \mathbf{H}_{\mathrm{F},g}^\mathsf{H},
+			\end{equation}
+			% where $\mathbf{H}_g^{(r)} \triangleq \mathbf{H}_\mathrm{B} \mathrm{diag}(\mathbf{\Theta}_1^{(r+1)},\ldots,\mathbf{\Theta}_{g-1}^{(r+1)},\mathbf{\Theta}_g^{(r)},\ldots,\mathbf{\Theta}_G^{(r)}) \mathbf{H}_\mathrm{F}$.
+			% \begin{equation}
+			% 	\begin{split}
+			% 		\mathbf{M}_g^{(r)}
+			% 		& = {\mathbf{H}_g^\mathrm{B}}^\mathsf{H} \mathbf{H}^\mathrm{D} {\mathbf{H}_g^\mathrm{F}}^\mathsf{H} + \sum_{g' < g} {\mathbf{H}_{g'}^\mathrm{B}}^\mathsf{H} \mathbf{H}_{g'}^\mathrm{B} \mathbf{\Theta}_{g'}^{(r+1)} \mathbf{H}_{g'}^\mathrm{F} {\mathbf{H}_{g'}^\mathrm{F}}^\mathsf{H} \\
+			% 		& \quad + \sum_{g' \ge g} {\mathbf{H}_{g'}^\mathrm{B}}^\mathsf{H} \mathbf{H}_{g'}^\mathrm{B} \mathbf{\Theta}_{g'}^{(r)} \mathbf{H}_{g'}^\mathrm{F} {\mathbf{H}_{g'}^\mathrm{F}}^\mathsf{H}.
+			% 	\end{split}
+			% \end{equation}
+		\end{proposition}
+
+		\begin{proof}
+			To be added.
+		\end{proof}
 	\end{subsection}
 
 	% \begin{figure}[!t]
@@ -694,28 +741,6 @@
 			\eqref{op:standard_orthogonal_procrustes} has a global optimal solution $\mathbf{\Theta}^\star = \mathbf{U} \mathbf{V}^\mathsf{H}$, where $\mathbf{U}$ and $\mathbf{V}$ are left and right singular matrix of $\mathbf{\mathbf{A}^\dagger \mathbf{C} \mathbf{B}^\mathsf{H}}$ \cite{Golub2013}.
 			This low-complexity solution will be compared with the one proposed later.
 		\end{remark}
-
-		Inspired by \cite{Nie2017}, we propose an iterative algorithm to solve \eqref{op:pc_power}.
-		The idea is to successively approximate the quadratic objective with a sequence of affine functions and solve the resulting subproblems in closed form.
-
-		\begin{proposition}
-			Start from any $\mathbf{\Theta}^{(0)}$, the sequence
-			\begin{equation}
-				\mathbf{\Theta}_g^{(r+1)} = \mathbf{U}_g^{(r)} \mathbf{V}_g^{(r)}, \quad \forall g
-			\end{equation}
-			converges to a stationary point of \eqref{op:pc_power}, where $\mathbf{U}_g^{(r)}$ and $\mathbf{V}_g^{(r)}$ are left and right singular matrix of
-			\begin{equation}
-				\begin{split}
-					\mathbf{M}_g^{(r)}
-					& = {\mathbf{H}_g^\mathrm{B}}^\mathsf{H} \mathbf{H}^\mathrm{D} {\mathbf{H}_g^\mathrm{F}}^\mathsf{H} + \sum_{g' < g} {\mathbf{H}_{g'}^\mathrm{B}}^\mathsf{H} \mathbf{H}_{g'}^\mathrm{B} \mathbf{\Theta}_{g'}^{(r+1)} \mathbf{H}_{g'}^\mathrm{F} {\mathbf{H}_{g'}^\mathrm{F}}^\mathsf{H} \\
-					& \quad + \sum_{g' \ge g} {\mathbf{H}_{g'}^\mathrm{B}}^\mathsf{H} \mathbf{H}_{g'}^\mathrm{B} \mathbf{\Theta}_{g'}^{(r)} \mathbf{H}_{g'}^\mathrm{F} {\mathbf{H}_{g'}^\mathrm{F}}^\mathsf{H}.
-				\end{split}
-			\end{equation}
-		\end{proposition}
-
-		\begin{proof}
-			To be added.
-		\end{proof}
 
 		\begin{figure}[!t]
 			\centering
