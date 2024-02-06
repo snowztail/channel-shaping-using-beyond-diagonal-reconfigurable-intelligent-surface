@@ -146,6 +146,7 @@
 \newacronym{csi}{CSI}{Channel State Information}
 \newacronym{cscg}{CSCG}{Circularly Symmetric Complex Gaussian}
 \newacronym{sca}{SCA}{Successive Convex Approximation}
+\newacronym{kkt}{KKT}{Karush-Kuhn-Tucker}
 
 
 \begin{document}
@@ -245,6 +246,7 @@
 	$\mathbb{C}$ represents the set of complex numbers.
 	$\mathbb{U}^{n \times n}$ denotes the set of $n \times n$ unitary matrices.
 	$\mathbf{0}$ and $\mathbf{I}$ are the all-zero and identity matrices with appropriate size, respectively.
+	$\Re\{\cdot\}$ takes the real part of a complex number.
 	$\mathrm{tr}(\cdot)$ and $\det(\cdot)$ evaluates the trace and determinant of a square matrix, respectively.
 	$\mathrm{diag}(\cdot)$ constructs a square matrix with arguments on the main diagonal and zeros elsewhere.
 	$\mathrm{sv}(\cdot)$ returns the singular value vector.
@@ -415,8 +417,8 @@
 				\partial \sigma_n
 				& = \partial \mathbf{u}_n^\mathsf{T} \underbrace{\mathbf{H}^* \mathbf{v}_n^*}_{\sum_m \mathbf{u}_m^* \sigma_m \mathbf{v}_m^\mathsf{T} \mathbf{v}_n} + \mathbf{u}_n^\mathsf{T} \cdot \partial \mathbf{H}^* \cdot \mathbf{v}_n^* + \underbrace{\mathbf{u}_n^\mathsf{T} \mathbf{H}^*}_{\mathbf{u}_n^\mathsf{T} \sum_m \mathbf{u}_m^* \sigma_m \mathbf{v}_m^\mathsf{T}} \partial \mathbf{v}_n^*\\
 				& = \underbrace{\partial \mathbf{u}_n^\mathsf{T} \mathbf{u}_n^*}_{\partial 1 = 0} \cdot \sigma_n + \mathbf{u}_n^\mathsf{T} \cdot \partial \mathbf{H}^* \cdot \mathbf{v}_n^* + \sigma_n \cdot \underbrace{\mathbf{v}_n^\mathsf{T} \partial \mathbf{v}_n^*}_{\partial 1 = 0}\\
-				& = \mathbf{u}_n^\mathsf{T} \mathbf{H}_{\mathrm{B},g}^\mathsf{H} \cdot \partial \mathbf{\Theta}_g^* \cdot \mathbf{H}_{\mathrm{F},g}^* \mathbf{v}_n^*\\
-				& = \mathrm{tr}(\mathbf{H}_{\mathrm{F},g}^* \mathbf{v}_n^*\mathbf{u}_n^\mathsf{T} \mathbf{H}_{\mathrm{B},g}^\mathsf{H} \cdot \partial \mathbf{\Theta}_g^*).
+				& = \mathbf{u}_n^\mathsf{T} \mathbf{H}_{\mathrm{B},g}^* \cdot \partial \mathbf{\Theta}_g^* \cdot \mathbf{H}_{\mathrm{F},g}^* \mathbf{v}_n^*\\
+				& = \mathrm{tr}(\mathbf{H}_{\mathrm{F},g}^* \mathbf{v}_n^*\mathbf{u}_n^\mathsf{T} \mathbf{H}_{\mathrm{B},g}^* \cdot \partial \mathbf{\Theta}_g^*).
 			\end{align*}
 			According to \cite{Hjorungnes2007}, the corresponding complex derivative is
 			\begin{equation}
@@ -608,7 +610,6 @@
 		Consider an \gls{ao} approach that updates $\mathbf{\Theta}$ and $\mathbf{W}$ iteratively.
 		For a given $\mathbf{W}$, the passive beamforming subproblem is
 		\begin{maxi!}
-			% {\scriptstyle{\mathbf{\Theta}}}{\log \det \biggl(\mathbf{I} + \frac{(\mathbf{H}_\mathrm{D} + \mathbf{H}_\mathrm{B} \mathbf{\Theta} \mathbf{H}_\mathrm{F}) \mathbf{Q} (\mathbf{H}_\mathrm{D}^\mathsf{H} + \mathbf{H}_\mathrm{F}^\mathsf{H} \mathbf{\Theta}^\mathsf{H} \mathbf{H}_\mathrm{B}^\mathsf{H})}{\eta}\biggr)}{\label{op:rate_passive}}{\label{ob:rate_passive}}
 			{\scriptstyle{\mathbf{\Theta}}}{\log \det \biggl(\mathbf{I} + \frac{\mathbf{H} \mathbf{Q} \mathbf{H}^\mathsf{H}}{\eta}\biggr)}{\label{op:rate_passive}}{\label{ob:rate_passive}}
 			\addConstraint{\mathbf{\Theta}_g^\mathsf{H} \mathbf{\Theta}_g=\mathbf{I}, \quad \forall g,}{}{}
 		\end{maxi!}
@@ -631,59 +632,113 @@
 			\end{align*}
 			and the corresponding complex derivative is \eqref{eq:rate_gradient}.
 		\end{proof}
-		% Problem \eqref{op:rate_passive} is then solved by Algorithm \ref{ag:rcg} where line \ref{ln:gradient_euclidean} uses \eqref{eq:rate_gradient} explicitly.
-		% Problem \eqref{op:rate_passive} is then solved by Algorithm \ref{ag:rcg} where line \ref{ln:gradient_euclidean} uses \eqref{eq:rate_gradient} explicitly.
 		Algorithm \ref{ag:rcg} is then invoked to solve problem \eqref{op:rate} where line \ref{ln:gradient_euclidean} uses \eqref{eq:rate_gradient} explicitly.
 		Since \eqref{ob:rate_passive} is a concave function of $\mathbf{\Theta}$, convergence to local-optimal points is guaranteed.
 		On the other hand, the global optimal transmit precoder for a fixed $\mathbf{\Theta}$ is given by the eigenmode transmission \cite{Clerckx2013}
-		% For a given $\mathbf{\Theta}$, the global optimal transmit precoder is given by eigenmode transmission \cite{Clerckx2013}
 		\begin{equation}
 			\mathbf{W}^\star = \mathbf{V} {\mathbf{S}^\star}^{1/2},
 			\label{eq:precoder_eigenmode}
 		\end{equation}
 		where $\mathbf{V}$ is the right channel singular matrix and $\mathbf{S}^\star$ is the optimal water-filling power allocation matrix.
 		The overall \gls{ao} algorithm converges to local-optimal points of problem \eqref{op:rate} since each subproblem is solved optimally and the objective is bounded from above.
-		% is a first-order method to \eqref{op:rate_passive} and the water-filling algorithm is a global optimal solution to the convex problem \eqref{op:rate}.
 	\end{subsection}
 
 	\begin{subsection}{Low-Complexity Solution}
-		We then propose a low-complexity solution to problem \eqref{op:rate} inspired by channel shaping.
+		We then propose a low-complexity solution to problem \eqref{op:rate} based on channel shaping.
 		The passive beamforming subproblem \eqref{op:rate_passive} involves transmit covariance matrix $\mathbf{Q}$ and thus requires iterative \gls{rcg} update.
 		Instead, we decouple the joint \gls{ris}-transceiver design by recasting \eqref{op:rate_passive} as channel power maximization
 		\begin{maxi!}
 			{\scriptstyle{\mathbf{\Theta}}}{\lVert \mathbf{H}_\mathrm{D} + \mathbf{H}_\mathrm{B} \mathbf{\Theta} \mathbf{H}_\mathrm{F} \rVert _\mathrm{F}^2}{\label{op:power_passive}}{\label{ob:power_passive}}
 			\addConstraint{\mathbf{\Theta}_g^\mathsf{H} \mathbf{\Theta}_g=\mathbf{I}, \quad \forall g,}{}{}
 		\end{maxi!}
-		which only accounts for channel characteristics but is still non-trivial.
+		which only accounts for channel characteristics but has no trivial solution.
 		Inspired by \cite{Nie2017}, we successively approximate the quadratic objective \eqref{ob:power_passive} by local Taylor expansions and solve each iteration in closed form.
-		% approximate the quadratic objective \eqref{ob:power_passive} with a sequence of affines and solve each problem
-		% iterative algorithm to solve \eqref{op:pc_power}.
-		% The idea is to successively approximate the quadratic objective with a sequence of affine functions and solve the resulting subproblems in closed form.
 
 		\begin{proposition}
 			Start from any $\mathbf{\Theta}^{(0)} \in \mathbb{U}^{N_\mathrm{S} \times N_\mathrm{S}}$, the sequence
 			\begin{equation}
 				\mathbf{\Theta}_g^{(r+1)} = \mathbf{U}_g^{(r)} \mathbf{V}_g^{(r)}, \quad \forall g
 			\end{equation}
-			converges to a local-optimal point of \eqref{op:pc_power}, where $\mathbf{U}_g^{(r)}$ and $\mathbf{V}_g^{(r)}$ are the left and right singular matrix of
+			converges to a stationary point of \eqref{op:pc_power}, where $\mathbf{U}_g^{(r)}$ and $\mathbf{V}_g^{(r)}$ are the left and right compact singular matrix of
 			\begin{equation}
-				% \mathbf{M}_g^{(r)} = \mathbf{H}_{\mathrm{B},g}^\mathsf{H} (\mathbf{H}_\mathrm{D} + \mathbf{H}_\mathrm{B} \mathbf{\Phi}_g^{(r)} \mathbf{H}_\mathrm{F}) \mathbf{H}_{\mathrm{F},g}^\mathsf{H}
-				% \mathbf{M}_g^{(r)} = \mathbf{H}_{\mathrm{B},g}^\mathsf{H} (\mathbf{H}_\mathrm{D} + \mathbf{H}_\mathrm{B} \mathrm{diag}(\mathbf{\Theta}_1^{(r+1)},\ldots,\mathbf{\Theta}_{g-1}^{(r+1)},\mathbf{\Theta}_g^{(r)},\ldots,\mathbf{\Theta}_G^{(r)}) \mathbf{H}_\mathrm{F}) \mathbf{H}_{\mathrm{F},g}^\mathsf{H}
 				\mathbf{M}_g^{(r)} = \mathbf{H}_{\mathrm{B},g}^\mathsf{H} \Bigl(\mathbf{H}_\mathrm{D} + \mathbf{H}_\mathrm{B} \mathrm{diag}\bigl(\mathbf{\Theta}_{[1:g-1]}^{(r+1)},\mathbf{\Theta}_{[g:G]}^{(r)}\bigr) \mathbf{H}_\mathrm{F}\Bigr) \mathbf{H}_{\mathrm{F},g}^\mathsf{H}
-				% \mathbf{M}_g^{(r)} = \mathbf{H}_{\mathrm{B},g}^\mathsf{H} \mathbf{H}_g^{(r)} \mathbf{H}_{\mathrm{F},g}^\mathsf{H},
 			\end{equation}
-			% where $\mathbf{H}_g^{(r)} \triangleq \mathbf{H}_\mathrm{B} \mathrm{diag}(\mathbf{\Theta}_1^{(r+1)},\ldots,\mathbf{\Theta}_{g-1}^{(r+1)},\mathbf{\Theta}_g^{(r)},\ldots,\mathbf{\Theta}_G^{(r)}) \mathbf{H}_\mathrm{F}$.
-			% \begin{equation}
-			% 	\begin{split}
-			% 		\mathbf{M}_g^{(r)}
-			% 		& = {\mathbf{H}_g^\mathrm{B}}^\mathsf{H} \mathbf{H}^\mathrm{D} {\mathbf{H}_g^\mathrm{F}}^\mathsf{H} + \sum_{g' < g} {\mathbf{H}_{g'}^\mathrm{B}}^\mathsf{H} \mathbf{H}_{g'}^\mathrm{B} \mathbf{\Theta}_{g'}^{(r+1)} \mathbf{H}_{g'}^\mathrm{F} {\mathbf{H}_{g'}^\mathrm{F}}^\mathsf{H} \\
-			% 		& \quad + \sum_{g' \ge g} {\mathbf{H}_{g'}^\mathrm{B}}^\mathsf{H} \mathbf{H}_{g'}^\mathrm{B} \mathbf{\Theta}_{g'}^{(r)} \mathbf{H}_{g'}^\mathrm{F} {\mathbf{H}_{g'}^\mathrm{F}}^\mathsf{H}.
-			% 	\end{split}
-			% \end{equation}
 		\end{proposition}
 
 		\begin{proof}
-			To be added.
+			The differential of \eqref{ob:power_passive} w.r.t. $\mathbf{\Theta}_g^*$ is
+			\begin{align*}
+				\partial \lVert \mathbf{H} \rVert _\mathrm{F}^2
+				& = \mathrm{tr}\bigl(\mathbf{H}_{\mathrm{B},g}^* \cdot \partial \mathbf{\Theta}_g^* \cdot \mathbf{H}_{\mathrm{F},g}^* (\mathbf{H}_\mathrm{D}^\mathsf{T} + \mathbf{H}_\mathrm{F}^\mathsf{T} \mathbf{\Theta}^\mathsf{T} \mathbf{H}_\mathrm{B}^\mathsf{T})\bigr)\\
+				& = \mathrm{tr}\bigl(\mathbf{H}_{\mathrm{F},g}^* (\mathbf{H}_\mathrm{D}^\mathsf{T} + \mathbf{H}_\mathrm{F}^\mathsf{T} \mathbf{\Theta}^\mathsf{T} \mathbf{H}_\mathrm{B}^\mathsf{T}) \mathbf{H}_{\mathrm{B},g}^* \cdot \partial \mathbf{\Theta}_g^*\bigr)
+			\end{align*}
+			and the corresponding complex derivative is
+			\begin{equation}
+				\frac{\partial \lVert \mathbf{H} \rVert _\mathrm{F}^2}{\partial \mathbf{\Theta}_g^*} = \mathbf{H}_{\mathrm{B},g}^\mathsf{H} (\mathbf{H}_\mathrm{D} + \mathbf{H}_\mathrm{B} \mathbf{\Theta} \mathbf{H}_\mathrm{F}) \mathbf{H}_{\mathrm{F},g}^\mathsf{H} = \mathbf{M}_g.
+			\end{equation}
+			% For a given $\mathbf{\Theta}$, we approximate the quadratic objective \eqref{ob:power_passive} by local Taylor expansion and recast problem \eqref{op:power_passive} as
+
+			First, we approximate the quadratic objective \eqref{ob:power_passive} by its local Taylor expansion
+			\begin{maxi!}
+				{\scriptstyle{\mathbf{\Theta}}}{\sum_g 2 \Re\bigl\{ \mathrm{tr}(\mathbf{\Theta}_g^\mathsf{H} \mathbf{M}_g) \bigr\}}{\label{op:power_passive_approx}}{\label{ob:power_passive_approx}}
+				\addConstraint{\mathbf{\Theta}_g^\mathsf{H} \mathbf{\Theta}_g=\mathbf{I}, \quad \forall g.}{}{}
+			\end{maxi!}
+			Let $\mathbf{M}_g = \mathbf{U}_g \mathbf{\Sigma}_g \mathbf{V}_g^\mathsf{H}$ be the compact \gls{svd} of $\mathbf{M}_g$.
+			We have
+			\begin{equation}
+				\Re \bigl\{\mathrm{tr}(\mathbf{\Theta}_g^\mathsf{H} \mathbf{M}_g)\bigr\} = \Re \bigl\{ \mathrm{tr}(\mathbf{\Sigma}_g \mathbf{V}_g^\mathsf{H} \mathbf{\Theta}_g^\mathsf{H} \mathbf{U}_g) \bigr\} \le \mathrm{tr}(\mathbf{\Sigma}_g).
+			\end{equation}
+			The upper bound is tight when $\mathbf{V}_g^\mathsf{H} \mathbf{\Theta}_g^\mathsf{H} \mathbf{U}_g = \mathbf{I}$, which implies the optimal solution of \eqref{op:power_passive_approx} is $\tilde{\mathbf{\Theta}}_g = \mathbf{U}_g \mathbf{V}_g^\mathsf{H}$, $\forall g$.
+
+			Next, we prove that solving \eqref{op:power_passive_approx} successively does not decrease \eqref{ob:power_passive}.
+			Since $\tilde{\mathbf{\Theta}}$ optimal for problem \eqref{op:power_passive_approx}, we have $\sum_g 2 \Re\bigl\{ \mathrm{tr}(\tilde{\mathbf{\Theta}}_g^\mathsf{H} \mathbf{M}_g) \bigr\} \ge \sum_g 2 \Re\bigl\{ \mathrm{tr}(\mathbf{\Theta}_g^\mathsf{H} \mathbf{M}_g) \bigr\}$ which is explicitly expressed by \eqref{iq:power_passive_approx}.
+			% Expanding both side gives \eqref{iq:power_passive_approx}.
+			On the other hand, expanding $\lVert \sum_g \mathbf{H}_{\mathrm{B},g} \tilde{\mathbf{\Theta}}_g \mathbf{H}_{\mathrm{F},g} - \sum_g \mathbf{H}_{\mathrm{B},g} \mathbf{\Theta}_g \mathbf{H}_{\mathrm{F},g} \rVert _\mathrm{F}^2 \ge 0$ gives \eqref{iq:nonnegative_norm_square}.
+			Adding \eqref{iq:power_passive_approx} and \eqref{iq:nonnegative_norm_square}, we have
+			\begin{multline}
+				2 \Re \Bigl\{\mathrm{tr}(\tilde{\mathbf{\Theta}}^\mathsf{H} \mathbf{H}_\mathrm{B}^\mathsf{H} \mathbf{H}_\mathrm{D} \mathbf{H}_\mathrm{F}^\mathsf{H}) \Bigr\} + \mathrm{tr}(\mathbf{H}_\mathrm{F}^\mathsf{H} \tilde{\mathbf{\Theta}}^\mathsf{H} \mathbf{H}_\mathrm{B}^\mathsf{H} \mathbf{H}_\mathrm{B} \tilde{\mathbf{\Theta}} \mathbf{H}_\mathrm{F}) \\
+				\ge 2 \Re \Bigl\{\mathrm{tr}({\mathbf{\Theta}}^\mathsf{H} \mathbf{H}_\mathrm{B}^\mathsf{H} \mathbf{H}_\mathrm{D} \mathbf{H}_\mathrm{F}^\mathsf{H}) \Bigr\} + \mathrm{tr}(\mathbf{H}_\mathrm{F}^\mathsf{H} {\mathbf{\Theta}}^\mathsf{H} \mathbf{H}_\mathrm{B}^\mathsf{H} \mathbf{H}_\mathrm{B} {\mathbf{\Theta}} \mathbf{H}_\mathrm{F}),
+			\end{multline}
+			which suggests that updating $\tilde{\mathbf{\Theta}}$ does not decrease \eqref{ob:power_passive}.
+			\begin{figure*}
+				\begin{equation}
+					\label{iq:power_passive_approx}
+					\resizebox{0.95\textwidth}{!}{
+						$2 \Re \Bigl\{\sum\limits_g \mathrm{tr}(\tilde{\mathbf{\Theta}}_g^\mathsf{H} \mathbf{H}_{\mathrm{B},g}^\mathsf{H} \mathbf{H}_\mathrm{D} \mathbf{H}_{\mathrm{F},g}^\mathsf{H}) + \sum\limits_{g_1,g_2} \mathrm{tr}(\tilde{\mathbf{\Theta}}_{g_1}^\mathsf{H} \mathbf{H}_{\mathrm{B},g_1}^\mathsf{H} \mathbf{H}_{\mathrm{B},g_2} \mathbf{\Theta}_{g_2} \mathbf{H}_{\mathrm{F},g_2} \mathbf{H}_{\mathrm{F},g_1}^\mathsf{H})\Bigr\} \ge 2 \Re \Bigl\{\sum\limits_g \mathrm{tr}({\mathbf{\Theta}}_g^\mathsf{H} \mathbf{H}_{\mathrm{B},g}^\mathsf{H} \mathbf{H}_\mathrm{D} \mathbf{H}_{\mathrm{F},g}^\mathsf{H}) + \sum\limits_{g_1,g_2} \mathrm{tr}({\mathbf{\Theta}}_{g_1}^\mathsf{H} \mathbf{H}_{\mathrm{B},g_1}^\mathsf{H} \mathbf{H}_{\mathrm{B},g_2} \mathbf{\Theta}_{g_2} \mathbf{H}_{\mathrm{F},g_2} \mathbf{H}_{\mathrm{F},g_1}^\mathsf{H})\Bigr\}$
+					}
+				\end{equation}
+				\begin{equation}
+					\label{iq:nonnegative_norm_square}
+					\resizebox{0.95\textwidth}{!}{
+						$\sum\limits_{g_1,g_2} \mathrm{tr}(\mathbf{H}_{\mathrm{F},g_1}^\mathsf{H} \tilde{\mathbf{\Theta}}_{g_1}^\mathsf{H} \mathbf{H}_{\mathrm{B},g_1}^\mathsf{H} \mathbf{H}_{\mathrm{B},g_2} \tilde{\mathbf{\Theta}}_{g_2} \mathbf{H}_{\mathrm{F},g_2}) - 2 \Re \Bigl\{\sum\limits_{g_1,g_2} \mathrm{tr}(\mathbf{H}_{\mathrm{F},g_1}^\mathsf{H} \tilde{\mathbf{\Theta}}_{g_1}^\mathsf{H} \mathbf{H}_{\mathrm{B},g_1}^\mathsf{H} \mathbf{H}_{\mathrm{B},g_2} \mathbf{\Theta}_{g_2} \mathbf{H}_{\mathrm{F},g_2})\Bigr\} + \sum\limits_{g_1,g_2} \mathrm{tr}(\mathbf{H}_{\mathrm{F},g_1}^\mathsf{H} {\mathbf{\Theta}}_{g_1}^\mathsf{H} \mathbf{H}_{\mathrm{B},g_1}^\mathsf{H} \mathbf{H}_{\mathrm{B},g_2} {\mathbf{\Theta}}_{g_2} \mathbf{H}_{\mathrm{F},g_2}) \ge 0$
+					}
+				\end{equation}
+				\hrulefill
+			\end{figure*}
+
+			Finally, we prove that the converging point of \eqref{op:power_passive_approx}, denoted by $\tilde{\mathbf{\Theta}}^?$, is a stationary point of \eqref{op:power_passive}.
+			The \gls{kkt} conditions of \eqref{op:power_passive} and \eqref{op:power_passive_approx} are equivalent in terms of primal/dual feasibility and complementary slackness, while the stationary conditions are respectively, $\forall g$,
+			\begin{gather}
+				\mathbf{H}_{\mathrm{B},g}^\mathsf{H} (\mathbf{H}_\mathrm{D} + \mathbf{H}_\mathrm{B} \mathbf{\Theta}^\star \mathbf{H}_\mathrm{F}) \mathbf{H}_{\mathrm{F},g}^\mathsf{H} - \mathbf{\Theta}_g^\star \mathbf{\Lambda}_g^\mathsf{H} = 0,\label{eq:power_passive_stationary}\\
+				\mathbf{M}_g - \mathbf{\Theta}_g^\star \mathbf{\Lambda}_g^\mathsf{H} = 0.\label{eq:power_passive_approx_stationary}
+			\end{gather}
+			On convergence, \eqref{eq:power_passive_approx_stationary} becomes $\mathbf{H}_{\mathrm{B},g}^\mathsf{H} (\mathbf{H}_\mathrm{D} + \mathbf{H}_\mathrm{B} \mathbf{\Theta}^? \mathbf{H}_\mathrm{F}) \mathbf{H}_{\mathrm{F},g}^\mathsf{H} - \mathbf{\Theta}_g^? \mathbf{\Lambda}_g^\mathsf{H} = 0$ and reduces to \eqref{eq:power_passive_stationary}.
+			The proof is thus completed.
+			% As for the stat
+			% The Lagrangian of problem \eqref{op:power_passive} and \eqref{op:power_passive_approx} are respectively
+			% \begin{align}
+			% 	\mathcal{L}(\mathbf{\Theta},\mathbf{\Lambda}) & = \sum_g 2 \Re \bigl\{\mathrm{tr}(\mathbf{\Theta}_g^\mathsf{H} \mathbf{M}_g)\bigr\} + \sum_g \mathrm{tr} \bigl(\mathbf{\Lambda}_g^\mathsf{H} (\mathbf{\Theta}_g^\mathsf{H} \mathbf{\Theta}_g - \mathbf{I})\bigr),\\
+			% 	\mathcal{L}(\mathbf{\Theta},\mathbf{\Lambda}) & = \lVert \mathbf{H}_\mathrm{D} + \mathbf{H}_\mathrm{B} \mathbf{\Theta} \mathbf{H}_\mathrm{F} \rVert _\mathrm{F}^2 + \sum_g \mathrm{tr} \bigl(\mathbf{\Lambda}_g^\mathsf{H} (\mathbf{\Theta}_g^\mathsf{H} \mathbf{\Theta}_g - \mathbf{I})\bigr),
+			% \end{align}
+			% That is, we only need to show the stationary condition of \eqref{op:power_passive} is satisfied by $\tilde{\mathbf{\Theta}}^?$.
+			% Let $\tilde{\mathbf{\Theta}}^?$ be the converging point of \eqref{op:power_passive_approx}, which satisfies the \gls{kkt} conditions
+
+
+
+			% The Lagrangian of problem \eqref{op:power_passive} is
+			% \begin{equation}
+			% 	\mathcal{L}(\mathbf{\Theta},\mathbf{\Theta}^*) = \lVert \mathbf{H}_\mathrm{D} + \mathbf{H}_\mathrm{B} \mathbf{\Theta} \mathbf{H}_\mathrm{F} \rVert _\mathrm{F}^2 + \sum_g \mathrm{tr} \bigl(\mathbf{\Lambda}_g^\mathsf{H} (\mathbf{\Theta}_g^\mathsf{H} \mathbf{\Theta}_g - \mathbf{I})\bigr),
+			% \end{equation}
 		\end{proof}
 	\end{subsection}
 
