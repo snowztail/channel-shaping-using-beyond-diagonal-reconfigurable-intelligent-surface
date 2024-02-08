@@ -1,9 +1,9 @@
 clc; clear; close; setup;
 
-[transmit.antenna, reflect.antenna, receive.antenna] = deal(2, 32, 2);
-[channel.rank, reflect.bond] = deal(min(transmit.antenna, receive.antenna), 2 .^ (0 : 1 : log2(reflect.antenna)));
+[transmit.antenna, reflect.antenna, receive.antenna] = deal(2, 64, 2);
+[channel.rank, reflect.bond] = deal(min(transmit.antenna, receive.antenna), 2 .^ (0 : 2 : log2(reflect.antenna)));
 assert(channel.rank == 2, 'The plot function is only for 2-sv case.');
-[channel.pathloss.direct, channel.pathloss.forward, channel.pathloss.backward] = deal(1, db2pow(-17.5), db2pow(-17.5));
+[channel.pathloss.direct, channel.pathloss.forward, channel.pathloss.backward] = deal(db2pow(-65), db2pow(-54), db2pow(-46));
 [channel.weight(1, :, 1), channel.weight(2, :, 1)] = pol2cart(pi / 4 : pi / 64 : pi * 3 / 4, 1);
 [channel.weight(1, :, 2), channel.weight(2, :, 2)] = pol2cart(pi / 4 : -pi / 64 : -pi / 4, 1);
 [channel.weight(1, :, 3), channel.weight(2, :, 3)] = pol2cart(5 * pi / 4 : pi / 64 : pi * 7 / 4, 1);

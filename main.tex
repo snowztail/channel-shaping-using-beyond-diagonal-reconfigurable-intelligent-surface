@@ -252,7 +252,7 @@
 	$\mathrm{sv}(\cdot)$ returns the singular value vector.
 	$\sigma_n(\cdot)$ and $\lambda_n(\cdot)$ is the $n$-th largest singular value and eigenvalue, respectively.
 	% $\boldsymbol{\sigma}(\cdot)$ and $\boldsymbol{\lambda}(\cdot)$ are the corresponding vectors.
-	$(\cdot)^*$, $(\cdot)^\mathsf{T}$, $(\cdot)^\mathsf{H}$, $(\cdot)^{(r)}$, $(\cdot)^{\star}$ denote the conjugate, transpose, conjugate transpose (Hermitian), $r$-th iterated point, and final solution, respectively.
+	$(\cdot)^*$, $(\cdot)^\mathsf{T}$, $(\cdot)^\mathsf{H}$, $(\cdot)^\dagger$ $(\cdot)^{(r)}$, $(\cdot)^{\star}$ denote the conjugate, transpose, conjugate transpose (Hermitian), Moore-Penrose inverse, $r$-th iterated point, and final solution, respectively.
 	$(\cdot)_{[x:y]}$ is a shortcut for $(\cdot)_x,(\cdot)_{x+1},\ldots,(\cdot)_y$.
 	$\lvert \cdot \rvert$ denotes the absolute value.
 	% $\lVert \cdot \rVert _p$ means the $p$-norm and $\lVert \cdot \rVert$ suggests $p = 2$.
@@ -286,7 +286,7 @@
 	\end{remark}
 \end{section}
 
-\begin{section}{Channel Singular Value Redistribution}
+\begin{section}{Channel Singular Values Redistribution}
 	\begin{subsection}{A Toy Example}
 		We first illustrate the channel shaping capabilities of different \gls{ris} by a toy example.
 		% We first use a toy example to illustrate that \gls{bd}-\gls{ris} can provide a wider dynamic range of channel singular values.
@@ -398,7 +398,7 @@
 		\end{algorithm}
 
 		% The Pareto singular value problem \eqref{op:pareto} can thus be solved by Algorithm~\ref{ag:rcg}.
-		\begin{lemma}
+		\begin{lemma}\label{lm:pareto_gradient}
 			The Euclidean gradient of \eqref{ob:pareto} w.r.t. \gls{bd}-\gls{ris} group $g$ is
 			\begin{equation}
 				\frac{\partial \sum_n \rho_n \sigma_n(\mathbf{H})}{\partial \mathbf{\Theta}_g^*} = \mathbf{H}_{\mathrm{B},g}^\mathsf{H} \mathbf{U} \mathrm{diag}(\rho_1,\ldots,\rho_N) \mathbf{V}^\mathsf{H} \mathbf{H}_{\mathrm{F},g}^\mathsf{H},
@@ -434,9 +434,9 @@
 		% \eqref{eq:pareto_gradient} is used in line \ref{ln:gradient_euclidean}.
 	\end{subsection}
 
-	\begin{subsection}{Some Analytical Bounds}
+	\begin{subsection}{Some Analytical Bounds}\label{ss:bounds}
 		We then discuss some analytical bounds related to channel singular values.
-		\begin{proposition}[rank-deficient channel]
+		\begin{proposition}[rank-deficient channel]\label{pp:dof}
 			In point-to-point \gls{mimo}, \gls{bd}-\gls{ris} cannot achieve a higher \gls{dof} than diagonal \gls{ris}.
 		\end{proposition}
 		\begin{proof}
@@ -458,7 +458,7 @@
 			The same result holds if the direct link is present.
 		\end{proof}
 
-		\begin{proposition}[\gls{los} forward\footnote{A similar result holds for \gls{los} backward channel.} channel]
+		\begin{proposition}[\gls{los} forward\footnote{A similar result holds for \gls{los} backward channel.} channel]\label{pp:los}
 			If the forward channel is rank-1, then \gls{bd}-\gls{ris} can at most enlarge (resp. suppress) the $n$-th ($n \ge 2$) channel singular value to the $(n-1)$-th (resp. $n$-th) singular value of $\mathbf{T}$, that is,
 			\begin{equation}
 				\sigma_1(\mathbf{T}) \ge {\sigma_2(\mathbf{H})} \ge \sigma_2(\mathbf{T}) \ge \ldots \ge \sigma_{N-1}(\mathbf{T}) \ge {\sigma_N(\mathbf{H})} \ge \sigma_N(\mathbf{T}),
@@ -565,39 +565,18 @@
 			From \eqref{eq:scattering_fc} and \eqref{eq:channel_equivalent_fc}, we conclude the off-diagonal entries can enhance the capabilities of
 			\begin{itemize}
 				\item subspace alignment: $\mathbf{V}_\mathrm{B}$ and $\mathbf{U}_\mathrm{F}^\mathsf{H}$ in \eqref{eq:scattering_fc} fully align the subspaces of $\mathbf{H}_\mathrm{B}$ and $\mathbf{H}_\mathrm{F}$ by rotation;
-				\item subchannel rearrangement: $\mathbf{X} = \mathbf{I}$ in \eqref{eq:channel_equivalent_fc} pairs the subchannels of $\mathbf{H}_\mathrm{B}$ and $\mathbf{H}_\mathrm{F}$ from strongest to weakest, which attains maximal in rearrangement inequality.
+				\item subchannel rearrangement: $\mathbf{X} = \mathbf{I}$ in \eqref{eq:channel_equivalent_fc} pairs the subchannels of $\mathbf{H}_\mathrm{B}$ and $\mathbf{H}_\mathrm{F}$ from strongest to weakest, which attains the maximal in rearrangement inequality.
 			\end{itemize}
 		\end{remark}
 
 		Tight bounds are generally unavailable when \gls{mimo} direct link is present.
-		This is because the \gls{ris} needs to balance the backward-forward (multiplicative) and direct-indirect (additive) subspace alignments.
-
-		% \begin{figure}[!t]
-		% 	\centering
-		% 	\resizebox{0.65\columnwidth}{!}{
-		% 		\input{assets/simulation/pc_singular_pareto.tex}
-		% 	}
-		% 	\caption{Singular value Pareto frontier. $(N^\mathrm{T}, N^\mathrm{S}, N^\mathrm{R}) = (4, 64, 2)$, $(\Lambda^\mathrm{D}, \Lambda^\mathrm{F}, \Lambda^\mathrm{B}) = (0, -17.5, -17.5) \unit{dB}$.}
-		% 	\label{sm:pc_singular_pareto}
-		% \end{figure}
-
-		% \begin{figure}[!t]
-		% 	\centering
-		% 	\resizebox{0.65\columnwidth}{!}{
-		% 		\input{assets/simulation/pc_singular_bound.tex}
-		% 	}
-		% 	\caption{Singular value bounds for rank-1 indirect channel. $(N^\mathrm{T}, N^\mathrm{S}, N^\mathrm{R}) = (4, 32, 4)$, $(\Lambda^\mathrm{D}, \Lambda^\mathrm{F}, \Lambda^\mathrm{B}) = (0, -17.5, -17.5) \unit{dB}$.}
-		% 	\label{sm:pc_singular_bound}
-		% \end{figure}
-
-		% The Pareto frontier and evolving trend of channel singular values are shown in Fig.~\ref{sm:pc_singular_pareto} and \ref{sm:pc_singular_bound}.
-		% Clearly, \gls{bd}-\gls{ris} with a larger group size can redistribute the channel singular values to a wider range.
+		This is because the \gls{ris} needs to balance the direct-indirect (additive) and backward-forward (multiplicative) subspace alignments.
 	\end{subsection}
 
 \end{section}
 
-\begin{section}{Rate Maximization}
-	The \gls{mimo} rate maximization problem is formulated w.r.t. joint active and passive beamforming
+\begin{section}{Achievable Rate Maximization}
+	The \gls{mimo} achievable rate maximization problem is formulated w.r.t. joint active and passive beamforming
 	\begin{maxi!}
 		{\scriptstyle{\mathbf{W},\mathbf{\Theta}}}{R = \log \det \biggl(\mathbf{I} + \frac{\mathbf{W}^\mathsf{H}\mathbf{H}^\mathsf{H}\mathbf{H}\mathbf{W}}{\eta}\biggr)}{\label{op:rate}}{\label{ob:rate}}
 		\addConstraint{\lVert \mathbf{W} \rVert _\mathrm{F}^2 \le P}{}{}
@@ -614,7 +593,7 @@
 			\addConstraint{\mathbf{\Theta}_g^\mathsf{H} \mathbf{\Theta}_g=\mathbf{I}, \quad \forall g,}{}{}
 		\end{maxi!}
 		where $\mathbf{Q} \triangleq \mathbf{W} \mathbf{W}^\mathsf{H}$ is the transmit covariance matrix.
-		\begin{lemma}
+		\begin{lemma}\label{lm:rate_gradient}
 			The Euclidean gradient of \eqref{ob:rate_passive} w.r.t. \gls{bd}-\gls{ris} block $g$ is
 			\begin{equation}
 				\frac{\partial R}{\partial \mathbf{\Theta}_g^*} = \frac{1}{\eta} \mathbf{H}_{\mathrm{B},g}^\mathsf{H} \biggl(\mathbf{I} + \frac{\mathbf{H}\mathbf{Q}\mathbf{H}^\mathsf{H}}{\eta}\biggr)^{-1} \mathbf{H} \mathbf{Q} \mathbf{H}_{\mathrm{F},g}^\mathsf{H}.
@@ -649,17 +628,34 @@
 		Instead, we decouple the joint \gls{ris}-transceiver design by recasting \eqref{op:rate_passive} as channel power maximization
 		\begin{maxi!}
 			{\scriptstyle{\mathbf{\Theta}}}{\lVert \mathbf{H}_\mathrm{D} + \mathbf{H}_\mathrm{B} \mathbf{\Theta} \mathbf{H}_\mathrm{F} \rVert _\mathrm{F}^2}{\label{op:power_passive}}{\label{ob:power_passive}}
-			\addConstraint{\mathbf{\Theta}_g^\mathsf{H} \mathbf{\Theta}_g=\mathbf{I}, \quad \forall g,}{}{}
+			\addConstraint{\mathbf{\Theta}_g^\mathsf{H} \mathbf{\Theta}_g=\mathbf{I}, \quad \forall g.}{}{}
 		\end{maxi!}
-		which only accounts for channel characteristics but has no trivial solution.
+		% which only accounts for channel characteristics but has no trivial solution.
+		\begin{remark}
+			As mentioned in Section \ref{ss:bounds}, the key of solving \eqref{op:power_passive} is to balance the additive and multiplicative subspace alignments.
+			Problem \eqref{op:power_passive} is very similar (in terms of maximizing the inner product of $\mathbf{H}_\mathrm{D}$ and $\mathbf{H}_\mathrm{B} \mathbf{\Theta} \mathbf{H}_\mathrm{F}$) to the weighted orthogonal Procrustes problem \cite{Gower2004}
+			\begin{mini!}
+				{\scriptstyle{\mathbf{\Theta}}}{\lVert \mathbf{H}_\mathrm{D} - \mathbf{H}_\mathrm{B} \mathbf{\Theta} \mathbf{H}_\mathrm{F} \rVert _\mathrm{F}^2}{\label{op:weighted_orthogonal_procrustes}}{}
+				\addConstraint{\mathbf{\Theta}^\mathsf{H} \mathbf{\Theta}=\mathbf{I},}{}{}
+			\end{mini!}
+			which has no trivial solution.
+			One lossy transformation, by moving $\mathbf{\Theta}$ to one side \cite{Bell2003}, formulates standard orthogonal Procrustes problems
+			\begin{mini!}
+				{\scriptstyle{\mathbf{\Theta}}}{\lVert \mathbf{H}_\mathrm{B}^\dagger \mathbf{H}_\mathrm{D} - \mathbf{\Theta} \mathbf{H}_\mathrm{F} \rVert _\mathrm{F}^2 \text{ or } \lVert \mathbf{H}_\mathrm{D} \mathbf{H}_\mathrm{F}^\dagger - \mathbf{H}_\mathrm{B} \mathbf{\Theta} \rVert _\mathrm{F}^2}{\label{op:standard_orthogonal_procrustes}}{}
+				\addConstraint{\mathbf{\Theta}^\mathsf{H} \mathbf{\Theta}=\mathbf{I},}{}{}
+			\end{mini!}
+			which has global optimal solutions $\mathbf{\Theta}^\star = \mathbf{U} \mathbf{V}^\mathsf{H}$ where $\mathbf{U}$ and $\mathbf{V}$ are the left and right singular matrices of $\mathbf{H}_\mathrm{B}^\dagger \mathbf{H}_\mathrm{D} \mathbf{H}_\mathrm{F}^\mathsf{H}$ or $\mathbf{H}_\mathrm{B}^\mathsf{H} \mathbf{H}_\mathrm{D} \mathbf{H}_\mathrm{F}^\dagger$ \cite{Golub2013}.
+			This naive solution will be compared with the one proposed below.
+		\end{remark}
+
 		Inspired by \cite{Nie2017}, we successively approximate the quadratic objective \eqref{ob:power_passive} by local Taylor expansions and solve each iteration in closed form.
 
-		\begin{proposition}
+		\begin{proposition}\label{pp:power}
 			Start from any $\mathbf{\Theta}^{(0)} \in \mathbb{U}^{N_\mathrm{S} \times N_\mathrm{S}}$, the sequence
 			\begin{equation}
 				\mathbf{\Theta}_g^{(r+1)} = \mathbf{U}_g^{(r)} \mathbf{V}_g^{(r)}, \quad \forall g
 			\end{equation}
-			converges to a stationary point of \eqref{op:pc_power}, where $\mathbf{U}_g^{(r)}$ and $\mathbf{V}_g^{(r)}$ are the left and right compact singular matrix of
+			converges to a stationary point of \eqref{op:power_passive}, where $\mathbf{U}_g^{(r)}$ and $\mathbf{V}_g^{(r)}$ are the left and right compact singular matrix of
 			\begin{equation}
 				\mathbf{M}_g^{(r)} = \mathbf{H}_{\mathrm{B},g}^\mathsf{H} \Bigl(\mathbf{H}_\mathrm{D} + \mathbf{H}_\mathrm{B} \mathrm{diag}\bigl(\mathbf{\Theta}_{[1:g-1]}^{(r+1)},\mathbf{\Theta}_{[g:G]}^{(r)}\bigr) \mathbf{H}_\mathrm{F}\Bigr) \mathbf{H}_{\mathrm{F},g}^\mathsf{H}
 			\end{equation}
@@ -699,7 +695,7 @@
 				2 \Re \Bigl\{\mathrm{tr}(\tilde{\mathbf{\Theta}}^\mathsf{H} \mathbf{H}_\mathrm{B}^\mathsf{H} \mathbf{H}_\mathrm{D} \mathbf{H}_\mathrm{F}^\mathsf{H}) \Bigr\} + \mathrm{tr}(\mathbf{H}_\mathrm{F}^\mathsf{H} \tilde{\mathbf{\Theta}}^\mathsf{H} \mathbf{H}_\mathrm{B}^\mathsf{H} \mathbf{H}_\mathrm{B} \tilde{\mathbf{\Theta}} \mathbf{H}_\mathrm{F}) \\
 				\ge 2 \Re \Bigl\{\mathrm{tr}({\mathbf{\Theta}}^\mathsf{H} \mathbf{H}_\mathrm{B}^\mathsf{H} \mathbf{H}_\mathrm{D} \mathbf{H}_\mathrm{F}^\mathsf{H}) \Bigr\} + \mathrm{tr}(\mathbf{H}_\mathrm{F}^\mathsf{H} {\mathbf{\Theta}}^\mathsf{H} \mathbf{H}_\mathrm{B}^\mathsf{H} \mathbf{H}_\mathrm{B} {\mathbf{\Theta}} \mathbf{H}_\mathrm{F}),
 			\end{multline}
-			which suggests that updating $\tilde{\mathbf{\Theta}}$ does not decrease \eqref{ob:power_passive}.
+			which confirms that updating $\tilde{\mathbf{\Theta}}$ does not decrease \eqref{ob:power_passive}.
 			\begin{figure*}
 				\begin{equation}
 					\label{iq:power_passive_approx}
@@ -723,23 +719,10 @@
 				\mathbf{M}_g - \mathbf{\Theta}_g^\star \mathbf{\Lambda}_g^\mathsf{H} = 0.\label{eq:power_passive_approx_stationary}
 			\end{gather}
 			On convergence, \eqref{eq:power_passive_approx_stationary} becomes $\mathbf{H}_{\mathrm{B},g}^\mathsf{H} (\mathbf{H}_\mathrm{D} + \mathbf{H}_\mathrm{B} \mathbf{\Theta}^? \mathbf{H}_\mathrm{F}) \mathbf{H}_{\mathrm{F},g}^\mathsf{H} - \mathbf{\Theta}_g^? \mathbf{\Lambda}_g^\mathsf{H} = 0$ and reduces to \eqref{eq:power_passive_stationary}.
-			The proof is thus completed.
-			% As for the stat
-			% The Lagrangian of problem \eqref{op:power_passive} and \eqref{op:power_passive_approx} are respectively
-			% \begin{align}
-			% 	\mathcal{L}(\mathbf{\Theta},\mathbf{\Lambda}) & = \sum_g 2 \Re \bigl\{\mathrm{tr}(\mathbf{\Theta}_g^\mathsf{H} \mathbf{M}_g)\bigr\} + \sum_g \mathrm{tr} \bigl(\mathbf{\Lambda}_g^\mathsf{H} (\mathbf{\Theta}_g^\mathsf{H} \mathbf{\Theta}_g - \mathbf{I})\bigr),\\
-			% 	\mathcal{L}(\mathbf{\Theta},\mathbf{\Lambda}) & = \lVert \mathbf{H}_\mathrm{D} + \mathbf{H}_\mathrm{B} \mathbf{\Theta} \mathbf{H}_\mathrm{F} \rVert _\mathrm{F}^2 + \sum_g \mathrm{tr} \bigl(\mathbf{\Lambda}_g^\mathsf{H} (\mathbf{\Theta}_g^\mathsf{H} \mathbf{\Theta}_g - \mathbf{I})\bigr),
-			% \end{align}
-			% That is, we only need to show the stationary condition of \eqref{op:power_passive} is satisfied by $\tilde{\mathbf{\Theta}}^?$.
-			% Let $\tilde{\mathbf{\Theta}}^?$ be the converging point of \eqref{op:power_passive_approx}, which satisfies the \gls{kkt} conditions
-
-
-
-			% The Lagrangian of problem \eqref{op:power_passive} is
-			% \begin{equation}
-			% 	\mathcal{L}(\mathbf{\Theta},\mathbf{\Theta}^*) = \lVert \mathbf{H}_\mathrm{D} + \mathbf{H}_\mathrm{B} \mathbf{\Theta} \mathbf{H}_\mathrm{F} \rVert _\mathrm{F}^2 + \sum_g \mathrm{tr} \bigl(\mathbf{\Lambda}_g^\mathsf{H} (\mathbf{\Theta}_g^\mathsf{H} \mathbf{\Theta}_g - \mathbf{I})\bigr),
-			% \end{equation}
+			The proof is completed.
 		\end{proof}
+		Once the channel shaping problem \eqref{op:power_passive} is solved, the transmit precoder can be obtained by \eqref{eq:precoder_eigenmode}.
+		This two-stage approach decouples both blocks and is computationally efficient.
 	\end{subsection}
 
 	% \begin{figure}[!t]
@@ -766,233 +749,370 @@
 	% We thus conclude dyadic or tetradic \gls{bd}-\gls{ris} usually strike a good balance between performance and complexity.
 
 
-	\begin{subsection}{Channel Power Maximization}
-		Consider a \gls{bd}-\gls{ris} with $N^\mathrm{S}$ elements, which is divided into $G$ groups of equal $L$ elements.
-		\begin{maxi!}
-			{\scriptstyle{\mathbf{\Theta}}}{\left\lVert \mathbf{H}^\mathrm{D} + \sum_g\nolimits \mathbf{H}_g^\mathrm{B} \mathbf{\Theta}_g \mathbf{H}_g^\mathrm{F} \right\rVert _\mathrm{F}^2}{\label{op:pc_power}}{}
-			\addConstraint{\mathbf{\Theta}_g^\mathsf{H} \mathbf{\Theta}_g=\mathbf{I}, \quad \forall g \in \mathcal{G} \triangleq \{1,\ldots,G\}.}{}{}
-		\end{maxi!}
-		For \emph{symmetric} BD-RIS, the problem has been solved in
-		\begin{itemize}
-			\item Matteo's paper \cite{Nerini2023}: SISO and equivalent\footnote{Single-stream MIMO with given precoder and combiner.};
-			\item Ignacio's paper \cite{Santamaria2023}: SISO and directless MISO/SIMO.
-		\end{itemize}
 
-		\begin{remark}
-			% The difficulty of \eqref{op:pc_power} is that the \gls{ris} needs to balance the (additive) direct-indirect eigenspace alignment and the (multiplicative) forward-backward eigenspace alignment.
-			The difficulty of \eqref{op:pc_power} is that the \gls{ris} needs to balance the additive (direct-indirect) and multiplicative (forward-backward) eigenspace alignment.
-			% align the direct and indirect eigenspaces while preserving the
-			Interestingly, it has the same form as the \emph{weighted orthogonal Procrustes problem} \cite{Gower2004}:
-			\begin{mini!}
-				{\scriptstyle{\mathbf{\Theta}}}{\lVert \mathbf{C} - \mathbf{A \Theta B} \rVert _\mathrm{F}^2}{\label{op:weighted_orthogonal_procrustes}}{}
-				\addConstraint{\mathbf{\Theta}^\mathsf{H} \mathbf{\Theta}=\mathbf{I}.}{}{}
-			\end{mini!}
-			There exists no trivial solution to \eqref{op:weighted_orthogonal_procrustes}.
-			One lossy transformation, by moving $\mathbf{\Theta}$ to one side \cite{Bell2003}, formulates a standard orthogonal Procrustes problem:
-			\begin{mini!}
-				{\scriptstyle{\mathbf{\Theta}}}{\lVert \mathbf{A}^\dagger \mathbf{C} - \mathbf{\Theta B} \rVert _\mathrm{F}^2}{\label{op:standard_orthogonal_procrustes}}{}
-				\addConstraint{\mathbf{\Theta}^\mathsf{H} \mathbf{\Theta}=\mathbf{I}.}{}{}
-			\end{mini!}
-			\eqref{op:standard_orthogonal_procrustes} has a global optimal solution $\mathbf{\Theta}^\star = \mathbf{U} \mathbf{V}^\mathsf{H}$, where $\mathbf{U}$ and $\mathbf{V}$ are left and right singular matrix of $\mathbf{\mathbf{A}^\dagger \mathbf{C} \mathbf{B}^\mathsf{H}}$ \cite{Golub2013}.
-			This low-complexity solution will be compared with the one proposed later.
-		\end{remark}
+		% \begin{figure}[!t]
+		% 	\centering
+		% 	\resizebox{0.65\columnwidth}{!}{
+		% 		\input{assets/simulation/pc_power_sx.tex}
+		% 	}
+		% 	\caption{Average channel power versus \gls{ris} elements $N^\mathrm{S}$ and group size $L$. $(N^\mathrm{T}, N^\mathrm{R}) = (8, 4)$, $(\Lambda^\mathrm{D}, \Lambda^\mathrm{F}, \Lambda^\mathrm{B}) = (65, 54, 46) \unit{dB}$.}
+		% 	\label{sm:pc_power_sx}
+		% \end{figure}
 
-		\begin{figure}[!t]
-			\centering
-			\resizebox{0.65\columnwidth}{!}{
-				\input{assets/simulation/pc_power_sx.tex}
-			}
-			\caption{Average channel power versus \gls{ris} elements $N^\mathrm{S}$ and group size $L$. $(N^\mathrm{T}, N^\mathrm{R}) = (8, 4)$, $(\Lambda^\mathrm{D}, \Lambda^\mathrm{F}, \Lambda^\mathrm{B}) = (65, 54, 46) \unit{dB}$.}
-			\label{sm:pc_power_sx}
-		\end{figure}
+		% \begin{figure}[!t]
+		% 	\centering
+		% 	\subfloat[Without Direct Link\label{sm:pc_power_bond_nd}]{
+		% 		\resizebox{0.48\columnwidth}{!}{
+		% 			\input{assets/simulation/pc_power_bond_nd.tex}
+		% 		}
+		% 	}
+		% 	\subfloat[With Direct Link\label{sm:pc_power_bond_hd}]{
+		% 		\resizebox{0.48\columnwidth}{!}{
+		% 			\input{assets/simulation/pc_power_bond_hd.tex}
+		% 		}
+		% 	}
+		% 	\caption{Average channel power versus \gls{ris} group size $L$. $(N^\mathrm{T}, N^\mathrm{S}, N^\mathrm{R}) = (8, 256, 4)$, $(\Lambda^\mathrm{D}, \Lambda^\mathrm{F}, \Lambda^\mathrm{B}) = (65, 54, 46) \unit{dB}$.}
+		% 	\label{sm:pc_power_bond}
+		% \end{figure}
+		% % Fig.~\ref{sm:pc_power_sx} shows that, apart from numerous reflecting elements, a sufficiently large group size can help
+		% % Fig.~\ref{sm:pc_power_sx} shows that increasing the group size can improve the channel power especially for a large \gls{ris}.
+		% Fig.~\ref{sm:pc_power_sx} shows that, apart from adding reflecting elements $N^\mathrm{S}$, increasing the group size $L$ also improves the channel power.
+		% % The behavior is more obvious for a large \gls{ris}.
+		% This behavior is more pronounced for a large \gls{ris}.
+		% For example, the gain of pairwise connection is \qty{2.8}{\percent} for $N^\mathrm{S} = 16$ and \qty{28}{\percent} for $N^\mathrm{S} = 256$.
+		% % \gls{bd}-\gls{ris} provides a higher channel power than conventional \gls{ris}.
+		% % As $L$ increases from 1 to 2,
+		% It implies that the channel shaping capability of \gls{bd}-\gls{ris} scales with group size $L$.
 
-		\begin{figure}[!t]
-			\centering
-			\subfloat[Without Direct Link\label{sm:pc_power_bond_nd}]{
-				\resizebox{0.48\columnwidth}{!}{
-					\input{assets/simulation/pc_power_bond_nd.tex}
-				}
-			}
-			\subfloat[With Direct Link\label{sm:pc_power_bond_hd}]{
-				\resizebox{0.48\columnwidth}{!}{
-					\input{assets/simulation/pc_power_bond_hd.tex}
-				}
-			}
-			\caption{Average channel power versus \gls{ris} group size $L$. $(N^\mathrm{T}, N^\mathrm{S}, N^\mathrm{R}) = (8, 256, 4)$, $(\Lambda^\mathrm{D}, \Lambda^\mathrm{F}, \Lambda^\mathrm{B}) = (65, 54, 46) \unit{dB}$.}
-			\label{sm:pc_power_bond}
-		\end{figure}
-		% Fig.~\ref{sm:pc_power_sx} shows that, apart from numerous reflecting elements, a sufficiently large group size can help
-		% Fig.~\ref{sm:pc_power_sx} shows that increasing the group size can improve the channel power especially for a large \gls{ris}.
-		Fig.~\ref{sm:pc_power_sx} shows that, apart from adding reflecting elements $N^\mathrm{S}$, increasing the group size $L$ also improves the channel power.
-		% The behavior is more obvious for a large \gls{ris}.
-		This behavior is more pronounced for a large \gls{ris}.
-		For example, the gain of pairwise connection is \qty{2.8}{\percent} for $N^\mathrm{S} = 16$ and \qty{28}{\percent} for $N^\mathrm{S} = 256$.
-		% \gls{bd}-\gls{ris} provides a higher channel power than conventional \gls{ris}.
-		% As $L$ increases from 1 to 2,
-		It implies that the channel shaping capability of \gls{bd}-\gls{ris} scales with group size $L$.
+		% Fig.~\ref{sm:pc_power_bond_hd} and \ref{sm:pc_power_bond_nd} compare the average channel power without and with direct link.
+		% % where the cascaded channel power available to passive \gls{ris} is $\lVert \mathbf{H}^\mathrm{B} \rVert _\mathrm{F}^2 \lVert \mathbf{H}^\mathrm{F} \rVert _\mathrm{F}^2$.
+		% % where the cascaded channel power available to passive \gls{ris} is $\lVert \mathbf{H}^\mathrm{B} \rVert _\mathrm{F}^2 \lVert \mathbf{H}^\mathrm{F} \rVert _\mathrm{F}^2$.
+		% % ``Cascaded'' means the maximum power of the cascaded channel, i.e., $\lVert \mathbf{H}^\mathrm{B} \rVert _\mathrm{F}^2 \lVert \mathbf{H}^\mathrm{F} \rVert _\mathrm{F}^2$.
+		% % maximum power of the cascaded channel, i.e., $\lVert \mathbf{H}^\mathrm{B} \rVert _\mathrm{F}^2 \lVert \mathbf{H}^\mathrm{F} \rVert _\mathrm{F}^2$.
+		% % ? ``Cascaded'' means the \emph{power product} of the forward and backward channels.
+		% % ``Cascaded'' means the sum of element-wise product of first $N = \min(N^\mathrm{T}, N^\mathrm{S}, N^\mathrm{R})$ eigenvalues of the forward and backward channels.
+		% ``Cascaded'' means the sum of element-wise product of first $N = \min(N^\mathrm{T}, N^\mathrm{S}, N^\mathrm{R})$ eigenvalues (i.e., element-wise power product) of the forward and backward channels.
+		% We observe that diagonal \gls{ris} wastes substantial cascaded power and struggles to align the direct-indirect eigenspace.
+		% When the direct link is absent, only \qty{2.6}{\percent} of available power is utilized by diagonal \gls{ris} while \qty{100}{\percent} power is recycled by fully-connected \gls{ris}.
+		% When the direct link is present, the proposed \gls{bd}-\gls{ris} design can balance the direct-indirect and forward-backward eigenspace alignment for an optimal channel boost.
+		% It is worth noting that, when $L$ is sufficiently large, the composite channel power surpasses the power sum of direct and cascaded channels, thanks to the constructive \emph{amplitude superposition} of direct and cascaded channels.
+		% This again emphasizes the advantage of in-group connection of \gls{bd}-\gls{ris}.
+		% % This is because the direct and indirect channels superpose
+		% % the proposed \gls{bd}-\gls{ris} design can also be applied to conventional \gls{ris} to improve the channel power.
+		% % When the direct link is present, a small $L$ cannot align the direct-indirect eigenspace.
 
-		Fig.~\ref{sm:pc_power_bond_hd} and \ref{sm:pc_power_bond_nd} compare the average channel power without and with direct link.
-		% where the cascaded channel power available to passive \gls{ris} is $\lVert \mathbf{H}^\mathrm{B} \rVert _\mathrm{F}^2 \lVert \mathbf{H}^\mathrm{F} \rVert _\mathrm{F}^2$.
-		% where the cascaded channel power available to passive \gls{ris} is $\lVert \mathbf{H}^\mathrm{B} \rVert _\mathrm{F}^2 \lVert \mathbf{H}^\mathrm{F} \rVert _\mathrm{F}^2$.
-		% ``Cascaded'' means the maximum power of the cascaded channel, i.e., $\lVert \mathbf{H}^\mathrm{B} \rVert _\mathrm{F}^2 \lVert \mathbf{H}^\mathrm{F} \rVert _\mathrm{F}^2$.
-		% maximum power of the cascaded channel, i.e., $\lVert \mathbf{H}^\mathrm{B} \rVert _\mathrm{F}^2 \lVert \mathbf{H}^\mathrm{F} \rVert _\mathrm{F}^2$.
-		% ? ``Cascaded'' means the \emph{power product} of the forward and backward channels.
-		% ``Cascaded'' means the sum of element-wise product of first $N = \min(N^\mathrm{T}, N^\mathrm{S}, N^\mathrm{R})$ eigenvalues of the forward and backward channels.
-		``Cascaded'' means the sum of element-wise product of first $N = \min(N^\mathrm{T}, N^\mathrm{S}, N^\mathrm{R})$ eigenvalues (i.e., element-wise power product) of the forward and backward channels.
-		We observe that diagonal \gls{ris} wastes substantial cascaded power and struggles to align the direct-indirect eigenspace.
-		When the direct link is absent, only \qty{2.6}{\percent} of available power is utilized by diagonal \gls{ris} while \qty{100}{\percent} power is recycled by fully-connected \gls{ris}.
-		When the direct link is present, the proposed \gls{bd}-\gls{ris} design can balance the direct-indirect and forward-backward eigenspace alignment for an optimal channel boost.
-		It is worth noting that, when $L$ is sufficiently large, the composite channel power surpasses the power sum of direct and cascaded channels, thanks to the constructive \emph{amplitude superposition} of direct and cascaded channels.
-		This again emphasizes the advantage of in-group connection of \gls{bd}-\gls{ris}.
-		% This is because the direct and indirect channels superpose
-		% the proposed \gls{bd}-\gls{ris} design can also be applied to conventional \gls{ris} to improve the channel power.
-		% When the direct link is present, a small $L$ cannot align the direct-indirect eigenspace.
+		% % neither effectively utilizes the cascaded channel power, nor effectively align the direct-indirect eigenspace.
+		% % We observe that conventional \gls{ris} neither effectively utilizes the cascaded channel power, nor effectively align the direct-indirect eigenspace.
+		% % For conventional \gls{ris},
+		% % align the direct-indirect eigenspace.
+		% % When the direct link is present, a small $L$ can neither align the direct-indirect eigenspace nor the forward-backward eigenspace.
+		% % For a relatively large $N^\mathrm{S}$, conventional \gls{ris} cannot
+		% % neither the direct-indirect nor the forward-backward eigenspace can be effectively aligned with a small $L$.
 
-		% neither effectively utilizes the cascaded channel power, nor effectively align the direct-indirect eigenspace.
-		% We observe that conventional \gls{ris} neither effectively utilizes the cascaded channel power, nor effectively align the direct-indirect eigenspace.
-		% For conventional \gls{ris},
-		% align the direct-indirect eigenspace.
-		% When the direct link is present, a small $L$ can neither align the direct-indirect eigenspace nor the forward-backward eigenspace.
-		% For a relatively large $N^\mathrm{S}$, conventional \gls{ris} cannot
-		% neither the direct-indirect nor the forward-backward eigenspace can be effectively aligned with a small $L$.
+		% % When the direct link is present, a small $L$ can neither preserve the
+		% % neither align the direct-indirect eigenspace nor the forward-backward eigenspace.
 
-		% When the direct link is present, a small $L$ can neither preserve the
-		% neither align the direct-indirect eigenspace nor the forward-backward eigenspace.
-
-		% When the direct link is absent, a large $L$ can align the forward-backward eigenspace but cannot preserve the forward-backward power balance.
-	\end{subsection}
+		% % When the direct link is absent, a large $L$ can align the forward-backward eigenspace but cannot preserve the forward-backward power balance.
 
 \end{section}
 
+\begin{section}{Simulation Results}
+	In this section, we provide numerical results to evaluate the proposed \gls{bd}-\gls{ris} designs.
+	Consider a distance-dependent path loss model $\Lambda(d) = \Lambda_0 d^{-\gamma}$ where $\Lambda_0$ is the reference path loss at distance \qty{1}{m}, $d$ is the propagation distance, and $\gamma$ is the path loss exponent.
+	The small-scale fading model is $\mathbf{H} = \sqrt{\kappa/(1+\kappa)} \mathbf{H}_\text{LoS} + \sqrt{1/(1+\kappa)} \mathbf{H}_\text{NLoS}$, where $\kappa$ is the Rician $K$-factor, $\mathbf{H}_\text{LoS}$ is the deterministic \gls{los} component, and $\mathbf{H}_\text{NLoS} \sim \mathcal{CN}(\mathbf{0}, \mathbf{I})$ is the Rayleigh component.
+	We set $\Lambda_0=\qty{-30}{dB}$, $d_\mathrm{D}=\qty{14.7}{m}$, $d_\mathrm{F}=\qty{10}{m}$, $d_\mathrm{B}=\qty{6.3}{m}$, $\gamma_\mathrm{D}=3$, $\gamma_\mathrm{F}=2.4$, $\gamma_\mathrm{B}=2$, $\kappa_\mathrm{D}=\kappa_\mathrm{F}=\kappa_\mathrm{B}=5$ for reference, which corresponds to an indoor environment with $\Lambda_\mathrm{D}=\qty{-65}{dB}$, $\Lambda_\mathrm{F}=\qty{-54}{dB}$, $\Lambda_\mathrm{B}=\qty{-46}{dB}$.
 
-\begin{section}{\glsentryshort{mimo}-\glsentryshort{ic}}
-	\begin{subsection}{Leakage Interference Minimization}
-		\begin{mini!}
-			{\scriptstyle{\mathbf{\Theta}, \{\mathbf{G}_k\}, \{\mathbf{W}_k\}}}{\mathop{\sum\sum}_{j \neq k} \left\lVert \mathbf{G}_k (\mathbf{H}_{kj}^\mathrm{D} + \mathbf{H}_k^\mathrm{B} \mathbf{\Theta} \mathbf{H}_j^\mathrm{F}) \mathbf{W}_j \right\rVert _{\mathrm{F}}^2}{}{}
-			\addConstraint{\mathbf{\Theta}_g^\mathsf{H} \mathbf{\Theta}_g=\mathbf{I}, \quad \forall g}{}{}
-			\addConstraint{\mathbf{G}_k \mathbf{G}_k^\mathsf{H}=\mathbf{I}, \quad \mathbf{W}_k^\mathsf{H} \mathbf{W}_k=\mathbf{I}, \quad \forall k.}{}{}
-		\end{mini!}
-		The non-convex problem can be solved by \gls{bcd} method.
-		For a given $\mathbf{\Theta}$, it reduces to conventional linear beamforming problem, for which an iterative algorithm alternating between the original and reciprocal networks is proposed in \cite{Gomadam2011,Clerckx2013}.
-		At iteration $r$, the combiner at receiver $k$ is updated as
-		\begin{equation}
-			\mathbf{G}_k^{(r)} = {\mathbf{U}_{k,N}^{(r-1)}}^\mathsf{H},
-		\end{equation}
-		where $\mathbf{U}_{k,N}^{(r-1)}$ is the eigenvectors corresponding to $N$ smallest eigenvalues of interference covariance matrix $\mathbf{Q}_k^{(r-1)} = \sum_{j \ne k} \mathbf{H}_{kj} \mathbf{W}_j^{(r-1)} {\mathbf{W}_j^{(r-1)}}^\mathsf{H} \mathbf{H}_{kj}^\mathsf{H}$.
-		The precoder at transmitter $j$ is updated as
-		\begin{equation}
-			\mathbf{W}_j^{(r)} = \bar{\mathbf{U}}_{j,N}^{(r)},
-		\end{equation}
-		where $\bar{\mathbf{U}}_{j,N}^{(r)}$ corresponds to interference covariance matrix $\bar{\mathbf{Q}}_j^{(r)} = \sum_{k \ne j} \mathbf{H}_{kj}^\mathsf{H} {\mathbf{G}_k^{(r)}}^\mathsf{H} \mathbf{G}_k^{(r)} \mathbf{H}_{kj}$ in the reciprocal network.
-		Once $\{\mathbf{G}_k\}$ and $\{\mathbf{W}_k\}$ are determined, we define $\bar{\mathbf{H}}_{kj}^\mathrm{D} \triangleq \mathbf{G}_k \mathbf{H}_{kj}^\mathrm{D} \mathbf{W}_j$, $\bar{\mathbf{H}}_k^\mathrm{B} \triangleq \mathbf{G}_k \mathbf{H}_k^\mathrm{B}$, and $\bar{\mathbf{H}}_j^\mathrm{F} \triangleq \mathbf{H}_j^\mathrm{F} \mathbf{W}_j$.
-		The \gls{bd}-\gls{ris} subproblem reduces to
-		\begin{mini!}
-			{\scriptstyle{\mathbf{\Theta}}}{\mathop{\sum\sum}_{j \neq k} \left\lVert (\bar{\mathbf{H}}_{kj}^\mathrm{D} + \bar{\mathbf{H}}_k^\mathrm{B} \mathbf{\Theta} \bar{\mathbf{H}}_j^\mathrm{F}) \right\rVert _{\mathrm{F}}^2}{\label{op:ic_interference_ris}}{}
-			\addConstraint{\mathbf{\Theta}_g^\mathsf{H} \mathbf{\Theta}_g=\mathbf{I}, \quad \forall g.}{}{}
-		\end{mini!}
-
-		\begin{proposition}
-			Start from any $\mathbf{\Theta}^{(0)}$, the sequence
-			\begin{equation}
-				\mathbf{\Theta}_g^{(r+1)} = \mathbf{U}_g^{(r)} \mathbf{V}_g^{(r)}, \quad \forall g
-			\end{equation}
-			converges to a stationary point of \eqref{op:ic_interference_ris}, where $\mathbf{U}_g^{(r)}$ and $\mathbf{V}_g^{(r)}$ are left and right singular matrix of
-			\begin{equation}
-				\mathbf{M}_g^{(r)} = \mathop{\sum\sum}_{j \neq k} \bigl(\mathbf{B}_{k,g} \mathbf{\Theta}_g^{(r)} \mathbf{H}_{j,g}^\mathrm{F} - {\mathbf{H}_{k,g}^\mathrm{B}}^\mathsf{H} \mathbf{D}_{kj,g}^{(r)}\bigr) {\mathbf{H}_{j,g}^\mathrm{F}}^\mathsf{H},
-			\end{equation}
-			where $\mathbf{B}_{k,g} = \lambda_1\bigl(\mathbf{H}_{k,g}^\mathrm{B} {\mathbf{H}_{k,g}^\mathrm{B}}^\mathsf{H}\bigr) \mathbf{I} - {\mathbf{H}_{k,g}^\mathrm{B}}^\mathsf{H} \mathbf{H}_{k,g}^\mathrm{B}$ and
-			\begin{equation}
-				\mathbf{D}_{kj,g}^{(r)} = \mathbf{H}_{jk}^\mathrm{D} + \sum_{g'<g} {\mathbf{H}_{k,g'}^\mathrm{B}}^\mathsf{H} \mathbf{\Theta}_{g'}^{(r+1)} \mathbf{H}_{k,g'}^\mathrm{F} + \sum_{g'>g} {\mathbf{H}_{k,g'}^\mathrm{B}}^\mathsf{H} \mathbf{\Theta}_{g'}^{(r)} \mathbf{H}_{k,g'}^\mathrm{F}.
-			\end{equation}
-		\end{proposition}
-		\begin{proof}
-			To be added.
-		\end{proof}
-
+	\begin{subsection}{Channel Singular Values Redistribution}
 		\begin{figure}[!t]
 			\centering
 			\resizebox{0.65\columnwidth}{!}{
-				\input{assets/simulation/ic_interference_sx.tex}
+				\input{assets/simulation/pc_singular_pareto.tex}
 			}
-			\caption{Average leakage interference versus \gls{ris} elements $N^\mathrm{S}$ and group size $L$. Transmitters and receivers are randomly generated in a disk of radius 50 m centered at the \gls{ris}. $(N^\mathrm{T}, N^\mathrm{R}, N^\mathrm{E}, K) = (8, 4, 3, 5)$, $(\gamma^\mathrm{D}, \gamma^\mathrm{F}, \gamma^\mathrm{B}) = (3, 2.4, 2.4)$, and reference pathloss at \qty{1}{\meter} is \qty{-30}{\dB}.}
-			\label{sm:ic_interference_sx}
+			\caption{Singular value bounds for rank-1 indirect channel. $(N^\mathrm{T}, N^\mathrm{S}, N^\mathrm{R}) = (4, 32, 4)$, $(\Lambda^\mathrm{D}, \Lambda^\mathrm{F}, \Lambda^\mathrm{B}) = (0, -17.5, -17.5) \unit{dB}$.}
+			\label{fg:pc_singular_pareto}
 		\end{figure}
-		Fig.~\ref{sm:ic_interference_sx} illustrates how \gls{bd}-\gls{ris} helps to reduce the leakage interference.
-		In this case, a fully-connected $2^n$-element \gls{bd}-\gls{ris} is almost as good as a diagonal $2^{n+2}$-element \gls{ris} in terms of leakage interference.
-		Interestingly, the result suggests that \gls{bd}-\gls{ris} can achieve a higher \gls{dof} than diagonal \gls{ris} in \gls{mimo}-\gls{ic}, which is not the case in \gls{mimo}-\gls{pc} (as discussed in \ref{sc:pc_rank_deficient}).
+
+		The Pareto singular value frontiers of a $2 \times 2$ \gls{mimo} with a 32-element \gls{bd}-\gls{ris} is shown in Fig.~\ref{fg:pc_singular_pareto}.
+		% The Pareto frontier of channel singular values reshaped by \gls{bd}-\gls{ris} is shown in Fig. \ref{fg:pc_singular_pareto}.
+		% The Pareto frontier of channel singular values reshaped by \gls{bd}-\gls{ris} is shown in Fig. \ref{fg:pc_singular_pareto}.
+		% Clearly, a larger group size provides
+		% and evolving trend of channel singular values are shown in Fig.~\ref{sm:pc_singular_pareto} and \ref{sm:pc_singular_bound}.
+		% Clearly, \gls{bd}-\gls{ris} with a larger group size can redistribute the channel singular values to a wider range.
 	\end{subsection}
+	% [channel.pathloss.distance.direct, channel.pathloss.distance.forward, channel.pathloss.distance.backward, channel.pathloss.exponent.direct, channel.pathloss.exponent.forward, channel.pathloss.exponent.backward] = deal(-14.7, -10, -6.3, -3, -2.4, -2);
 
-	\begin{subsection}{Weighted Sum-Rate Maximization}
-		\begin{maxi!}
-			{\scriptstyle{\mathbf{\Theta}, \{\mathbf{W}_k\}}}{J_2 = \sum_k \rho_k \log \det \biggl(\mathbf{I} + \mathbf{W}_k \mathbf{H}_{kj}^\mathsf{H} \mathbf{Q}_k^{-1} \mathbf{H}_{kj} \mathbf{W}_k\biggr)}{\label{op:ic_rate}}{\label{ob:ic_rate}}
-			\addConstraint{\mathbf{\Theta}_g^\mathsf{H} \mathbf{\Theta}_g=\mathbf{I}, \quad \forall g}{}{}
-			\addConstraint{\lVert \mathbf{W}_k \rVert _\mathrm{F}^2 \le P_k. \quad \forall k}{}{}
-		\end{maxi!}
-		where $\rho_k$ is the weight of user $k$ and $\mathbf{Q}_k$ is the interference-plus-noise covariance matrix
-		\begin{equation}
-			\mathbf{Q}_k = \sum_{j \ne k} \mathbf{H}_{kj} \mathbf{W}_j {\mathbf{W}_j}^\mathsf{H} \mathbf{H}_{kj}^\mathsf{H} + \eta \mathbf{I}.
-		\end{equation}
-		For a given $\mathbf{\Theta}$, \eqref{op:ic_rate} reduces to conventional linear beamforming problem, for which a closed-form iterative solution based on \gls{wsr}-\gls{wmmse} relationship is proposed in \cite{Negro2010}.
-		At iteration $r$, the \gls{mmse} combiner at receiver $k$ is
-		\begin{equation}
-			\mathbf{G}_k^{(r)} = {\mathbf{W}_k^{(r-1)}}^\mathsf{H} \mathbf{H}_{kk}^\mathsf{H} \bigl(\mathbf{Q}_k^{(r-1)} + \mathbf{H}_{kk} \mathbf{W}_k^{(r-1)} {\mathbf{W}_k^{(r-1)}}^\mathsf{H} \mathbf{H}_{kk}^\mathsf{H}\bigr)^{-1},
-		\end{equation}
-		the corresponding error matrix is
-		\begin{equation}
-			\mathbf{E}_k^{(r)} = \bigl(\mathbf{I} + {\mathbf{W}_k^{(r-1)}}^\mathsf{H} \mathbf{H}_{kk}^\mathsf{H} \mathbf{Q}_k^{(r-1)} \mathbf{H}_{kk} \mathbf{W}_k^{(r-1)}\bigr)^{-1},
-		\end{equation}
-		the \gls{mse} weight is
-		\begin{equation}
-			\mathbf{\Omega}_k^{(r)} = \rho_k {\mathbf{E}_k^{(r)}}^{-1},
-		\end{equation}
-		the Lagrange multiplier is
-		% \begin{equation}
-		% 	\begin{split}
-		% 		\lambda_k^{(r)}
-		% 		& = \frac{\sum_{j \ne k} \mathrm{tr}(\mathbf{\Omega}_k^{(r)}\mathbf{F}_{kj}^{(r)} {\mathbf{F}_{kj}^{(r)}}^\mathsf{H}) - \sum_{j \ne k} \mathrm{tr}(\mathbf{\Omega}_j^{(r)}\mathbf{F}_{jk}^{(r)} {\mathbf{F}_{jk}^{(r)}}^\mathsf{H})}{P_k} \\
-		% 		& \quad + \frac{\mathrm{tr}(\eta \mathbf{\Omega}_k^{(r)} \mathbf{G}_k^{(r)}{\mathbf{G}_k^{(r)}}^\mathsf{H})}{P_k}
-		% 	\end{split}
-		% \end{equation}
-		\begin{equation}
-			\lambda_k^{(r)} = \frac{\mathrm{tr}\bigl(\eta \mathbf{\Omega}_k^{(r)} \mathbf{G}_k^{(r)}{\mathbf{G}_k^{(r)}}^\mathsf{H} + \sum_j \mathbf{\Omega}_k^{(r)}\mathbf{T}_{kj}^{(r)} {\mathbf{T}_{kj}^{(r)}}^\mathsf{H} - \mathbf{\Omega}_j^{(r)}\mathbf{T}_{jk}^{(r)} {\mathbf{T}_{jk}^{(r)}}^\mathsf{H} \bigr)}{P_k},
-		\end{equation}
-		where $\mathbf{T}_{kj}^{(r)} = \mathbf{G}_k^{(r)} \mathbf{H}_{kj} \mathbf{W}_j^{(r)}$.
-		The precoder at transmitter $k$ is
-		\begin{equation}
-			\mathbf{W}_k^{(r)} = \Bigl(\sum_j \mathbf{H}_{jk}^\mathsf{H} {\mathbf{G}_j^{(r)}}^\mathsf{H} \mathbf{\Omega}_k^{(r)} \mathbf{G}_j^{(r)} \mathbf{H}_{jk} + \lambda_k^{(r)} \mathbf{I} \Bigr)^{-1} \mathbf{H}_{kk}^\mathsf{H} {\mathbf{G}_j^{(r)}}^\mathsf{H} \mathbf{\Omega}_k^{(r)}.
-		\end{equation}
-		Once $\{\mathbf{W}_k\}$ is determined, the complex derivative of \eqref{ob:ic_rate} w.r.t. \gls{ris} block $g$ is
-		\begin{equation}
-			\begin{split}
-				\frac{\partial J_2}{\partial \mathbf{\Theta}_g^*}
-				& = \sum_k \rho_k {\mathbf{H}_{k,g}^\mathrm{B}}^\mathsf{H} \mathbf{Q}_k^{-1} \mathbf{H}_{kk} \mathbf{W}_k \mathbf{E}_k \mathbf{W}_k^\mathsf{H} \\
-				& \quad \times \bigl({\mathbf{H}_{k,g}^\mathrm{F}}^\mathsf{H} - \mathbf{H}_{kk}^\mathsf{H} \mathbf{Q}_k^{-1} \sum_{j \ne k} \mathbf{H}_{kj} \mathbf{W}_j \mathbf{W}_j^\mathsf{H} {\mathbf{H}_{j,g}^\mathrm{F}}^\mathsf{H}\bigr).
-			\end{split}
-			\label{eq:ic_rate_gradient_ris}
-		\end{equation}
-		The \gls{ris} subproblem can be solved by \gls{rcg} Algorithm~\ref{ag:pc_rate_ris} with \eqref{eq:pc_rate_gradient_ris} replaced by \eqref{eq:ic_rate_gradient_ris}.
+		% \begin{figure}[!t]
+		% 	\centering
+		% 	\resizebox{0.65\columnwidth}{!}{
+		% 		\input{assets/simulation/pc_singular_bound.tex}
+		% 	}
+		% 	\caption{Singular value bounds for rank-1 indirect channel. $(N^\mathrm{T}, N^\mathrm{S}, N^\mathrm{R}) = (4, 32, 4)$, $(\Lambda^\mathrm{D}, \Lambda^\mathrm{F}, \Lambda^\mathrm{B}) = (0, -17.5, -17.5) \unit{dB}$.}
+		% 	\label{sm:pc_singular_bound}
+		% \end{figure}
 
-		\begin{figure}[!t]
-			\centering
-			\resizebox{0.65\columnwidth}{!}{
-				\input{assets/simulation/ic_rate_sx.tex}
-			}
-			\caption{Average weighted sum-rate versus \gls{snr}, \gls{ris} elements $N^\mathrm{S}$ and group size $L$. $(N^\mathrm{T}, N^\mathrm{R}, N^\mathrm{E}, K) = (8, 4, 3, 5)$, $(\Lambda^\mathrm{D}, \Lambda^\mathrm{F}, \Lambda^\mathrm{B}) = (65, 54, 46) \unit{dB}$, $\rho_k = 1, \ \forall k$.}
-			\label{sm:ic_rate_sx}
-		\end{figure}
-
-		\begin{figure}[!t]
-			\centering
-			\resizebox{0.65\columnwidth}{!}{
-				\input{assets/simulation/ic_rate_user.tex}
-			}
-			\caption{Average weighted sum-rate versus user pairs $K$, \gls{ris} elements $N^\mathrm{S}$ and group size $L$ at $\mathrm{SNR} = \qty{15}{dB}$. $(N^\mathrm{T}, N^\mathrm{R}, N^\mathrm{E}) = (4, 4, 3)$, $\rho_k = 1, \ \forall k$.}
-			\label{sm:ic_rate_user}
-		\end{figure}
-
-		A new observation from Fig.~\ref{sm:ic_rate_sx} that the interference alignment capability of \gls{bd}-\gls{ris} scales much faster with group size than number of elements.\footnote{The results are not very stable and depend heavily on initialization.}
-	\end{subsection}
+		% The Pareto frontier and evolving trend of channel singular values are shown in Fig.~\ref{sm:pc_singular_pareto} and \ref{sm:pc_singular_bound}.
+		% Clearly, \gls{bd}-\gls{ris} with a larger group size can redistribute the channel singular values to a wider range.
 \end{section}
+
+% \begin{appendix}
+	% \begin{subsection}{Proof of Lemma \ref{lm:pareto_gradient}}\label{ap:pareto_gradient}
+	% 	Let $\mathbf{H} = \sum_n \mathbf{u}_n \sigma_n \mathbf{v}_n^\mathsf{H}$ be the compact \gls{svd} of the equivalent channel.
+	% 	Since the singular vectors are orthonormal, the $n$-th singular value can be expressed as
+	% 	\begin{equation}
+	% 		\sigma_n = \mathbf{u}_n^\mathsf{H} \mathbf{H} \mathbf{v}_n = \mathbf{u}_n^\mathsf{T} \mathbf{H}^* \mathbf{v}_n^*,
+	% 	\end{equation}
+	% 	whose differential w.r.t. $\mathbf{\Theta}_g^*$ is
+	% 	\begin{align*}
+	% 		\partial \sigma_n
+	% 		& = \partial \mathbf{u}_n^\mathsf{T} \underbrace{\mathbf{H}^* \mathbf{v}_n^*}_{\sum_m \mathbf{u}_m^* \sigma_m \mathbf{v}_m^\mathsf{T} \mathbf{v}_n} + \mathbf{u}_n^\mathsf{T} \cdot \partial \mathbf{H}^* \cdot \mathbf{v}_n^* + \underbrace{\mathbf{u}_n^\mathsf{T} \mathbf{H}^*}_{\mathbf{u}_n^\mathsf{T} \sum_m \mathbf{u}_m^* \sigma_m \mathbf{v}_m^\mathsf{T}} \partial \mathbf{v}_n^*\\
+	% 		& = \underbrace{\partial \mathbf{u}_n^\mathsf{T} \mathbf{u}_n^*}_{\partial 1 = 0} \cdot \sigma_n + \mathbf{u}_n^\mathsf{T} \cdot \partial \mathbf{H}^* \cdot \mathbf{v}_n^* + \sigma_n \cdot \underbrace{\mathbf{v}_n^\mathsf{T} \partial \mathbf{v}_n^*}_{\partial 1 = 0}\\
+	% 		& = \mathbf{u}_n^\mathsf{T} \mathbf{H}_{\mathrm{B},g}^* \cdot \partial \mathbf{\Theta}_g^* \cdot \mathbf{H}_{\mathrm{F},g}^* \mathbf{v}_n^*\\
+	% 		& = \mathrm{tr}(\mathbf{H}_{\mathrm{F},g}^* \mathbf{v}_n^*\mathbf{u}_n^\mathsf{T} \mathbf{H}_{\mathrm{B},g}^* \cdot \partial \mathbf{\Theta}_g^*).
+	% 	\end{align*}
+	% 	According to \cite{Hjorungnes2007}, the corresponding complex derivative is
+	% 	\begin{equation}
+	% 		\frac{\partial \sigma_n}{\partial \mathbf{\Theta}_g^*} = \mathbf{H}_{\mathrm{B},g}^\mathsf{H} \mathbf{u}_n \mathbf{v}_n^\mathsf{H} \mathbf{H}_{\mathrm{F},g}^\mathsf{H}.
+	% 		\label{eq:derivative_sv}
+	% 	\end{equation}
+	% 	Linear combination of \eqref{eq:derivative_sv} yields \eqref{eq:pareto_gradient}.
+	% \end{subsection}
+
+	% \begin{subsection}{Proof of Proposition \ref{pp:dof}}\label{ap:dof}
+	% 	The scattering matrix of \gls{bd}-\gls{ris} can be decomposed as\footnote{This is because (block) unitary matrices are closed under multiplication.}
+	% 	\begin{equation}
+	% 		\mathbf{\Theta} = \mathbf{L} \mathbf{\Theta}_\mathrm{D} \mathbf{R}^\mathsf{H},
+	% 	\end{equation}
+	% 	where $\mathbf{\Theta}_\mathrm{D} \in \mathbb{U}^{N_\mathrm{S} \times N_\mathrm{S}}$ corresponds to diagonal \gls{ris} and $\mathbf{L}, \mathbf{R} \in \mathbb{U}^{N_\mathrm{S} \times N_\mathrm{S}}$ are block diagonal matrices of $L \times L$ unitary blocks.
+	% 	Manipulating $\mathbf{L}$ and $\mathbf{R}$ rotates the linear spans of $\bar{\mathbf{H}}_\mathrm{B} \triangleq \mathbf{H}_\mathrm{B} \mathbf{L}$ and $\bar{\mathbf{H}}_\mathrm{F} \triangleq \mathbf{R}^\mathsf{H} \mathbf{H}_\mathrm{F}$ and maintains their rank.
+	% 	On the other hand, there exists a $\mathbf{\Theta}_\mathrm{D}$ such that
+	% 	\begin{equation*}
+	% 		\begin{split}
+	% 			\mathrm{rank}(\mathbf{H}_\mathrm{B} \mathbf{\Theta}_\mathrm{D} \mathbf{H}_\mathrm{F})
+	% 			& = \min \bigl( \mathrm{rank}(\mathbf{H}_\mathrm{B}), \mathrm{rank}(\mathbf{\Theta}_\mathrm{D}), \mathrm{rank}(\mathbf{H}_\mathrm{F}) \bigr) \\
+	% 			& = \min \bigl( \mathrm{rank}(\bar{\mathbf{H}}_\mathrm{B}), N_\mathrm{S}, \mathrm{rank}(\bar{\mathbf{H}}_\mathrm{F}) \bigr) \\
+	% 			& = \max_\mathbf{\Theta} \ \mathrm{rank}(\mathbf{H}_\mathrm{B} \mathbf{\Theta} \mathbf{H}_\mathrm{F})
+	% 		\end{split}
+	% 	\end{equation*}
+	% 	The same result holds if the direct link is present.
+	% \end{subsection}
+
+	% \begin{subsection}{Proof of Proposition \ref{pp:los}}\label{ap:los}
+	% 	Let $\mathbf{H}_\mathrm{F} = \sigma_\mathrm{F} \mathbf{u}_\mathrm{F} \mathbf{v}_\mathrm{F}^\mathsf{H}$ be the compact \gls{svd} of the forward channel.
+	% 	The channel Gram matrix can be written as Hermitian-plus-rank-1:
+	% 	\begin{equation}
+	% 		\mathbf{G} \triangleq \mathbf{H} \mathbf{H}^\mathsf{H} = \mathbf{Y} + \mathbf{z} \mathbf{z}^\mathsf{H},
+	% 	\end{equation}
+	% 	where $\mathbf{Y} \triangleq \mathbf{H}_\mathrm{D}^\mathsf{H} (\mathbf{I} - \mathbf{v}_\mathrm{F} \mathbf{v}_\mathrm{F}^\mathsf{H}) \mathbf{H}_\mathrm{D}$ and $\mathbf{z} \triangleq \sigma_\mathrm{F} \mathbf{H}_\mathrm{B} \mathbf{\Theta} \mathbf{u}_\mathrm{F} + \mathbf{H}_\mathrm{D} \mathbf{v}_\mathrm{F}$.
+	% 	By the Cauchy interlacing formula \cite{Golub2013}, the $n$-th ($n \ge 2$) eigenvalues of $\mathbf{G}$ are bounded by
+	% 	\begin{equation}
+	% 		\lambda_1(\mathbf{Y}) \ge \lambda_2(\mathbf{G}) \ge \lambda_2(\mathbf{Y}) \ge \ldots \ge \lambda_{N-1}(\mathbf{Y}) \ge \lambda_N(\mathbf{G}) \ge \lambda_N(\mathbf{Y}).
+	% 		\label{iq:ev_bound_los}
+	% 	\end{equation}
+	% 	Since $\mathbf{Y} = \mathbf{T} \mathbf{T}^\mathsf{H}$ is positive semi-definite, the eigenvalues are non-negative and taking the square root of \eqref{iq:ev_bound_los} gives \eqref{iq:sv_bound_los}.
+	% \end{subsection}
+
+	% \begin{subsection}{Proof of Lemma \ref{lm:rate_gradient}}\label{ap:rate_gradient}
+	% 	The differential of $R$ w.r.t. $\mathbf{\Theta}_g^*$ is \cite{Hjorungnes2007}
+	% 	\begin{align*}
+	% 		\partial R
+	% 		& = \frac{1}{\eta} \mathrm{tr} \biggl\{ \partial \mathbf{H}^* \cdot \mathbf{Q}^\mathsf{T} \mathbf{H}^\mathsf{T} \Bigl(\mathbf{I} + \frac{\mathbf{H}^* \mathbf{Q}^\mathsf{T} \mathbf{H}^\mathsf{T}}{\eta}\Bigr)^{-1} \biggr\}\\
+	% 		& = \frac{1}{\eta} \mathrm{tr} \biggl\{ \mathbf{H}_{\mathrm{B},g}^* \cdot \partial \mathbf{\Theta}_g^* \cdot \mathbf{H}_{\mathrm{F},g}^* \mathbf{Q}^\mathsf{T} \mathbf{H}^\mathsf{T} \Bigl(\mathbf{I} + \frac{\mathbf{H}^* \mathbf{Q}^\mathsf{T} \mathbf{H}^\mathsf{T}}{\eta}\Bigr)^{-1} \biggr\}\\
+	% 		& = \frac{1}{\eta} \mathrm{tr} \biggl\{ \mathbf{H}_{\mathrm{F},g}^* \mathbf{Q}^\mathsf{T} \mathbf{H}^\mathsf{T} \Bigl(\mathbf{I} + \frac{\mathbf{H}^* \mathbf{Q}^\mathsf{T} \mathbf{H}^\mathsf{T}}{\eta}\Bigr)^{-1} \mathbf{H}_{\mathrm{B},g}^* \cdot \partial \mathbf{\Theta}_g^* \biggr\},
+	% 	\end{align*}
+	% 	and the corresponding complex derivative is \eqref{eq:rate_gradient}.
+	% \end{subsection}
+
+% 	\begin{subsection}{Proof of Proposition \ref{pp:power}}\label{ap:power}
+% 		The differential of \eqref{ob:power_passive} w.r.t. $\mathbf{\Theta}_g^*$ is
+% 		\begin{align*}
+% 			\partial \lVert \mathbf{H} \rVert _\mathrm{F}^2
+% 			& = \mathrm{tr}\bigl(\mathbf{H}_{\mathrm{B},g}^* \cdot \partial \mathbf{\Theta}_g^* \cdot \mathbf{H}_{\mathrm{F},g}^* (\mathbf{H}_\mathrm{D}^\mathsf{T} + \mathbf{H}_\mathrm{F}^\mathsf{T} \mathbf{\Theta}^\mathsf{T} \mathbf{H}_\mathrm{B}^\mathsf{T})\bigr)\\
+% 			& = \mathrm{tr}\bigl(\mathbf{H}_{\mathrm{F},g}^* (\mathbf{H}_\mathrm{D}^\mathsf{T} + \mathbf{H}_\mathrm{F}^\mathsf{T} \mathbf{\Theta}^\mathsf{T} \mathbf{H}_\mathrm{B}^\mathsf{T}) \mathbf{H}_{\mathrm{B},g}^* \cdot \partial \mathbf{\Theta}_g^*\bigr)
+% 		\end{align*}
+% 		and the corresponding complex derivative is
+% 		\begin{equation}
+% 			\frac{\partial \lVert \mathbf{H} \rVert _\mathrm{F}^2}{\partial \mathbf{\Theta}_g^*} = \mathbf{H}_{\mathrm{B},g}^\mathsf{H} (\mathbf{H}_\mathrm{D} + \mathbf{H}_\mathrm{B} \mathbf{\Theta} \mathbf{H}_\mathrm{F}) \mathbf{H}_{\mathrm{F},g}^\mathsf{H} = \mathbf{M}_g.
+% 		\end{equation}
+% 		% For a given $\mathbf{\Theta}$, we approximate the quadratic objective \eqref{ob:power_passive} by local Taylor expansion and recast problem \eqref{op:power_passive} as
+
+% 		First, we approximate the quadratic objective \eqref{ob:power_passive} by its local Taylor expansion
+% 		\begin{maxi!}
+% 			{\scriptstyle{\mathbf{\Theta}}}{\sum_g 2 \Re\bigl\{ \mathrm{tr}(\mathbf{\Theta}_g^\mathsf{H} \mathbf{M}_g) \bigr\}}{\label{op:power_passive_approx}}{\label{ob:power_passive_approx}}
+% 			\addConstraint{\mathbf{\Theta}_g^\mathsf{H} \mathbf{\Theta}_g=\mathbf{I}, \quad \forall g.}{}{}
+% 		\end{maxi!}
+% 		Let $\mathbf{M}_g = \mathbf{U}_g \mathbf{\Sigma}_g \mathbf{V}_g^\mathsf{H}$ be the compact \gls{svd} of $\mathbf{M}_g$.
+% 		We have
+% 		\begin{equation}
+% 			\Re \bigl\{\mathrm{tr}(\mathbf{\Theta}_g^\mathsf{H} \mathbf{M}_g)\bigr\} = \Re \bigl\{ \mathrm{tr}(\mathbf{\Sigma}_g \mathbf{V}_g^\mathsf{H} \mathbf{\Theta}_g^\mathsf{H} \mathbf{U}_g) \bigr\} \le \mathrm{tr}(\mathbf{\Sigma}_g).
+% 		\end{equation}
+% 		The upper bound is tight when $\mathbf{V}_g^\mathsf{H} \mathbf{\Theta}_g^\mathsf{H} \mathbf{U}_g = \mathbf{I}$, which implies the optimal solution of \eqref{op:power_passive_approx} is $\tilde{\mathbf{\Theta}}_g = \mathbf{U}_g \mathbf{V}_g^\mathsf{H}$, $\forall g$.
+
+% 		Next, we prove that solving \eqref{op:power_passive_approx} successively does not decrease \eqref{ob:power_passive}.
+% 		Since $\tilde{\mathbf{\Theta}}$ optimal for problem \eqref{op:power_passive_approx}, we have $\sum_g 2 \Re\bigl\{ \mathrm{tr}(\tilde{\mathbf{\Theta}}_g^\mathsf{H} \mathbf{M}_g) \bigr\} \ge \sum_g 2 \Re\bigl\{ \mathrm{tr}(\mathbf{\Theta}_g^\mathsf{H} \mathbf{M}_g) \bigr\}$ which is explicitly expressed by \eqref{iq:power_passive_approx}.
+% 		% Expanding both side gives \eqref{iq:power_passive_approx}.
+% 		On the other hand, expanding $\lVert \sum_g \mathbf{H}_{\mathrm{B},g} \tilde{\mathbf{\Theta}}_g \mathbf{H}_{\mathrm{F},g} - \sum_g \mathbf{H}_{\mathrm{B},g} \mathbf{\Theta}_g \mathbf{H}_{\mathrm{F},g} \rVert _\mathrm{F}^2 \ge 0$ gives \eqref{iq:nonnegative_norm_square}.
+% 		Adding \eqref{iq:power_passive_approx} and \eqref{iq:nonnegative_norm_square}, we have
+% 		\begin{multline}
+% 			2 \Re \Bigl\{\mathrm{tr}(\tilde{\mathbf{\Theta}}^\mathsf{H} \mathbf{H}_\mathrm{B}^\mathsf{H} \mathbf{H}_\mathrm{D} \mathbf{H}_\mathrm{F}^\mathsf{H}) \Bigr\} + \mathrm{tr}(\mathbf{H}_\mathrm{F}^\mathsf{H} \tilde{\mathbf{\Theta}}^\mathsf{H} \mathbf{H}_\mathrm{B}^\mathsf{H} \mathbf{H}_\mathrm{B} \tilde{\mathbf{\Theta}} \mathbf{H}_\mathrm{F}) \\
+% 			\ge 2 \Re \Bigl\{\mathrm{tr}({\mathbf{\Theta}}^\mathsf{H} \mathbf{H}_\mathrm{B}^\mathsf{H} \mathbf{H}_\mathrm{D} \mathbf{H}_\mathrm{F}^\mathsf{H}) \Bigr\} + \mathrm{tr}(\mathbf{H}_\mathrm{F}^\mathsf{H} {\mathbf{\Theta}}^\mathsf{H} \mathbf{H}_\mathrm{B}^\mathsf{H} \mathbf{H}_\mathrm{B} {\mathbf{\Theta}} \mathbf{H}_\mathrm{F}),
+% 		\end{multline}
+% 		which suggests that updating $\tilde{\mathbf{\Theta}}$ does not decrease \eqref{ob:power_passive}.
+% 		\begin{figure*}
+% 			\begin{equation}
+% 				\label{iq:power_passive_approx}
+% 				\resizebox{0.95\textwidth}{!}{
+% 					$2 \Re \Bigl\{\sum\limits_g \mathrm{tr}(\tilde{\mathbf{\Theta}}_g^\mathsf{H} \mathbf{H}_{\mathrm{B},g}^\mathsf{H} \mathbf{H}_\mathrm{D} \mathbf{H}_{\mathrm{F},g}^\mathsf{H}) + \sum\limits_{g_1,g_2} \mathrm{tr}(\tilde{\mathbf{\Theta}}_{g_1}^\mathsf{H} \mathbf{H}_{\mathrm{B},g_1}^\mathsf{H} \mathbf{H}_{\mathrm{B},g_2} \mathbf{\Theta}_{g_2} \mathbf{H}_{\mathrm{F},g_2} \mathbf{H}_{\mathrm{F},g_1}^\mathsf{H})\Bigr\} \ge 2 \Re \Bigl\{\sum\limits_g \mathrm{tr}({\mathbf{\Theta}}_g^\mathsf{H} \mathbf{H}_{\mathrm{B},g}^\mathsf{H} \mathbf{H}_\mathrm{D} \mathbf{H}_{\mathrm{F},g}^\mathsf{H}) + \sum\limits_{g_1,g_2} \mathrm{tr}({\mathbf{\Theta}}_{g_1}^\mathsf{H} \mathbf{H}_{\mathrm{B},g_1}^\mathsf{H} \mathbf{H}_{\mathrm{B},g_2} \mathbf{\Theta}_{g_2} \mathbf{H}_{\mathrm{F},g_2} \mathbf{H}_{\mathrm{F},g_1}^\mathsf{H})\Bigr\}$
+% 				}
+% 			\end{equation}
+% 			\begin{equation}
+% 				\label{iq:nonnegative_norm_square}
+% 				\resizebox{0.95\textwidth}{!}{
+% 					$\sum\limits_{g_1,g_2} \mathrm{tr}(\mathbf{H}_{\mathrm{F},g_1}^\mathsf{H} \tilde{\mathbf{\Theta}}_{g_1}^\mathsf{H} \mathbf{H}_{\mathrm{B},g_1}^\mathsf{H} \mathbf{H}_{\mathrm{B},g_2} \tilde{\mathbf{\Theta}}_{g_2} \mathbf{H}_{\mathrm{F},g_2}) - 2 \Re \Bigl\{\sum\limits_{g_1,g_2} \mathrm{tr}(\mathbf{H}_{\mathrm{F},g_1}^\mathsf{H} \tilde{\mathbf{\Theta}}_{g_1}^\mathsf{H} \mathbf{H}_{\mathrm{B},g_1}^\mathsf{H} \mathbf{H}_{\mathrm{B},g_2} \mathbf{\Theta}_{g_2} \mathbf{H}_{\mathrm{F},g_2})\Bigr\} + \sum\limits_{g_1,g_2} \mathrm{tr}(\mathbf{H}_{\mathrm{F},g_1}^\mathsf{H} {\mathbf{\Theta}}_{g_1}^\mathsf{H} \mathbf{H}_{\mathrm{B},g_1}^\mathsf{H} \mathbf{H}_{\mathrm{B},g_2} {\mathbf{\Theta}}_{g_2} \mathbf{H}_{\mathrm{F},g_2}) \ge 0$
+% 				}
+% 			\end{equation}
+% 			\hrulefill
+% 		\end{figure*}
+
+% 		Finally, we prove that the converging point of \eqref{op:power_passive_approx}, denoted by $\tilde{\mathbf{\Theta}}^?$, is a stationary point of \eqref{op:power_passive}.
+% 		The \gls{kkt} conditions of \eqref{op:power_passive} and \eqref{op:power_passive_approx} are equivalent in terms of primal/dual feasibility and complementary slackness, while the stationary conditions are respectively, $\forall g$,
+% 		\begin{gather}
+% 			\mathbf{H}_{\mathrm{B},g}^\mathsf{H} (\mathbf{H}_\mathrm{D} + \mathbf{H}_\mathrm{B} \mathbf{\Theta}^\star \mathbf{H}_\mathrm{F}) \mathbf{H}_{\mathrm{F},g}^\mathsf{H} - \mathbf{\Theta}_g^\star \mathbf{\Lambda}_g^\mathsf{H} = 0,\label{eq:power_passive_stationary}\\
+% 			\mathbf{M}_g - \mathbf{\Theta}_g^\star \mathbf{\Lambda}_g^\mathsf{H} = 0.\label{eq:power_passive_approx_stationary}
+% 		\end{gather}
+% 		On convergence, \eqref{eq:power_passive_approx_stationary} becomes $\mathbf{H}_{\mathrm{B},g}^\mathsf{H} (\mathbf{H}_\mathrm{D} + \mathbf{H}_\mathrm{B} \mathbf{\Theta}^? \mathbf{H}_\mathrm{F}) \mathbf{H}_{\mathrm{F},g}^\mathsf{H} - \mathbf{\Theta}_g^? \mathbf{\Lambda}_g^\mathsf{H} = 0$ and reduces to \eqref{eq:power_passive_stationary}.
+% 		The proof is thus completed.
+% 	\end{subsection}
+% \end{appendix}
+
+
+% \begin{section}{\glsentryshort{mimo}-\glsentryshort{ic}}
+% 	\begin{subsection}{Leakage Interference Minimization}
+% 		\begin{mini!}
+% 			{\scriptstyle{\mathbf{\Theta}, \{\mathbf{G}_k\}, \{\mathbf{W}_k\}}}{\mathop{\sum\sum}_{j \neq k} \left\lVert \mathbf{G}_k (\mathbf{H}_{kj}^\mathrm{D} + \mathbf{H}_k^\mathrm{B} \mathbf{\Theta} \mathbf{H}_j^\mathrm{F}) \mathbf{W}_j \right\rVert _{\mathrm{F}}^2}{}{}
+% 			\addConstraint{\mathbf{\Theta}_g^\mathsf{H} \mathbf{\Theta}_g=\mathbf{I}, \quad \forall g}{}{}
+% 			\addConstraint{\mathbf{G}_k \mathbf{G}_k^\mathsf{H}=\mathbf{I}, \quad \mathbf{W}_k^\mathsf{H} \mathbf{W}_k=\mathbf{I}, \quad \forall k.}{}{}
+% 		\end{mini!}
+% 		The non-convex problem can be solved by \gls{bcd} method.
+% 		For a given $\mathbf{\Theta}$, it reduces to conventional linear beamforming problem, for which an iterative algorithm alternating between the original and reciprocal networks is proposed in \cite{Gomadam2011,Clerckx2013}.
+% 		At iteration $r$, the combiner at receiver $k$ is updated as
+% 		\begin{equation}
+% 			\mathbf{G}_k^{(r)} = {\mathbf{U}_{k,N}^{(r-1)}}^\mathsf{H},
+% 		\end{equation}
+% 		where $\mathbf{U}_{k,N}^{(r-1)}$ is the eigenvectors corresponding to $N$ smallest eigenvalues of interference covariance matrix $\mathbf{Q}_k^{(r-1)} = \sum_{j \ne k} \mathbf{H}_{kj} \mathbf{W}_j^{(r-1)} {\mathbf{W}_j^{(r-1)}}^\mathsf{H} \mathbf{H}_{kj}^\mathsf{H}$.
+% 		The precoder at transmitter $j$ is updated as
+% 		\begin{equation}
+% 			\mathbf{W}_j^{(r)} = \bar{\mathbf{U}}_{j,N}^{(r)},
+% 		\end{equation}
+% 		where $\bar{\mathbf{U}}_{j,N}^{(r)}$ corresponds to interference covariance matrix $\bar{\mathbf{Q}}_j^{(r)} = \sum_{k \ne j} \mathbf{H}_{kj}^\mathsf{H} {\mathbf{G}_k^{(r)}}^\mathsf{H} \mathbf{G}_k^{(r)} \mathbf{H}_{kj}$ in the reciprocal network.
+% 		Once $\{\mathbf{G}_k\}$ and $\{\mathbf{W}_k\}$ are determined, we define $\bar{\mathbf{H}}_{kj}^\mathrm{D} \triangleq \mathbf{G}_k \mathbf{H}_{kj}^\mathrm{D} \mathbf{W}_j$, $\bar{\mathbf{H}}_k^\mathrm{B} \triangleq \mathbf{G}_k \mathbf{H}_k^\mathrm{B}$, and $\bar{\mathbf{H}}_j^\mathrm{F} \triangleq \mathbf{H}_j^\mathrm{F} \mathbf{W}_j$.
+% 		The \gls{bd}-\gls{ris} subproblem reduces to
+% 		\begin{mini!}
+% 			{\scriptstyle{\mathbf{\Theta}}}{\mathop{\sum\sum}_{j \neq k} \left\lVert (\bar{\mathbf{H}}_{kj}^\mathrm{D} + \bar{\mathbf{H}}_k^\mathrm{B} \mathbf{\Theta} \bar{\mathbf{H}}_j^\mathrm{F}) \right\rVert _{\mathrm{F}}^2}{\label{op:ic_interference_ris}}{}
+% 			\addConstraint{\mathbf{\Theta}_g^\mathsf{H} \mathbf{\Theta}_g=\mathbf{I}, \quad \forall g.}{}{}
+% 		\end{mini!}
+
+% 		\begin{proposition}
+% 			Start from any $\mathbf{\Theta}^{(0)}$, the sequence
+% 			\begin{equation}
+% 				\mathbf{\Theta}_g^{(r+1)} = \mathbf{U}_g^{(r)} \mathbf{V}_g^{(r)}, \quad \forall g
+% 			\end{equation}
+% 			converges to a stationary point of \eqref{op:ic_interference_ris}, where $\mathbf{U}_g^{(r)}$ and $\mathbf{V}_g^{(r)}$ are left and right singular matrix of
+% 			\begin{equation}
+% 				\mathbf{M}_g^{(r)} = \mathop{\sum\sum}_{j \neq k} \bigl(\mathbf{B}_{k,g} \mathbf{\Theta}_g^{(r)} \mathbf{H}_{j,g}^\mathrm{F} - {\mathbf{H}_{k,g}^\mathrm{B}}^\mathsf{H} \mathbf{D}_{kj,g}^{(r)}\bigr) {\mathbf{H}_{j,g}^\mathrm{F}}^\mathsf{H},
+% 			\end{equation}
+% 			where $\mathbf{B}_{k,g} = \lambda_1\bigl(\mathbf{H}_{k,g}^\mathrm{B} {\mathbf{H}_{k,g}^\mathrm{B}}^\mathsf{H}\bigr) \mathbf{I} - {\mathbf{H}_{k,g}^\mathrm{B}}^\mathsf{H} \mathbf{H}_{k,g}^\mathrm{B}$ and
+% 			\begin{equation}
+% 				\mathbf{D}_{kj,g}^{(r)} = \mathbf{H}_{jk}^\mathrm{D} + \sum_{g'<g} {\mathbf{H}_{k,g'}^\mathrm{B}}^\mathsf{H} \mathbf{\Theta}_{g'}^{(r+1)} \mathbf{H}_{k,g'}^\mathrm{F} + \sum_{g'>g} {\mathbf{H}_{k,g'}^\mathrm{B}}^\mathsf{H} \mathbf{\Theta}_{g'}^{(r)} \mathbf{H}_{k,g'}^\mathrm{F}.
+% 			\end{equation}
+% 		\end{proposition}
+% 		\begin{proof}
+% 			To be added.
+% 		\end{proof}
+
+% 		\begin{figure}[!t]
+% 			\centering
+% 			\resizebox{0.65\columnwidth}{!}{
+% 				\input{assets/simulation/ic_interference_sx.tex}
+% 			}
+% 			\caption{Average leakage interference versus \gls{ris} elements $N^\mathrm{S}$ and group size $L$. Transmitters and receivers are randomly generated in a disk of radius 50 m centered at the \gls{ris}. $(N^\mathrm{T}, N^\mathrm{R}, N^\mathrm{E}, K) = (8, 4, 3, 5)$, $(\gamma^\mathrm{D}, \gamma^\mathrm{F}, \gamma^\mathrm{B}) = (3, 2.4, 2.4)$, and reference pathloss at \qty{1}{\meter} is \qty{-30}{\dB}.}
+% 			\label{sm:ic_interference_sx}
+% 		\end{figure}
+% 		Fig.~\ref{sm:ic_interference_sx} illustrates how \gls{bd}-\gls{ris} helps to reduce the leakage interference.
+% 		In this case, a fully-connected $2^n$-element \gls{bd}-\gls{ris} is almost as good as a diagonal $2^{n+2}$-element \gls{ris} in terms of leakage interference.
+% 		Interestingly, the result suggests that \gls{bd}-\gls{ris} can achieve a higher \gls{dof} than diagonal \gls{ris} in \gls{mimo}-\gls{ic}, which is not the case in \gls{mimo}-\gls{pc} (as discussed in \ref{sc:pc_rank_deficient}).
+% 	\end{subsection}
+
+% 	\begin{subsection}{Weighted Sum-Rate Maximization}
+% 		\begin{maxi!}
+% 			{\scriptstyle{\mathbf{\Theta}, \{\mathbf{W}_k\}}}{J_2 = \sum_k \rho_k \log \det \biggl(\mathbf{I} + \mathbf{W}_k \mathbf{H}_{kj}^\mathsf{H} \mathbf{Q}_k^{-1} \mathbf{H}_{kj} \mathbf{W}_k\biggr)}{\label{op:ic_rate}}{\label{ob:ic_rate}}
+% 			\addConstraint{\mathbf{\Theta}_g^\mathsf{H} \mathbf{\Theta}_g=\mathbf{I}, \quad \forall g}{}{}
+% 			\addConstraint{\lVert \mathbf{W}_k \rVert _\mathrm{F}^2 \le P_k. \quad \forall k}{}{}
+% 		\end{maxi!}
+% 		where $\rho_k$ is the weight of user $k$ and $\mathbf{Q}_k$ is the interference-plus-noise covariance matrix
+% 		\begin{equation}
+% 			\mathbf{Q}_k = \sum_{j \ne k} \mathbf{H}_{kj} \mathbf{W}_j {\mathbf{W}_j}^\mathsf{H} \mathbf{H}_{kj}^\mathsf{H} + \eta \mathbf{I}.
+% 		\end{equation}
+% 		For a given $\mathbf{\Theta}$, \eqref{op:ic_rate} reduces to conventional linear beamforming problem, for which a closed-form iterative solution based on \gls{wsr}-\gls{wmmse} relationship is proposed in \cite{Negro2010}.
+% 		At iteration $r$, the \gls{mmse} combiner at receiver $k$ is
+% 		\begin{equation}
+% 			\mathbf{G}_k^{(r)} = {\mathbf{W}_k^{(r-1)}}^\mathsf{H} \mathbf{H}_{kk}^\mathsf{H} \bigl(\mathbf{Q}_k^{(r-1)} + \mathbf{H}_{kk} \mathbf{W}_k^{(r-1)} {\mathbf{W}_k^{(r-1)}}^\mathsf{H} \mathbf{H}_{kk}^\mathsf{H}\bigr)^{-1},
+% 		\end{equation}
+% 		the corresponding error matrix is
+% 		\begin{equation}
+% 			\mathbf{E}_k^{(r)} = \bigl(\mathbf{I} + {\mathbf{W}_k^{(r-1)}}^\mathsf{H} \mathbf{H}_{kk}^\mathsf{H} \mathbf{Q}_k^{(r-1)} \mathbf{H}_{kk} \mathbf{W}_k^{(r-1)}\bigr)^{-1},
+% 		\end{equation}
+% 		the \gls{mse} weight is
+% 		\begin{equation}
+% 			\mathbf{\Omega}_k^{(r)} = \rho_k {\mathbf{E}_k^{(r)}}^{-1},
+% 		\end{equation}
+% 		the Lagrange multiplier is
+% 		% \begin{equation}
+% 		% 	\begin{split}
+% 		% 		\lambda_k^{(r)}
+% 		% 		& = \frac{\sum_{j \ne k} \mathrm{tr}(\mathbf{\Omega}_k^{(r)}\mathbf{F}_{kj}^{(r)} {\mathbf{F}_{kj}^{(r)}}^\mathsf{H}) - \sum_{j \ne k} \mathrm{tr}(\mathbf{\Omega}_j^{(r)}\mathbf{F}_{jk}^{(r)} {\mathbf{F}_{jk}^{(r)}}^\mathsf{H})}{P_k} \\
+% 		% 		& \quad + \frac{\mathrm{tr}(\eta \mathbf{\Omega}_k^{(r)} \mathbf{G}_k^{(r)}{\mathbf{G}_k^{(r)}}^\mathsf{H})}{P_k}
+% 		% 	\end{split}
+% 		% \end{equation}
+% 		\begin{equation}
+% 			\lambda_k^{(r)} = \frac{\mathrm{tr}\bigl(\eta \mathbf{\Omega}_k^{(r)} \mathbf{G}_k^{(r)}{\mathbf{G}_k^{(r)}}^\mathsf{H} + \sum_j \mathbf{\Omega}_k^{(r)}\mathbf{T}_{kj}^{(r)} {\mathbf{T}_{kj}^{(r)}}^\mathsf{H} - \mathbf{\Omega}_j^{(r)}\mathbf{T}_{jk}^{(r)} {\mathbf{T}_{jk}^{(r)}}^\mathsf{H} \bigr)}{P_k},
+% 		\end{equation}
+% 		where $\mathbf{T}_{kj}^{(r)} = \mathbf{G}_k^{(r)} \mathbf{H}_{kj} \mathbf{W}_j^{(r)}$.
+% 		The precoder at transmitter $k$ is
+% 		\begin{equation}
+% 			\mathbf{W}_k^{(r)} = \Bigl(\sum_j \mathbf{H}_{jk}^\mathsf{H} {\mathbf{G}_j^{(r)}}^\mathsf{H} \mathbf{\Omega}_k^{(r)} \mathbf{G}_j^{(r)} \mathbf{H}_{jk} + \lambda_k^{(r)} \mathbf{I} \Bigr)^{-1} \mathbf{H}_{kk}^\mathsf{H} {\mathbf{G}_j^{(r)}}^\mathsf{H} \mathbf{\Omega}_k^{(r)}.
+% 		\end{equation}
+% 		Once $\{\mathbf{W}_k\}$ is determined, the complex derivative of \eqref{ob:ic_rate} w.r.t. \gls{ris} block $g$ is
+% 		\begin{equation}
+% 			\begin{split}
+% 				\frac{\partial J_2}{\partial \mathbf{\Theta}_g^*}
+% 				& = \sum_k \rho_k {\mathbf{H}_{k,g}^\mathrm{B}}^\mathsf{H} \mathbf{Q}_k^{-1} \mathbf{H}_{kk} \mathbf{W}_k \mathbf{E}_k \mathbf{W}_k^\mathsf{H} \\
+% 				& \quad \times \bigl({\mathbf{H}_{k,g}^\mathrm{F}}^\mathsf{H} - \mathbf{H}_{kk}^\mathsf{H} \mathbf{Q}_k^{-1} \sum_{j \ne k} \mathbf{H}_{kj} \mathbf{W}_j \mathbf{W}_j^\mathsf{H} {\mathbf{H}_{j,g}^\mathrm{F}}^\mathsf{H}\bigr).
+% 			\end{split}
+% 			\label{eq:ic_rate_gradient_ris}
+% 		\end{equation}
+% 		The \gls{ris} subproblem can be solved by \gls{rcg} Algorithm~\ref{ag:pc_rate_ris} with \eqref{eq:pc_rate_gradient_ris} replaced by \eqref{eq:ic_rate_gradient_ris}.
+
+% 		\begin{figure}[!t]
+% 			\centering
+% 			\resizebox{0.65\columnwidth}{!}{
+% 				\input{assets/simulation/ic_rate_sx.tex}
+% 			}
+% 			\caption{Average weighted sum-rate versus \gls{snr}, \gls{ris} elements $N^\mathrm{S}$ and group size $L$. $(N^\mathrm{T}, N^\mathrm{R}, N^\mathrm{E}, K) = (8, 4, 3, 5)$, $(\Lambda^\mathrm{D}, \Lambda^\mathrm{F}, \Lambda^\mathrm{B}) = (65, 54, 46) \unit{dB}$, $\rho_k = 1, \ \forall k$.}
+% 			\label{sm:ic_rate_sx}
+% 		\end{figure}
+
+% 		\begin{figure}[!t]
+% 			\centering
+% 			\resizebox{0.65\columnwidth}{!}{
+% 				\input{assets/simulation/ic_rate_user.tex}
+% 			}
+% 			\caption{Average weighted sum-rate versus user pairs $K$, \gls{ris} elements $N^\mathrm{S}$ and group size $L$ at $\mathrm{SNR} = \qty{15}{dB}$. $(N^\mathrm{T}, N^\mathrm{R}, N^\mathrm{E}) = (4, 4, 3)$, $\rho_k = 1, \ \forall k$.}
+% 			\label{sm:ic_rate_user}
+% 		\end{figure}
+
+% 		A new observation from Fig.~\ref{sm:ic_rate_sx} that the interference alignment capability of \gls{bd}-\gls{ris} scales much faster with group size than number of elements.\footnote{The results are not very stable and depend heavily on initialization.}
+% 	\end{subsection}
+% \end{section}
 
 
 \bibliographystyle{IEEEtran}
