@@ -823,20 +823,54 @@
 	We set $\Lambda_0=\qty{-30}{dB}$, $d_\mathrm{D}=\qty{14.7}{m}$, $d_\mathrm{F}=\qty{10}{m}$, $d_\mathrm{B}=\qty{6.3}{m}$, $\gamma_\mathrm{D}=3$, $\gamma_\mathrm{F}=2.4$, $\gamma_\mathrm{B}=2$, $\kappa_\mathrm{D}=\kappa_\mathrm{F}=\kappa_\mathrm{B}=5$ for reference, which corresponds to an indoor environment with $\Lambda_\mathrm{D}=\qty{-65}{dB}$, $\Lambda_\mathrm{F}=\qty{-54}{dB}$, $\Lambda_\mathrm{B}=\qty{-46}{dB}$.
 
 	\begin{subsection}{Channel Singular Values Redistribution}
+		% \begin{figure}[!t]
+		% 	\centering
+		% 	\resizebox{0.65\columnwidth}{!}{
+		% 		\input{assets/simulation/pc_singular_pareto.tex}
+		% 	}
+		% 	\caption{Singular value bounds for rank-1 indirect channel. $(N^\mathrm{T}, N^\mathrm{S}, N^\mathrm{R}) = (4, 32, 4)$, $(\Lambda^\mathrm{D}, \Lambda^\mathrm{F}, \Lambda^\mathrm{B}) = (0, -17.5, -17.5) \unit{dB}$.}
+		% 	\label{fg:pc_singular_pareto}
+		% \end{figure}
+
 		\begin{figure}[!t]
 			\centering
-			\resizebox{0.65\columnwidth}{!}{
-				\input{assets/simulation/pc_singular_pareto.tex}
+			\subfloat[$2 \times 32 \times 2$ (no direct link)\label{fg:pc_singular_pareto_32_nd}]{
+				\resizebox{0.48\columnwidth}{!}{
+					\input{assets/simulation/pc_singular_pareto_32_nd.tex}
+				}
 			}
-			\caption{Singular value bounds for rank-1 indirect channel. $(N^\mathrm{T}, N^\mathrm{S}, N^\mathrm{R}) = (4, 32, 4)$, $(\Lambda^\mathrm{D}, \Lambda^\mathrm{F}, \Lambda^\mathrm{B}) = (0, -17.5, -17.5) \unit{dB}$.}
-			\label{fg:pc_singular_pareto}
+			\subfloat[$2 \times 32 \times 2$\label{fg:pc_singular_pareto_32}]{
+				\resizebox{0.48\columnwidth}{!}{
+					\input{assets/simulation/pc_singular_pareto_32.tex}
+				}
+			}
+			\\
+			\subfloat[$2 \times 64 \times 2$\label{fg:pc_singular_pareto_64}]{
+				\resizebox{0.48\columnwidth}{!}{
+					\input{assets/simulation/pc_singular_pareto_64.tex}
+				}
+			}
 		\end{figure}
 
 		\begin{figure}[!t]
 			\centering
-			\resizebox{0.65\columnwidth}{!}{
-				\input{assets/simulation/pc_singular_bound.tex}
+			\subfloat[$4 \times 32 \times 4$\label{fg:pc_singular_bound_32}]{
+				\resizebox{0.48\columnwidth}{!}{
+					\input{assets/simulation/pc_singular_bound_32.tex}
+				}
 			}
+			\subfloat[$4 \times 64 \times 4$\label{fg:pc_singular_bound_64}]{
+				\resizebox{0.48\columnwidth}{!}{
+					\input{assets/simulation/pc_singular_bound_64.tex}
+				}
+			}
+			\caption{
+				Channel singular values with \gls{los} forward channel: analytical bounds (green lines) and optimized results (blue and red bars).
+				`D' means diagonal \gls{ris} and `BD' means fully-connected \gls{bd}-\gls{ris}.
+				% $\kappa_\mathrm{D}=\kappa_\mathrm{B}=0$, $\kappa_\mathrm{F}=\infty$.
+			}
+			% \caption{Singular values of equivalent channel with \gls{los} forward channel: analytical bounds (green lines) and optimized results (blue and red bars).}
+			\label{fg:pc_singular_bound}
 		\end{figure}
 
 		The Pareto singular value frontiers of a $2 \times 2$ \gls{mimo} with a 32-element \gls{bd}-\gls{ris} is shown in Fig.~\ref{fg:pc_singular_pareto}.

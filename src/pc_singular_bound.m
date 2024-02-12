@@ -39,7 +39,7 @@ set(handle.bound, {'Color'}, {'#77AC30'}, {'LineStyle'}, {'-'; '--'; ':'; '-.'},
 hold off; grid on; box on; legend('Location', 'ne', 'NumColumns', 2);
 ylabel('Amplitude');
 savefig('plots/pc_singular_bound.fig');
-% matlab2tikz('../assets/simulation/pc_singular_bound.tex', 'width', '10cm', 'height', '7.5cm', 'extraaxisoptions', {'legend columns=5', 'transpose legend', 'legend style={/tikz/column 2/.style={column sep=5pt}}'});
+matlab2tikz('../assets/simulation/pc_singular_bound.tex', 'width', '10cm', 'height', '7.5cm', 'extraaxisoptions', {'legend columns=4', 'transpose legend', 'legend style={/tikz/column 2/.style={column sep=5pt}}'});
 
 function [H_a] = channel_auxiliary(H_d, H_f)
 	[~, ~, v_f] = svds(H_f, 1);
