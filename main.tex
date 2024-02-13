@@ -303,7 +303,7 @@
 		\begin{figure}
 			\centering
 			\includegraphics[width=\columnwidth]{assets/simulation/pc_singular_toy.eps}
-			\caption{$2 \times 2 \times 2$ channel singular value shaping by diagonal and symmetry unitary \gls{ris}. Direct link is absent.}
+			\caption{$2 \times 2 \times 2$ (no direct) channel singular value shaping by diagonal and symmetry unitary \gls{ris}.}
 			\label{sm:pc_singular_toy}
 		\end{figure}
 		Fig.~\ref{sm:pc_singular_toy} shows the channel singular values achieved by an exhaustive grid search over $(\theta_1, \theta_2)$ for diagonal \gls{ris} and $(\alpha, \psi)$ for symmetric unitary \gls{ris}.
@@ -820,18 +820,10 @@
 	In this section, we provide numerical results to evaluate the proposed \gls{bd}-\gls{ris} designs.
 	Consider a distance-dependent path loss model $\Lambda(d) = \Lambda_0 d^{-\gamma}$ where $\Lambda_0$ is the reference path loss at distance \qty{1}{m}, $d$ is the propagation distance, and $\gamma$ is the path loss exponent.
 	The small-scale fading model is $\mathbf{H} = \sqrt{\kappa/(1+\kappa)} \mathbf{H}_\text{LoS} + \sqrt{1/(1+\kappa)} \mathbf{H}_\text{NLoS}$, where $\kappa$ is the Rician $K$-factor, $\mathbf{H}_\text{LoS}$ is the deterministic \gls{los} component, and $\mathbf{H}_\text{NLoS} \sim \mathcal{CN}(\mathbf{0}, \mathbf{I})$ is the Rayleigh component.
-	We set $\Lambda_0=\qty{-30}{dB}$, $d_\mathrm{D}=\qty{14.7}{m}$, $d_\mathrm{F}=\qty{10}{m}$, $d_\mathrm{B}=\qty{6.3}{m}$, $\gamma_\mathrm{D}=3$, $\gamma_\mathrm{F}=2.4$, $\gamma_\mathrm{B}=2$, $\kappa_\mathrm{D}=\kappa_\mathrm{F}=\kappa_\mathrm{B}=5$ for reference, which corresponds to an indoor environment with $\Lambda_\mathrm{D}=\qty{-65}{dB}$, $\Lambda_\mathrm{F}=\qty{-54}{dB}$, $\Lambda_\mathrm{B}=\qty{-46}{dB}$.
+	We set $\Lambda_0=\qty{-30}{dB}$, $d_\mathrm{D}=\qty{14.7}{m}$, $d_\mathrm{F}=\qty{10}{m}$, $d_\mathrm{B}=\qty{6.3}{m}$, $\gamma_\mathrm{D}=3$, $\gamma_\mathrm{F}=2.4$ and $\gamma_\mathrm{B}=2$ for reference, which corresponds to a typical indoor environment with $\Lambda_\mathrm{D}=\qty{-65}{dB}$, $\Lambda_\mathrm{F}=\qty{-54}{dB}$, $\Lambda_\mathrm{B}=\qty{-46}{dB}$.
+	Rayleigh fading is assumed for all channels $\kappa_\mathrm{D},\kappa_\mathrm{B},\kappa_\mathrm{F} \to \infty$ unless otherwise specified.
 
 	\begin{subsection}{Channel Singular Values Redistribution}
-		% \begin{figure}[!t]
-		% 	\centering
-		% 	\resizebox{0.65\columnwidth}{!}{
-		% 		\input{assets/simulation/pc_singular_pareto.tex}
-		% 	}
-		% 	\caption{Singular value bounds for rank-1 indirect channel. $(N^\mathrm{T}, N^\mathrm{S}, N^\mathrm{R}) = (4, 32, 4)$, $(\Lambda^\mathrm{D}, \Lambda^\mathrm{F}, \Lambda^\mathrm{B}) = (0, -17.5, -17.5) \unit{dB}$.}
-		% 	\label{fg:pc_singular_pareto}
-		% \end{figure}
-
 		\begin{figure}[!t]
 			\centering
 			\subfloat[$2 \times 32 \times 2$ (no direct link)\label{fg:pc_singular_pareto_32_nd}]{
@@ -850,6 +842,12 @@
 					\input{assets/simulation/pc_singular_pareto_64.tex}
 				}
 			}
+			\subfloat[$2 \times 128 \times 2$\label{fg:pc_singular_pareto_128}]{
+				\resizebox{0.48\columnwidth}{!}{
+					\input{assets/simulation/pc_singular_pareto_128.tex}
+				}
+			}
+			\caption{Pareto frontiers of channel singular values reshaped by \gls{bd}-\gls{ris}.}
 		\end{figure}
 
 		\begin{figure}[!t]
@@ -865,7 +863,7 @@
 				}
 			}
 			\caption{
-				Channel singular values with \gls{los} forward channel: analytical bounds (green lines) and optimized results (blue and red bars).
+				Channel singular values with \gls{los} forward channel ($\kappa_\mathrm{F} = 0$): analytical bounds (green lines) and optimized results (blue and red bars).
 				`D' means diagonal \gls{ris} and `BD' means fully-connected \gls{bd}-\gls{ris}.
 				% $\kappa_\mathrm{D}=\kappa_\mathrm{B}=0$, $\kappa_\mathrm{F}=\infty$.
 			}

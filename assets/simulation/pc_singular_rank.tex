@@ -1,0 +1,105 @@
+% This file was created by matlab2tikz.
+%
+%The latest updates can be retrieved from
+%  http://www.mathworks.com/matlabcentral/fileexchange/22022-matlab2tikz-matlab2tikz
+%where you can also make suggestions and rate matlab2tikz.
+%
+\definecolor{mycolor1}{rgb}{0.00000,0.44700,0.74100}%
+\definecolor{mycolor2}{rgb}{0.00000,0.44706,0.74118}%
+\definecolor{mycolor3}{rgb}{0.85098,0.32549,0.09804}%
+\definecolor{mycolor4}{rgb}{0.49400,0.18400,0.55600}%
+%
+\begin{tikzpicture}
+
+\begin{axis}[%
+width=9.509cm,
+height=7.5cm,
+at={(0cm,0cm)},
+scale only axis,
+bar width=0.325,
+xmin=-0.125,
+xmax=5.125,
+xtick={1,2,3,4},
+xticklabels={{$\sigma_1(\mathbf{H})$},{$\sigma_2(\mathbf{H})$},{$\sigma_3(\mathbf{H})$},{$\sigma_4(\mathbf{H})$}},
+ymin=0,
+ymax=0.0035,
+ylabel style={font=\color{white!15!black}},
+ylabel={Amplitude},
+axis background/.style={fill=white},
+xmajorgrids,
+ymajorgrids,
+legend style={legend cell align=left, align=left, draw=white!15!black},
+legend columns=4,
+transpose legend,
+legend style={/tikz/column 2/.style={column sep=5pt}}
+]
+\addplot[ybar stacked, fill=mycolor1, fill opacity=0, draw=black, area legend] table[row sep=crcr] {%
+0.8375	0.0012783984510597\\
+1.8375	0.000755927497323383\\
+2.8375	2.45713322253816e-05\\
+3.8375	8.06474101750415e-20\\
+};
+\addplot[forget plot, color=white!15!black] table[row sep=crcr] {%
+-0.125	0\\
+5.125	0\\
+};
+\addplot[ybar stacked, fill=mycolor2, fill opacity=0.5, draw=black, area legend] table[row sep=crcr] {%
+0.8375	0.000430608943515784\\
+1.8375	0.000307344043879747\\
+2.8375	0.000767652597424499\\
+3.8375	0.000103757373637032\\
+};
+\addplot[forget plot, color=white!15!black] table[row sep=crcr] {%
+-0.125	0\\
+5.125	0\\
+};
+\addlegendentry{D-min}
+
+\addplot[ybar stacked, fill=mycolor3, fill opacity=0.5, draw=black, area legend] table[row sep=crcr] {%
+0.8375	0.00134333869298983\\
+1.8375	0.00111640080271814\\
+2.8375	0.000450125859707777\\
+3.8375	0.000620574925146492\\
+};
+\addplot[forget plot, color=white!15!black] table[row sep=crcr] {%
+-0.125	0\\
+5.125	0\\
+};
+\addlegendentry{D-max}
+
+\addplot[ybar stacked, fill=mycolor4, fill opacity=0, draw=black, area legend] table[row sep=crcr] {%
+1.1625	0.00127840941167134\\
+2.1625	0.000755931488018856\\
+3.1625	1.92538964772042e-06\\
+4.1625	2.39864749917709e-09\\
+};
+\addplot[forget plot, color=white!15!black] table[row sep=crcr] {%
+-0.125	0\\
+5.125	0\\
+};
+\addplot[ybar stacked, fill=mycolor2, draw=black, area legend] table[row sep=crcr] {%
+1.1625	0.000430597982904148\\
+2.1625	0.000307340053184274\\
+3.1625	0.00079029854000216\\
+4.1625	0.000103754974989533\\
+};
+\addplot[forget plot, color=white!15!black] table[row sep=crcr] {%
+-0.125	0\\
+5.125	0\\
+};
+\addlegendentry{BD-min}
+
+\addplot[ybar stacked, fill=mycolor3, draw=black, area legend] table[row sep=crcr] {%
+1.1625	0.00161372587060955\\
+2.1625	0.00171623770226479\\
+3.1625	0.000486174471126013\\
+4.1625	0.000637595849936804\\
+};
+\addplot[forget plot, color=white!15!black] table[row sep=crcr] {%
+-0.125	0\\
+5.125	0\\
+};
+\addlegendentry{BD-max}
+
+\end{axis}
+\end{tikzpicture}%
