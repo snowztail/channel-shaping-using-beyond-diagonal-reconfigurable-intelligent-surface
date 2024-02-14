@@ -302,11 +302,11 @@
 		We also enforce symmetry by $\beta = \pi / 2$ such that both architectures have the same number of angular parameters.
 		\begin{figure}
 			\centering
-			\includegraphics[width=\columnwidth]{assets/simulation/pc_singular_toy.eps}
+			\includegraphics[width=\columnwidth]{assets/simulation/singular_trend.eps}
 			\caption{$2 \times 2 \times 2$ (no direct) channel singular value shaping by diagonal and symmetry unitary \gls{ris}.}
-			\label{sm:pc_singular_toy}
+			\label{fg:singular_trend}
 		\end{figure}
-		Fig.~\ref{sm:pc_singular_toy} shows the channel singular values achieved by an exhaustive grid search over $(\theta_1, \theta_2)$ for diagonal \gls{ris} and $(\alpha, \psi)$ for symmetric unitary \gls{ris}.
+		Fig.~\ref{fg:singular_trend} shows the channel singular values achieved by an exhaustive grid search over $(\theta_1, \theta_2)$ for diagonal \gls{ris} and $(\alpha, \psi)$ for symmetric unitary \gls{ris}.
 		It is observed that both singular values can be manipulated up to $9\%$ using diagonal \gls{ris} and $42\%$ using symmetric \gls{bd}-\gls{ris}, despite both architectures have the same number of scattering elements and design parameters.
 		A larger performance gap is expected when asymmetric \gls{bd}-\gls{ris} is available.
 		This example shows \gls{bd}-\gls{ris} can provide a wider dynamic range of channel singular values and motivates further studies on channel shaping.
@@ -727,21 +727,21 @@
 
 	% \begin{figure}[!t]
 	% 	\centering
-	% 	\subfloat[\gls{ris} Elements, $N^\mathrm{T} = 8$\label{sm:pc_rate_sx}]{
+	% 	\subfloat[\gls{ris} Elements, $N^\mathrm{T} = 8$\label{fg:pc_rate_sx}]{
 	% 		\resizebox{0.48\columnwidth}{!}{
 	% 			\input{assets/simulation/pc_rate_sx.tex}
 	% 		}
 	% 	}
-	% 	\subfloat[Transmit Antenna, $N^\mathrm{S} = 256$\label{sm:pc_rate_tx}]{
+	% 	\subfloat[Transmit Antenna, $N^\mathrm{S} = 256$\label{fg:pc_rate_tx}]{
 	% 		\resizebox{0.48\columnwidth}{!}{
 	% 			\input{assets/simulation/pc_rate_tx.tex}
 	% 		}
 	% 	}
 	% 	\caption{Average achievable rate versus group size $L$. $N^\mathrm{R} = 4$, $(\Lambda^\mathrm{D}, \Lambda^\mathrm{F}, \Lambda^\mathrm{B}) = (65, 54, 46) \unit{dB}$.}
-	% 	\label{sm:pc_rate}
+	% 	\label{fg:pc_rate}
 	% \end{figure}
 
-	% Fig.~\ref{sm:pc_rate_sx} illustrates how \gls{ris} configuration influences the \gls{mimo} \gls{pc} achievable rate.
+	% Fig.~\ref{fg:pc_rate_sx} illustrates how \gls{ris} configuration influences the \gls{mimo} \gls{pc} achievable rate.
 	% To ensure a \qty{20}{bit/s/Hz} transmission, an \gls{snr} of \qty{13.5}{\dB} is required for a 8T4R system.
 	% This value decreases to \qty{12.5}{\dB} (resp. \qty{8}{\dB}) when 32- (resp. 256-) element diagonal \gls{ris} is present.
 	% If tetrads can be formed in \gls{bd}-\gls{ris}, the \gls{snr} can be reduced by another \qty{20}{\percent} (resp. \qty{44}{\percent}).
@@ -753,30 +753,30 @@
 		% \begin{figure}[!t]
 		% 	\centering
 		% 	\resizebox{0.65\columnwidth}{!}{
-		% 		\input{assets/simulation/pc_power_sx.tex}
+		% 		\input{assets/simulation/power_sx.tex}
 		% 	}
 		% 	\caption{Average channel power versus \gls{ris} elements $N^\mathrm{S}$ and group size $L$. $(N^\mathrm{T}, N^\mathrm{R}) = (8, 4)$, $(\Lambda^\mathrm{D}, \Lambda^\mathrm{F}, \Lambda^\mathrm{B}) = (65, 54, 46) \unit{dB}$.}
-		% 	\label{sm:pc_power_sx}
+		% 	\label{fg:power_sx}
 		% \end{figure}
 
 		% \begin{figure}[!t]
 		% 	\centering
-		% 	\subfloat[Without Direct Link\label{sm:pc_power_bond_nd}]{
+		% 	\subfloat[Without Direct Link\label{fg:pc_power_bond_nd}]{
 		% 		\resizebox{0.48\columnwidth}{!}{
 		% 			\input{assets/simulation/pc_power_bond_nd.tex}
 		% 		}
 		% 	}
-		% 	\subfloat[With Direct Link\label{sm:pc_power_bond_hd}]{
+		% 	\subfloat[With Direct Link\label{fg:pc_power_bond_hd}]{
 		% 		\resizebox{0.48\columnwidth}{!}{
 		% 			\input{assets/simulation/pc_power_bond_hd.tex}
 		% 		}
 		% 	}
 		% 	\caption{Average channel power versus \gls{ris} group size $L$. $(N^\mathrm{T}, N^\mathrm{S}, N^\mathrm{R}) = (8, 256, 4)$, $(\Lambda^\mathrm{D}, \Lambda^\mathrm{F}, \Lambda^\mathrm{B}) = (65, 54, 46) \unit{dB}$.}
-		% 	\label{sm:pc_power_bond}
+		% 	\label{fg:pc_power_bond}
 		% \end{figure}
-		% % Fig.~\ref{sm:pc_power_sx} shows that, apart from numerous reflecting elements, a sufficiently large group size can help
-		% % Fig.~\ref{sm:pc_power_sx} shows that increasing the group size can improve the channel power especially for a large \gls{ris}.
-		% Fig.~\ref{sm:pc_power_sx} shows that, apart from adding reflecting elements $N^\mathrm{S}$, increasing the group size $L$ also improves the channel power.
+		% % Fig.~\ref{fg:power_sx} shows that, apart from numerous reflecting elements, a sufficiently large group size can help
+		% % Fig.~\ref{fg:power_sx} shows that increasing the group size can improve the channel power especially for a large \gls{ris}.
+		% Fig.~\ref{fg:power_sx} shows that, apart from adding reflecting elements $N^\mathrm{S}$, increasing the group size $L$ also improves the channel power.
 		% % The behavior is more obvious for a large \gls{ris}.
 		% This behavior is more pronounced for a large \gls{ris}.
 		% For example, the gain of pairwise connection is \qty{2.8}{\percent} for $N^\mathrm{S} = 16$ and \qty{28}{\percent} for $N^\mathrm{S} = 256$.
@@ -784,7 +784,7 @@
 		% % As $L$ increases from 1 to 2,
 		% It implies that the channel shaping capability of \gls{bd}-\gls{ris} scales with group size $L$.
 
-		% Fig.~\ref{sm:pc_power_bond_hd} and \ref{sm:pc_power_bond_nd} compare the average channel power without and with direct link.
+		% Fig.~\ref{fg:pc_power_bond_hd} and \ref{fg:pc_power_bond_nd} compare the average channel power without and with direct link.
 		% % where the cascaded channel power available to passive \gls{ris} is $\lVert \mathbf{H}^\mathrm{B} \rVert _\mathrm{F}^2 \lVert \mathbf{H}^\mathrm{F} \rVert _\mathrm{F}^2$.
 		% % where the cascaded channel power available to passive \gls{ris} is $\lVert \mathbf{H}^\mathrm{B} \rVert _\mathrm{F}^2 \lVert \mathbf{H}^\mathrm{F} \rVert _\mathrm{F}^2$.
 		% % ``Cascaded'' means the maximum power of the cascaded channel, i.e., $\lVert \mathbf{H}^\mathrm{B} \rVert _\mathrm{F}^2 \lVert \mathbf{H}^\mathrm{F} \rVert _\mathrm{F}^2$.
@@ -821,62 +821,140 @@
 	Consider a distance-dependent path loss model $\Lambda(d) = \Lambda_0 d^{-\gamma}$ where $\Lambda_0$ is the reference path loss at distance \qty{1}{m}, $d$ is the propagation distance, and $\gamma$ is the path loss exponent.
 	The small-scale fading model is $\mathbf{H} = \sqrt{\kappa/(1+\kappa)} \mathbf{H}_\text{LoS} + \sqrt{1/(1+\kappa)} \mathbf{H}_\text{NLoS}$, where $\kappa$ is the Rician $K$-factor, $\mathbf{H}_\text{LoS}$ is the deterministic \gls{los} component, and $\mathbf{H}_\text{NLoS} \sim \mathcal{CN}(\mathbf{0}, \mathbf{I})$ is the Rayleigh component.
 	We set $\Lambda_0=\qty{-30}{dB}$, $d_\mathrm{D}=\qty{14.7}{m}$, $d_\mathrm{F}=\qty{10}{m}$, $d_\mathrm{B}=\qty{6.3}{m}$, $\gamma_\mathrm{D}=3$, $\gamma_\mathrm{F}=2.4$ and $\gamma_\mathrm{B}=2$ for reference, which corresponds to a typical indoor environment with $\Lambda_\mathrm{D}=\qty{-65}{dB}$, $\Lambda_\mathrm{F}=\qty{-54}{dB}$, $\Lambda_\mathrm{B}=\qty{-46}{dB}$.
+	The indirect path via \gls{ris} is thus \qty{35}{\dB} weaker than the direct path.
 	Rayleigh fading is assumed for all channels $\kappa_\mathrm{D},\kappa_\mathrm{B},\kappa_\mathrm{F} \to \infty$ unless otherwise specified.
 
 	\begin{subsection}{Channel Singular Values Redistribution}
 		\begin{figure}[!t]
 			\centering
-			\subfloat[$2 \times 32 \times 2$ (no direct link)\label{fg:pc_singular_pareto_32_nd}]{
+			\subfloat[$2 \times 32 \times 2$ (no direct)\label{fg:singular_pareto_sx32_nd}]{
 				\resizebox{0.48\columnwidth}{!}{
-					\input{assets/simulation/pc_singular_pareto_32_nd.tex}
+					\input{assets/simulation/singular_pareto_sx32_nd.tex}
 				}
 			}
-			\subfloat[$2 \times 32 \times 2$\label{fg:pc_singular_pareto_32}]{
+			\subfloat[$2 \times 32 \times 2$\label{fg:singular_pareto_sx32}]{
 				\resizebox{0.48\columnwidth}{!}{
-					\input{assets/simulation/pc_singular_pareto_32.tex}
+					\input{assets/simulation/singular_pareto_sx32.tex}
 				}
 			}
 			\\
-			\subfloat[$2 \times 64 \times 2$\label{fg:pc_singular_pareto_64}]{
+			\subfloat[$2 \times 64 \times 2$\label{fg:singular_pareto_sx64}]{
 				\resizebox{0.48\columnwidth}{!}{
-					\input{assets/simulation/pc_singular_pareto_64.tex}
+					\input{assets/simulation/singular_pareto_sx64.tex}
 				}
 			}
-			\subfloat[$2 \times 128 \times 2$\label{fg:pc_singular_pareto_128}]{
+			\subfloat[$2 \times 128 \times 2$\label{fg:singular_pareto_sx128}]{
 				\resizebox{0.48\columnwidth}{!}{
-					\input{assets/simulation/pc_singular_pareto_128.tex}
+					\input{assets/simulation/singular_pareto_sx128.tex}
 				}
 			}
 			\caption{Pareto frontiers of channel singular values reshaped by \gls{bd}-\gls{ris}.}
+			\label{fg:singular_pareto}
 		\end{figure}
 
 		\begin{figure}[!t]
 			\centering
-			\subfloat[$4 \times 32 \times 4$\label{fg:pc_singular_bound_32}]{
+			\subfloat[$4 \times 32 \times 4$\label{fg:singular_bound_rank1_sx32}]{
 				\resizebox{0.48\columnwidth}{!}{
-					\input{assets/simulation/pc_singular_bound_32.tex}
+					\input{assets/simulation/singular_bound_rank1_sx32.tex}
 				}
 			}
-			\subfloat[$4 \times 64 \times 4$\label{fg:pc_singular_bound_64}]{
+			\subfloat[$4 \times 64 \times 4$\label{fg:singular_bound_rank1_sx64}]{
 				\resizebox{0.48\columnwidth}{!}{
-					\input{assets/simulation/pc_singular_bound_64.tex}
+					\input{assets/simulation/singular_bound_rank1_sx64.tex}
+				}
+			}
+			\\
+			\subfloat[$4 \times 128 \times 4$\label{fg:singular_bound_rank2_sx128}]{
+				\resizebox{0.48\columnwidth}{!}{
+					\input{assets/simulation/singular_bound_rank2_sx128.tex}
+				}
+			}
+			\subfloat[$4 \times 256 \times 4$\label{fg:singular_bound_rank4_sx256}]{
+				\resizebox{0.48\columnwidth}{!}{
+					\input{assets/simulation/singular_bound_rank4_sx256.tex}
 				}
 			}
 			\caption{
-				Channel singular values with \gls{los} forward channel ($\kappa_\mathrm{F} = 0$): analytical bounds (green lines) and optimized results (blue and red bars).
+				Achievable channel singular values: analytical bounds (green lines) and optimized results (blue and red bars).
 				`D' means diagonal \gls{ris} and `BD' means fully-connected \gls{bd}-\gls{ris}.
-				% $\kappa_\mathrm{D}=\kappa_\mathrm{B}=0$, $\kappa_\mathrm{F}=\infty$.
 			}
-			% \caption{Singular values of equivalent channel with \gls{los} forward channel: analytical bounds (green lines) and optimized results (blue and red bars).}
-			\label{fg:pc_singular_bound}
+			\label{fg:singular_bound}
 		\end{figure}
 
-		The Pareto singular value frontiers of a $2 \times 2$ \gls{mimo} with a 32-element \gls{bd}-\gls{ris} is shown in Fig.~\ref{fg:pc_singular_pareto}.
-		% The Pareto frontier of channel singular values reshaped by \gls{bd}-\gls{ris} is shown in Fig. \ref{fg:pc_singular_pareto}.
-		% The Pareto frontier of channel singular values reshaped by \gls{bd}-\gls{ris} is shown in Fig. \ref{fg:pc_singular_pareto}.
+		The Pareto singular value frontiers of a $2 \times 2$ \gls{mimo} with a 32-element \gls{bd}-\gls{ris} is shown in Fig.~\ref{fg:singular_pareto}.
+		% The Pareto frontier of channel singular values reshaped by \gls{bd}-\gls{ris} is shown in Fig. \ref{fg:singular_pareto}.
+		% The Pareto frontier of channel singular values reshaped by \gls{bd}-\gls{ris} is shown in Fig. \ref{fg:singular_pareto}.
 		% Clearly, a larger group size provides
-		% and evolving trend of channel singular values are shown in Fig.~\ref{sm:pc_singular_pareto} and \ref{sm:pc_singular_bound}.
+		% and evolving trend of channel singular values are shown in Fig.~\ref{fg:singular_pareto} and \ref{fg:pc_singular_bound}.
 		% Clearly, \gls{bd}-\gls{ris} with a larger group size can redistribute the channel singular values to a wider range.
+	\end{subsection}
+
+	\begin{subsection}{Achievable Rate Maximization}
+		\begin{figure}[!t]
+			\centering
+			\subfloat[$1 \times 256 \times 1$ (no direct)\label{fg:power_bond_txrx1_nd}]{
+				\resizebox{0.4725\columnwidth}{!}{
+					\input{assets/simulation/power_bond_txrx1_nd.tex}
+				}
+			}
+			\subfloat[$4 \times 256 \times 4$ (no direct)\label{fg:power_bond_txrx4_nd}]{
+				\resizebox{0.4875\columnwidth}{!}{
+					\input{assets/simulation/power_bond_txrx4_nd.tex}
+				}
+			}
+			\caption{
+				Average channel power versus \gls{bd}-\gls{ris} group size and \gls{mimo} dimensions.
+			}
+			\label{fg:power_bond}
+		\end{figure}
+
+		\begin{figure}[!t]
+			\centering
+			\subfloat[$4 \times N_\mathrm{S} \times 4$ (no direct)\label{fg:power_sx_txrx4_nd}]{
+				\resizebox{0.49\columnwidth}{!}{
+					\input{assets/simulation/power_sx_txrx4_nd.tex}
+				}
+			}
+			\subfloat[$16 \times N_\mathrm{S} \times 16$\label{fg:power_sx_txrx16}]{
+				\resizebox{0.47\columnwidth}{!}{
+					\input{assets/simulation/power_sx_txrx16.tex}
+				}
+			}
+			\caption{
+				Average channel power versus antenna size and \gls{bd}-\gls{ris} group size.
+			}
+			\label{fg:power_sx}
+		\end{figure}
+
+		\begin{figure}[!t]
+			\centering
+			\subfloat[$4 \times 128 \times 4$\label{fg:rate_beamforming}]{
+				\resizebox{0.49\columnwidth}{!}{
+					\input{assets/simulation/rate_beamforming.tex}
+				}
+			}
+			\subfloat[$N_\mathrm{T} \times 128 \times N_\mathrm{R}$\label{fg:rate_txrx}]{
+				\resizebox{0.47\columnwidth}{!}{
+					\input{assets/simulation/rate_txrx.tex}
+				}
+			}
+			\\
+			\subfloat[$4 \times N_\mathrm{S} \times 4$\label{fg:rate_sx}]{
+				\resizebox{0.47\columnwidth}{!}{
+					\input{assets/simulation/rate_sx.tex}
+				}
+			}
+			\subfloat[$4 \times 128 \times 4$\label{fg:rate_kfactor}]{
+				\resizebox{0.47\columnwidth}{!}{
+					\input{assets/simulation/rate_kfactor.tex}
+				}
+			}
+			\caption{
+				Average channel power versus antenna size and \gls{bd}-\gls{ris} group size.
+			}
+			\label{fg:rate}
+		\end{figure}
 	\end{subsection}
 	% [channel.pathloss.distance.direct, channel.pathloss.distance.forward, channel.pathloss.distance.backward, channel.pathloss.exponent.direct, channel.pathloss.exponent.forward, channel.pathloss.exponent.backward] = deal(-14.7, -10, -6.3, -3, -2.4, -2);
 
@@ -886,10 +964,10 @@
 		% 		\input{assets/simulation/pc_singular_bound.tex}
 		% 	}
 		% 	\caption{Singular value bounds for rank-1 indirect channel. $(N^\mathrm{T}, N^\mathrm{S}, N^\mathrm{R}) = (4, 32, 4)$, $(\Lambda^\mathrm{D}, \Lambda^\mathrm{F}, \Lambda^\mathrm{B}) = (0, -17.5, -17.5) \unit{dB}$.}
-		% 	\label{sm:pc_singular_bound}
+		% 	\label{fg:pc_singular_bound}
 		% \end{figure}
 
-		% The Pareto frontier and evolving trend of channel singular values are shown in Fig.~\ref{sm:pc_singular_pareto} and \ref{sm:pc_singular_bound}.
+		% The Pareto frontier and evolving trend of channel singular values are shown in Fig.~\ref{fg:singular_pareto} and \ref{fg:pc_singular_bound}.
 		% Clearly, \gls{bd}-\gls{ris} with a larger group size can redistribute the channel singular values to a wider range.
 \end{section}
 
@@ -1074,9 +1152,9 @@
 % 				\input{assets/simulation/ic_interference_sx.tex}
 % 			}
 % 			\caption{Average leakage interference versus \gls{ris} elements $N^\mathrm{S}$ and group size $L$. Transmitters and receivers are randomly generated in a disk of radius 50 m centered at the \gls{ris}. $(N^\mathrm{T}, N^\mathrm{R}, N^\mathrm{E}, K) = (8, 4, 3, 5)$, $(\gamma^\mathrm{D}, \gamma^\mathrm{F}, \gamma^\mathrm{B}) = (3, 2.4, 2.4)$, and reference pathloss at \qty{1}{\meter} is \qty{-30}{\dB}.}
-% 			\label{sm:ic_interference_sx}
+% 			\label{fg:ic_interference_sx}
 % 		\end{figure}
-% 		Fig.~\ref{sm:ic_interference_sx} illustrates how \gls{bd}-\gls{ris} helps to reduce the leakage interference.
+% 		Fig.~\ref{fg:ic_interference_sx} illustrates how \gls{bd}-\gls{ris} helps to reduce the leakage interference.
 % 		In this case, a fully-connected $2^n$-element \gls{bd}-\gls{ris} is almost as good as a diagonal $2^{n+2}$-element \gls{ris} in terms of leakage interference.
 % 		Interestingly, the result suggests that \gls{bd}-\gls{ris} can achieve a higher \gls{dof} than diagonal \gls{ris} in \gls{mimo}-\gls{ic}, which is not the case in \gls{mimo}-\gls{pc} (as discussed in \ref{sc:pc_rank_deficient}).
 % 	\end{subsection}
@@ -1137,7 +1215,7 @@
 % 				\input{assets/simulation/ic_rate_sx.tex}
 % 			}
 % 			\caption{Average weighted sum-rate versus \gls{snr}, \gls{ris} elements $N^\mathrm{S}$ and group size $L$. $(N^\mathrm{T}, N^\mathrm{R}, N^\mathrm{E}, K) = (8, 4, 3, 5)$, $(\Lambda^\mathrm{D}, \Lambda^\mathrm{F}, \Lambda^\mathrm{B}) = (65, 54, 46) \unit{dB}$, $\rho_k = 1, \ \forall k$.}
-% 			\label{sm:ic_rate_sx}
+% 			\label{fg:ic_rate_sx}
 % 		\end{figure}
 
 % 		\begin{figure}[!t]
@@ -1146,10 +1224,10 @@
 % 				\input{assets/simulation/ic_rate_user.tex}
 % 			}
 % 			\caption{Average weighted sum-rate versus user pairs $K$, \gls{ris} elements $N^\mathrm{S}$ and group size $L$ at $\mathrm{SNR} = \qty{15}{dB}$. $(N^\mathrm{T}, N^\mathrm{R}, N^\mathrm{E}) = (4, 4, 3)$, $\rho_k = 1, \ \forall k$.}
-% 			\label{sm:ic_rate_user}
+% 			\label{fg:ic_rate_user}
 % 		\end{figure}
 
-% 		A new observation from Fig.~\ref{sm:ic_rate_sx} that the interference alignment capability of \gls{bd}-\gls{ris} scales much faster with group size than number of elements.\footnote{The results are not very stable and depend heavily on initialization.}
+% 		A new observation from Fig.~\ref{fg:ic_rate_sx} that the interference alignment capability of \gls{bd}-\gls{ris} scales much faster with group size than number of elements.\footnote{The results are not very stable and depend heavily on initialization.}
 % 	\end{subsection}
 % \end{section}
 

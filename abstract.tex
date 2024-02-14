@@ -223,10 +223,10 @@
 		\begin{figure}[!t]
 			\centering
 			\resizebox{0.65\columnwidth}{!}{
-				\input{assets/simulation/pc_power_sx.tex}
+				\input{assets/simulation/power_sx.tex}
 			}
 			\caption{Average channel power versus \gls{ris} elements $N^\mathrm{S}$ and group size $L$. $(N^\mathrm{T}, N^\mathrm{R}) = (8, 4)$, $(\Lambda^\mathrm{D}, \Lambda^\mathrm{F}, \Lambda^\mathrm{B}) = (65, 54, 46) \unit{dB}$.}
-			\label{sm:pc_power_sx}
+			\label{sm:power_sx}
 		\end{figure}
 
 		\begin{figure}[!t]
@@ -244,9 +244,9 @@
 			\caption{Average channel power versus \gls{ris} group size $L$. $(N^\mathrm{T}, N^\mathrm{S}, N^\mathrm{R}) = (8, 256, 4)$, $(\Lambda^\mathrm{D}, \Lambda^\mathrm{F}, \Lambda^\mathrm{B}) = (65, 54, 46) \unit{dB}$.}
 			\label{sm:pc_power_bond}
 		\end{figure}
-		% Fig.~\ref{sm:pc_power_sx} shows that, apart from numerous reflecting elements, a sufficiently large group size can help
-		% Fig.~\ref{sm:pc_power_sx} shows that increasing the group size can improve the channel power especially for a large \gls{ris}.
-		Fig.~\ref{sm:pc_power_sx} shows that, apart from adding reflecting elements $N^\mathrm{S}$, increasing the group size $L$ also improves the channel power.
+		% Fig.~\ref{sm:power_sx} shows that, apart from numerous reflecting elements, a sufficiently large group size can help
+		% Fig.~\ref{sm:power_sx} shows that increasing the group size can improve the channel power especially for a large \gls{ris}.
+		Fig.~\ref{sm:power_sx} shows that, apart from adding reflecting elements $N^\mathrm{S}$, increasing the group size $L$ also improves the channel power.
 		% The behavior is more obvious for a large \gls{ris}.
 		This behavior is more pronounced for a large \gls{ris}.
 		For example, the gain of pairwise connection is \qty{2.8}{\percent} for $N^\mathrm{S} = 16$ and \qty{28}{\percent} for $N^\mathrm{S} = 256$.
@@ -415,11 +415,11 @@
 		For a fair comparison, we enforce symmetry with $\beta = \pi / 2$.
 		\begin{figure}
 			\centering
-			\includegraphics[width=\columnwidth]{assets/simulation/pc_singular_toy.eps}
+			\includegraphics[width=\columnwidth]{assets/simulation/singular_trend.eps}
 			\caption{Channel singular value shaping by diagonal and symmetry unitary \gls{ris}. $(N^\mathrm{T}, N^\mathrm{S}, N^\mathrm{R}) = (2, 2, 2)$. Direct link is absent.}
-			\label{sm:pc_singular_toy}
+			\label{sm:singular_trend}
 		\end{figure}
-		Fig.~\ref{sm:pc_singular_toy} illustrates all possible channel singular values achieved by diagonal and symmetry unitary \gls{ris}.
+		Fig.~\ref{sm:singular_trend} illustrates all possible channel singular values achieved by diagonal and symmetry unitary \gls{ris}.
 		Despite using the same number of elements and parameters, \gls{bd} \gls{ris} provides much wider dynamic ranges of $\sigma_1(\mathbf{H})$ and $\sigma_2(\mathbf{H})$ than diagonal \gls{ris}.
 		Larger gaps are expected when the symmetry constraint can be relaxed.
 
@@ -436,7 +436,7 @@
 				\end{split}
 			\end{equation}
 			% However, \gls{bd} \gls{ris} can still guarantee a higher rate at finite \gls{snr}.
-			Note \gls{bd} \gls{ris} can still provide a higher indirect \gls{snr} as shown in Fig.~\ref{sm:pc_power_sx} and \ref{sm:pc_power_bond}.
+			Note \gls{bd} \gls{ris} can still provide a higher indirect \gls{snr} as shown in Fig.~\ref{sm:power_sx} and \ref{sm:pc_power_bond}.
 		\end{subsubsection}
 
 
@@ -520,10 +520,10 @@
 		\begin{figure}[!t]
 			\centering
 			\resizebox{0.65\columnwidth}{!}{
-				\input{assets/simulation/pc_singular_pareto.tex}
+				\input{assets/simulation/singular_pareto.tex}
 			}
 			\caption{Singular value Pareto front. $(N^\mathrm{T}, N^\mathrm{S}, N^\mathrm{R}) = (4, 64, 2)$, $(\Lambda^\mathrm{D}, \Lambda^\mathrm{F}, \Lambda^\mathrm{B}) = (0, -17.5, -17.5) \unit{dB}$.}
-			\label{sm:pc_singular_pareto}
+			\label{sm:singular_pareto}
 		\end{figure}
 
 		\begin{figure}[!t]
@@ -535,7 +535,7 @@
 			\label{sm:pc_singular_bound}
 		\end{figure}
 
-		The Pareto front and evolving trend of channel singular values are shown in Fig.~\ref{sm:pc_singular_pareto} and \ref{sm:pc_singular_bound}.
+		The Pareto front and evolving trend of channel singular values are shown in Fig.~\ref{sm:singular_pareto} and \ref{sm:pc_singular_bound}.
 		Clearly, \gls{bd} \gls{ris} with a larger group size can redistribute the channel singular values to a wider range.
 	\end{subsection}
 \end{section}

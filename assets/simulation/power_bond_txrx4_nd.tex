@@ -1,0 +1,54 @@
+% This file was created by matlab2tikz.
+%
+%The latest updates can be retrieved from
+%  http://www.mathworks.com/matlabcentral/fileexchange/22022-matlab2tikz-matlab2tikz
+%where you can also make suggestions and rate matlab2tikz.
+%
+\definecolor{mycolor1}{rgb}{0.46667,0.67451,0.18824}%
+\definecolor{mycolor2}{rgb}{0.92941,0.50588,0.59608}%
+%
+\begin{tikzpicture}
+
+\begin{axis}[%
+width=7.607cm,
+height=6cm,
+at={(0cm,0cm)},
+scale only axis,
+bar shift auto,
+xmin=0,
+xmax=6,
+xtick={1,2,3,4,5},
+xticklabels={{1},{4},{16},{64},{256}},
+xlabel style={font=\color{white!15!black}},
+xlabel={RIS Group Size},
+ymin=0,
+ymax=2.9105133741022e-05,
+ylabel style={font=\color{white!15!black}},
+ylabel={Channel Power [W]},
+axis background/.style={fill=white},
+xmajorgrids,
+ymajorgrids,
+legend style={at={(0.97,0.03)}, anchor=south east, legend cell align=left, align=left, draw=white!15!black}
+]
+\addplot[ybar, bar width=0.8, fill=mycolor1, draw=black, area legend] table[row sep=crcr] {%
+1	7.17506228344783e-06\\
+2	1.70104957555835e-05\\
+3	2.42867157787661e-05\\
+4	2.6078917547989e-05\\
+5	2.64592124918381e-05\\
+};
+\addplot[forget plot, color=white!15!black] table[row sep=crcr] {%
+0	0\\
+6	0\\
+};
+\addlegendentry{Equivalent}
+
+\addplot [color=mycolor2, dashed, line width=2.0pt]
+  table[row sep=crcr]{%
+0	2.65527006901199e-05\\
+6	2.65527006901199e-05\\
+};
+\addlegendentry{Cascaded}
+
+\end{axis}
+\end{tikzpicture}%
