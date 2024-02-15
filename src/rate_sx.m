@@ -41,14 +41,14 @@ save('data/rate_sx.mat');
 
 figure('Name', 'Achievable Rate vs RIS Configuration', 'Position', [0, 0, 500, 400]);
 hold all;
-handle.rate.direct = plot(transmit.snr, receive.rate.direct / log(2), 'Color', 'k', 'Marker', 'none', 'DisplayName', 'No RIS');
+handle.rate.direct = plot(pow2db(transmit.power), receive.rate.direct / log(2), 'Color', 'k', 'Marker', 'none', 'DisplayName', 'No RIS');
 for a = 1 : number.antenna
-	handle.rate.aggregate(1, a) = plot(transmit.snr, receive.rate.aggregate(:, 1, a) / log(2), 'DisplayName', 'D: $N_\mathrm{S} = ' + string(reflect.antenna(a)) + '$');
-	handle.rate.aggregate(2, a) = plot(transmit.snr, receive.rate.aggregate(:, 2, a) / log(2), 'DisplayName', 'BD: $N_\mathrm{S} = ' + string(reflect.antenna(a)) + '$');
+	handle.rate.aggregate(1, a) = plot(pow2db(transmit.power), receive.rate.aggregate(:, 1, a) / log(2), 'DisplayName', 'D: $N_\mathrm{S} = ' + string(reflect.antenna(a)) + '$');
+	handle.rate.aggregate(2, a) = plot(pow2db(transmit.power), receive.rate.aggregate(:, 2, a) / log(2), 'DisplayName', 'BD: $N_\mathrm{S} = ' + string(reflect.antenna(a)) + '$');
 end
 style_plot(handle.rate.aggregate, number.bond);
 hold off; grid on; box on; legend('Location', 'nw');
-xlabel('Direct SNR [dB]');
+xlabel('Transmit Power [dB]');
 ylabel('Achievable Rate [bit/s/Hz]');
 savefig('plots/rate_sx.fig');
 matlab2tikz('../assets/simulation/rate_sx.tex', 'width', '10cm', 'height', '7.5cm');
