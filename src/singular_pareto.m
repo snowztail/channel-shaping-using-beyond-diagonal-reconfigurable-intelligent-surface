@@ -1,14 +1,14 @@
 clc; clear; close; setup;
 
-[transmit.antenna, reflect.antenna, receive.antenna] = deal(2, 128, 2);
-[channel.rank, reflect.bond] = deal(min(transmit.antenna, receive.antenna), [1, 4, 16, reflect.antenna]);
+[transmit.antenna, reflect.antenna, receive.antenna] = deal(2, 16, 2);
+[channel.rank, reflect.bond] = deal(min(transmit.antenna, receive.antenna), unique([1, 4, 16, reflect.antenna]));
 assert(channel.rank == 2, 'The plot function is only for 2-sv case.');
 [channel.pathloss.direct, channel.pathloss.forward, channel.pathloss.backward] = deal(db2pow(-65), db2pow(-54), db2pow(-46));
 [channel.weight(1, :, 1), channel.weight(2, :, 1)] = pol2cart(pi / 4 : pi / 64 : pi * 3 / 4, 1);
 [channel.weight(1, :, 2), channel.weight(2, :, 2)] = pol2cart(pi / 4 : -pi / 64 : -pi / 4, 1);
 [channel.weight(1, :, 3), channel.weight(2, :, 3)] = pol2cart(5 * pi / 4 : pi / 64 : pi * 7 / 4, 1);
 [channel.weight(1, :, 4), channel.weight(2, :, 4)] = pol2cart(5 * pi / 4 : -pi / 64 : pi * 3 / 4, 1);
-[number.weight, number.case, number.bond, number.realization, flag.direct] = deal(size(channel.weight, 2), size(channel.weight, 3), length(reflect.bond), 2, true);
+[number.weight, number.case, number.bond, number.realization, flag.direct] = deal(size(channel.weight, 2), size(channel.weight, 3), length(reflect.bond), 2, false);
 
 for r = 1 : number.realization
 	channel.direct = flag.direct * sqrt(channel.pathloss.direct) * fading_nlos(receive.antenna, transmit.antenna);
@@ -39,7 +39,7 @@ for r = 1 : number.realization
 end
 channel.singular.direct = mean(channel.singular.direct, ndims(channel.singular.direct));
 channel.singular.aggregate = mean(channel.singular.aggregate, ndims(channel.singular.aggregate));
-save('data/singular_pareto.mat');
+% save('data/singular_pareto.mat');
 
 figure('Name', 'Channel Singular Value Pareto Front vs RIS Group Size', 'Position', [0, 0, 500, 400]);
 hold all;
@@ -51,7 +51,7 @@ for b = 1 : number.bond
 end
 style_plot(handle.singular.pareto);
 hold off; grid on; xlim tight; ylim tight; box on; legend([handle.singular.direct, handle.singular.pareto], 'Location', 'nw');
-xlabel('$\sigma_1$');
-ylabel('$\sigma_2$');
-savefig('plots/singular_pareto.fig');
-matlab2tikz('../assets/simulation/singular_pareto.tex', 'width', '8cm', 'height', '6cm', 'extraaxisoptions', {'every axis plot/.append style={line width=1.5pt}'});
+xlabel('$\sigma_1(\mathbf{H})$');
+ylabel('$\sigma_2(\mathbf{H})$');
+% savefig('plots/singular_pareto.fig');
+% matlab2tikz('../assets/simulation/singular_pareto.tex', 'width', '8cm', 'height', '6cm', 'extraaxisoptions', {'every axis plot/.append style={line width=1.5pt}'});
