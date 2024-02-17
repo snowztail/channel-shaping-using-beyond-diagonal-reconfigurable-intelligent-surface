@@ -538,7 +538,7 @@
 		% 	\end{equation}
 		% \end{corollary}
 
-		\begin{corollary}[upper bound on the sum of first $k$ singular values to the power of $p$]
+		\begin{corollary}[upper bound on the sum of first $k$ singular values to the power of $p$\label{co:sum_power}]
 			\begin{equation}
 				\sum_{n=1}^k \sigma_n^p(\mathbf{H}) \le \sum_{n=1}^k \sigma_n^p(\mathbf{H}_\mathrm{B}) \sigma_n^p(\mathbf{H}_\mathrm{F}), \quad p > 0.
 				\label{iq:sv_bound_fc_power}
@@ -547,8 +547,13 @@
 		\end{corollary}
 
 		\begin{remark}
-			Interestingly, \eqref{iq:sv_bound_fc}--\eqref{iq:sv_bound_fc_power} are simultaneously tight when $\mathbf{\Theta} = \mathbf{V}_\mathrm{B} \mathbf{U}_\mathrm{F}^\mathsf{H}$.
-			We thus conclude the off-diagonal entries can enhance the capabilities of
+			From \eqref{eq:scattering_fc} and \eqref{eq:channel_equivalent_fc} in the proof of Proposition \ref{pp:fully_connected}, we notice that \eqref{iq:sv_bound_fc}--\eqref{iq:sv_bound_fc_power} are simultaneously tight when
+			% Interestingly, \eqref{iq:sv_bound_fc}--\eqref{iq:sv_bound_fc_power} are simultaneously tight when
+			\begin{equation}
+				\mathbf{\Theta} = \mathbf{V}_\mathrm{B} \mathbf{U}_\mathrm{F}^\mathsf{H}.
+				\label{eq:scattering_fc_tight}
+			\end{equation}
+			An interpretation is that the off-diagonal entries can enhance the capabilities of
 			\begin{itemize}
 				\item subspace alignment: $\mathbf{V}_\mathrm{B}$ and $\mathbf{U}_\mathrm{F}^\mathsf{H}$ in \eqref{eq:scattering_fc} fully align the subspaces of $\mathbf{H}_\mathrm{B}$ and $\mathbf{H}_\mathrm{F}$ by rotation;
 				\item subchannel rearrangement: $\mathbf{X} = \mathbf{I}$ in \eqref{eq:channel_equivalent_fc} pairs the subchannels of $\mathbf{H}_\mathrm{B}$ and $\mathbf{H}_\mathrm{F}$ from strongest to weakest, which attains the maximal in rearrangement inequality.
@@ -630,13 +635,15 @@
 		Inspired by \cite{Nie2017}, we successively approximate the quadratic objective \eqref{ob:power_passive} by local Taylor expansions and solve each iteration in closed form.
 
 		\begin{proposition}\label{pp:power}
-			Start from any $\mathbf{\Theta}^{(0)} \in \mathbb{U}^{N_\mathrm{S} \times N_\mathrm{S}}$, the sequence
+			Starting from any $\mathbf{\Theta}^{(0)} \in \mathbb{U}^{N_\mathrm{S} \times N_\mathrm{S}}$, the sequence
 			\begin{equation}
 				\mathbf{\Theta}_g^{(r+1)} = \mathbf{U}_g^{(r)} \mathbf{V}_g^{(r)}, \quad \forall g
+				\label{eq:scattering_power}
 			\end{equation}
 			converges to a stationary point of \eqref{op:power_passive}, where $\mathbf{U}_g^{(r)}$ and $\mathbf{V}_g^{(r)}$ are the left and right compact singular matrix of
 			\begin{equation}
 				\mathbf{M}_g^{(r)} = \mathbf{H}_{\mathrm{B},g}^\mathsf{H} \Bigl(\mathbf{H}_\mathrm{D} + \mathbf{H}_\mathrm{B} \mathrm{diag}\bigl(\mathbf{\Theta}_{[1:g-1]}^{(r+1)},\mathbf{\Theta}_{[g:G]}^{(r)}\bigr) \mathbf{H}_\mathrm{F}\Bigr) \mathbf{H}_{\mathrm{F},g}^\mathsf{H}
+				\label{eq:auxiliary_matrix_power}
 			\end{equation}
 		\end{proposition}
 
@@ -771,23 +778,25 @@
 						\input{assets/simulation/singular_pareto_sx128.tex}
 					}
 				}
-				\caption{Pareto frontiers of 2T2R channel singular values reshaped by a \gls{ris}.}
+				\caption{Pareto frontiers of singular values of a 2T2R channel reshaped by a \gls{ris}.}
 				\label{fg:singular_pareto}
 			\end{figure}
 			% Fig. \ref{fg:singular_pareto} shows the Pareto frontiers of channel singular values reshaped by \gls{bd}-\gls{ris}.
 			Fig. \ref{fg:singular_pareto} shows the Pareto singular values of a 2T2R \gls{mimo} reshaped by a \gls{ris}.
-			When the direct link is absent, the achievable regions in Fig. \subref*{fg:singular_pareto_sx32_nd} are shaped like pizza slices since $\sigma_1(\mathbf{H}) \ge \sigma_2(\mathbf{H}) \ge 0$.
+			When the direct link is absent, the achievable regions in Fig. \subref*{fg:singular_pareto_sx32_nd} are shaped like pizza slices.
+			This is because $\sigma_1(\mathbf{H}) \ge \sigma_2(\mathbf{H}) \ge 0$ and there exists a tradeoff between aligning the two subspaces.
+			%  since $\sigma_1(\mathbf{H}) \ge \sigma_2(\mathbf{H}) \ge 0$.
 			We observe that the smallest singular value is enhanced up to \num{2e-4} by diagonal \gls{ris} and \num{3e-4} by fully-connected \gls{bd}-\gls{ris}, corresponding to a \qty{50}{\percent} gain.
-			When the direct link is present, the region shape depends heavily on the relative channel strength.
-			In Fig. \subref*{fg:singular_pareto_sx32}, a 32-element \gls{ris} cannot compensate the \qty{35}{dB} direct-indirect power imbalance and results in a limited range of singular values.
-			The achievable regions are thus symmetric around the direct point.
-			Interestingly, the shape evolves from oval to square as the group size $L$ increases, which suggests that \gls{bd}-\gls{ris} can achieve a better tradeoff in subchannel manipulation.
-			As the number of scattering elements $N_\mathrm{S}$ increases, the dynamic range of singular values is widened and the achievable region becomes more trapezoidal.
-			It is also worth noticing in Fig. \subref*{fg:singular_pareto_sx128} that the equivalent channel can be completely nulled by a 128-element \gls{bd}-\gls{ris} but not by a diagonal one.
-			Those results demonstrate the superior channel shaping capability of \gls{bd}-\gls{ris} and the importance of in-group connections.
+			When the direct link is present, the shape of the singular value region depends heavily on the relative strength of the indirect link.
+			In Fig. \subref*{fg:singular_pareto_sx32}, a 32-element \gls{ris} is insufficient to compensate the \qty{35}{dB} path loss imbalance and results in a limited singular value region that is symmetric around the direct point.
+			As the group size $L$ increases, the shape of the region evolves from elliptical to square.
+			This transformation not only provides a better tradeoff in subchannel manipulation but also improves the dynamic range of $\sigma_1(\mathbf{H})$ and $\sigma_2(\mathbf{H})$ by \qty{22}{\percent} and \qty{38}{\percent}, respectively.
+			The achievable singular value region also enlarges as the number of scattering elements $N_\mathrm{S}$ increases.
+			In particular, Fig. \subref*{fg:singular_pareto_sx128} shows that the equivalent channel can be completely nulled by a 128-element \gls{bd}-\gls{ris} but not by a diagonal one.
+			Those results demonstrate the superior channel shaping capability of \gls{bd}-\gls{ris} for better signal enhancement and interference suppression.
 		\end{subsubsection}
 
-		\begin{subsubsection}{Analytical and Numerical Results}
+		\begin{subsubsection}{Analytical Bounds and Numerical Results}
 			\begin{figure}[!t]
 				\centering
 				\subfloat[$4 \times 32 \times 4$ (rank-1)\label{fg:singular_bound_rank1_sx32}]{
@@ -818,17 +827,57 @@
 				}
 				\label{fg:singular_bound}
 			\end{figure}
-			Fig. \ref{fg:singular_bound} illustrates the analytical bounds in Proposition \ref{pp:rank_deficient} and the numerical results obtained by solving problem \eqref{op:pareto} with $\rho_n = \pm 1$ and $\rho_{n'} = 0$, $\forall n' \ne n$.
+			Fig. \ref{fg:singular_bound} illustrates the analytical singular value bounds in Proposition \ref{pp:rank_deficient} and the numerical results obtained by solving problem \eqref{op:pareto} with $\rho_n = \pm 1$ and $\rho_{n'} = 0$, $\forall n' \ne n$.
 			Here we assme a rank-$k$ forward channel without loss of generality.
 			When the \gls{ris} is in the vicinity of the transmitter, Figs. \subref*{fg:singular_bound_rank1_sx32} and \subref*{fg:singular_bound_rank1_sx64} show that the achievable channel singular values indeed satisfy Corollary \ref{co:los}, namely $\sigma_1(\mathbf{H}) \ge \sigma_1(\mathbf{T})$, $\sigma_2(\mathbf{T}) \le \sigma_2(\mathbf{H}) \le \sigma_1(\mathbf{T})$, etc.
-			We also observe that \gls{bd}-\gls{ris} can approach those bounds better than diagonal \gls{ris} especially for a small $N_\mathrm{S}$.
+			It is obvious that \gls{bd}-\gls{ris} can approach those bounds better than diagonal \gls{ris} especially for a small $N_\mathrm{S}$.
 			% Another example is given in Fig. \subref*{fg:singular_bound_rank2_sx128} where the forward channel is rank-2.
-			Another example is given in Fig. \subref*{fg:singular_bound_rank2_sx128} where the forward channel is rank-2.
-			As expected from Corollary \ref{co:extreme}, the largest 2 singular values are unbounded above and the smallest 2 singular values can be suppressed to zero (with a sufficiently large \gls{ris}).
-			Proposition \ref{pp:rank_deficient} also predicts the fact that $\sigma_1(\mathbf{H}) \ge \sigma_1(\mathbf{T})$, $\sigma_2(\mathbf{H}) \ge \sigma_2(\mathbf{T})$, $\sigma_3(\mathbf{H}) \le \sigma_1(\mathbf{T})$, and $\sigma_4(\mathbf{H}) \le \sigma_2(\mathbf{T})$.
-			Finally, Fig. \subref*{fg:singular_bound_rank4_sx256} confirms there are no extra bounds when both forward and backward channels are full-rank.
-			This is because in \eqref{eq:auxiliary_matrix} the compact singular matrices $\mathbf{V}_\mathrm{F}$ and $\mathbf{U}_\mathrm{F}$ become unitary such that $\mathbf{T}=\mathbf{0}$.
-			The numerical results are consistent with the analytical bounds, and we also conclude that the advantage of \gls{bd}-\gls{ris} over diagonal \gls{ris} scales with forward and backward channel ranks.
+			Another example is given in Fig. \subref*{fg:singular_bound_rank2_sx128} with rank-2 forward channel.
+			% The observations align with Proposition \ref{pp:rank_deficient} that t
+			The first two channel singular values are unbounded above and bounded below by the first two singular values of $\mathbf{T}$, while the last two singular values can be suppressed to zero and bounded above by the first two singular values of $\mathbf{T}$.
+			Those observations align with Proposition \ref{pp:rank_deficient} and Corollary \ref{co:extreme}.
+			Finally, Fig. \subref*{fg:singular_bound_rank4_sx256} confirms there are no extra singular value bounds when both forward and backward channels are full-rank.
+			This can be predicted from \eqref{eq:auxiliary_matrix} where the compact singular matrix $\mathbf{V}_\mathrm{F}$ becomes unitary and $\mathbf{T}=\mathbf{0}$.
+			The numerical results are consistent with the analytical bounds, and we conclude that the channel shaping advantage of \gls{bd}-\gls{ris} over diagonal \gls{ris} scales with forward and backward channel ranks.
+
+			\begin{figure}[!t]
+				\centering
+				\subfloat[$1 \times 256 \times 1$ (no direct)\label{fg:power_bond_txrx1_nd}]{
+					\resizebox{0.4725\columnwidth}{!}{
+						\input{assets/simulation/power_bond_txrx1_nd.tex}
+					}
+				}
+				\subfloat[$4 \times 256 \times 4$ (no direct)\label{fg:power_bond_txrx4_nd}]{
+					\resizebox{0.4875\columnwidth}{!}{
+						\input{assets/simulation/power_bond_txrx4_nd.tex}
+					}
+				}
+				\caption{
+					Average maximum channel power versus \gls{bd}-\gls{ris} group size and \gls{mimo} dimensions.
+					`Cascaded' refers to the available power of the cascaded channel, i.e., the sum of (sorted) element-wise power product of backward and forward subchannels.
+				}
+				\label{fg:power_bond}
+			\end{figure}
+
+			Fig. \ref{fg:power_bond} compares the analytical channel power bound in Corollary \ref{co:sum_power} with $k=N'$, $p=2$ and the numerical results obtained by solving problem \eqref{op:power_passive} when the direct link is absent.
+			Here, a fully-connected \gls{bd}-\gls{ris} can attain the upper bound either in closed form \eqref{eq:scattering_fc_tight} or via optimization approach \eqref{eq:scattering_power}.
+			% Recall that a fully-connected \gls{bd}-\gls{ris} in closed form \eqref{eq:scattering_fc_tight} can attain the bound.
+			% We observe that the bound is also tight for fully-connected \gls{bd}-\gls{ris}.
+			% Increasing the group size of \gls{bd}-\gls{ris} significantly improves the channel power especially for a large \gls{mimo}.
+			% Apparently, \gls{bd}-\gls{ris} with a larger group size can approach the bound better, and a fully-connected one can achieve the bound.
+			% The bound here indicates how much power can potentially be extracted from the forward and backward channels.
+			% We observe that using a larger group size can approach the bound better, and full
+			% We observe that the bound is tight for fully-connected \gls{bd}-\gls{ris} in \gls{siso} and \gls{mimo}.
+			For the \gls{siso} case in Fig. \subref*{fg:power_bond_txrx1_nd}, the maximum channel power is approximately \num{4e-6} by diagonal \gls{ris} and \num{6.5e-6} by fully-connected \gls{bd}-\gls{ris}, corresponding to a \qty{62.5}{\percent} gain.
+			This aligns with the asymptotic \gls{bd}-\gls{ris} scaling law derived for \gls{siso} in \cite{Shen2020a}.
+			Interestingly, the gain surges to \qty{270}{\percent} in 4T4R \gls{mimo} as shown in Fig. \subref*{fg:power_bond_txrx4_nd}.
+			This is because subspace alignment boils down to phase matching in \gls{siso} such that both triangular and Cauchy-Schwarz inequalities in \cite[(50)]{Shen2020a} can be simultaneously tight regardless of the group size.
+			That is, diagonal \gls{ris} is sufficient for subspace alignment in \gls{siso} while the \qty{62.5}{\percent} gain from \gls{bd}-\gls{ris} comes purely from subchannel rearrangement (i.e., pairing the forward and backward channels from strongest to weakest).
+			Now consider a diagonal \gls{ris} in \gls{mimo}.
+			Each element can only apply a common phase shift to the associated rank-1 $N_\mathrm{R} \times N_\mathrm{T}$ indirect channel.
+			Therefore, perfect subspace alignment of indirect channels through different elements is generally impossible.
+			It means the disadvantage of diagonal \gls{ris} in subspace alignment and subchannel rearrangement scales with \gls{mimo} dimensions.
+			We thus conclude that the power gain of \gls{bd}-\gls{ris} scales with group size and \gls{mimo} dimensions.
 		\end{subsubsection}
 
 		% The Pareto singular value frontiers of a $2 \times 2$ \gls{mimo} with a 32-element \gls{bd}-\gls{ris} is shown in Fig.~\ref{fg:singular_pareto}.
@@ -840,24 +889,6 @@
 	\end{subsection}
 
 	\begin{subsection}{Achievable Rate Maximization}
-		\begin{figure}[!t]
-			\centering
-			\subfloat[$1 \times 256 \times 1$ (no direct)\label{fg:power_bond_txrx1_nd}]{
-				\resizebox{0.4725\columnwidth}{!}{
-					\input{assets/simulation/power_bond_txrx1_nd.tex}
-				}
-			}
-			\subfloat[$4 \times 256 \times 4$ (no direct)\label{fg:power_bond_txrx4_nd}]{
-				\resizebox{0.4875\columnwidth}{!}{
-					\input{assets/simulation/power_bond_txrx4_nd.tex}
-				}
-			}
-			\caption{
-				Average channel power versus \gls{bd}-\gls{ris} group size and \gls{mimo} dimensions.
-			}
-			\label{fg:power_bond}
-		\end{figure}
-
 		\begin{figure}[!t]
 			\centering
 			\subfloat[$4 \times N_\mathrm{S} \times 4$ (no direct)\label{fg:power_sx_txrx4_nd}]{
