@@ -235,7 +235,7 @@
 	% Case studies are conducted for channel power maximization in \gls{pc} and leakage interference minimization in \gls{ic}.
 
 	Fourth, extensive simulations reveal that the performance gain from \gls{bd}-\gls{ris} increases with group size and \gls{mimo} dimensions.
-	In terms of channel power, fully-connected \gls{bd}-\gls{ris} boosts up to 62\%, 312\%, 537\% over single-connected in $1 \times 1$, $4 \times 4$, $16 \times 16$ \gls{mimo} under independent Rayleigh fading, respectively.
+	In terms of channel power, fully-connected \gls{bd}-\gls{ris} boosts up to 62\% and 270\% over diagonal \gls{ris} in $1 \times 1$ and $4 \times 4$ \gls{mimo} under independent Rayleigh fading, respectively.
 	The superiority stems from stronger \emph{subchannel rearrangement} and \emph{subspace alignment} capabilities empowered by in-group cooperation.
 	It emphasizes the importance of using \gls{bd}-\gls{ris} in large-scale \gls{mimo} systems.
 
@@ -758,23 +758,23 @@
 			\begin{figure}[!t]
 				\centering
 				\subfloat[$2 \times 32 \times 2$ (no direct)\label{fg:singular_pareto_sx32_nd}]{
-					\resizebox{0.48\columnwidth}{!}{
+					\resizebox{!}{3.25cm}{
 						\input{assets/simulation/singular_pareto_sx32_nd.tex}
 					}
 				}
 				\subfloat[$2 \times 32 \times 2$\label{fg:singular_pareto_sx32}]{
-					\resizebox{0.48\columnwidth}{!}{
+					\resizebox{!}{3.25cm}{
 						\input{assets/simulation/singular_pareto_sx32.tex}
 					}
 				}
 				\\
 				\subfloat[$2 \times 64 \times 2$\label{fg:singular_pareto_sx64}]{
-					\resizebox{0.48\columnwidth}{!}{
+					\resizebox{!}{3.25cm}{
 						\input{assets/simulation/singular_pareto_sx64.tex}
 					}
 				}
 				\subfloat[$2 \times 128 \times 2$\label{fg:singular_pareto_sx128}]{
-					\resizebox{0.48\columnwidth}{!}{
+					\resizebox{!}{3.25cm}{
 						\input{assets/simulation/singular_pareto_sx128.tex}
 					}
 				}
@@ -800,23 +800,23 @@
 			\begin{figure}[!t]
 				\centering
 				\subfloat[$4 \times 32 \times 4$ (rank-1)\label{fg:singular_bound_rank1_sx32}]{
-					\resizebox{0.48\columnwidth}{!}{
+					\resizebox{!}{3.25cm}{
 						\input{assets/simulation/singular_bound_rank1_sx32.tex}
 					}
 				}
 				\subfloat[$4 \times 64 \times 4$ (rank-1)\label{fg:singular_bound_rank1_sx64}]{
-					\resizebox{0.48\columnwidth}{!}{
+					\resizebox{!}{3.25cm}{
 						\input{assets/simulation/singular_bound_rank1_sx64.tex}
 					}
 				}
 				\\
 				\subfloat[$4 \times 128 \times 4$ (rank-2)\label{fg:singular_bound_rank2_sx128}]{
-					\resizebox{0.48\columnwidth}{!}{
+					\resizebox{!}{3.25cm}{
 						\input{assets/simulation/singular_bound_rank2_sx128.tex}
 					}
 				}
 				\subfloat[$4 \times 256 \times 4$ (rank-4)\label{fg:singular_bound_rank4_sx256}]{
-					\resizebox{0.48\columnwidth}{!}{
+					\resizebox{!}{3.25cm}{
 						\input{assets/simulation/singular_bound_rank4_sx256.tex}
 					}
 				}
@@ -843,12 +843,12 @@
 			\begin{figure}[!t]
 				\centering
 				\subfloat[$1 \times 256 \times 1$ (no direct)\label{fg:power_bond_txrx1_nd}]{
-					\resizebox{0.4725\columnwidth}{!}{
+					\resizebox{!}{3.25cm}{
 						\input{assets/simulation/power_bond_txrx1_nd.tex}
 					}
 				}
 				\subfloat[$4 \times 256 \times 4$ (no direct)\label{fg:power_bond_txrx4_nd}]{
-					\resizebox{0.4875\columnwidth}{!}{
+					\resizebox{!}{3.25cm}{
 						\input{assets/simulation/power_bond_txrx4_nd.tex}
 					}
 				}
@@ -892,12 +892,12 @@
 		\begin{figure}[!t]
 			\centering
 			\subfloat[$4 \times N_\mathrm{S} \times 4$ (no direct)\label{fg:power_sx_txrx4_nd}]{
-				\resizebox{0.49\columnwidth}{!}{
+				\resizebox{!}{3.25cm}{
 					\input{assets/simulation/power_sx_txrx4_nd.tex}
 				}
 			}
 			\subfloat[$16 \times N_\mathrm{S} \times 16$\label{fg:power_sx_txrx16}]{
-				\resizebox{0.47\columnwidth}{!}{
+				\resizebox{!}{3.25cm}{
 					\input{assets/simulation/power_sx_txrx16.tex}
 				}
 			}
@@ -910,23 +910,23 @@
 		\begin{figure}[!t]
 			\centering
 			\subfloat[$4 \times 128 \times 4$\label{fg:rate_beamforming}]{
-				\resizebox{0.49\columnwidth}{!}{
+				\resizebox{!}{3.25cm}{
 					\input{assets/simulation/rate_beamforming.tex}
 				}
 			}
 			\subfloat[$N_\mathrm{T} \times 128 \times N_\mathrm{R}$\label{fg:rate_txrx}]{
-				\resizebox{0.47\columnwidth}{!}{
+				\resizebox{!}{3.25cm}{
 					\input{assets/simulation/rate_txrx.tex}
 				}
 			}
 			\\
 			\subfloat[$4 \times N_\mathrm{S} \times 4$\label{fg:rate_sx}]{
-				\resizebox{0.47\columnwidth}{!}{
+				\resizebox{!}{3.25cm}{
 					\input{assets/simulation/rate_sx.tex}
 				}
 			}
 			\subfloat[$4 \times 128 \times 4$\label{fg:rate_kfactor}]{
-				\resizebox{0.47\columnwidth}{!}{
+				\resizebox{!}{3.25cm}{
 					\input{assets/simulation/rate_kfactor.tex}
 				}
 			}
