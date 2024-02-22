@@ -330,21 +330,21 @@
 		At iteration $r$, the gradient is computed in the Euclidean space and translated to the Riemannian manifold \cite{Absil2009}
 		\begin{gather}
 			\nabla_{\mathrm{E},g}^{(r)} = \frac{\partial f(\mathbf{\Theta}_g^{(r)})}{\partial \mathbf{\Theta}_g^*},\label{eq:gradient_euclidean}\\
-			\nabla_{\mathrm{R},g}^{(r)} = \nabla_{\mathrm{E},g}^{(r)} {\mathbf{\Theta}_g^{(r)}}^\mathsf{H} - \mathbf{\Theta}_g^{(r)} {\nabla_{\mathrm{E},g}^{(r)}}^\mathsf{H}.\label{eq:gradient_riemannian}
+			\nabla_{\mathrm{R},g}^{(r)} = \nabla_{\mathrm{E},g}^{(r)} {\mathbf{\Theta}_g^{(r)}}^\mathsf{H} - \mathbf{\Theta}_g^{(r)} {\nabla_{\mathrm{E},g}^{(r)}}^\mathsf{H}.\label{eq:gradient_riemannian} % $\mathcal{O}(N_\mathrm{S}^3)$
 		\end{gather}
 		The Polak-Ribierre parameter \cite{Polak1969} is approximated as \cite{Abrudan2009}
 		\begin{equation}
-			\gamma_g^{(r)} = \frac{\mathrm{tr}\bigl((\nabla_{\mathrm{R},g}^{(r)} - \nabla_{\mathrm{R},g}^{(r-1)}) {\nabla_{\mathrm{R},g}^{(r)}}^\mathsf{H}\bigr)}{\mathrm{tr}\bigl(\nabla_{\mathrm{R},g}^{(r-1)} {\nabla_{\mathrm{R},g}^{(r-1)}}^\mathsf{H}\bigr)},
+			\gamma_g^{(r)} = \frac{\mathrm{tr}\bigl((\nabla_{\mathrm{R},g}^{(r)} - \nabla_{\mathrm{R},g}^{(r-1)}) {\nabla_{\mathrm{R},g}^{(r)}}^\mathsf{H}\bigr)}{\mathrm{tr}\bigl(\nabla_{\mathrm{R},g}^{(r-1)} {\nabla_{\mathrm{R},g}^{(r-1)}}^\mathsf{H}\bigr)}, % $\mathcal{O}(2 N_\mathrm{S}^3 + N_\mathrm{S}^2 + 2 N_\mathrm{S})$
 			\label{eq:parameter_cg}
 		\end{equation}
 		and the conjugate direction is
 		\begin{equation}
-			\mathbf{D}_g^{(r)} = \nabla_{\mathrm{R},g}^{(r)} + \gamma_g^{(r)} \mathbf{D}_g^{(r-1)}.
+			\mathbf{D}_g^{(r)} = \nabla_{\mathrm{R},g}^{(r)} + \gamma_g^{(r)} \mathbf{D}_g^{(r-1)}. % $\mathcal{O}(N_\mathrm{S}^2)$
 			\label{eq:direction_cg}
 		\end{equation}
 		In the Stiefel manifold, the geodesic emanating from $\mathbf{\Theta}_g^{(r)}$ with velocity $\mathbf{D}_g^{(r)}$ and step size $\mu$ is described compactly by the exponential map \cite{Edelman1998}
 		\begin{equation}
-			\mathbf{G}_g^{(r)}(\mu) = \exp(\mu \mathbf{D}_g^{(r)}) \mathbf{\Theta}_g^{(r)}.
+			\mathbf{G}_g^{(r)}(\mu) = \exp(\mu \mathbf{D}_g^{(r)}) \mathbf{\Theta}_g^{(r)}. % $\mathcal{O}(N_\mathrm{S}^3)$
 			\label{eq:geodesic}
 		\end{equation}
 		An appropriate $\mu^\star$ can be obtained by the Armijo rule \cite{Armijo1966}.\footnote{To double the step size, one only need to square the rotation matrix instead of recomputing the matrix exponential, i.e., $\exp(2 \mu \mathbf{D}_g^{(r)}) = \exp^2(\mu \mathbf{D}_g^{(r)})$.}

@@ -1,6 +1,6 @@
 function [Theta] = step_armijo(fun, Theta, D)
 	O = fun(Theta);
-	mu = 1;
+	mu = 1e2;
 	T = expm(mu * D);
 	% * Undershoot, double the step size
 	while (fun(T ^ 2 * Theta) - O) >= (mu * 0.5 * trace(D * D'))
