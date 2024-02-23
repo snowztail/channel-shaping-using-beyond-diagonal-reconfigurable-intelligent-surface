@@ -1,6 +1,6 @@
 clc; clear; close; setup;
 
-[transmit.antenna, reflect.antenna, receive.antenna] = deal(4, [64, 256], 4);
+[transmit.antenna, reflect.antenna, receive.antenna] = deal(4, [16, 256], 4);
 [channel.rank, reflect.bond] = deal(min(transmit.antenna, receive.antenna), 4);
 [channel.pathloss.direct, channel.pathloss.forward, channel.pathloss.backward] = deal(db2pow(-65), db2pow(-54), db2pow(-46));
 channel.weight = ones(channel.rank, 1);

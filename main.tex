@@ -31,6 +31,8 @@
 \usepackage{tikz}
 \usepackage{graphicx}
 \usepackage{epstopdf}
+\usepackage{multirow}
+\usepackage{booktabs}
 % \usepackage{cleveref}
 
 % page limit hacks
@@ -265,11 +267,20 @@
 
 \begin{section}{\gls{bd}-\gls{ris} Model}
 	Consider a \gls{bd}-\gls{ris} aided point-to-point \gls{mimo} system with $N_\mathrm{T}$, $N_\mathrm{S}$, $N_\mathrm{R}$ transmit, scatter, and receive antennas, respectively.
-	This configuration is denoted as $N_\mathrm{T} \times N_\mathrm{S} \times N_\mathrm{R}$.
-	The \gls{bd}-\gls{ris} is modeled as an $N_\mathrm{S}$-port network \cite{Ivrlac2010} that further divides into $G$ individual groups.
-	Each group contains $L \triangleq N_\mathrm{S} / G$ elements interconnected by real-time reconfigurable components \cite{Shen2020a}.
-	To simplify the analysis, we assume there are no mutual coupling and the in-group connections can be lossless and asymmetric\footnote{While symmetric impedance network is often considered in the literature \cite{Shen2020a,Nerini2023,Santamaria2023,Fang2023,Nerini2023a,Zhou2023,Li2023d,Bartoli2023}, asymmetric passive components (e.g., ring hybrids and branch-line hybrids) may also be reconfigured in real time \cite{Ahn2006}. Asymmetric \gls{bd}-\gls{ris} has been discussed in \cite{Li2023b,Li2023c,Bartoli2023}.}.
-	The overall scattering matrix is thus block diagonal $\mathbf{\Theta} = \mathrm{diag}(\mathbf{\Theta}_1,\ldots,\mathbf{\Theta}_G) \in \mathbb{U}^{N_\mathrm{S} \times N_\mathrm{S}}$, where $\mathbf{\Theta}_g \in \mathbb{U}^{L \times L}$ is a unitary matrix corresponding to group $g \in \mathcal{G} \triangleq \{1,\ldots,G\}$.
+	This configuration is denoted as $N_\mathrm{T} \times N_\mathrm{S} \times N_\mathrm{R}$ in the following context.
+	The \gls{bd}-\gls{ris} can be modeled as an $N_\mathrm{S}$-port network \cite{Ivrlac2010} that divides into $G$ individual groups, each containing $L \triangleq N_\mathrm{S} / G$ elements interconnected by real-time reconfigurable components \cite{Shen2020a}.
+	To simplify the analysis, we assume a lossless asymmetric network \footnote{While symmetric \gls{bd}-\gls{ris} (involving capacitors and inductors) is often considered in the literature \cite{Shen2020a,Nerini2023,Santamaria2023,Fang2023,Nerini2023a,Zhou2023,Li2023d,Bartoli2023}, asymmetric \gls{bd}-\gls{ris} can be built over reconfigurable asymmetric passive components (e.g., ring hybrids and branch-line hybrids) \cite{Ahn2006}.} without mutual coupling between scatter elements, as previously considered in \cite{Li2023b,Li2023c,Bartoli2023}.
+	The overall scattering matrix of the \gls{bd}-\gls{ris} is
+	\begin{equation}
+		\mathbf{\Theta} = \mathrm{diag}(\mathbf{\Theta}_1,\ldots,\mathbf{\Theta}_G),
+	\end{equation}
+	where $\mathbf{\Theta}_g \in \mathbb{U}^{L \times L}$ is a unitary matrix describing the scatter response of group $g$.
+	Note that diagonal (single-connected) and unitary (fully-connected) \gls{ris} can be regarded as its extreme cases with group size 1 and $N_\mathrm{S}$, respectively.
+	The potential physical architectures of \gls{bd}-\gls{ris} are shown in \cite[Fig. 3]{Shen2020a}, \cite[Fig. 5]{Li2023c}, and \cite[Fig. 2]{Nerini2023a}, where the antenna radiation patterns and circuit network structures are taken into account.
+	% Note that \gls{bd}-\gls{ris} reduces to diagonal \gls{ris} and unitary \gls{ris} with group size equal to 1 and $N_\mathrm{S}$, respectively.
+	% Note that \gls{bd}-\gls{ris} reduces to diagonal \gls{ris} and unitary \gls{ris} with group size equal to 1 and $N_\mathrm{S}$, respectively.
+
+
 	Let $\mathbf{H}_\mathrm{D} \in \mathbb{C}^{N_\mathrm{R} \times N_\mathrm{T}}$, $\mathbf{H}_\mathrm{F} \in \mathbb{C}^{N_\mathrm{S} \times N_\mathrm{T}}$, $\mathbf{H}_\mathrm{B} \in \mathbb{C}^{N_\mathrm{R} \times N_\mathrm{S}}$ denote the direct (transmitter-receiver), forward (transmitter-\gls{ris}), and backward (\gls{ris}-receiver) channels, respectively.
 	The equivalent channel is
 	\begin{equation}
@@ -278,7 +289,7 @@
 	\end{equation}
 	where $\mathbf{H}_{\mathrm{B},g} \in \mathbb{C}^{N_\mathrm{R} \times L}$ and $\mathbf{H}_{\mathrm{F},g} \in \mathbb{C}^{L \times N_\mathrm{T}}$ are the backward and forward channels of \gls{ris} group $g$, respectively.
 	\begin{remark}
-		\gls{bd}-\gls{ris} reduces to diagonal \gls{ris} and unitary \gls{ris} with group size 1 and $N_\mathrm{S}$, respectively.
+		\gls{bd}-\gls{ris} reduces to diagonal \gls{ris} and unitary \gls{ris} with group size $L$ 1 and $N_\mathrm{S}$, respectively.
 	\end{remark}
 	\begin{remark}
 		Individual forward and backward \gls{csi} are required for \gls{bd}-\gls{ris} designs.
@@ -430,8 +441,8 @@
 			% If the forward/backward channel is rank-$k$, then a sufficiently large \gls{bd}-\gls{ris} can at most enlarge (resp. suppress) the first (resp. last) $k$ equivalent channel singular values without bounds.
 			If the forward or backward channel is rank-$k$, then regardless of the \gls{ris} size and architecture, the $n$-th singular value of the equivalent channel is bounded by
 			\begin{align}
-				\sigma_n(\mathbf{H}) & \le \sigma_{n-k}(\mathbf{T}), && \text{if } n > k, \label{iq:sv_bound_enlarge}\\
-				\sigma_n(\mathbf{H}) & \ge \sigma_n(\mathbf{T}), && \text{if } n < N - k + 1, \label{iq:sv_bound_suppress}
+				\sigma_n(\mathbf{H}) & \le \sigma_{n-k}(\mathbf{T}), &  & \text{if } n > k, \label{iq:sv_bound_enlarge}          \\
+				\sigma_n(\mathbf{H}) & \ge \sigma_n(\mathbf{T}),     &  & \text{if } n < N - k + 1, \label{iq:sv_bound_suppress}
 			\end{align}
 			where
 			% \begin{align}
@@ -685,69 +696,69 @@
 
 
 
-		% \begin{figure}[!t]
-		% 	\centering
-		% 	\resizebox{0.65\columnwidth}{!}{
-		% 		\input{assets/simulation/power_sx.tex}
-		% 	}
-		% 	\caption{Average channel power versus \gls{ris} elements $N^\mathrm{S}$ and group size $L$. $(N^\mathrm{T}, N^\mathrm{R}) = (8, 4)$, $(\Lambda^\mathrm{D}, \Lambda^\mathrm{F}, \Lambda^\mathrm{B}) = (65, 54, 46) \unit{dB}$.}
-		% 	\label{fg:power_sx}
-		% \end{figure}
+	% \begin{figure}[!t]
+	% 	\centering
+	% 	\resizebox{0.65\columnwidth}{!}{
+	% 		\input{assets/simulation/power_sx.tex}
+	% 	}
+	% 	\caption{Average channel power versus \gls{ris} elements $N^\mathrm{S}$ and group size $L$. $(N^\mathrm{T}, N^\mathrm{R}) = (8, 4)$, $(\Lambda^\mathrm{D}, \Lambda^\mathrm{F}, \Lambda^\mathrm{B}) = (65, 54, 46) \unit{dB}$.}
+	% 	\label{fg:power_sx}
+	% \end{figure}
 
-		% \begin{figure}[!t]
-		% 	\centering
-		% 	\subfloat[Without Direct Link\label{fg:pc_power_bond_nd}]{
-		% 		\resizebox{0.48\columnwidth}{!}{
-		% 			\input{assets/simulation/pc_power_bond_nd.tex}
-		% 		}
-		% 	}
-		% 	\subfloat[With Direct Link\label{fg:pc_power_bond_hd}]{
-		% 		\resizebox{0.48\columnwidth}{!}{
-		% 			\input{assets/simulation/pc_power_bond_hd.tex}
-		% 		}
-		% 	}
-		% 	\caption{Average channel power versus \gls{ris} group size $L$. $(N^\mathrm{T}, N^\mathrm{S}, N^\mathrm{R}) = (8, 256, 4)$, $(\Lambda^\mathrm{D}, \Lambda^\mathrm{F}, \Lambda^\mathrm{B}) = (65, 54, 46) \unit{dB}$.}
-		% 	\label{fg:pc_power_bond}
-		% \end{figure}
-		% % Fig.~\ref{fg:power_sx} shows that, apart from numerous reflecting elements, a sufficiently large group size can help
-		% % Fig.~\ref{fg:power_sx} shows that increasing the group size can improve the channel power especially for a large \gls{ris}.
-		% Fig.~\ref{fg:power_sx} shows that, apart from adding reflecting elements $N^\mathrm{S}$, increasing the group size $L$ also improves the channel power.
-		% % The behavior is more obvious for a large \gls{ris}.
-		% This behavior is more pronounced for a large \gls{ris}.
-		% For example, the gain of pairwise connection is \qty{2.8}{\percent} for $N^\mathrm{S} = 16$ and \qty{28}{\percent} for $N^\mathrm{S} = 256$.
-		% % \gls{bd}-\gls{ris} provides a higher channel power than conventional \gls{ris}.
-		% % As $L$ increases from 1 to 2,
-		% It implies that the channel shaping capability of \gls{bd}-\gls{ris} scales with group size $L$.
+	% \begin{figure}[!t]
+	% 	\centering
+	% 	\subfloat[Without Direct Link\label{fg:pc_power_bond_nd}]{
+	% 		\resizebox{0.48\columnwidth}{!}{
+	% 			\input{assets/simulation/pc_power_bond_nd.tex}
+	% 		}
+	% 	}
+	% 	\subfloat[With Direct Link\label{fg:pc_power_bond_hd}]{
+	% 		\resizebox{0.48\columnwidth}{!}{
+	% 			\input{assets/simulation/pc_power_bond_hd.tex}
+	% 		}
+	% 	}
+	% 	\caption{Average channel power versus \gls{ris} group size $L$. $(N^\mathrm{T}, N^\mathrm{S}, N^\mathrm{R}) = (8, 256, 4)$, $(\Lambda^\mathrm{D}, \Lambda^\mathrm{F}, \Lambda^\mathrm{B}) = (65, 54, 46) \unit{dB}$.}
+	% 	\label{fg:pc_power_bond}
+	% \end{figure}
+	% % Fig.~\ref{fg:power_sx} shows that, apart from numerous reflecting elements, a sufficiently large group size can help
+	% % Fig.~\ref{fg:power_sx} shows that increasing the group size can improve the channel power especially for a large \gls{ris}.
+	% Fig.~\ref{fg:power_sx} shows that, apart from adding reflecting elements $N^\mathrm{S}$, increasing the group size $L$ also improves the channel power.
+	% % The behavior is more obvious for a large \gls{ris}.
+	% This behavior is more pronounced for a large \gls{ris}.
+	% For example, the gain of pairwise connection is \qty{2.8}{\percent} for $N^\mathrm{S} = 16$ and \qty{28}{\percent} for $N^\mathrm{S} = 256$.
+	% % \gls{bd}-\gls{ris} provides a higher channel power than conventional \gls{ris}.
+	% % As $L$ increases from 1 to 2,
+	% It implies that the channel shaping capability of \gls{bd}-\gls{ris} scales with group size $L$.
 
-		% Fig.~\ref{fg:pc_power_bond_hd} and \ref{fg:pc_power_bond_nd} compare the average channel power without and with direct link.
-		% % where the cascaded channel power available to passive \gls{ris} is $\lVert \mathbf{H}^\mathrm{B} \rVert _\mathrm{F}^2 \lVert \mathbf{H}^\mathrm{F} \rVert _\mathrm{F}^2$.
-		% % where the cascaded channel power available to passive \gls{ris} is $\lVert \mathbf{H}^\mathrm{B} \rVert _\mathrm{F}^2 \lVert \mathbf{H}^\mathrm{F} \rVert _\mathrm{F}^2$.
-		% % ``Cascaded'' means the maximum power of the cascaded channel, i.e., $\lVert \mathbf{H}^\mathrm{B} \rVert _\mathrm{F}^2 \lVert \mathbf{H}^\mathrm{F} \rVert _\mathrm{F}^2$.
-		% % maximum power of the cascaded channel, i.e., $\lVert \mathbf{H}^\mathrm{B} \rVert _\mathrm{F}^2 \lVert \mathbf{H}^\mathrm{F} \rVert _\mathrm{F}^2$.
-		% % ? ``Cascaded'' means the \emph{power product} of the forward and backward channels.
-		% % ``Cascaded'' means the sum of element-wise product of first $N = \min(N^\mathrm{T}, N^\mathrm{S}, N^\mathrm{R})$ eigenvalues of the forward and backward channels.
-		% ``Cascaded'' means the sum of element-wise product of first $N = \min(N^\mathrm{T}, N^\mathrm{S}, N^\mathrm{R})$ eigenvalues (i.e., element-wise power product) of the forward and backward channels.
-		% We observe that diagonal \gls{ris} wastes substantial cascaded power and struggles to align the direct-indirect subspace.
-		% When the direct link is absent, only \qty{2.6}{\percent} of available power is utilized by diagonal \gls{ris} while \qty{100}{\percent} power is recycled by fully-connected \gls{ris}.
-		% When the direct link is present, the proposed \gls{bd}-\gls{ris} design can balance the direct-indirect and forward-backward subspace alignment for an optimal channel boost.
-		% It is worth noting that, when $L$ is sufficiently large, the composite channel power surpasses the power sum of direct and cascaded channels, thanks to the constructive \emph{amplitude superposition} of direct and cascaded channels.
-		% This again emphasizes the advantage of in-group connection of \gls{bd}-\gls{ris}.
-		% % This is because the direct and indirect channels superpose
-		% % the proposed \gls{bd}-\gls{ris} design can also be applied to conventional \gls{ris} to improve the channel power.
-		% % When the direct link is present, a small $L$ cannot align the direct-indirect subspace.
+	% Fig.~\ref{fg:pc_power_bond_hd} and \ref{fg:pc_power_bond_nd} compare the average channel power without and with direct link.
+	% % where the cascaded channel power available to passive \gls{ris} is $\lVert \mathbf{H}^\mathrm{B} \rVert _\mathrm{F}^2 \lVert \mathbf{H}^\mathrm{F} \rVert _\mathrm{F}^2$.
+	% % where the cascaded channel power available to passive \gls{ris} is $\lVert \mathbf{H}^\mathrm{B} \rVert _\mathrm{F}^2 \lVert \mathbf{H}^\mathrm{F} \rVert _\mathrm{F}^2$.
+	% % ``Cascaded'' means the maximum power of the cascaded channel, i.e., $\lVert \mathbf{H}^\mathrm{B} \rVert _\mathrm{F}^2 \lVert \mathbf{H}^\mathrm{F} \rVert _\mathrm{F}^2$.
+	% % maximum power of the cascaded channel, i.e., $\lVert \mathbf{H}^\mathrm{B} \rVert _\mathrm{F}^2 \lVert \mathbf{H}^\mathrm{F} \rVert _\mathrm{F}^2$.
+	% % ? ``Cascaded'' means the \emph{power product} of the forward and backward channels.
+	% % ``Cascaded'' means the sum of element-wise product of first $N = \min(N^\mathrm{T}, N^\mathrm{S}, N^\mathrm{R})$ eigenvalues of the forward and backward channels.
+	% ``Cascaded'' means the sum of element-wise product of first $N = \min(N^\mathrm{T}, N^\mathrm{S}, N^\mathrm{R})$ eigenvalues (i.e., element-wise power product) of the forward and backward channels.
+	% We observe that diagonal \gls{ris} wastes substantial cascaded power and struggles to align the direct-indirect subspace.
+	% When the direct link is absent, only \qty{2.6}{\percent} of available power is utilized by diagonal \gls{ris} while \qty{100}{\percent} power is recycled by fully-connected \gls{ris}.
+	% When the direct link is present, the proposed \gls{bd}-\gls{ris} design can balance the direct-indirect and forward-backward subspace alignment for an optimal channel boost.
+	% It is worth noting that, when $L$ is sufficiently large, the composite channel power surpasses the power sum of direct and cascaded channels, thanks to the constructive \emph{amplitude superposition} of direct and cascaded channels.
+	% This again emphasizes the advantage of in-group connection of \gls{bd}-\gls{ris}.
+	% % This is because the direct and indirect channels superpose
+	% % the proposed \gls{bd}-\gls{ris} design can also be applied to conventional \gls{ris} to improve the channel power.
+	% % When the direct link is present, a small $L$ cannot align the direct-indirect subspace.
 
-		% % neither effectively utilizes the cascaded channel power, nor effectively align the direct-indirect subspace.
-		% % We observe that conventional \gls{ris} neither effectively utilizes the cascaded channel power, nor effectively align the direct-indirect subspace.
-		% % For conventional \gls{ris},
-		% % align the direct-indirect subspace.
-		% % When the direct link is present, a small $L$ can neither align the direct-indirect subspace nor the forward-backward subspace.
-		% % For a relatively large $N^\mathrm{S}$, conventional \gls{ris} cannot
-		% % neither the direct-indirect nor the forward-backward subspace can be effectively aligned with a small $L$.
+	% % neither effectively utilizes the cascaded channel power, nor effectively align the direct-indirect subspace.
+	% % We observe that conventional \gls{ris} neither effectively utilizes the cascaded channel power, nor effectively align the direct-indirect subspace.
+	% % For conventional \gls{ris},
+	% % align the direct-indirect subspace.
+	% % When the direct link is present, a small $L$ can neither align the direct-indirect subspace nor the forward-backward subspace.
+	% % For a relatively large $N^\mathrm{S}$, conventional \gls{ris} cannot
+	% % neither the direct-indirect nor the forward-backward subspace can be effectively aligned with a small $L$.
 
-		% % When the direct link is present, a small $L$ can neither preserve the
-		% % neither align the direct-indirect subspace nor the forward-backward subspace.
+	% % When the direct link is present, a small $L$ can neither preserve the
+	% % neither align the direct-indirect subspace nor the forward-backward subspace.
 
-		% % When the direct link is absent, a large $L$ can align the forward-backward subspace but cannot preserve the forward-backward power balance.
+	% % When the direct link is absent, a large $L$ can align the forward-backward subspace but cannot preserve the forward-backward power balance.
 
 \end{section}
 
@@ -758,6 +769,19 @@
 	We set $\Lambda_0=\qty{-30}{dB}$, $d_\mathrm{D}=\qty{14.7}{m}$, $d_\mathrm{F}=\qty{10}{m}$, $d_\mathrm{B}=\qty{6.3}{m}$, $\gamma_\mathrm{D}=3$, $\gamma_\mathrm{F}=2.4$ and $\gamma_\mathrm{B}=2$ for reference, which corresponds to a typical indoor environment with $\Lambda_\mathrm{D}=\qty{-65}{dB}$, $\Lambda_\mathrm{F}=\qty{-54}{dB}$, $\Lambda_\mathrm{B}=\qty{-46}{dB}$.
 	The indirect path via \gls{ris} is thus \qty{35}{\dB} weaker than the direct path.
 	$\kappa \to \infty$ is assumed for all channels unless otherwise specified.
+
+	\begin{table*}[!t]
+		\caption{Average Performance of \gls{bd}-\gls{ris} Designs}
+		\label{tb:complexity_test}
+		\centering
+		\begin{tabular}{ccccccc}
+			\toprule
+			\multirow{2}{*}{\gls{rcg} path} & \multicolumn{3}{c}{$N_\mathrm{S}=16$} & \multicolumn{3}{c}{$N_\mathrm{S}=256$}                                                             \\ \cmidrule(lr){2-4} \cmidrule(lr){5-7}
+			                                & Objective                             & Iterations                             & Time [s]        & Objective       & Iterations & Time [s] \\ \midrule
+			Geodesic                        & $\num{4.36e-3}$                       & 11.61                                  & $\num{2.04e-2}$ & $\num{1.16e-2}$ & 25.78      & 3.21     \\
+			Non-geodesic                    & $\num{4.17e-3}$                       & 169.50                                 & $\num{1.42e-1}$ & $\num{8.87e-3}$ & 278.08     & 27.81    \\ \bottomrule
+		\end{tabular}
+	\end{table*}
 
 	\begin{subsection}{Channel Singular Values Redistribution}
 		\begin{subsubsection}{Pareto Frontier}
@@ -984,7 +1008,7 @@
 	% even better channel shaping can be achieved by incorporating the \gls{ris} into the \gls{mimo} precoding and combining design.
 \end{section}
 
-		% achieving comparable channel power with significantly fewer elements, showcasing its potential for energy-efficient and cost-effective wireless communication systems, particularly in scenarios with direct link availability.
+% achieving comparable channel power with significantly fewer elements, showcasing its potential for energy-efficient and cost-effective wireless communication systems, particularly in scenarios with direct link availability.
 
 
 \begin{appendix}
@@ -997,10 +1021,10 @@
 		whose differential w.r.t. $\mathbf{\Theta}_g^*$ is
 		\begin{align*}
 			\partial \sigma_n
-			& = \partial \mathbf{u}_n^\mathsf{T} \underbrace{\mathbf{H}^* \mathbf{v}_n^*}_{\sum_m \mathbf{u}_m^* \sigma_m \mathbf{v}_m^\mathsf{T} \mathbf{v}_n} + \mathbf{u}_n^\mathsf{T} \cdot \partial \mathbf{H}^* \cdot \mathbf{v}_n^* + \underbrace{\mathbf{u}_n^\mathsf{T} \mathbf{H}^*}_{\mathbf{u}_n^\mathsf{T} \sum_m \mathbf{u}_m^* \sigma_m \mathbf{v}_m^\mathsf{T}} \partial \mathbf{v}_n^*\\
-			& = \underbrace{\partial \mathbf{u}_n^\mathsf{T} \mathbf{u}_n^*}_{\partial 1 = 0} \cdot \sigma_n + \mathbf{u}_n^\mathsf{T} \cdot \partial \mathbf{H}^* \cdot \mathbf{v}_n^* + \sigma_n \cdot \underbrace{\mathbf{v}_n^\mathsf{T} \partial \mathbf{v}_n^*}_{\partial 1 = 0}\\
-			& = \mathbf{u}_n^\mathsf{T} \mathbf{H}_{\mathrm{B},g}^* \cdot \partial \mathbf{\Theta}_g^* \cdot \mathbf{H}_{\mathrm{F},g}^* \mathbf{v}_n^*\\
-			& = \mathrm{tr}(\mathbf{H}_{\mathrm{F},g}^* \mathbf{v}_n^*\mathbf{u}_n^\mathsf{T} \mathbf{H}_{\mathrm{B},g}^* \cdot \partial \mathbf{\Theta}_g^*).
+			 & = \partial \mathbf{u}_n^\mathsf{T} \underbrace{\mathbf{H}^* \mathbf{v}_n^*}_{\sum_m \mathbf{u}_m^* \sigma_m \mathbf{v}_m^\mathsf{T} \mathbf{v}_n} + \mathbf{u}_n^\mathsf{T} \cdot \partial \mathbf{H}^* \cdot \mathbf{v}_n^* + \underbrace{\mathbf{u}_n^\mathsf{T} \mathbf{H}^*}_{\mathbf{u}_n^\mathsf{T} \sum_m \mathbf{u}_m^* \sigma_m \mathbf{v}_m^\mathsf{T}} \partial \mathbf{v}_n^* \\
+			 & = \underbrace{\partial \mathbf{u}_n^\mathsf{T} \mathbf{u}_n^*}_{\partial 1 = 0} \cdot \sigma_n + \mathbf{u}_n^\mathsf{T} \cdot \partial \mathbf{H}^* \cdot \mathbf{v}_n^* + \sigma_n \cdot \underbrace{\mathbf{v}_n^\mathsf{T} \partial \mathbf{v}_n^*}_{\partial 1 = 0}                                                                                                                  \\
+			 & = \mathbf{u}_n^\mathsf{T} \mathbf{H}_{\mathrm{B},g}^* \cdot \partial \mathbf{\Theta}_g^* \cdot \mathbf{H}_{\mathrm{F},g}^* \mathbf{v}_n^*                                                                                                                                                                                                                                                 \\
+			 & = \mathrm{tr}(\mathbf{H}_{\mathrm{F},g}^* \mathbf{v}_n^*\mathbf{u}_n^\mathsf{T} \mathbf{H}_{\mathrm{B},g}^* \cdot \partial \mathbf{\Theta}_g^*).
 		\end{align*}
 		According to \cite{Hjorungnes2007}, the corresponding complex derivative is
 		\begin{equation}
@@ -1047,8 +1071,8 @@
 		That is to say, $\mathbf{G}$ can be expressed as a Hermitian matrix plus $k$ rank-1 perturbations.
 		According to the Cauchy interlacing formula \cite{Golub2013}, the $n$-th eigenvalue of $\mathbf{G}$ is bounded by
 		\begin{align}
-			\lambda_n(\mathbf{G}) & \le \lambda_{n-k}(\mathbf{Y}), && \text{if } n > k, \label{iq:ev:bound_enlarge} \\
-			\lambda_n(\mathbf{G}) & \ge \lambda_n(\mathbf{Y}), && \text{if } n < N - k + 1 \label{iq:ev_bound_suppress}.
+			\lambda_n(\mathbf{G}) & \le \lambda_{n-k}(\mathbf{Y}), &  & \text{if } n > k, \label{iq:ev:bound_enlarge}          \\
+			\lambda_n(\mathbf{G}) & \ge \lambda_n(\mathbf{Y}),     &  & \text{if } n < N - k + 1 \label{iq:ev_bound_suppress}.
 		\end{align}
 		Since $\mathbf{Y} = \mathbf{T} \mathbf{T}^\mathsf{H}$ is positive semi-definite, taking the square roots of \eqref{iq:ev:bound_enlarge} and \eqref{iq:ev_bound_suppress} gives \eqref{iq:sv_bound_enlarge} and \eqref{iq:sv_bound_suppress}.
 	\end{subsection}
@@ -1068,10 +1092,10 @@
 		\end{equation}
 		Since $\mathrm{sv}(\mathbf{U} \mathbf{A} \mathbf{V}^\mathsf{H}) = \mathrm{sv}(\mathbf{A})$ for unitary $\mathbf{U}$ and $\mathbf{V}$, we have
 		\begin{align*}
-			\mathrm{sv}(\mathbf{H}) & = \mathrm{sv}(\mathbf{U}_\mathrm{B} \mathbf{\Sigma}_\mathrm{B} \mathbf{X} \mathbf{\Sigma}_\mathrm{F} \mathbf{V}_\mathrm{F}^\mathsf{H})\\
-			& = \mathrm{sv}(\mathbf{\Sigma}_\mathrm{B} \mathbf{X} \mathbf{\Sigma}_\mathrm{F})\\
-			& = \mathrm{sv}(\bar{\mathbf{U}}_\mathrm{B} \mathbf{\Sigma}_\mathrm{B} \mathbf{\bar{V}}_\mathrm{B}^\mathsf{H} \bar{\mathbf{U}}_\mathrm{F} \mathbf{\Sigma}_\mathrm{F} \mathbf{\bar{V}}_\mathrm{F}^\mathsf{H})\\
-			& = \mathrm{sv}(\mathbf{BF}),
+			\mathrm{sv}(\mathbf{H}) & = \mathrm{sv}(\mathbf{U}_\mathrm{B} \mathbf{\Sigma}_\mathrm{B} \mathbf{X} \mathbf{\Sigma}_\mathrm{F} \mathbf{V}_\mathrm{F}^\mathsf{H})                                                                     \\
+			                        & = \mathrm{sv}(\mathbf{\Sigma}_\mathrm{B} \mathbf{X} \mathbf{\Sigma}_\mathrm{F})                                                                                                                            \\
+			                        & = \mathrm{sv}(\bar{\mathbf{U}}_\mathrm{B} \mathbf{\Sigma}_\mathrm{B} \mathbf{\bar{V}}_\mathrm{B}^\mathsf{H} \bar{\mathbf{U}}_\mathrm{F} \mathbf{\Sigma}_\mathrm{F} \mathbf{\bar{V}}_\mathrm{F}^\mathsf{H}) \\
+			                        & = \mathrm{sv}(\mathbf{BF}),
 		\end{align*}
 		where $\bar{\mathbf{U}}_{\mathrm{B}/\mathrm{F}}$ and $\bar{\mathbf{V}}_{\mathrm{B}/\mathrm{F}}$ are arbitrary unitary matrices.
 	\end{subsection}
@@ -1080,9 +1104,9 @@
 		The differential of $R$ w.r.t. $\mathbf{\Theta}_g^*$ is \cite{Hjorungnes2007}
 		\begin{align*}
 			\partial R
-			& = \frac{1}{\eta} \mathrm{tr} \biggl\{ \partial \mathbf{H}^* \cdot \mathbf{Q}^\mathsf{T} \mathbf{H}^\mathsf{T} \Bigl(\mathbf{I} + \frac{\mathbf{H}^* \mathbf{Q}^\mathsf{T} \mathbf{H}^\mathsf{T}}{\eta}\Bigr)^{-1} \biggr\}\\
-			& = \frac{1}{\eta} \mathrm{tr} \biggl\{ \mathbf{H}_{\mathrm{B},g}^* \cdot \partial \mathbf{\Theta}_g^* \cdot \mathbf{H}_{\mathrm{F},g}^* \mathbf{Q}^\mathsf{T} \mathbf{H}^\mathsf{T} \Bigl(\mathbf{I} + \frac{\mathbf{H}^* \mathbf{Q}^\mathsf{T} \mathbf{H}^\mathsf{T}}{\eta}\Bigr)^{-1} \biggr\}\\
-			& = \frac{1}{\eta} \mathrm{tr} \biggl\{ \mathbf{H}_{\mathrm{F},g}^* \mathbf{Q}^\mathsf{T} \mathbf{H}^\mathsf{T} \Bigl(\mathbf{I} + \frac{\mathbf{H}^* \mathbf{Q}^\mathsf{T} \mathbf{H}^\mathsf{T}}{\eta}\Bigr)^{-1} \mathbf{H}_{\mathrm{B},g}^* \cdot \partial \mathbf{\Theta}_g^* \biggr\},
+			 & = \frac{1}{\eta} \mathrm{tr} \biggl\{ \partial \mathbf{H}^* \cdot \mathbf{Q}^\mathsf{T} \mathbf{H}^\mathsf{T} \Bigl(\mathbf{I} + \frac{\mathbf{H}^* \mathbf{Q}^\mathsf{T} \mathbf{H}^\mathsf{T}}{\eta}\Bigr)^{-1} \biggr\}                                                                      \\
+			 & = \frac{1}{\eta} \mathrm{tr} \biggl\{ \mathbf{H}_{\mathrm{B},g}^* \cdot \partial \mathbf{\Theta}_g^* \cdot \mathbf{H}_{\mathrm{F},g}^* \mathbf{Q}^\mathsf{T} \mathbf{H}^\mathsf{T} \Bigl(\mathbf{I} + \frac{\mathbf{H}^* \mathbf{Q}^\mathsf{T} \mathbf{H}^\mathsf{T}}{\eta}\Bigr)^{-1} \biggr\} \\
+			 & = \frac{1}{\eta} \mathrm{tr} \biggl\{ \mathbf{H}_{\mathrm{F},g}^* \mathbf{Q}^\mathsf{T} \mathbf{H}^\mathsf{T} \Bigl(\mathbf{I} + \frac{\mathbf{H}^* \mathbf{Q}^\mathsf{T} \mathbf{H}^\mathsf{T}}{\eta}\Bigr)^{-1} \mathbf{H}_{\mathrm{B},g}^* \cdot \partial \mathbf{\Theta}_g^* \biggr\},
 		\end{align*}
 		and the corresponding complex derivative is \eqref{eq:rate_gradient}.
 	\end{subsection}
@@ -1091,8 +1115,8 @@
 		The differential of \eqref{ob:power_passive} w.r.t. $\mathbf{\Theta}_g^*$ is
 		\begin{align*}
 			\partial \lVert \mathbf{H} \rVert _\mathrm{F}^2
-			& = \mathrm{tr}\bigl(\mathbf{H}_{\mathrm{B},g}^* \cdot \partial \mathbf{\Theta}_g^* \cdot \mathbf{H}_{\mathrm{F},g}^* (\mathbf{H}_\mathrm{D}^\mathsf{T} + \mathbf{H}_\mathrm{F}^\mathsf{T} \mathbf{\Theta}^\mathsf{T} \mathbf{H}_\mathrm{B}^\mathsf{T})\bigr)\\
-			& = \mathrm{tr}\bigl(\mathbf{H}_{\mathrm{F},g}^* (\mathbf{H}_\mathrm{D}^\mathsf{T} + \mathbf{H}_\mathrm{F}^\mathsf{T} \mathbf{\Theta}^\mathsf{T} \mathbf{H}_\mathrm{B}^\mathsf{T}) \mathbf{H}_{\mathrm{B},g}^* \cdot \partial \mathbf{\Theta}_g^*\bigr)
+			 & = \mathrm{tr}\bigl(\mathbf{H}_{\mathrm{B},g}^* \cdot \partial \mathbf{\Theta}_g^* \cdot \mathbf{H}_{\mathrm{F},g}^* (\mathbf{H}_\mathrm{D}^\mathsf{T} + \mathbf{H}_\mathrm{F}^\mathsf{T} \mathbf{\Theta}^\mathsf{T} \mathbf{H}_\mathrm{B}^\mathsf{T})\bigr) \\
+			 & = \mathrm{tr}\bigl(\mathbf{H}_{\mathrm{F},g}^* (\mathbf{H}_\mathrm{D}^\mathsf{T} + \mathbf{H}_\mathrm{F}^\mathsf{T} \mathbf{\Theta}^\mathsf{T} \mathbf{H}_\mathrm{B}^\mathsf{T}) \mathbf{H}_{\mathrm{B},g}^* \cdot \partial \mathbf{\Theta}_g^*\bigr)
 		\end{align*}
 		and the corresponding complex derivative is
 		\begin{equation}
