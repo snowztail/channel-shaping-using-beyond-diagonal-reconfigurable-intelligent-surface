@@ -269,33 +269,87 @@
 	Consider a \gls{bd}-\gls{ris} aided point-to-point \gls{mimo} system with $N_\mathrm{T}$, $N_\mathrm{S}$, $N_\mathrm{R}$ transmit, scatter, and receive antennas, respectively.
 	This configuration is denoted as $N_\mathrm{T} \times N_\mathrm{S} \times N_\mathrm{R}$ in the following context.
 	The \gls{bd}-\gls{ris} can be modeled as an $N_\mathrm{S}$-port network \cite{Ivrlac2010} that divides into $G$ individual groups, each containing $L \triangleq N_\mathrm{S} / G$ elements interconnected by real-time reconfigurable components \cite{Shen2020a}.
-	To simplify the analysis, we assume a lossless asymmetric network \footnote{While symmetric \gls{bd}-\gls{ris} (involving capacitors and inductors) is often considered in the literature \cite{Shen2020a,Nerini2023,Santamaria2023,Fang2023,Nerini2023a,Zhou2023,Li2023d,Bartoli2023}, asymmetric \gls{bd}-\gls{ris} can be built over reconfigurable asymmetric passive components (e.g., ring hybrids and branch-line hybrids) \cite{Ahn2006}.} without mutual coupling between scatter elements, as previously considered in \cite{Li2023b,Li2023c,Bartoli2023}.
+	To simplify the analysis, we assume a lossless asymmetric network\footnote{While symmetric \gls{bd}-\gls{ris} (involving capacitors and inductors) is often considered in the literature \cite{Shen2020a,Nerini2023,Santamaria2023,Fang2023,Nerini2023a,Zhou2023,Li2023d,Bartoli2023}, asymmetric \gls{bd}-\gls{ris} can be built over reconfigurable asymmetric passive components (e.g., ring hybrids and branch-line hybrids) \cite{Ahn2006}.} without mutual coupling between scatter elements, as previously considered in \cite{Li2023b,Li2023c,Bartoli2023}.
 	The overall scattering matrix of the \gls{bd}-\gls{ris} is
 	\begin{equation}
 		\mathbf{\Theta} = \mathrm{diag}(\mathbf{\Theta}_1,\ldots,\mathbf{\Theta}_G),
 	\end{equation}
 	where $\mathbf{\Theta}_g \in \mathbb{U}^{L \times L}$ is a unitary matrix describing the scatter response of group $g$.
-	Note that diagonal (single-connected) and unitary (fully-connected) \gls{ris} can be regarded as its extreme cases with group size 1 and $N_\mathrm{S}$, respectively.
-	The potential physical architectures of \gls{bd}-\gls{ris} are shown in \cite[Fig. 3]{Shen2020a}, \cite[Fig. 5]{Li2023c}, and \cite[Fig. 2]{Nerini2023a}, where the antenna radiation patterns and circuit network structures are taken into account.
-	% Note that \gls{bd}-\gls{ris} reduces to diagonal \gls{ris} and unitary \gls{ris} with group size equal to 1 and $N_\mathrm{S}$, respectively.
-	% Note that \gls{bd}-\gls{ris} reduces to diagonal \gls{ris} and unitary \gls{ris} with group size equal to 1 and $N_\mathrm{S}$, respectively.
+	Note that diagonal (single-connected) and unitary (fully-connected) \gls{ris} can be regarded as its extreme cases with group size $L=1$ and $L=N_\mathrm{S}$, respectively.
+	The potential physical architectures of \gls{bd}-\gls{ris} are shown in \cite[Fig. 3]{Shen2020a}, \cite[Fig. 5]{Li2023c}, and \cite[Fig. 2]{Nerini2023a}, where the radiation pattern and circuit topology significantly influence the scattering matrix.
 
-
-	Let $\mathbf{H}_\mathrm{D} \in \mathbb{C}^{N_\mathrm{R} \times N_\mathrm{T}}$, $\mathbf{H}_\mathrm{F} \in \mathbb{C}^{N_\mathrm{S} \times N_\mathrm{T}}$, $\mathbf{H}_\mathrm{B} \in \mathbb{C}^{N_\mathrm{R} \times N_\mathrm{S}}$ denote the direct (transmitter-receiver), forward (transmitter-\gls{ris}), and backward (\gls{ris}-receiver) channels, respectively.
-	The equivalent channel is
+	Let $\mathbf{H}_\mathrm{D} \in \mathbb{C}^{N_\mathrm{R} \times N_\mathrm{T}}$, $\mathbf{H}_\mathrm{B} \in \mathbb{C}^{N_\mathrm{R} \times N_\mathrm{S}}$, $\mathbf{H}_\mathrm{F} \in \mathbb{C}^{N_\mathrm{S} \times N_\mathrm{T}}$ denote the direct (transmitter-receiver), backward (\gls{ris}-receiver), and forward (transmitter-\gls{ris}) channels, respectively.
+	The equivalent channel is a function of the scattering matrix
 	\begin{equation}
 		\mathbf{H} = \mathbf{H}_\mathrm{D} + \mathbf{H}_\mathrm{B} \mathbf{\Theta} \mathbf{H}_\mathrm{F} = \mathbf{H}_\mathrm{D} + \sum_g \mathbf{H}_{\mathrm{B},g} \mathbf{\Theta}_g \mathbf{H}_{\mathrm{F},g},
 		\label{eq:channel_equivalent}
 	\end{equation}
 	where $\mathbf{H}_{\mathrm{B},g} \in \mathbb{C}^{N_\mathrm{R} \times L}$ and $\mathbf{H}_{\mathrm{F},g} \in \mathbb{C}^{L \times N_\mathrm{T}}$ are the backward and forward channels of \gls{ris} group $g$, respectively.
-	\begin{remark}
-		\gls{bd}-\gls{ris} reduces to diagonal \gls{ris} and unitary \gls{ris} with group size $L$ 1 and $N_\mathrm{S}$, respectively.
-	\end{remark}
-	\begin{remark}
-		Individual forward and backward \gls{csi} are required for \gls{bd}-\gls{ris} designs.
-		This is different from diagonal \gls{ris} where estimating their product is usually sufficient.
-		% Later we will show the potential benefits from the \gls{csi} overhead.
-	\end{remark}
+
+	Since unitary matrices constitute a field with respect to multiplication, the scattering matrix of group $g$ can be decomposed as
+	\begin{equation}
+		\mathbf{\Theta}_g = \mathbf{L}_g \mathbf{R}_g^\mathsf{H},
+	\end{equation}
+	where $\mathbf{L}_g, \mathbf{R}_g \in \mathbb{U}^{L \times L}$ are two unitary factor matrices.
+	Let $\mathbf{H}_{\mathrm{B},g} = \mathbf{U}_{\mathrm{B},g} \mathbf{\Sigma}_{\mathrm{B},g} \mathbf{V}_{\mathrm{B},g}^\mathsf{H}$ and $\mathbf{H}_{\mathrm{F},g} = \mathbf{U}_{\mathrm{F},g} \mathbf{\Sigma}_{\mathrm{F},g} \mathbf{V}_{\mathrm{F},g}^\mathsf{H}$ be the compact \gls{svd} of the backward and forward channels, respectively.
+	One can thus rewrite the equivalent channel as
+	\begin{equation}
+		\mathbf{H} = \overbrace{\mathbf{H}_\mathrm{D} + \sum_g \mathbf{U}_{\mathrm{B},g} \mathbf{\Sigma}_{\mathrm{B},g} \underbrace{\mathbf{V}_{\mathrm{B},g}^\mathsf{H} \mathbf{L}_g \mathbf{R}_g^\mathsf{H} \mathbf{U}_{\mathrm{F},g}}_\text{backward-forward} \mathbf{\Sigma}_{\mathrm{F},g} \mathbf{V}_{\mathrm{F},g}^\mathsf{H}}^\text{direct-indirect},
+	\end{equation}
+	where the \gls{ris} design involves two critical issues: \emph{subspace alignment} and \emph{subchannel rearrangement}.
+	\begin{itemize}
+		\item 
+	\end{itemize}
+	% types of \emph{subspace alignment} problems: direct-indirect (additive) and backward-forward (multiplicative).
+	% which involves two types of \emph{subspace alignment} problems: direct-indirect (additive) and backward-forward (multiplicative).
+
+
+
+	% \begin{equation}
+	% 	\mathbf{H} = \underbrace{\mathbf{H}_\mathrm{D} + \underbrace{\sum_g \mathbf{U}_{\mathrm{B},g} \mathbf{\Sigma}_{\mathrm{B},g} \underbrace{\mathbf{V}_{\mathrm{B},g}^\mathsf{H} \mathbf{L}_g \mathbf{R}_g^\mathsf{H} \mathbf{U}_{\mathrm{F},g}}_\text{backward-forward} \mathbf{\Sigma}_{\mathrm{F},g} \mathbf{V}_{\mathrm{F},g}^\mathsf{H}}_\text{group-wise}}_\text{direct-indirect},
+	% \end{equation}
+	% which involves three subspace alignment problems:
+	% which involves three subspace alignment problems
+	% \begin{equation}
+	% 	\mathbf{H} = \mathbf{H}_\mathrm{D} + \sum_g \mathbf{U}_{\mathrm{B},g} \mathbf{\Sigma}_{\mathrm{B},g} \underbrace{\mathbf{V}_{\mathrm{B},g}^\mathsf{H} \mathbf{L}_g \mathbf{R}_g^\mathsf{H} \mathbf{U}_{\mathrm{F},g}}_{\substack{\text{backward-forward}\\\text{additive alignment}}} \mathbf{\Sigma}_{\mathrm{F},g} \mathbf{V}_{\mathrm{F},g}^\mathsf{H}.
+	% \end{equation}
+	% \begin{equation}
+	% 	\mathbf{H} = \mathbf{H}_\mathrm{D} + \sum_g \mathbf{U}_{\mathrm{B},g} \mathbf{\Sigma}_{\mathrm{B},g} \underbrace{\mathbf{V}_{\mathrm{B},g}^\mathsf{H} \mathbf{L}_g}_{\substack{\text{backward}\\\text{align}}} \underbrace{\mathbf{R}_g^\mathsf{H} \mathbf{U}_{\mathrm{F},g}}_{\substack{\text{forward}\\\text{align}}} \mathbf{\Sigma}_{\mathrm{F},g} \mathbf{V}_{\mathrm{F},g}^\mathsf{H}.
+	% \end{equation}
+	% Then the equivalent channel can be rewritten as
+	% Since the field of (block) unitary matrices formulate a field that is closed under multiplication
+	% Since block unitary matrices satisfy the axioms of a field under matrix multiplication
+	% \begin{remark}
+	% 	% To understand the \gls{b} gain from in-group connections
+	% \end{remark}
+
+
+
+
+	% \begin{remark}
+	% 	From \eqref{eq:scattering_fc} and \eqref{eq:channel_equivalent_fc} in the proof of Proposition \ref{pp:fully_connected}, we notice that \eqref{iq:sv_bound_fc}--\eqref{iq:sv_bound_fc_power} are simultaneously tight when
+	% 	% Interestingly, \eqref{iq:sv_bound_fc}--\eqref{iq:sv_bound_fc_power} are simultaneously tight when
+	% 	\begin{equation}
+	% 		\mathbf{\Theta} = \mathbf{V}_\mathrm{B} \mathbf{U}_\mathrm{F}^\mathsf{H}.
+	% 		\label{eq:scattering_fc_tight}
+	% 	\end{equation}
+	% 	An interpretation is that the off-diagonal entries can enhance the capabilities of
+	% 	\begin{itemize}
+	% 		\item subspace alignment: $\mathbf{V}_\mathrm{B}$ and $\mathbf{U}_\mathrm{F}^\mathsf{H}$ in \eqref{eq:scattering_fc} fully align the subspaces of $\mathbf{H}_\mathrm{B}$ and $\mathbf{H}_\mathrm{F}$ by rotation;
+	% 		\item subchannel rearrangement: $\mathbf{X} = \mathbf{I}$ in \eqref{eq:channel_equivalent_fc} pairs the subchannels of $\mathbf{H}_\mathrm{B}$ and $\mathbf{H}_\mathrm{F}$ from strongest to weakest, which attains the maximal in rearrangement inequality.
+	% 	\end{itemize}
+	% \end{remark}
+
+
+
+	% \begin{remark}
+	% 	\gls{bd}-\gls{ris} reduces to diagonal \gls{ris} and unitary \gls{ris} with group size $L$ 1 and $N_\mathrm{S}$, respectively.
+	% \end{remark}
+	% \begin{remark}
+	% 	Individual forward and backward \gls{csi} are required for \gls{bd}-\gls{ris} designs.
+	% 	This is different from diagonal \gls{ris} where estimating their product is usually sufficient.
+	% 	% Later we will show the potential benefits from the \gls{csi} overhead.
+	% \end{remark}
 \end{section}
 
 \begin{section}{Channel Singular Values Redistribution}
@@ -557,19 +611,19 @@
 			When $k = N'$ and $p = 2$, \eqref{iq:sv_bound_fc_power} suggests the channel power is upper bounded by the sum of (sorted) element-wise power product of backward and forward subchannels.
 		\end{corollary}
 
-		\begin{remark}
-			From \eqref{eq:scattering_fc} and \eqref{eq:channel_equivalent_fc} in the proof of Proposition \ref{pp:fully_connected}, we notice that \eqref{iq:sv_bound_fc}--\eqref{iq:sv_bound_fc_power} are simultaneously tight when
-			% Interestingly, \eqref{iq:sv_bound_fc}--\eqref{iq:sv_bound_fc_power} are simultaneously tight when
-			\begin{equation}
-				\mathbf{\Theta} = \mathbf{V}_\mathrm{B} \mathbf{U}_\mathrm{F}^\mathsf{H}.
-				\label{eq:scattering_fc_tight}
-			\end{equation}
-			An interpretation is that the off-diagonal entries can enhance the capabilities of
-			\begin{itemize}
-				\item subspace alignment: $\mathbf{V}_\mathrm{B}$ and $\mathbf{U}_\mathrm{F}^\mathsf{H}$ in \eqref{eq:scattering_fc} fully align the subspaces of $\mathbf{H}_\mathrm{B}$ and $\mathbf{H}_\mathrm{F}$ by rotation;
-				\item subchannel rearrangement: $\mathbf{X} = \mathbf{I}$ in \eqref{eq:channel_equivalent_fc} pairs the subchannels of $\mathbf{H}_\mathrm{B}$ and $\mathbf{H}_\mathrm{F}$ from strongest to weakest, which attains the maximal in rearrangement inequality.
-			\end{itemize}
-		\end{remark}
+		% \begin{remark}
+		% 	From \eqref{eq:scattering_fc} and \eqref{eq:channel_equivalent_fc} in the proof of Proposition \ref{pp:fully_connected}, we notice that \eqref{iq:sv_bound_fc}--\eqref{iq:sv_bound_fc_power} are simultaneously tight when
+		% 	% Interestingly, \eqref{iq:sv_bound_fc}--\eqref{iq:sv_bound_fc_power} are simultaneously tight when
+		% 	\begin{equation}
+		% 		\mathbf{\Theta} = \mathbf{V}_\mathrm{B} \mathbf{U}_\mathrm{F}^\mathsf{H}.
+		% 		\label{eq:scattering_fc_tight}
+		% 	\end{equation}
+		% 	An interpretation is that the off-diagonal entries can enhance the capabilities of
+		% 	\begin{itemize}
+		% 		\item subspace alignment: $\mathbf{V}_\mathrm{B}$ and $\mathbf{U}_\mathrm{F}^\mathsf{H}$ in \eqref{eq:scattering_fc} fully align the subspaces of $\mathbf{H}_\mathrm{B}$ and $\mathbf{H}_\mathrm{F}$ by rotation;
+		% 		\item subchannel rearrangement: $\mathbf{X} = \mathbf{I}$ in \eqref{eq:channel_equivalent_fc} pairs the subchannels of $\mathbf{H}_\mathrm{B}$ and $\mathbf{H}_\mathrm{F}$ from strongest to weakest, which attains the maximal in rearrangement inequality.
+		% 	\end{itemize}
+		% \end{remark}
 
 		Tight bounds are inapplicable when a \gls{mimo} direct link is present, as the \gls{ris} needs to balance the direct-indirect (additive) and backward-forward (multiplicative) subspace alignments.
 		Such a balance often involves optimization approaches and another example will be discussed in Section~\ref{sc:low_complexity}.
