@@ -274,9 +274,10 @@
 	\begin{equation}
 		\mathbf{\Theta} = \mathrm{diag}(\mathbf{\Theta}_1,\ldots,\mathbf{\Theta}_G),
 	\end{equation}
-	where $\mathbf{\Theta}_g \in \mathbb{U}^{L \times L}$ is a unitary matrix describing the scatter response of group $g$.
+	where $\mathbf{\Theta}_g \in \mathbb{U}^{L \times L}$ is a unitary matrix that describes the response of group $g \in \mathcal{G} \triangleq \{1, \ldots, G\}$.
+	That is, $\mathbf{\Theta}_g = \mathbf{\Theta}_g^\mathsf{H}$ and $\mathbf{\Theta}_g^\mathsf{H} \mathbf{\Theta}_g = \mathbf{I}$.
 	Note that diagonal (single-connected) and unitary (fully-connected) \gls{ris} can be regarded as its extreme cases with group size $L=1$ and $L=N_\mathrm{S}$, respectively.
-	The potential physical architectures of \gls{bd}-\gls{ris} are shown in \cite[Fig. 3]{Shen2020a}, \cite[Fig. 5]{Li2023c}, and \cite[Fig. 2]{Nerini2023a}, where the radiation pattern and circuit topology significantly influence the scattering matrix.
+	Some potential physical architectures of \gls{bd}-\gls{ris} are illustrated in \cite[Fig. 3]{Shen2020a}, \cite[Fig. 5]{Li2023c}, and \cite[Fig. 2]{Nerini2023a}, where the radiation pattern and circuit topology have appreciable impacts on the scattering matrix.
 
 	Let $\mathbf{H}_\mathrm{D} \in \mathbb{C}^{N_\mathrm{R} \times N_\mathrm{T}}$, $\mathbf{H}_\mathrm{B} \in \mathbb{C}^{N_\mathrm{R} \times N_\mathrm{S}}$, $\mathbf{H}_\mathrm{F} \in \mathbb{C}^{N_\mathrm{S} \times N_\mathrm{T}}$ denote the direct (transmitter-receiver), backward (\gls{ris}-receiver), and forward (transmitter-\gls{ris}) channels, respectively.
 	The equivalent channel is a function of the scattering matrix
@@ -284,21 +285,28 @@
 		\mathbf{H} = \mathbf{H}_\mathrm{D} + \mathbf{H}_\mathrm{B} \mathbf{\Theta} \mathbf{H}_\mathrm{F} = \mathbf{H}_\mathrm{D} + \sum_g \mathbf{H}_{\mathrm{B},g} \mathbf{\Theta}_g \mathbf{H}_{\mathrm{F},g},
 		\label{eq:channel_equivalent}
 	\end{equation}
-	where $\mathbf{H}_{\mathrm{B},g} \in \mathbb{C}^{N_\mathrm{R} \times L}$ and $\mathbf{H}_{\mathrm{F},g} \in \mathbb{C}^{L \times N_\mathrm{T}}$ are the backward and forward channels of \gls{ris} group $g$, respectively.
-
+	where $\mathbf{H}_{\mathrm{B},g} \in \mathbb{C}^{N_\mathrm{R} \times L}$ and $\mathbf{H}_{\mathrm{F},g} \in \mathbb{C}^{L \times N_\mathrm{T}}$ are the backward and forward subchannels for \gls{ris} group $g$, corresponding to the $(g-1)L$ to $gL$ columns of $\mathbf{H}_\mathrm{B}$ and rows of $\mathbf{H}_\mathrm{F}$, respectively.
+	% That is, $\mathbf{H}_{\mathrm{B},g}$ (resp. $\mathbf{H}_{\mathrm{F},g}$) corresponds to the $(g-1)L$ to $gL$ columns (resp. rows) of $\mathbf{H}_\mathrm{B}$ (resp. $\mathbf{H}_\mathrm{F}$).
+	% , corresponding to the $(g-1)L$ to $gL$ columns of $\mathbf{H}_\mathrm{B}$ and rows of $\mathbf{H}_\mathrm{F}$.
+	% $\mathbf{H}_{\mathrm{B},g}$ (resp. $\mathbf{H}_{\mathrm{F},g}$) corresponds to the $(g-1)L$ to $gL$ columns of $\mathbf{H}_\mathrm{B}$
 	Since unitary matrices constitute a field with respect to multiplication, the scattering matrix of group $g$ can be decomposed as
 	\begin{equation}
 		\mathbf{\Theta}_g = \mathbf{L}_g \mathbf{R}_g^\mathsf{H},
 	\end{equation}
 	where $\mathbf{L}_g, \mathbf{R}_g \in \mathbb{U}^{L \times L}$ are two unitary factor matrices.
 	Let $\mathbf{H}_{\mathrm{B},g} = \mathbf{U}_{\mathrm{B},g} \mathbf{\Sigma}_{\mathrm{B},g} \mathbf{V}_{\mathrm{B},g}^\mathsf{H}$ and $\mathbf{H}_{\mathrm{F},g} = \mathbf{U}_{\mathrm{F},g} \mathbf{\Sigma}_{\mathrm{F},g} \mathbf{V}_{\mathrm{F},g}^\mathsf{H}$ be the compact \gls{svd} of the backward and forward channels, respectively.
-	One can thus rewrite the equivalent channel as
+	The equivalent channel can thus be rewritten as
 	\begin{equation}
-		\mathbf{H} = \overbrace{\mathbf{H}_\mathrm{D} + \sum_g \mathbf{U}_{\mathrm{B},g} \mathbf{\Sigma}_{\mathrm{B},g} \underbrace{\mathbf{V}_{\mathrm{B},g}^\mathsf{H} \mathbf{L}_g \mathbf{R}_g^\mathsf{H} \mathbf{U}_{\mathrm{F},g}}_\text{backward-forward} \mathbf{\Sigma}_{\mathrm{F},g} \mathbf{V}_{\mathrm{F},g}^\mathsf{H}}^\text{direct-indirect},
+		\mathbf{H} = \overbrace{\mathbf{H}_\mathrm{D} + \sum_g \mathbf{U}_{\mathrm{B},g} \mathbf{\Sigma}_{\mathrm{B},g} \underbrace{\mathbf{V}_{\mathrm{B},g}^\mathsf{H} \mathbf{L}_g \mathbf{R}_g^\mathsf{H} \mathbf{U}_{\mathrm{F},g}}_\text{backward-forward} \mathbf{\Sigma}_{\mathrm{F},g} \mathbf{V}_{\mathrm{F},g}^\mathsf{H}}^\text{direct-indirect}.
+		\label{eq:channel_equivalent_svd}
 	\end{equation}
-	where the \gls{ris} design involves two critical issues: \emph{subspace alignment} and \emph{subchannel rearrangement}.
+	Clearly, channel shaping involves two critical issues:
+	% From \eqref{eq:channel_equivalent_svd}, we can see that channel shaping via \gls{ris} involves two critical aspects:
 	\begin{itemize}
-		\item 
+		\item \emph{Subspace alignment:} there exists a tradeoff between the additive (direct-indirect) and multiplicative (backward-forward) alignments of channel singular matrices;
+		% group $g$ can completely align the subspaces of backward and forward subchannel
+		\item \emph{Subchannel rearrangement:} the backward and forward subchannels associated with any group can be rearranged and combined.
+		% , which grants better performance due to the rearrangement inequalities \cite{Zhao2022}.
 	\end{itemize}
 	% types of \emph{subspace alignment} problems: direct-indirect (additive) and backward-forward (multiplicative).
 	% which involves two types of \emph{subspace alignment} problems: direct-indirect (additive) and backward-forward (multiplicative).
@@ -830,10 +838,10 @@
 		\centering
 		\begin{tabular}{ccccccc}
 			\toprule
-			\multirow{2}{*}{\gls{rcg} path} & \multicolumn{3}{c}{$N_\mathrm{S}=16$} & \multicolumn{3}{c}{$N_\mathrm{S}=256$}                                                             \\ \cmidrule(lr){2-4} \cmidrule(lr){5-7}
-			                                & Objective                             & Iterations                             & Time [s]        & Objective       & Iterations & Time [s] \\ \midrule
-			Geodesic                        & $\num{4.36e-3}$                       & 11.61                                  & $\num{2.04e-2}$ & $\num{1.16e-2}$ & 25.78      & 3.21     \\
-			Non-geodesic                    & $\num{4.17e-3}$                       & 169.50                                 & $\num{1.42e-1}$ & $\num{8.87e-3}$ & 278.08     & 27.81    \\ \bottomrule
+			\multirow{2}{*}{\gls{rcg} path} & \multicolumn{3}{c}{$N_\mathrm{S}=16$} & \multicolumn{3}{c}{$N_\mathrm{S}=256$}                                                                 \\ \cmidrule(lr){2-4} \cmidrule(lr){5-7}
+			                                & Objective                              & Iterations                             & Time [s]         & Objective        & Iterations & Time [s]  \\ \midrule
+			Geodesic                        & $\num{4.355e-3}$                       & 11.61                                  & $\num{2.038e-2}$ & $\num{1.164e-2}$ & 25.78      & 3.216     \\
+			Non-geodesic                    & $\num{4.168e-3}$                       & 169.5                                  & $\num{1.420e-1}$ & $\num{8.873e-3}$ & 278.1      & 27.81     \\ \bottomrule
 		\end{tabular}
 	\end{table*}
 
