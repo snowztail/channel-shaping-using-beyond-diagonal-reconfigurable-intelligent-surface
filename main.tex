@@ -277,7 +277,7 @@
 	where $\mathbf{\Theta}_g \in \mathbb{U}^{L \times L}$ is a unitary matrix that describes the response of group $g \in \mathcal{G} \triangleq \{1, \ldots, G\}$.
 	That is, $\mathbf{\Theta}_g = \mathbf{\Theta}_g^\mathsf{H}$ and $\mathbf{\Theta}_g^\mathsf{H} \mathbf{\Theta}_g = \mathbf{I}$.
 	Note that diagonal (single-connected) and unitary (fully-connected) \gls{ris} can be regarded as its extreme cases with group size $L=1$ and $L=N_\mathrm{S}$, respectively.
-	Some potential physical architectures of \gls{bd}-\gls{ris} are illustrated in \cite[Fig. 3]{Shen2020a}, \cite[Fig. 5]{Li2023c}, and \cite[Fig. 2]{Nerini2023a}, where the radiation pattern and circuit topology have appreciable impacts on the scattering matrix.
+	Some potential physical architectures of \gls{bd}-\gls{ris} are illustrated in \cite[Fig. 3]{Shen2020a}, \cite[Fig. 5]{Li2023c}, and \cite[Fig. 2]{Nerini2023a}, where the radiation pattern and circuit topology have impacts on the scattering matrix.
 
 	Let $\mathbf{H}_\mathrm{D} \in \mathbb{C}^{N_\mathrm{R} \times N_\mathrm{T}}$, $\mathbf{H}_\mathrm{B} \in \mathbb{C}^{N_\mathrm{R} \times N_\mathrm{S}}$, $\mathbf{H}_\mathrm{F} \in \mathbb{C}^{N_\mathrm{S} \times N_\mathrm{T}}$ denote the direct (transmitter-receiver), backward (\gls{ris}-receiver), and forward (transmitter-\gls{ris}) channels, respectively.
 	The equivalent channel is a function of the scattering matrix
@@ -300,17 +300,37 @@
 		\mathbf{H} = \overbrace{\mathbf{H}_\mathrm{D} + \sum_g \mathbf{U}_{\mathrm{B},g} \mathbf{\Sigma}_{\mathrm{B},g} \underbrace{\mathbf{V}_{\mathrm{B},g}^\mathsf{H} \mathbf{L}_g \mathbf{R}_g^\mathsf{H} \mathbf{U}_{\mathrm{F},g}}_\text{backward-forward} \mathbf{\Sigma}_{\mathrm{F},g} \mathbf{V}_{\mathrm{F},g}^\mathsf{H}}^\text{direct-indirect}.
 		\label{eq:channel_equivalent_svd}
 	\end{equation}
-	Clearly, channel shaping involves two critical issues:
-	% From \eqref{eq:channel_equivalent_svd}, we can see that channel shaping via \gls{ris} involves two critical aspects:
-	\begin{itemize}
-		\item \emph{Subspace alignment:} there exists a tradeoff between the additive (direct-indirect) and multiplicative (backward-forward) alignments of channel singular matrices;
-		% group $g$ can completely align the subspaces of backward and forward subchannel
-		\item \emph{Subchannel rearrangement:} the backward and forward subchannels associated with any group can be rearranged and combined.
-		% , which grants better performance due to the rearrangement inequalities \cite{Zhao2022}.
-	\end{itemize}
-	% types of \emph{subspace alignment} problems: direct-indirect (additive) and backward-forward (multiplicative).
-	% which involves two types of \emph{subspace alignment} problems: direct-indirect (additive) and backward-forward (multiplicative).
 
+	\begin{remark}
+		By analyzing \eqref{eq:channel_equivalent_svd}, we conclude that channel shaping through \gls{bd}-\gls{ris} involves two critical challenges:
+		\begin{itemize}
+			% \item Subspace alignment: the singular matrices of backward and forward channels
+			\item \textbf{Subspace alignment:} each group needs to balance the backward-forward (intra-group, multiplicative) and the direct-indirect (inter-group, additive) alignments of the singular matrices.
+			\item \textbf{Subchannel rearrangement:} each group can rearrange and combine the backward and forward subchannels from strongest to weakest, which attains the maximal in rearrangement inequality.
+		\end{itemize}
+	\end{remark}
+
+	% TODO: add illustrations for both
+
+	% In \gls{siso}, the equivalent channel can be further simplified as
+	% \begin{equation}
+	% 	h = h_\mathrm{D} + \sum_g \mathbf{h}_{\mathrm{B},g} \mathbf{\Theta}_g \mathbf{h}_{\mathrm{F},g},
+	% \end{equation}
+	% subspace alignment boils down to phase matching
+
+
+
+
+	% For the \gls{siso} case in Fig. \subref*{fg:power_bond_txrx1_nd}, the maximum channel power is approximately \num{4e-6} by diagonal \gls{ris} and \num{6.5e-6} by fully-connected \gls{bd}-\gls{ris}, corresponding to a \qty{62.5}{\percent} gain.
+	% This aligns with the asymptotic \gls{bd}-\gls{ris} scaling law derived for \gls{siso} in \cite{Shen2020a}.
+	% Interestingly, the gain surges to \qty{270}{\percent} in 4T4R \gls{mimo} as shown in Fig. \subref*{fg:power_bond_txrx4_nd}.
+	% This is because subspace alignment boils down to phase matching in \gls{siso} such that both triangular and Cauchy-Schwarz inequalities in \cite[(50)]{Shen2020a} can be simultaneously tight regardless of the group size.
+	% That is, diagonal \gls{ris} is sufficient for subspace alignment in \gls{siso} while the \qty{62.5}{\percent} gain from \gls{bd}-\gls{ris} comes purely from subchannel rearrangement (i.e., pairing the forward and backward channels from strongest to weakest).
+	% Now consider a diagonal \gls{ris} in \gls{mimo}.
+	% Each element can only apply a common phase shift to the associated rank-1 $N_\mathrm{R} \times N_\mathrm{T}$ indirect channel.
+	% Therefore, perfect subspace alignment of indirect channels through different elements is generally impossible.
+	% It means the disadvantage of diagonal \gls{ris} in subspace alignment and subchannel rearrangement scales with \gls{mimo} dimensions.
+	% We thus conclude that the power gain of \gls{bd}-\gls{ris} scales with group size and \gls{mimo} dimensions.
 
 
 	% \begin{equation}
