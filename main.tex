@@ -250,6 +250,7 @@
 	% $\mathbb{U}^{n \times n}$ denotes the set of $n \times n$ unitary matrices.
 	$\mathbf{0}$ and $\mathbf{I}$ are the all-zero and identity matrices with appropriate size, respectively.
 	$\Re\{\cdot\}$ takes the real part of a complex number.
+	$\mathrm{arg}(\cdot)$ gives the argument of a complex number.
 	$\mathrm{tr}(\cdot)$ and $\det(\cdot)$ evaluates the trace and determinant of a square matrix, respectively.
 	$\mathrm{diag}(\cdot)$ constructs a square matrix with arguments on the main diagonal and zeros elsewhere.
 	$\mathrm{sv}(\cdot)$ returns the singular value vector.
@@ -289,7 +290,7 @@
 	% That is, $\mathbf{H}_{\mathrm{B},g}$ (resp. $\mathbf{H}_{\mathrm{F},g}$) corresponds to the $(g-1)L$ to $gL$ columns (resp. rows) of $\mathbf{H}_\mathrm{B}$ (resp. $\mathbf{H}_\mathrm{F}$).
 	% , corresponding to the $(g-1)L$ to $gL$ columns of $\mathbf{H}_\mathrm{B}$ and rows of $\mathbf{H}_\mathrm{F}$.
 	% $\mathbf{H}_{\mathrm{B},g}$ (resp. $\mathbf{H}_{\mathrm{F},g}$) corresponds to the $(g-1)L$ to $gL$ columns of $\mathbf{H}_\mathrm{B}$
-	Since unitary matrices constitute a field with respect to multiplication, the scattering matrix of group $g$ can be decomposed as
+	Since unitary matrices constitute an algebraic group with respect to multiplication, the scattering matrix of group $g$ can be decomposed as
 	\begin{equation}
 		\mathbf{\Theta}_g = \mathbf{L}_g \mathbf{R}_g^\mathsf{H},
 	\end{equation}
@@ -302,11 +303,38 @@
 	\end{equation}
 
 	\begin{remark}
-		By analyzing \eqref{eq:channel_equivalent_svd}, we conclude that channel shaping through \gls{bd}-\gls{ris} involves two critical challenges:
+		By analyzing \eqref{eq:channel_equivalent_svd}, we conclude that channel shaping through \gls{bd}-\gls{ris} creates two critical opportunities:
 		\begin{itemize}
-			% \item Subspace alignment: the singular matrices of backward and forward channels
-			\item \textbf{Subspace alignment:} each group needs to balance the backward-forward (intra-group, multiplicative) and the direct-indirect (inter-group, additive) alignments of the singular matrices.
-			\item \textbf{Subchannel rearrangement:} each group can rearrange and combine the backward and forward subchannels from strongest to weakest, which attains the maximal in rearrangement inequality.
+			\item \textbf{Subspace alignment:} each group can align the singular matrices of the backward-forward (intra-group, multiplicative) and the direct-indirect (inter-group, additive) channels. In \gls{siso}, subspace alignment boils down to phase matching and the optimal scattering matrix of group $g$ is
+			\begin{equation}
+				\mathbf{\Theta}_g^\star = \exp \bigl(\jmath \mathrm{arg}(h_\mathrm{D})\bigr) \mathbf{V}_{\mathrm{B},g} \mathbf{U}_{\mathrm{F},g}^\mathsf{H},
+			\end{equation}
+			where $\mathbf{V}_{\mathrm{B},g} = \bigl[\mathbf{h}_{\mathrm{B},g}/\lVert \mathbf{h}_{\mathrm{B},g} \rVert, \mathbf{N}_{\mathrm{B},g}\bigr]$, $\mathbf{U}_{\mathrm{F},g} = \bigl[\mathbf{h}_{\mathrm{F},g}/\lVert \mathbf{h}_{\mathrm{F},g} \rVert, \mathbf{N}_{\mathrm{F},g}\bigr]$, and $\mathbf{N}_{\mathrm{B},g}, \mathbf{N}_{\mathrm{F},g} \in \mathbb{C}^{L \times (L-1)}$ are the orthonormal bases of the null spaces of $\mathbf{h}_{\mathrm{B},g}$ and $\mathbf{h}_{\mathrm{F},g}$, respectively.
+			Diagonal \gls{ris} is thus sufficient for perfect \gls{siso} phase matching (with empty null spaces), but its disadvantage in subspace alignment scales with \gls{mimo} dimensions, since each element can only apply a common phase shift to the ``pinhole'' indirect channel of size $N_\mathrm{R} \times N_\mathrm{T}$ passing through itself.
+			Even if the \gls{bd}-\gls{ris} is fully-connected, there still exists a tradeoff between the direct-indirect and backward-forward alignments.
+			% It suggests that diagonal \gls{ris} applying a phase shift to each indirect channel is sufficient for phase matching in \gls{siso}. but its disadvantage in subspace alignment scales with \gls{mimo} dimensions.
+			% It suggests that diagonal \gls{ris} applying a phase shift to each indirect channel is sufficient for phase matching in \gls{siso}, but its disadvantage in subspace alignment scales with \gls{mimo} dimensions.
+			% It is obvious that diagonal \gls{ris} is sufficient for perfect phase matching. However,
+			% It is obvious that diagonal \gls{ris} is sufficient for perfect phase matching. However, in \gls{mimo} each element can only apply a common phase shift to the associated rank-1 $N_\mathrm{R} \times N_\mathrm{T}$ indirect channel.
+			% Therefore, perfect subspace alignment of indirect channels through different elements is generally impossible.
+			% It means the disadvantage of diagonal \gls{ris} in subspace alignment and subchannel rearrangement scales with \gls{mimo} dimensions.
+			% is sufficient for perfect alignment
+			% and is sufficient for perfect subspace alignment.
+			% In \gls{mimo}, perfect subspace alignment is generally impossible due to the lack of direct control over the indirect channels.aa
+			% backward-forward (intra-group, multiplicative) and the direct-indirect (inter-group, additive) alignments of the singular matrices.
+			\item \textbf{Subchannel rearrangement:} this unique property of \gls{bd}-\gls{ris} allows each group to rearrange and combine the backward and forward subchannels by strength. In \gls{siso}, diagonal \gls{ris} provides a maximum indirect channel amplitude of $\sum_{n=1}^{N_\mathrm{S}} \lvert h_{\mathrm{B},n} \rvert \lvert h_{\mathrm{F},n} \rvert$, while \gls{bd}-\gls{ris} can generalize it to $\sum_{g=1}^{G} \sum_{l=1}^{L} \lvert h_{\mathrm{B},\pi_{\mathrm{B},g}(l)} \rvert \lvert h_{\mathrm{F},\pi_{\mathrm{F},g}(l)} \rvert$, where $\pi_{\mathrm{B},g}$ and $\pi_{\mathrm{F},g}$ are permutations of $\mathcal{L} \triangleq \{1, \ldots, L\}$. By rearrangement inequality, the maximum is attained by pairing the $l$-th strongest backward and forward subchannels in each group.
+			The advantage of \gls{bd}-\gls{ris} in subchannel rearrangement scales with \gls{mimo} dimensions, since the number of subchannels associated with each group grows with $N_\mathrm{R} \times N_\mathrm{T}$.
+			% effect is more pronounced in \gls{mimo} since the number of subchannels associated with each group grows quadratically with the dimensions.
+			% The advantage of \gls{bd}-\gls{ris} in subchannel rearrangement scales with \gls{mimo} dimensions. since the number of subchannels associated with each group grows quadratically with the dimensions.
+			% It suggests that the advantage of \gls{bd}-\gls{ris} in subchannel rearrangement scales with \gls{mimo} dimensions.
+			% \item \textbf{Subchannel rearrangement:} this unique property of \gls{bd}-\gls{ris} allows each group to rearrange and combine the backward and forward subchannels by strength. In \gls{siso}, the maximum indirect channel amplitude by diagonal \gls{ris} is $\sum_{n=1}^{N_\mathrm{S}} \lvert h_{\mathrm{B},n} \rvert \lvert h_{\mathrm{F},n} \rvert$ while \gls{bd}-\gls{ris} can generalize it to $\sum_{g=1}^{G} \sum_{l=1}^{L} \lvert h_{\mathrm{B},\pi_{\mathrm{B},g}(l)} \rvert \lvert h_{\mathrm{F},\pi_{\mathrm{F},g}(l)} \rvert$, where $\pi_{\mathrm{B},g}$ and $\pi_{\mathrm{F},g}$ are independent permutations of $\mathcal{L} \triangleq \{1, \ldots, L\}$. By rearrangement inequality, the maximum is attained by pairing the $l$-th strongest backward and forward subchannels in each group.
+			% \begin{equation}
+			% 	\item \
+			% \end{equation}
+			% and $\sum_{g=1}^{G} \sum_{l=1}^{L} \lvert h_{\mathrm{B},\pi_{\mathrm{B},g}(l)} \rvert \lvert h_{\mathrm{F},\pi_{\mathrm{F},g}(l)} \rvert$ by \gls{bd}-\gls{ris}, where $\pi_{\mathrm{B},g}$ and $\pi_{\mathrm{F},g}$ are permutations of $\mathcal{L} \triangleq \{1, \ldots, L\}$. By rearrangement inequality,
+			% \item \textbf{Subchannel rearrangement:} this unique property of \gls{bd}-\gls{ris} allows each group to rearrange and combine the backward and forward subchannels by strength. In \gls{siso}, the optimal indirect channel amplitude is $\sum_{n=1}^{N_\mathrm{S}} \lvert h_{\mathrm{B},n} \rvert \lvert h_{\mathrm{F},n} \rvert$ by diagonal \gls{ris} and $\sum_{n=1}^{N_\mathrm{S}} \lvert h_{\mathrm{B},\pi_\mathrm{B}(n)} \rvert \lvert h_{\mathrm{F},\pi_\mathrm{F}(n)} \rvert$ by \gls{bd}-\gls{ris}, where $\pi(\cdot)$ is a permutation of $\{1, \ldots, N_\mathrm{S}\}$.
+			% this is unique to \gls{bd}-\gls{ris} --- each group can rearrange and combine the backward and forward subchannels by strength. In \gls{siso}, the optimal indirect channel amplitude is relaxed from $\sum_n \lvert h_{\mathrm{B},n} \rvert \lvert h_{\mathrm{F},n} \rvert$ to $\sum_n \lvert h_{\mathrm{B},\pi(n)} \rvert \lvert h_{\mathrm{F},\pi(n)} \rvert$ where $\pi(\cdot)$ is a permutation of $\{1, \ldots, L\}$.
+			% from strongest to weakest, which attains the maximum in rearrangement inequality.
 		\end{itemize}
 	\end{remark}
 
@@ -364,7 +392,7 @@
 	% 	An interpretation is that the off-diagonal entries can enhance the capabilities of
 	% 	\begin{itemize}
 	% 		\item subspace alignment: $\mathbf{V}_\mathrm{B}$ and $\mathbf{U}_\mathrm{F}^\mathsf{H}$ in \eqref{eq:scattering_fc} fully align the subspaces of $\mathbf{H}_\mathrm{B}$ and $\mathbf{H}_\mathrm{F}$ by rotation;
-	% 		\item subchannel rearrangement: $\mathbf{X} = \mathbf{I}$ in \eqref{eq:channel_equivalent_fc} pairs the subchannels of $\mathbf{H}_\mathrm{B}$ and $\mathbf{H}_\mathrm{F}$ from strongest to weakest, which attains the maximal in rearrangement inequality.
+	% 		\item subchannel rearrangement: $\mathbf{X} = \mathbf{I}$ in \eqref{eq:channel_equivalent_fc} pairs the subchannels of $\mathbf{H}_\mathrm{B}$ and $\mathbf{H}_\mathrm{F}$ from strongest to weakest, which attains the maximum in rearrangement inequality.
 	% 	\end{itemize}
 	% \end{remark}
 
@@ -649,7 +677,7 @@
 		% 	An interpretation is that the off-diagonal entries can enhance the capabilities of
 		% 	\begin{itemize}
 		% 		\item subspace alignment: $\mathbf{V}_\mathrm{B}$ and $\mathbf{U}_\mathrm{F}^\mathsf{H}$ in \eqref{eq:scattering_fc} fully align the subspaces of $\mathbf{H}_\mathrm{B}$ and $\mathbf{H}_\mathrm{F}$ by rotation;
-		% 		\item subchannel rearrangement: $\mathbf{X} = \mathbf{I}$ in \eqref{eq:channel_equivalent_fc} pairs the subchannels of $\mathbf{H}_\mathrm{B}$ and $\mathbf{H}_\mathrm{F}$ from strongest to weakest, which attains the maximal in rearrangement inequality.
+		% 		\item subchannel rearrangement: $\mathbf{X} = \mathbf{I}$ in \eqref{eq:channel_equivalent_fc} pairs the subchannels of $\mathbf{H}_\mathrm{B}$ and $\mathbf{H}_\mathrm{F}$ from strongest to weakest, which attains the maximum in rearrangement inequality.
 		% 	\end{itemize}
 		% \end{remark}
 
