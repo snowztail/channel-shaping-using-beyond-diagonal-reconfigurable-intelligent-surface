@@ -169,7 +169,7 @@
 
 \begin{abstract}
 	This paper investigates how a passive \gls{ris} can reshape the \gls{mimo} point-to-point channel in terms of singular values.
-	We depart from the widely-adapted diagonal phase shift model to a general \gls{bd} architecture, which provides superior shaping capability thanks to in-group connections between elements.
+	We depart from the widely-adopted diagonal phase shift model to a general \gls{bd} architecture, which provides superior shaping capability thanks to in-group connections between elements.
 	An efficient \gls{rcg} algorithm is tailored for smooth optimization problems of asymmetric \gls{bd}-\gls{ris} with arbitrary group size, then invoked for the Pareto frontier of channel singular values.
 	To understand the gain from off-diagonal entries, we also derive analytical singular value bounds in rank-deficient and fully-connected scenarios.
 	As a side product, we tackle \gls{mimo} rate maximization problem by alternating between active beamformer (eigenmode transmission) and passive beamformer (\gls{rcg} algorithm) until convergence.
@@ -310,7 +310,7 @@
 				\mathbf{\Theta}_g^\star = \exp \bigl(\jmath \mathrm{arg}(h_\mathrm{D})\bigr) \mathbf{V}_{\mathrm{B},g} \mathbf{U}_{\mathrm{F},g}^\mathsf{H},
 			\end{equation}
 			where $\mathbf{V}_{\mathrm{B},g} = \bigl[\mathbf{h}_{\mathrm{B},g}/\lVert \mathbf{h}_{\mathrm{B},g} \rVert, \mathbf{N}_{\mathrm{B},g}\bigr]$, $\mathbf{U}_{\mathrm{F},g} = \bigl[\mathbf{h}_{\mathrm{F},g}/\lVert \mathbf{h}_{\mathrm{F},g} \rVert, \mathbf{N}_{\mathrm{F},g}\bigr]$, and $\mathbf{N}_{\mathrm{B},g}, \mathbf{N}_{\mathrm{F},g} \in \mathbb{C}^{L \times (L-1)}$ are the orthonormal bases of the null spaces of $\mathbf{h}_{\mathrm{B},g}$ and $\mathbf{h}_{\mathrm{F},g}$, respectively.
-			Diagonal \gls{ris} is thus sufficient for perfect \gls{siso} phase matching (with empty null spaces), but its disadvantage in subspace alignment scales with \gls{mimo} dimensions, since each element can only apply a common phase shift to the ``pinhole'' indirect channel of size $N_\mathrm{R} \times N_\mathrm{T}$ passing through itself.
+			Diagonal \gls{ris} is thus sufficient for perfect \gls{siso} phase matching (with empty null spaces), but its disadvantage in subspace alignment scales with \gls{mimo} dimensions, since each element can only apply a common phase shift to the ``pinhole'' indirect channel of size $N_\mathrm{R}$-by-$N_\mathrm{T}$ passing through itself.
 			Even if the \gls{bd}-\gls{ris} is fully-connected, there still exists a tradeoff between the direct-indirect and backward-forward alignments.
 			% It suggests that diagonal \gls{ris} applying a phase shift to each indirect channel is sufficient for phase matching in \gls{siso}. but its disadvantage in subspace alignment scales with \gls{mimo} dimensions.
 			% It suggests that diagonal \gls{ris} applying a phase shift to each indirect channel is sufficient for phase matching in \gls{siso}, but its disadvantage in subspace alignment scales with \gls{mimo} dimensions.
@@ -323,7 +323,7 @@
 			% In \gls{mimo}, perfect subspace alignment is generally impossible due to the lack of direct control over the indirect channels.aa
 			% backward-forward (intra-group, multiplicative) and the direct-indirect (inter-group, additive) alignments of the singular matrices.
 			\item \textbf{Subchannel rearrangement:} this unique property of \gls{bd}-\gls{ris} allows each group to rearrange and combine the backward and forward subchannels by strength. In \gls{siso}, diagonal \gls{ris} provides a maximum indirect channel amplitude of $\sum_{n=1}^{N_\mathrm{S}} \lvert h_{\mathrm{B},n} \rvert \lvert h_{\mathrm{F},n} \rvert$, while \gls{bd}-\gls{ris} can generalize it to $\sum_{g=1}^{G} \sum_{l=1}^{L} \lvert h_{\mathrm{B},\pi_{\mathrm{B},g}(l)} \rvert \lvert h_{\mathrm{F},\pi_{\mathrm{F},g}(l)} \rvert$, where $\pi_{\mathrm{B},g}$ and $\pi_{\mathrm{F},g}$ are permutations of $\mathcal{L} \triangleq \{1, \ldots, L\}$. By rearrangement inequality, the maximum is attained by pairing the $l$-th strongest backward and forward subchannels in each group.
-			The advantage of \gls{bd}-\gls{ris} in subchannel rearrangement scales with \gls{mimo} dimensions, since the number of subchannels associated with each group grows with $N_\mathrm{R} \times N_\mathrm{T}$.
+			The advantage of \gls{bd}-\gls{ris} in subchannel rearrangement scales with \gls{mimo} dimensions, since the number of subchannels associated with each group grows with $N_\mathrm{T} N_\mathrm{R}$.
 			% effect is more pronounced in \gls{mimo} since the number of subchannels associated with each group grows quadratically with the dimensions.
 			% The advantage of \gls{bd}-\gls{ris} in subchannel rearrangement scales with \gls{mimo} dimensions. since the number of subchannels associated with each group grows quadratically with the dimensions.
 			% It suggests that the advantage of \gls{bd}-\gls{ris} in subchannel rearrangement scales with \gls{mimo} dimensions.
