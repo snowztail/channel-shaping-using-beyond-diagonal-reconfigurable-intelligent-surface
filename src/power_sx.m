@@ -57,8 +57,8 @@ for a = 1 : number.antenna
     hold on;
 end
 style_plot(handle.power.aggregate);
+set(handle.power.aggregate, {'Marker'}, {'none'});
 if flag.direct
-	set(handle.power.aggregate, {'Marker'}, {'none'});
 	legend([handle.power.direct, handle.power.procrustes.dummy.left, handle.power.procrustes.dummy.right, handle.power.aggregate], 'Location', 'nw');
 else
 	legend('Location', 'nw');
