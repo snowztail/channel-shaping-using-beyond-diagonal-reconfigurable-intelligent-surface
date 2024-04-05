@@ -61,11 +61,6 @@
 \usepgfplotslibrary{groupplots,patchplots}
 \pgfplotsset{compat=newest}
 
-% tabularx, ragged2e
-\newcolumntype{L}{>{\RaggedRight}X}
-\newcolumntype{C}{>{\centering\arraybackslash}X}
-\renewcommand\tabularxcolumn[1]{m{#1}}
-
 % algpseudocode
 \makeatletter
 \renewcommand{\fnum@algorithm}{\fname@algorithm{} \thealgorithm:}
@@ -90,40 +85,6 @@
 \algnewcommand{\Initialize}[1]{%
 	\State \textbf{Initialize }{#1}
 }
-
-% optidef
-\DeclareDocumentEnvironment{customopti}{D||{\defaultProblemFormat} O{\defaultConstraintFormat} D<>{} m m m m m}{%
-	\ifthenelse{\equal{#3}{b}}{%
-		\ifthenelse{\equal{#1}{s}}%
-		% Short version problem
-		{\setFormatShort{#4}{#5}\BaseMiniStar{#2}{#5}{#6}{#8}{#4}{#3}}%
-		% Long version problem
-		{\setFormatLong{#4}{#5}\BaseMiniStar{#2}{#5}{#6}{#8}{#4}{#3}}%
-	}{%
-		\ifthenelse{\equal{#1}{s}}%
-		% Short version problem
-		{\setFormatShort{#4}{#5}\BaseMini{#2}{#5}{#6}{#7}{#8}{#4}}%
-		% Long version problem
-		{\setFormatLong{#4}{#5}\BaseMini{#2}{#5}{#6}{#7}{#8}{#4}}%
-	}%
-}%
-{\endBaseMini\toggletrue{bodyCon}}
-
-\DeclareDocumentEnvironment{customopti*}{D||{\defaultProblemFormat} O{\defaultConstraintFormat} D<>{} m m m m m}{%
-	\ifthenelse{\equal{#1}{s}}%
-	% Short version problem
-	{\setFormatShort{#4}{#5}\BaseMiniStar{#2}{#5}{#6}{#8}{#4}{#3}}%
-	% Long version problem
-	{\setFormatLong{#4}{#5}\BaseMiniStar{#2}{#5}{#6}{#8}{#4}{#3}}%
-}{\endBaseMiniStar\toggletrue{bodyCon}}
-
-\DeclareDocumentEnvironment{customopti!}{D||{\defaultProblemFormat} O{\defaultConstraintFormat} D<>{} m m m m m}{%
-	\ifthenelse{\equal{#1}{s}}%
-	% Short version problem
-	{\setFormatShort{#4}{#5}\BaseMiniExclam{#2}{#5}{#6}{#7}{#8}{#4}{#3}}%
-	% Long version problem
-	{\setFormatLong{#4}{#5}\BaseMiniExclam{#2}{#5}{#6}{#7}{#8}{#4}{#3}}%
-}{\endBaseMiniExclam\toggletrue{bodyCon}}
 
 % glossaries-extra
 \glsdisablehyper
@@ -153,7 +114,7 @@
 
 
 \begin{document}
-\title{Channel Shaping Using Reconfigurable Intelligent Surfaces: From Diagonal to Beyond}
+\title{Channel Shaping Using Reconfigurable Intelligent Surfaces: From Diagonal Model to Beyond}
 \author{
 	\IEEEauthorblockN{
 		Yang~Zhao,~\IEEEmembership{Member,~IEEE,}
@@ -168,19 +129,39 @@
 \maketitle
 
 \begin{abstract}
-	This paper investigates how a passive \gls{ris} can reshape the \gls{mimo} point-to-point channel in terms of singular values.
-	We depart from the widely-adopted diagonal phase shift model to a general \gls{bd} architecture, which provides superior shaping capability thanks to in-group connections between elements.
-	An efficient \gls{rcg} algorithm is tailored for smooth optimization problems of asymmetric \gls{bd}-\gls{ris} with arbitrary group size, then invoked for the Pareto frontier of channel singular values.
-	To understand the gain from off-diagonal entries, we also derive analytical singular value bounds in rank-deficient and fully-connected scenarios.
-	As a side product, we tackle \gls{mimo} rate maximization problem by alternating between active beamformer (eigenmode transmission) and passive beamformer (\gls{rcg} algorithm) until convergence.
-	A low-complexity suboptimal solution based on channel shaping is also proposed, where the decoupled problem is formulated as channel power maximization and solved in closed form iteratively.
-	% We then show how channel shaping decouples the design and amounts to a low-complexity suboptimal solution.
-	% A low-complexity suboptimal solution decoupling both blocks is also proposed, where the channel shaping subproblem is formulated as channel power maximization and solved in closed form iteratively.
-	Theoretical analysis and numerical evaluation reveal that the shaping advantage of \gls{bd}-\gls{ris} increases with group size and \gls{mimo} dimensions, stemming from stronger subchannel rearrangement and subspace alignment capabilities.
+	This paper investigates how a passive \gls{ris} can manipulate the \gls{mimo} point-to-point channel in terms of singular values and power gain.
+	We depart from the widely-adopted diagonal phase shift model to a \gls{bd} architecture, which enables \emph{cooperative} wave scattering thanks to in-group connections between elements.
+	An efficient and universal asymmetric \gls{bd}-\gls{ris} design framework is proposed over group-wise \emph{geodesic} \gls{rcg} update in the Stiefel manifold.
+	For the singular value shaping problem, we characterize their Pareto frontiers by weighted sum optimization via geodesic \gls{rcg}, which generalizes most relevant metrics (e.g., degree of freedom and condition number).
+	Many useful analytical singular value bounds are also derived in rank-deficient and fully-connected (a.k.a. unitary) scenarios.
+	% For the singular value problem, we consider a numerical optimization approach that characterizes the Pareto frontiers as well as an analytical bounding approach in special (i.e., rank-deficient and fully-connected) scenarios.
+	For the power gain maximization problem, we provide a closed-form iterative solution by group-wise \gls{svd} that is even faster than geodesic \gls{rcg}.
+	% Those channel shaping designs have a two-fold advantage.
+	Those channel shaping designs have two major implications.
+	First, they demystify the performance gain from off-diagonal entries in terms of \emph{subchannel rearrangement} and \emph{subspace alignment}.
+	% help to demystify the gain from off-diagonal entries and reveal the shaping advantage of \gls{bd}-\gls{ris} in subchannel rearrangement and subspace alignment.
+	Second, they inspire a two-stage suboptimal solution to decouple the joint active and passive beamforming design.
+	% \gls{ris}-transceiver optimization and suggest a low-complexity suboptimal solution based on channel power maximization.
+	As a side product, we tackle the \gls{bd}-\gls{ris}-aided \gls{mimo} rate maximization problem by a local-optimal \gls{ao} approach and a two-stage shaping-inspired approach.
+	Simulation results indicate that the rate deficit from the latter diminishes as the \gls{bd}-\gls{ris} evolves towards unitary, while its shaping advantages over diagonal \gls{ris} increase \gls{mimo} dimensions and decrease with spatial correlation.
+
+	% , and .
+
+	% (i) , and (ii) the gap between the two approaches vanishes as \gls{bd}-\gls{ris} evolves from diagonal to unitary.
+	% not only demystify the advantage of \gls{bd}-\gls{ris} in subchannel rearrangement and subspace alignment, but also decouple the joint \gls{ris}-transceiver optimization.
+	% Those channel shaping designs not only demystify the advantage of \gls{bd}-\gls{ris} in subchannel rearrangement and subspace alignment, but also decouple the joint \gls{ris}-transceiver optimization.
+
+	% geodesic \gls{rcg} algorithm is tailored for smooth optimization problems of asymmetric \gls{bd}-\gls{ris} with arbitrary group size, then invoked for the Pareto frontier of channel singular values.
+	% To understand the gain from off-diagonal entries, we also derive analytical singular value bounds in rank-deficient and fully-connected scenarios.
+	% As a side product, we tackle \gls{mimo} rate maximization problem by alternating between active beamformer (eigenmode transmission) and passive beamformer (\gls{rcg} algorithm) until convergence.
+	% A low-complexity suboptimal solution based on channel shaping is also proposed, where the decoupled problem is formulated as channel power maximization and solved in closed form iteratively.
+	% % We then show how channel shaping decouples the design and amounts to a low-complexity suboptimal solution.
+	% % A low-complexity suboptimal solution decoupling both blocks is also proposed, where the channel shaping subproblem is formulated as channel power maximization and solved in closed form iteratively.
+	% Theoretical analysis and numerical evaluation reveal that the shaping advantage of \gls{bd}-\gls{ris} increases with group size and \gls{mimo} dimensions, stemming from stronger subchannel rearrangement and subspace alignment capabilities.
 \end{abstract}
 
 \begin{IEEEkeywords}
-	Reconfigurable intelligent surface, multi-input multi-output, manifold optimization, singular value control, rate maximization.
+	Reconfigurable intelligent surface, multi-input multi-output, manifold optimization, channel shaping, rate maximization.
 \end{IEEEkeywords}
 
 \glsresetall
