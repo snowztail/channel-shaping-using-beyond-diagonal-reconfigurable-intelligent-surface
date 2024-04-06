@@ -131,19 +131,20 @@
 \begin{abstract}
 	This paper investigates how a passive \gls{ris} can manipulate the \gls{mimo} point-to-point channel in terms of singular values and power gain.
 	We depart from the widely-adopted diagonal phase shift model to a \gls{bd} architecture, which enables \emph{cooperative} wave scattering thanks to in-group connections between elements.
-	An efficient and universal asymmetric \gls{bd}-\gls{ris} design framework is proposed over group-wise \emph{geodesic} \gls{rcg} update in the Stiefel manifold.
-	For the singular value shaping problem, we characterize their Pareto frontiers by weighted sum optimization via geodesic \gls{rcg}, which generalizes most relevant metrics (e.g., degree of freedom and condition number).
-	Many useful analytical singular value bounds are also derived in rank-deficient and fully-connected (a.k.a. unitary) scenarios.
+	An efficient and universal \gls{bd}-\gls{ris} design framework is proposed over group-wise \emph{geodesic} \gls{rcg} in the Stiefel manifold, which performs multiplicative (instead of add-then-project) updates along the exponential map for faster convergence.
+	% For the singular value shaping problem, we numerically characterize their Pareto frontiers by weighted sum optimization via geodesic \gls{rcg}, which generalizes most relevant metrics (e.g., degree of freedom and condition number).
+	% Many analytical singular value bounds are also derived for rank-deficient channels and fully-connected (a.k.a. unitary) \gls{ris}.
+	For the singular value shaping problem, we characterize their Pareto frontiers by geodesic \gls{rcg} and derive analytical bounds for rank-deficient channels and fully-connected (a.k.a. unitary) \gls{ris}.
 	% For the singular value problem, we consider a numerical optimization approach that characterizes the Pareto frontiers as well as an analytical bounding approach in special (i.e., rank-deficient and fully-connected) scenarios.
-	For the power gain maximization problem, we provide a closed-form iterative solution by group-wise \gls{svd} that is even faster than geodesic \gls{rcg}.
+	For the power gain maximization problem, we provide a closed-form iterative solution by group-wise \gls{svd} that features even faster convergence.
 	% Those channel shaping designs have a two-fold advantage.
 	Those channel shaping designs have two major implications.
 	First, they demystify the performance gain from off-diagonal entries in terms of \emph{subchannel rearrangement} and \emph{subspace alignment}.
 	% help to demystify the gain from off-diagonal entries and reveal the shaping advantage of \gls{bd}-\gls{ris} in subchannel rearrangement and subspace alignment.
-	Second, they inspire a two-stage suboptimal solution to decouple the joint active and passive beamforming design.
+	Second, they inspire a two-stage suboptimal solution that decouples joint active and passive beamforming design.
 	% \gls{ris}-transceiver optimization and suggest a low-complexity suboptimal solution based on channel power maximization.
 	As a side product, we tackle the \gls{bd}-\gls{ris}-aided \gls{mimo} rate maximization problem by a local-optimal \gls{ao} approach and a two-stage shaping-inspired approach.
-	Simulation results indicate that the rate deficit from the latter diminishes as the \gls{bd}-\gls{ris} evolves towards unitary, while its shaping advantages over diagonal \gls{ris} increase \gls{mimo} dimensions and decrease with spatial correlation.
+	Simulation results indicate that the rate deficit from the latter diminishes as the \gls{bd}-\gls{ris} evolves towards unitary, while its shaping advantages over diagonal \gls{ris} increase with \gls{mimo} dimensions and decrease with spatial correlation.
 
 	% , and .
 
@@ -169,19 +170,33 @@
 \begin{section}{Introduction}
 	% The quest for reliable, high-speed, and ubiquitous wireless connectivity has been long-standing since Marconi's illuminating radio in 1895.
 	% Great successes have been made at transmitter and receiver sides over the past century, and the society is unprecedentedly close to the Shannon limit \cite{Shannon1948}.
-	Today we are witnessing a paradigm shift from connectivity to intelligence, where the wireless environment is no longer a chaotic medium but a conscious agent that serves on demand.
-	This is empowered by the recent advances in \gls{ris}, a real-time programmable metasurface of numerous non-resonant sub-wavelength scattering elements.
-	It can manipulate the amplitude, phase, frequency, and polarization of the scattered waves \cite{Basar2019} with a higher energy efficiency, lower cost, lighter footprint, and greater scalability than relays.
-	Using \gls{ris} for {passive beamforming} has attracted significant interest in wireless communication \cite{Wu2019,Wu2020c,Yang2020,Zheng2021}, backscatter \cite{Jia2020,Liang2022}, sensing \cite{Liu2022a,Hua2023}, and power transfer literature \cite{Wu2021d,Feng2022,Zhao2022}, reporting a second-order array gain and fourth-order power scaling law (with proper waveform).
-	On the other hand, \gls{ris} also enables {backscatter modulation} by dynamically switching between different patterns, as already investigated \cite{Karasik2020,Basar2020,Zhao2022a} and prototyped \cite{Tang2019a,Dai2020a}.
-	Despite fruitful outcomes, one critical unanswered question is the {channel shaping} capability: \emph{To what extent can a passive \gls{ris} reshape the wireless channel?}
+	Today we are witnessing a paradigm shift from connectivity to intelligence, where the wireless environment is no longer a chaotic medium but a conscious agent that can serve on demand.
+	This is empowered by the recent advances in \gls{ris}, a programmable metasurface that recycles and redistributes ambient electromagnetic waves for improved wireless performance.
+	A typical \gls{ris} consists of numerous low-power sub-wavelength non-resonant scattering elements, whose response can be engineered in real-time to manipulate the amplitude, phase, frequency, and polarization of the scattered waves \cite{Basar2019}.
+	It not only experiences negligible noise and supports full-duplex transmissions, but also features better flexibility than reflectarrays, lighter footprint than relays, and greater scalability than \gls{mimo}.
+	The most popular \gls{ris} application is \emph{joint beamforming} design with transceivers, which has attracted significant attention in wireless communication \cite{Wu2019,Guo2020,Liu2022}, sensing \cite{He2022,Luo2022,Hua2023}, and power transfer literature \cite{Wu2020a,Feng2022,Zhao2022}.
+	Since coherent scattering can be decomposed as equal-gain combining and transmission, \gls{ris} elements usually offer a squared asymptotic performance (e.g., second-order array gain and fourth-order power scaling law \cite{Zhao2022}) than transceiver antennas.
+	% However, a large-dimensional \gls{ris} is generally required to compensate the power loss from double fading.
+	% a second-order array gain and a fourth-order power scaling law has been reported for \gls{ris} elements \cite{Zhao2022} --- both achieves squared improvements than transceiver antennas.
+	% since the coherent scattering can be viewed as equal-gain combining and transmission.
+	On the other hand, \gls{ris} can also be employed for \emph{backscatter modulation} by periodically switching its reflection pattern.
+	This creates a free-ride message stream (similar to index modulation \cite{Basar2017}) that can be either integrated into the legacy transmitter for enhanced channel capacity \cite{Karasik2020,Basar2020,Ye2022}, or exploited by surrounding low-power devices for energy-efficient uplink communications \cite{Liang2020,Zhao2022a,Yang2024}.
+
+	% which has been investigated \cite{Karasik2020,Basar2020,Zhao2022a} and prototyped \cite{Tang2019a,Dai2020a}.
+
+
+
+	% which could be incorporated into the transmitter and receiver for \emph{beamforming}, employed as a free-rider information source for \emph{modulation}, or simply placed in space as a standalone device for \emph{channel shaping}.
+	% Using \gls{ris} for {passive beamforming} has attracted significant interest in wireless communication \cite{Wu2019,Wu2020c,Yang2020,Zheng2021}, backscatter \cite{Jia2020,Liang2022}, sensing \cite{Liu2022a,Hua2023}, and power transfer literature \cite{Wu2021d,Feng2022,Zhao2022}, reporting a second-order array gain and fourth-order power scaling law (with proper waveform).
+	% On the other hand, \gls{ris} also enables {backscatter modulation} by dynamically switching between different patterns, as already investigated \cite{Karasik2020,Basar2020,Zhao2022a} and prototyped \cite{Tang2019a,Dai2020a}.
+	Despite great potentials and fruitful outcomes, one critical unanswered question is the {channel shaping} capability: \emph{To what extent can a passive \gls{ris} reshape the wireless channel?}
 
 	The answer indeed depends on the hardware architecture and scattering model.
 	In conventional (a.k.a. diagonal) \gls{ris}, each scattering element is tuned by a dedicated impedance and acts as an \emph{individual} phase shifter \cite{Wu2020}.
 	The concept is generalized to \gls{bd}-\gls{ris} \cite{Shen2020a,Li2023b} which groups adjacent elements using passive components.
 	This allows \emph{cooperative} scattering --- wave impinging on one element can propagate within the circuit and depart partially from any element in the same group.
 	\gls{bd}-\gls{ris} can thus control both amplitude and phase of the reflected wave, generalizing the scattering matrix from diagonal with unit-magnitude entries to block diagonal with  unitary blocks.
-	Its benefit has been recently shown in receive power maximization \cite{Nerini2023,Santamaria2023,Fang2023,Nerini2023a}, transmit power minimization \cite{Zhou2023}, and rate maximization \cite{Zhou2023,Nerini2023a,Li2023d,Bartoli2023,Li2023c}.
+	Its benefit has been recently shown in receive power maximization \cite{Nerini2023,Santamaria2023,Fang2023,Nerini2024}, transmit power minimization \cite{Zhou2023}, and rate maximization \cite{Zhou2023,Nerini2023a,Li2023d,Bartoli2023,Li2023c}.
 	Practical issues such as channel estimation \cite{Li2023e} and mutual coupling \cite{Li2023f} have also been investigated.
 	Therefore, \gls{bd}-\gls{ris} is envisioned as the next generation channel shaper with stronger signal processing flexibility \cite{Li2023g}.
 
