@@ -189,16 +189,44 @@
 	% which could be incorporated into the transmitter and receiver for \emph{beamforming}, employed as a free-rider information source for \emph{modulation}, or simply placed in space as a standalone device for \emph{channel shaping}.
 	% Using \gls{ris} for {passive beamforming} has attracted significant interest in wireless communication \cite{Wu2019,Wu2020c,Yang2020,Zheng2021}, backscatter \cite{Jia2020,Liang2022}, sensing \cite{Liu2022a,Hua2023}, and power transfer literature \cite{Wu2021d,Feng2022,Zhao2022}, reporting a second-order array gain and fourth-order power scaling law (with proper waveform).
 	% On the other hand, \gls{ris} also enables {backscatter modulation} by dynamically switching between different patterns, as already investigated \cite{Karasik2020,Basar2020,Zhao2022a} and prototyped \cite{Tang2019a,Dai2020a}.
-	Despite great potentials and fruitful outcomes, one critical unanswered question is the {channel shaping} capability: \emph{To what extent can a passive \gls{ris} reshape the wireless channel?}
+	Despite the great potentials and fruitful outcomes, one critical unanswered question is the {channel shaping} capability: \emph{To what extent can a passive \gls{ris} reshape the wireless channel?}
+	The answer depends heavily on the scattering model and hardware architecture.
+	In diagonal \gls{ris}, each scattering element is tuned by a dedicated impedance and acts as an \emph{individual} phase shifter \cite{Wu2020}.
+	This ideally translates to a diagonal scattering matrix with unit-magnitude entries, which only controls the phase of the scattered waves but cannot redistribute their amplitude.
+	% This allows the \gls{ris} to control the phase of the scattered wave, but not its amplitude.
+	The concept was soon generalized to \gls{bd}-\gls{ris} \cite{Shen2020a} which physically groups adjacent elements using passive reconfigurable components.\footnote{Those components can be either symmetric (e.g., capacitors and inductors) or asymmetric (e.g., ring hybrids and branch-line hybrids) \cite{Ahn2006}, resulting in symmetric and asymmetric scattering matrices respectively.}
+	This allows \emph{cooperative} scattering --- wave impinging on one element can propagate losslessly within the circuit and depart partially from any element in the same group.
+	It can thus control both the amplitude and phase of the scattered wave, generalizing the scattering matrix to block-diagonal with unitary blocks.
+	Such a powerful model can be realized at reduced hardware complexity using tree- and forest-connected architectures inspired by graph theory \cite{Nerini2024}.
+	\gls{bd}-\gls{ris} can also function in hybrid transmitting-and-reflecting mode \cite{Li2023b} and multi-sector mode \cite{Li2023c} for full-space coverage and multi-user support.
+	Many practical design challenges have been addressed including channel estimation \cite{Li2024}, mutual coupling \cite{Li2023f}, and wideband modelling \cite{Li2024a}.
+	Its superiority has been studied extensively in \gls{siso} and \gls{miso} systems in terms of single-user \gls{snr} maximization \cite{Shen2020a,Nerini2023,Nerini2024,Santamaria2023} and multi-user \gls{wsr} maximization \cite{Fang2023,Zhou2023,Li2023c,Soleymani2024}.
+	When it comes to \gls{mimo}, most existing works are limited to very specific scenarios.
+	For example, the authors of \cite{Bartoli2023} investigated the rate-optimal joint beamforming design under the assumption of unitary \gls{ris} without direct link.
+	% \gls{mimo} channel power maximization problem has been considered in \cite{Nerini2023,Nerini2023b}
+	Received power maximization problem is extended to \gls{mimo} for continuous-valued \cite{Nerini2023} and discrete-valued \cite{Nerini2023b} scattering matrices, but it only considered single-stream transmission with given precoder and combiner (which is equivalent to \gls{siso}).
+	Transmitter-side \gls{bd}-\gls{ris} design over statistical \gls{csi} has been introduced to massive \gls{mimo} networks for improved spectral efficiency \cite{Mishra2024}, but was again constrained to unitary \gls{ris} without direct link.
+	A practical frequency-dependent \gls{bd}-\gls{ris} model has been recently proposed for multi-band multi-cell \gls{mimo} networks to facilitate practical deployments \cite{Sena2024}.
+	Although the results are insightful, it remains unclear whether and why the advantage of \gls{bd}-\gls{ris} over diagonal \gls{ris} depends on \gls{mimo} dimensions.
+	% , and there lacks a deep understanding of
 
-	The answer indeed depends on the hardware architecture and scattering model.
-	In conventional (a.k.a. diagonal) \gls{ris}, each scattering element is tuned by a dedicated impedance and acts as an \emph{individual} phase shifter \cite{Wu2020}.
-	The concept is generalized to \gls{bd}-\gls{ris} \cite{Shen2020a,Li2023b} which groups adjacent elements using passive components.
-	This allows \emph{cooperative} scattering --- wave impinging on one element can propagate within the circuit and depart partially from any element in the same group.
-	\gls{bd}-\gls{ris} can thus control both amplitude and phase of the reflected wave, generalizing the scattering matrix from diagonal with unit-magnitude entries to block diagonal with  unitary blocks.
-	Its benefit has been recently shown in receive power maximization \cite{Nerini2023,Santamaria2023,Fang2023,Nerini2024}, transmit power minimization \cite{Zhou2023}, and rate maximization \cite{Zhou2023,Nerini2023a,Li2023d,Bartoli2023,Li2023c}.
-	Practical issues such as channel estimation \cite{Li2023e} and mutual coupling \cite{Li2023f} have also been investigated.
-	Therefore, \gls{bd}-\gls{ris} is envisioned as the next generation channel shaper with stronger signal processing flexibility \cite{Li2023g}.
+	% Therefore, \gls{bd}-\gls{ris} is envisioned as the next generation channel shaper with stronger signal processing flexibility \cite{Li2023g}.
+
+	% Attempts to characterize the channel shaping capability can be classified into \emph{singular value centric} and \emph{power centric} methods.
+	% Channel shaping is different from passive beamforming as it seeks to modify the inherent properties of the channel itself, allowing one to decouple \gls{ris} and transceiver design.
+	Channel shaping is different from passive beamforming because \gls{ris} is exploited as a stand-alone device to modify the inherent properties of the wireless channel.
+	This allows one to decouple the \gls{ris}-transceiver design and explore the fundamental limits of wave manipulation.
+	Relevant design criteria can be roughly classified into two categories:
+	\begin{itemize}
+		\item \emph{Singular value centric:} Focus on the singular values of the equivalent channel matrix, which are closely related to the channel capacity and the diversity-multiplexing trade-off. Relevant designs are more complicated since they involve the entire channel matrix.
+		\item \emph{Power centric:} Focus on the second-order characteristics of the channel matrix, which are useful in \gls{miso} but less informative in \gls{mimo}. Relevant designs are more practical and straightforward.
+	\end{itemize}
+	The former has been studied in terms of minimum singular value \cite{ElMossallamy2021}, effective rank \cite{ElMossallamy2021,Meng2023}, condition number \cite{Zheng2022,Huang2023} in \gls{pc}, and degree of freedom \cite{Bafghi2022,Zheng2023,Chae2023} in \gls{ic}.
+	The latter has been studied in terms of channel power \cite{Wu2019,Nerini2023,Santamaria2023} in \gls{pc} and leakage interference \cite{Santamaria2023a} in \gls{ic}.
+	Although the results are insightful, the big picture is far from complete since there exists neither a systematic channel shaping study nor a universal \gls{ris} optimization framework.
+	To the best of our knowledge, the most general channel shaping scenario (\gls{bd}-\gls{ris}-aided \gls{mimo}) has not been studied, and the great potential of \gls{bd}-\gls{ris} has not been fully exploited or understood.
+	This chapter aims for a comprehensive answer to the channel shaping question through theoretical analysis and numerical optimization.
+	The contributions are summarized below.
 
 	% Attempts to characterize the channel shaping capability can be classified into \emph{singular value centric} and \emph{power centric} methods.
 	% Channel shaping is different from passive beamforming as it seeks to modify the inherent properties of the channel itself, allowing one to decouple \gls{ris} and transceiver design.
@@ -266,7 +294,7 @@
 	Consider a \gls{bd}-\gls{ris} aided point-to-point \gls{mimo} system with $N_\mathrm{T}$, $N_\mathrm{S}$, $N_\mathrm{R}$ transmit, scatter, and receive antennas, respectively.
 	This configuration is denoted as $N_\mathrm{T} \times N_\mathrm{S} \times N_\mathrm{R}$ in the following context.
 	The \gls{bd}-\gls{ris} can be modeled as an $N_\mathrm{S}$-port network \cite{Ivrlac2010} that divides into $G$ individual groups, each containing $L \triangleq N_\mathrm{S} / G$ elements interconnected by real-time reconfigurable components \cite{Shen2020a}.
-	To simplify the analysis, we assume a lossless asymmetric network\footnote{While symmetric \gls{bd}-\gls{ris} (involving capacitors and inductors) is often considered in the literature \cite{Shen2020a,Nerini2023,Santamaria2023,Fang2023,Nerini2023a,Zhou2023,Li2023d,Bartoli2023}, asymmetric \gls{bd}-\gls{ris} can be built over reconfigurable asymmetric passive components (e.g., ring hybrids and branch-line hybrids) \cite{Ahn2006}.} without mutual coupling between scatter elements, as previously considered in \cite{Li2023b,Li2023c,Bartoli2023}.
+	To simplify the analysis, we assume a lossless asymmetric network\footnote{While symmetric \gls{bd}-\gls{ris} (involving capacitors and inductors) is often considered in the literature \cite{Shen2020a,Nerini2023,Santamaria2023,Fang2023,Nerini2024,Zhou2023,Li2023d,Bartoli2023}, asymmetric \gls{bd}-\gls{ris} can be built over reconfigurable asymmetric passive components (e.g., ring hybrids and branch-line hybrids) \cite{Ahn2006}.} without mutual coupling between scatter elements, as previously considered in \cite{Li2023b,Li2023c,Bartoli2023}.
 	The overall scattering matrix of the \gls{bd}-\gls{ris} is
 	\begin{equation}
 		\mathbf{\Theta} = \mathrm{diag}(\mathbf{\Theta}_1,\ldots,\mathbf{\Theta}_G),
@@ -274,7 +302,7 @@
 	where $\mathbf{\Theta}_g \in \mathbb{U}^{L \times L}$ is a unitary matrix that describes the response of group $g \in \mathcal{G} \triangleq \{1, \ldots, G\}$.
 	That is, $\mathbf{\Theta}_g = \mathbf{\Theta}_g^\mathsf{H}$ and $\mathbf{\Theta}_g^\mathsf{H} \mathbf{\Theta}_g = \mathbf{I}$.
 	Note that diagonal (single-connected) and unitary (fully-connected) \gls{ris} can be regarded as its extreme cases with group size $L=1$ and $L=N_\mathrm{S}$, respectively.
-	Some potential physical architectures of \gls{bd}-\gls{ris} are illustrated in \cite[Fig. 3]{Shen2020a}, \cite[Fig. 5]{Li2023c}, and \cite[Fig. 2]{Nerini2023a}, where the radiation pattern and circuit topology have impacts on the scattering matrix.
+	Some potential physical architectures of \gls{bd}-\gls{ris} are illustrated in \cite[Fig. 3]{Shen2020a}, \cite[Fig. 5]{Li2023c}, and \cite[Fig. 2]{Nerini2024}, where the radiation pattern and circuit topology have impacts on the scattering matrix.
 
 	Let $\mathbf{H}_\mathrm{D} \in \mathbb{C}^{N_\mathrm{R} \times N_\mathrm{T}}$, $\mathbf{H}_\mathrm{B} \in \mathbb{C}^{N_\mathrm{R} \times N_\mathrm{S}}$, $\mathbf{H}_\mathrm{F} \in \mathbb{C}^{N_\mathrm{S} \times N_\mathrm{T}}$ denote the direct (transmitter-receiver), backward (\gls{ris}-receiver), and forward (transmitter-\gls{ris}) channels, respectively.
 	The equivalent channel is a function of the scattering matrix
@@ -1145,7 +1173,7 @@
 		\begin{equation}
 			\mathbf{\Theta} = \mathbf{L} \mathbf{\Theta}_\mathrm{D} \mathbf{R}^\mathsf{H},
 		\end{equation}
-		where $\mathbf{\Theta}_\mathrm{D} \in \mathbb{U}^{N_\mathrm{S} \times N_\mathrm{S}}$ corresponds to diagonal \gls{ris} and $\mathbf{L}, \mathbf{R} \in \mathbb{U}^{N_\mathrm{S} \times N_\mathrm{S}}$ are block diagonal matrices of $L \times L$ unitary blocks.
+		where $\mathbf{\Theta}_\mathrm{D} \in \mathbb{U}^{N_\mathrm{S} \times N_\mathrm{S}}$ corresponds to diagonal \gls{ris} and $\mathbf{L}, \mathbf{R} \in \mathbb{U}^{N_\mathrm{S} \times N_\mathrm{S}}$ are block-diagonal matrices of $L \times L$ unitary blocks.
 		Manipulating $\mathbf{L}$ and $\mathbf{R}$ rotates the linear spans of $\bar{\mathbf{H}}_\mathrm{B} \triangleq \mathbf{H}_\mathrm{B} \mathbf{L}$ and $\bar{\mathbf{H}}_\mathrm{F} \triangleq \mathbf{R}^\mathsf{H} \mathbf{H}_\mathrm{F}$ and maintains their rank.
 		On the other hand, there exists a $\mathbf{\Theta}_\mathrm{D}$ such that
 		\begin{equation*}
