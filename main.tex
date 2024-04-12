@@ -435,34 +435,84 @@
 
 	\begin{subsection}{Geodesic vs Non-Geodesic \glsfmtshort{rcg}}
 		We first revisit the general non-geodesic \gls{rcg} method that is applicable to optimization problems over arbitrary manifolds \cite{Absil2009,Pan2022d}.
-		The main idea is to perform group-wise \emph{additive} updates along the conjugate direction [not in, but guided by] the tangent space, then project the solution back onto the manifold.
+		The main idea is to perform \emph{additive} updates along the conjugate direction guided by the Riemannian gradient, then project the solution back onto the manifold.
 		% update the feasible point by progressing along conjugate directions then project back to the manifold.
 		% The main idea is to update the feasible point by progressing along conjugate directions then project back to the manifold.
-		For maximization problem with smooth objective $f$ and block-unitary constraint \eqref{eq:bd_ris}, the steps for group $g$ at iteration $r$ are summarized below:
+		For maximization problem with smooth objective $f$ and block-unitary constraint \eqref{eq:bd_ris}, the steps for \gls{bd}-\gls{ris} group $g$ at iteration $r$ are summarized below:
 		\begin{enumerate}
 			\item \emph{Compute the Euclidean gradient \cite{Hjorungnes2007}:} The gradient of $f$ with respect to $\mathbf{\Theta}_g^*$ in the Euclidean space is
 			\begin{equation}
 				\nabla_{\mathrm{E},g}^{(r)} = \frac{\partial f(\mathbf{\Theta}_g^{(r)})}{\partial \mathbf{\Theta}_g^*};
 				\label{eq:gradient_euclidean}
 			\end{equation}
-			\item \emph{Translate to the Riemannian gradient \cite{Absil2009,Abrudan2008}:} At point $\mathbf{\Theta}^{(r)}$, the Riemannian gradient lies in the tangent space of the Stiefel manifold $\mathcal{T}_{\mathbf{\Theta}_g^{(r)}}\mathbb{U}^{L \times L} \triangleq \{\mathbf{M} \mid \mathbf{M}^\mathsf{H} \mathbf{\Theta}_g^{(r)} + {\mathbf{\Theta}_g^{(r)}}^\mathsf{H} \mathbf{M} = \mathbf{0}\}$. It can be obtained by projecting the Euclidean gradient onto the tangent space:
+			\item \emph{Translate to the Riemannian gradient \cite{Absil2009}:} At point $\mathbf{\Theta}^{(r)}$, the Riemannian gradient lies in the tangent space of the Stiefel manifold $\mathcal{T}_{\mathbf{\Theta}_g^{(r)}}\mathbb{U}^{L \times L} \triangleq \{\mathbf{M} \mid \mathbf{M}^\mathsf{H} \mathbf{\Theta}_g^{(r)} + {\mathbf{\Theta}_g^{(r)\mathsf{H}}} \mathbf{M} = \mathbf{0}\}$. It gives the steepest ascent direction of the objective on the manifold can be obtained by projecting the Euclidean gradient onto the tangent space:
 			\begin{equation}
-				% \nabla_{\mathrm{R},g}^{(r)} = \nabla_{\mathrm{E},g}^{(r)} {\mathbf{\Theta}_g^{(r)}}^\mathsf{H} - \mathbf{\Theta}_g^{(r)} {\nabla_{\mathrm{E},g}^{(r)}}^\mathsf{H};
-				\nabla_{\mathrm{R},g}^{(r)} = \nabla_{\mathrm{E},g}^{(r)} - \mathbf{\Theta}_g^{(r)} {\nabla_{\mathrm{E},g}^{(r)}}^\mathsf{H} \mathbf{\Theta}_g^{(r)};
+				% \nabla_{\mathrm{R},g}^{(r)} = \nabla_{\mathrm{E},g}^{(r)} {\mathbf{\Theta}_g^{(r)\mathsf{H}}} - \mathbf{\Theta}_g^{(r)} {\nabla_{\mathrm{E},g}^{(r)\mathsf{H}}};
+				\nabla_{\mathrm{R},g}^{(r)} = \nabla_{\mathrm{E},g}^{(r)} - \mathbf{\Theta}_g^{(r)} {\nabla_{\mathrm{E},g}^{(r)\mathsf{H}}} \mathbf{\Theta}_g^{(r)};
 				\label{eq:gradient_riemannian}
 			\end{equation}
-			\item \emph{Determine the conjugate direction \cite{Nocedal2006,Abrudan2009}:} The conjugate direction is updated over the Riemannian gradient and previous direction as
+			\item \emph{Determine the conjugate direction \cite{Nocedal2006}:} The conjugate direction is obtained over the Riemannian gradient and previous direction as
 			\begin{equation}
 				\mathbf{D}_g^{(r)} = \nabla_{\mathrm{R},g}^{(r)} + \gamma_g^{(r)} \mathbf{D}_g^{(r-1)}, % $\mathcal{O}(N_\mathrm{S}^2)$
 				\label{eq:direction_cg}
 			\end{equation}
-			where $\gamma_g^{(r)}$ is the deviation parameter that accelerates the convergence. One common choice is the Polak-Ribierre formula \cite{Hager2006}
+			where $\gamma_g^{(r)}$ is the parameter that deviates the conjugate direction from the tangent space for accelerated convergence. A popular choice is the Polak-Ribi\`{e}re formula
 			\begin{equation}
-				\gamma_g^{(r)} = \frac{\mathrm{tr}\bigl((\nabla_{\mathrm{R},g}^{(r)} - \nabla_{\mathrm{R},g}^{(r-1)}) {\nabla_{\mathrm{R},g}^{(r)}}^\mathsf{H}\bigr)}{\mathrm{tr}\bigl(\nabla_{\mathrm{R},g}^{(r-1)} {\nabla_{\mathrm{R},g}^{(r-1)}}^\mathsf{H}\bigr)}; % $\mathcal{O}(2 N_\mathrm{S}^3 + N_\mathrm{S}^2 + 2 N_\mathrm{S})$
+				\gamma_g^{(r)} = \frac{\mathrm{tr}\bigl((\nabla_{\mathrm{R},g}^{(r)} - \nabla_{\mathrm{R},g}^{(r-1)}) {\nabla_{\mathrm{R},g}^{(r)\mathsf{H}}}\bigr)}{\mathrm{tr}\bigl(\nabla_{\mathrm{R},g}^{(r-1)} {\nabla_{\mathrm{R},g}^{(r-1)\mathsf{H}}}\bigr)}; % $\mathcal{O}(2 N_\mathrm{S}^3 + N_\mathrm{S}^2 + 2 N_\mathrm{S})$
 				\label{eq:parameter_cg}
 			\end{equation}
-			\item \emph{Update [aided by] the tangent space}
+			\item \emph{Perform additive update \cite{Pan2022d}:} The point is updated by moving along a straight path in the conjugate direction
+			\begin{equation}
+				\bar{\mathbf{\Theta}}_g^{(r+1)} = \mathbf{\Theta}_g^{(r)} + \mu \mathbf{D}_g^{(r)},
+				\label{eq:update_additive}
+			\end{equation}
+			where $\gamma$ is the step size refinable by the Armijo rule \cite{Armijo1966};
+			\item \emph{Retract for feasibility \cite{Absil2009,Li2023b}:} The resulting point needs to be projected back onto the Stiefel manifold by
+			\begin{equation}
+				\mathbf{\Theta}_g^{(r+1)} = \bar{\mathbf{\Theta}}_g^{(r+1)} \bigl({\bar{\mathbf{\Theta}}_g^{(r+1)\mathsf{H}}} \bar{\mathbf{\Theta}}_g^{(r+1)}\bigr)^{-1/2}.
+				\label{eq:retraction}
+			\end{equation}
+			One can also combine the addition \eqref{eq:update_additive} and retraction \eqref{eq:retraction} in one step
+			\begin{equation}
+				\mathbf{\Theta}_g^{(r+1)} = \bigl(\mathbf{\Theta}_g^{(r)} + \mu \mathbf{D}_g^{(r)}\bigr) \bigl( \mathbf{I} + \mu^2 {\mathbf{D}_g^{(r)\mathsf{H}}} \mathbf{D}_g^{(r)} \bigr)^{-1/2},
+			\end{equation}
+			and determine the step size therein.
 		\end{enumerate}
+
+		A geodesic is a curve representing the shortest path between two points in a Riemannian manifold, whose tangent vectors remain parallel when transported along the curve.
+		The above method is called non-geodesic since the points are updated in the linear embedding spaces of the manifold by addition and retraction, instead of on the Stiefel manifold itself.
+		Next, we revisit some concepts in differential geometry and introduce a group-wise geodesic \gls{rcg} method on top of \cite{Abrudan2008,Abrudan2009}.
+
+		A Lie group is simultaneously a continuous group and a differentiable manifold.
+		Lie algebra refers to the tangent space of the Lie group at the identity element.
+		The exponential map acts as a bridge between the Lie algebra and Lie group, which allows one to recapture the local group structure using linear algebra techniques.
+		% On the other hand, a geodesic is a curve representing the shortest path between two points in a Riemannian manifold.
+		% Its tangent vectors remain parallel when transported along the curve and the acceleration vectors stay normal to the motion.
+		Since unitary matrices forms a Lie group that is closed under multiplication and inversion, and the corresponding geodesic emanating from $\mathbf{\Theta}_g$ with a velocity matrix $\mathbf{S}$ can be described by \cite{Edelman1998}
+		\begin{equation}
+			\mathbf{G}_g = \exp(t \mathbf{S}) \mathbf{\Theta}_g,
+		\end{equation}
+
+
+		% Lie groups are closed under multiplication and inversion, and the set of unitary matrices $\mathbb{U}^{L \times L}$ forms a Lie group.
+		% The set of unitary matrices $\mathbb{U}^{L \times L}$ forms a Lie group that is closed under multiplication and inversion.
+		% Since unitary matrices in the Stiefel manifold $\mathbb{U}^{L \times L}$ constitute a Lie group, the corresponding geodesic emanating from $\mathbf{\Theta}_g$ with velocity $\mathbf{S}$ is described by the exponential map \cite{Edelman1998}
+		% \begin{equation}
+		% 	\mathbf{G}_g = \exp(t \mathbf{S}) \mathbf{\Theta}_g,
+		% \end{equation}
+		% $\mathbf{\Theta}_g^{(r)}$ with velocity $\mathbf{D}_g^{(r)}$ and step size $\mu$ is described compactly by the exponential map \cite{Edelman1998}
+
+
+		% A Lie group is a group that is also a differentiable manifold.
+		% The Lie group of unitary matrices $\mathbb{U}^{L \times L}$ is a manifold that is closed under multiplication and inversion.
+		% A geodesic is a curve representing the shortest path between two points in a Riemannian manifold.
+		% locally minimizes the distance between two points in a Riemannian manifold.
+
+		% Inspired by \cite{Abrudan2008,Abrudan2009}, we propose a group-wise \gls{rcg} algorithm along the geodesics on the Lie group of unitary matrices $\mathbb{U}^{L \times L}$.
+
+		% It is worth noticing that the feasible domain
+
+
 		% It is worth noting that the objective \eqref{ob:pareto} is smooth in $\mathbf{\Theta}$ and the feasible domain \eqref{co:pareto_unitary} corresponds to the Stiefel manifold for group $g$.
 
 		% Both properties are often satisfied in \gls{bd}-\gls{ris} optimization problems, and there exists two general solutions in the literature:
@@ -481,11 +531,11 @@
 		At iteration $r$, the gradient is computed in the Euclidean space and translated to the Riemannian manifold \cite{Absil2009}
 		% \begin{gather}
 		% 	\nabla_{\mathrm{E},g}^{(r)} = \frac{\partial f(\mathbf{\Theta}_g^{(r)})}{\partial \mathbf{\Theta}_g^*},\label{eq:gradient_euclidean}\\
-		% 	\nabla_{\mathrm{R},g}^{(r)} = \nabla_{\mathrm{E},g}^{(r)} {\mathbf{\Theta}_g^{(r)}}^\mathsf{H} - \mathbf{\Theta}_g^{(r)} {\nabla_{\mathrm{E},g}^{(r)}}^\mathsf{H}.\label{eq:gradient_riemannian} % $\mathcal{O}(N_\mathrm{S}^3)$
+		% 	\nabla_{\mathrm{R},g}^{(r)} = \nabla_{\mathrm{E},g}^{(r)} {\mathbf{\Theta}_g^{(r)\mathsf{H}}} - \mathbf{\Theta}_g^{(r)} {\nabla_{\mathrm{E},g}^{(r)\mathsf{H}}}.\label{eq:gradient_riemannian} % $\mathcal{O}(N_\mathrm{S}^3)$
 		% \end{gather}
 		% The Polak-Ribierre parameter \cite{Polak1969} is approximated as \cite{Abrudan2009}
 		% \begin{equation}
-		% 	\gamma_g^{(r)} = \frac{\mathrm{tr}\bigl((\nabla_{\mathrm{R},g}^{(r)} - \nabla_{\mathrm{R},g}^{(r-1)}) {\nabla_{\mathrm{R},g}^{(r)}}^\mathsf{H}\bigr)}{\mathrm{tr}\bigl(\nabla_{\mathrm{R},g}^{(r-1)} {\nabla_{\mathrm{R},g}^{(r-1)}}^\mathsf{H}\bigr)}, % $\mathcal{O}(2 N_\mathrm{S}^3 + N_\mathrm{S}^2 + 2 N_\mathrm{S})$
+		% 	\gamma_g^{(r)} = \frac{\mathrm{tr}\bigl((\nabla_{\mathrm{R},g}^{(r)} - \nabla_{\mathrm{R},g}^{(r-1)}) {\nabla_{\mathrm{R},g}^{(r)\mathsf{H}}}\bigr)}{\mathrm{tr}\bigl(\nabla_{\mathrm{R},g}^{(r-1)} {\nabla_{\mathrm{R},g}^{(r-1)\mathsf{H}}}\bigr)}, % $\mathcal{O}(2 N_\mathrm{S}^3 + N_\mathrm{S}^2 + 2 N_\mathrm{S})$
 		% 	\label{eq:parameter_cg}
 		% \end{equation}
 		% and the conjugate direction is
@@ -537,15 +587,15 @@
 						\State $\nabla_{\mathrm{R},g}^{(r)} \gets$ \eqref{eq:gradient_riemannian}
 						\State $\gamma_g^{(r)} \gets$ \eqref{eq:parameter_cg}
 						\State $\mathbf{D}_g^{(r)} \gets$ \eqref{eq:direction_cg}
-						\If {$\Re\bigl\{\mathrm{tr}({\mathbf{D}_g^{(r)}}^\mathsf{H} \nabla_{\mathrm{R},g}^{(r)})\bigr\} < 0$} \Comment{not an ascent direction}
+						\If {$\Re\bigl\{\mathrm{tr}({\mathbf{D}_g^{(r)\mathsf{H}}} \nabla_{\mathrm{R},g}^{(r)})\bigr\} < 0$} \Comment{not an ascent direction}
 							\State $\mathbf{D}_g^{(r)} \gets \nabla_{\mathrm{R},g}^{(r)}$
 						\EndIf
 						\State $\mu \gets 1$
 						\State $\mathbf{G}_g^{(r)}(\mu) \gets$ \eqref{eq:geodesic}
-						\While {$f\bigl(\mathbf{G}_g^{(r)}(2\mu)\bigr) - f(\mathbf{\Theta}_g^{(r)}) \ge \mu \cdot \mathrm{tr}(\mathbf{D}_g^{(r)} {\mathbf{D}_g^{(r)}}^\mathsf{H}) / 2$}
+						\While {$f\bigl(\mathbf{G}_g^{(r)}(2\mu)\bigr) - f(\mathbf{\Theta}_g^{(r)}) \ge \mu \cdot \mathrm{tr}(\mathbf{D}_g^{(r)} {\mathbf{D}_g^{(r)\mathsf{H}}}) / 2$}
 							\State $\mu \gets 2 \mu$
 						\EndWhile
-						\While {$f\bigl(\mathbf{G}_g^{(r)}(\mu)\bigr) - f(\mathbf{\Theta}_g^{(r)}) < \mu / 2 \cdot \mathrm{tr}(\mathbf{D}_g^{(r)} {\mathbf{D}_g^{(r)}}^\mathsf{H}) / 2$}
+						\While {$f\bigl(\mathbf{G}_g^{(r)}(\mu)\bigr) - f(\mathbf{\Theta}_g^{(r)}) < \mu / 2 \cdot \mathrm{tr}(\mathbf{D}_g^{(r)} {\mathbf{D}_g^{(r)\mathsf{H}}}) / 2$}
 							\State $\mu \gets \mu / 2$
 						\EndWhile
 						\State $\mathbf{\Theta}_g^{(r+1)} \gets$ \eqref{eq:update_geodesic}
@@ -966,8 +1016,8 @@
 			\toprule
 			\multirow{2}{*}{\gls{rcg} path} & \multicolumn{3}{c}{$N_\mathrm{S}=16$} & \multicolumn{3}{c}{$N_\mathrm{S}=256$}                                                               \\ \cmidrule(lr){2-4} \cmidrule(lr){5-7}
 			                                & Objective                             & Iterations                             & Time [s]         & Objective        & Iterations & Time [s] \\ \midrule
-			Geodesic                        & $\num{4.355e-3}$                      & 11.61                                  & $\num{2.038e-2}$ & $\num{1.164e-2}$ & 25.78      & 3.216    \\
-			Non-geodesic                    & $\num{4.168e-3}$                      & 169.5                                  & $\num{1.420e-1}$ & $\num{8.873e-3}$ & 278.1      & 27.81    \\ \bottomrule
+			Geodesic                        & $\num{4.359e-3}$                      & 11.59                                  & $\num{1.839e-2}$ & $\num{1.163e-2}$ & 25.58      & 3.461    \\
+			Non-geodesic                    & $\num{4.329e-3}$                      & 30.92                                  & $\num{5.743e-2}$ & $\num{1.116e-2}$ & 61.40      & 13.50    \\ \bottomrule
 		\end{tabular}
 	\end{table*}
 
@@ -1373,14 +1423,14 @@
 % 		For a given $\mathbf{\Theta}$, it reduces to conventional linear beamforming problem, for which an iterative algorithm alternating between the original and reciprocal networks is proposed in \cite{Gomadam2011,Clerckx2013}.
 % 		At iteration $r$, the combiner at receiver $k$ is updated as
 % 		\begin{equation}
-% 			\mathbf{G}_k^{(r)} = {\mathbf{U}_{k,N}^{(r-1)}}^\mathsf{H},
+% 			\mathbf{G}_k^{(r)} = {\mathbf{U}_{k,N}^{(r-1)\mathsf{H}}},
 % 		\end{equation}
-% 		where $\mathbf{U}_{k,N}^{(r-1)}$ is the eigenvectors corresponding to $N$ smallest eigenvalues of interference covariance matrix $\mathbf{Q}_k^{(r-1)} = \sum_{j \ne k} \mathbf{H}_{kj} \mathbf{W}_j^{(r-1)} {\mathbf{W}_j^{(r-1)}}^\mathsf{H} \mathbf{H}_{kj}^\mathsf{H}$.
+% 		where $\mathbf{U}_{k,N}^{(r-1)}$ is the eigenvectors corresponding to $N$ smallest eigenvalues of interference covariance matrix $\mathbf{Q}_k^{(r-1)} = \sum_{j \ne k} \mathbf{H}_{kj} \mathbf{W}_j^{(r-1)} {\mathbf{W}_j^{(r-1)\mathsf{H}}} \mathbf{H}_{kj}^\mathsf{H}$.
 % 		The precoder at transmitter $j$ is updated as
 % 		\begin{equation}
 % 			\mathbf{W}_j^{(r)} = \bar{\mathbf{U}}_{j,N}^{(r)},
 % 		\end{equation}
-% 		where $\bar{\mathbf{U}}_{j,N}^{(r)}$ corresponds to interference covariance matrix $\bar{\mathbf{Q}}_j^{(r)} = \sum_{k \ne j} \mathbf{H}_{kj}^\mathsf{H} {\mathbf{G}_k^{(r)}}^\mathsf{H} \mathbf{G}_k^{(r)} \mathbf{H}_{kj}$ in the reciprocal network.
+% 		where $\bar{\mathbf{U}}_{j,N}^{(r)}$ corresponds to interference covariance matrix $\bar{\mathbf{Q}}_j^{(r)} = \sum_{k \ne j} \mathbf{H}_{kj}^\mathsf{H} {\mathbf{G}_k^{(r)\mathsf{H}}} \mathbf{G}_k^{(r)} \mathbf{H}_{kj}$ in the reciprocal network.
 % 		Once $\{\mathbf{G}_k\}$ and $\{\mathbf{W}_k\}$ are determined, we define $\bar{\mathbf{H}}_{kj}^\mathrm{D} \triangleq \mathbf{G}_k \mathbf{H}_{kj}^\mathrm{D} \mathbf{W}_j$, $\bar{\mathbf{H}}_k^\mathrm{B} \triangleq \mathbf{G}_k \mathbf{H}_k^\mathrm{B}$, and $\bar{\mathbf{H}}_j^\mathrm{F} \triangleq \mathbf{H}_j^\mathrm{F} \mathbf{W}_j$.
 % 		The \gls{bd}-\gls{ris} subproblem reduces to
 % 		\begin{mini!}
@@ -1432,11 +1482,11 @@
 % 		For a given $\mathbf{\Theta}$, \eqref{op:ic_rate} reduces to conventional linear beamforming problem, for which a closed-form iterative solution based on \gls{wsr}-\gls{wmmse} relationship is proposed in \cite{Negro2010}.
 % 		At iteration $r$, the \gls{mmse} combiner at receiver $k$ is
 % 		\begin{equation}
-% 			\mathbf{G}_k^{(r)} = {\mathbf{W}_k^{(r-1)}}^\mathsf{H} \mathbf{H}_{kk}^\mathsf{H} \bigl(\mathbf{Q}_k^{(r-1)} + \mathbf{H}_{kk} \mathbf{W}_k^{(r-1)} {\mathbf{W}_k^{(r-1)}}^\mathsf{H} \mathbf{H}_{kk}^\mathsf{H}\bigr)^{-1},
+% 			\mathbf{G}_k^{(r)} = {\mathbf{W}_k^{(r-1)\mathsf{H}}} \mathbf{H}_{kk}^\mathsf{H} \bigl(\mathbf{Q}_k^{(r-1)} + \mathbf{H}_{kk} \mathbf{W}_k^{(r-1)} {\mathbf{W}_k^{(r-1)\mathsf{H}}} \mathbf{H}_{kk}^\mathsf{H}\bigr)^{-1},
 % 		\end{equation}
 % 		the corresponding error matrix is
 % 		\begin{equation}
-% 			\mathbf{E}_k^{(r)} = \bigl(\mathbf{I} + {\mathbf{W}_k^{(r-1)}}^\mathsf{H} \mathbf{H}_{kk}^\mathsf{H} \mathbf{Q}_k^{(r-1)} \mathbf{H}_{kk} \mathbf{W}_k^{(r-1)}\bigr)^{-1},
+% 			\mathbf{E}_k^{(r)} = \bigl(\mathbf{I} + {\mathbf{W}_k^{(r-1)\mathsf{H}}} \mathbf{H}_{kk}^\mathsf{H} \mathbf{Q}_k^{(r-1)} \mathbf{H}_{kk} \mathbf{W}_k^{(r-1)}\bigr)^{-1},
 % 		\end{equation}
 % 		the \gls{mse} weight is
 % 		\begin{equation}
@@ -1446,17 +1496,17 @@
 % 		% \begin{equation}
 % 		% 	\begin{split}
 % 		% 		\lambda_k^{(r)}
-% 		% 		& = \frac{\sum_{j \ne k} \mathrm{tr}(\mathbf{\Omega}_k^{(r)}\mathbf{F}_{kj}^{(r)} {\mathbf{F}_{kj}^{(r)}}^\mathsf{H}) - \sum_{j \ne k} \mathrm{tr}(\mathbf{\Omega}_j^{(r)}\mathbf{F}_{jk}^{(r)} {\mathbf{F}_{jk}^{(r)}}^\mathsf{H})}{P_k} \\
-% 		% 		& \quad + \frac{\mathrm{tr}(\eta \mathbf{\Omega}_k^{(r)} \mathbf{G}_k^{(r)}{\mathbf{G}_k^{(r)}}^\mathsf{H})}{P_k}
+% 		% 		& = \frac{\sum_{j \ne k} \mathrm{tr}(\mathbf{\Omega}_k^{(r)}\mathbf{F}_{kj}^{(r)} {\mathbf{F}_{kj}^{(r)\mathsf{H}}}) - \sum_{j \ne k} \mathrm{tr}(\mathbf{\Omega}_j^{(r)}\mathbf{F}_{jk}^{(r)} {\mathbf{F}_{jk}^{(r)\mathsf{H}}})}{P_k} \\
+% 		% 		& \quad + \frac{\mathrm{tr}(\eta \mathbf{\Omega}_k^{(r)} \mathbf{G}_k^{(r)}{\mathbf{G}_k^{(r)\mathsf{H}}})}{P_k}
 % 		% 	\end{split}
 % 		% \end{equation}
 % 		\begin{equation}
-% 			\lambda_k^{(r)} = \frac{\mathrm{tr}\bigl(\eta \mathbf{\Omega}_k^{(r)} \mathbf{G}_k^{(r)}{\mathbf{G}_k^{(r)}}^\mathsf{H} + \sum_j \mathbf{\Omega}_k^{(r)}\mathbf{T}_{kj}^{(r)} {\mathbf{T}_{kj}^{(r)}}^\mathsf{H} - \mathbf{\Omega}_j^{(r)}\mathbf{T}_{jk}^{(r)} {\mathbf{T}_{jk}^{(r)}}^\mathsf{H} \bigr)}{P_k},
+% 			\lambda_k^{(r)} = \frac{\mathrm{tr}\bigl(\eta \mathbf{\Omega}_k^{(r)} \mathbf{G}_k^{(r)}{\mathbf{G}_k^{(r)\mathsf{H}}} + \sum_j \mathbf{\Omega}_k^{(r)}\mathbf{T}_{kj}^{(r)} {\mathbf{T}_{kj}^{(r)\mathsf{H}}} - \mathbf{\Omega}_j^{(r)}\mathbf{T}_{jk}^{(r)} {\mathbf{T}_{jk}^{(r)\mathsf{H}}} \bigr)}{P_k},
 % 		\end{equation}
 % 		where $\mathbf{T}_{kj}^{(r)} = \mathbf{G}_k^{(r)} \mathbf{H}_{kj} \mathbf{W}_j^{(r)}$.
 % 		The precoder at transmitter $k$ is
 % 		\begin{equation}
-% 			\mathbf{W}_k^{(r)} = \Bigl(\sum_j \mathbf{H}_{jk}^\mathsf{H} {\mathbf{G}_j^{(r)}}^\mathsf{H} \mathbf{\Omega}_k^{(r)} \mathbf{G}_j^{(r)} \mathbf{H}_{jk} + \lambda_k^{(r)} \mathbf{I} \Bigr)^{-1} \mathbf{H}_{kk}^\mathsf{H} {\mathbf{G}_j^{(r)}}^\mathsf{H} \mathbf{\Omega}_k^{(r)}.
+% 			\mathbf{W}_k^{(r)} = \Bigl(\sum_j \mathbf{H}_{jk}^\mathsf{H} {\mathbf{G}_j^{(r)\mathsf{H}}} \mathbf{\Omega}_k^{(r)} \mathbf{G}_j^{(r)} \mathbf{H}_{jk} + \lambda_k^{(r)} \mathbf{I} \Bigr)^{-1} \mathbf{H}_{kk}^\mathsf{H} {\mathbf{G}_j^{(r)\mathsf{H}}} \mathbf{\Omega}_k^{(r)}.
 % 		\end{equation}
 % 		Once $\{\mathbf{W}_k\}$ is determined, the complex derivative of \eqref{ob:ic_rate} w.r.t. \gls{ris} block $g$ is
 % 		\begin{equation}

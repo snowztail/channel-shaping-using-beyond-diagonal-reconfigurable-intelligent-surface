@@ -75,7 +75,7 @@ function [J, r] = scatter_singular_nongeodesic(H_d, H_f, H_b, rho, L)
 			S_c = setdiff(1 : length(Theta), S);
 			fun = @(Theta_g) rho' * svd(H_d + H_b(:, S) * Theta_g * H_f(S, :) + H_b(:, S_c) * Theta(S_c, S_c) * H_f(S_c, :));
 			G_e(S, S) = gradient_euclidean(H, H_f(S, :), H_b(:, S), rho);
-			G_r(S, S) = gradient_riemannian(Theta(S, S), G_e(S, S));
+			G_r(S, S) = gradient_riemannian_nongeodesic(Theta(S, S), G_e(S, S));
 			D(S, S) = direction_conjugate(G_r(S, S), struct('G_r', iter.G_r(S, S), 'D', iter.D(S, S), 'counter', iter.counter));
 			Theta(S, S) = step_armijo_nongeodesic(fun, Theta(S, S), D(S, S));
 			H = channel_aggregate(H_d, H_f, H_b, Theta);
@@ -111,12 +111,18 @@ function [Theta] = step_armijo_nongeodesic(fun, Theta, D)
 	W = (Theta + mu * D) * ((Theta + mu * D)' * (Theta + mu * D)) ^ -0.5;
 	while (fun(W) - O) >= (mu * 0.5 * trace(D * D'))
 		mu = mu * 2;
-		W = (Theta + mu * D) * ((Theta + mu * D)' * (Theta + mu * D)) ^ -0.5;
+		% W = (Theta + mu * D) * ((Theta + mu * D)' * (Theta + mu * D)) ^ -0.5;
+		W = (Theta + mu * D) * (eye(size(Theta)) + mu ^ 2 * (D' * D)) ^ -0.5;
 	end
 	% * Overshoot, halve the step size
 	while (fun(W) - O) < (0.5 * mu * 0.5 * trace(D * D')) && (mu >= eps)
 		mu = mu * 0.5;
-		W = (Theta + mu * D) * ((Theta + mu * D)' * (Theta + mu * D)) ^ -0.5;
+		% W = (Theta + mu * D) * ((Theta + mu * D)' * (Theta + mu * D)) ^ -0.5;
+		W = (Theta + mu * D) * (eye(size(Theta)) + mu ^ 2 * (D' * D)) ^ -0.5;
 	end
 	Theta = W;
+end
+
+function [G_r] = gradient_riemannian_nongeodesic(Theta, G_e)
+	G_r = G_e - Theta * G_e' * Theta;
 end
