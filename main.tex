@@ -435,7 +435,7 @@
 
 	\begin{subsection}{Geodesic vs Non-Geodesic \glsfmtshort{rcg}}
 		We first revisit the general non-geodesic \gls{rcg} method that is applicable to optimization problems over arbitrary manifolds \cite{Absil2009,Pan2022d}.
-		The main idea is to perform \emph{additive} updates along the conjugate direction guided by the Riemannian gradient, then project the solution back onto the manifold.
+		The main idea is to perform {additive} updates along the conjugate direction guided by the Riemannian gradient, then {project} the solution back onto the manifold.
 		% update the feasible point by progressing along conjugate directions then project back to the manifold.
 		% The main idea is to update the feasible point by progressing along conjugate directions then project back to the manifold.
 		For maximization problem with smooth objective $f$ and block-unitary constraint \eqref{eq:bd_ris}, the steps for \gls{bd}-\gls{ris} group $g$ at iteration $r$ are summarized below:
@@ -445,7 +445,7 @@
 				\nabla_{\mathrm{E},g}^{(r)} = \frac{\partial f(\mathbf{\Theta}_g^{(r)})}{\partial \mathbf{\Theta}_g^*};
 				\label{eq:gradient_euclidean}
 			\end{equation}
-			\item \emph{Translate to the Riemannian gradient \cite{Absil2009}:} At point $\mathbf{\Theta}^{(r)}$, the Riemannian gradient lies in the tangent space of the Stiefel manifold $\mathcal{T}_{\mathbf{\Theta}_g^{(r)}}\mathbb{U}^{L \times L} \triangleq \{\mathbf{M} \mid \mathbf{M}^\mathsf{H} \mathbf{\Theta}_g^{(r)} + {\mathbf{\Theta}_g^{(r)\mathsf{H}}} \mathbf{M} = \mathbf{0}\}$. It gives the steepest ascent direction of the objective on the manifold can be obtained by projecting the Euclidean gradient onto the tangent space:
+			\item \emph{Translate to the Riemannian gradient \cite{Absil2009}:} At point $\mathbf{\Theta}^{(r)}$, the Riemannian gradient lies in the tangent space of the Stiefel manifold $\mathcal{T}_{\mathbf{\Theta}_g^{(r)}}\mathbb{U}^{L \times L} \triangleq \{\mathbf{M} \in \mathbb{C}^{L \times L} \mid \mathbf{M}^\mathsf{H} \mathbf{\Theta}_g^{(r)} + {\mathbf{\Theta}_g^{(r)\mathsf{H}}} \mathbf{M} = \mathbf{0}\}$. It gives the steepest ascent direction of the objective on the manifold can be obtained by projecting the Euclidean gradient onto the tangent space:
 			\begin{equation}
 				% \nabla_{\mathrm{R},g}^{(r)} = \nabla_{\mathrm{E},g}^{(r)} {\mathbf{\Theta}_g^{(r)\mathsf{H}}} - \mathbf{\Theta}_g^{(r)} {\nabla_{\mathrm{E},g}^{(r)\mathsf{H}}};
 				\nabla_{\mathrm{R},g}^{(r)} = \nabla_{\mathrm{E},g}^{(r)} - \mathbf{\Theta}_g^{(r)} {\nabla_{\mathrm{E},g}^{(r)\mathsf{H}}} \mathbf{\Theta}_g^{(r)};
@@ -466,7 +466,7 @@
 				\bar{\mathbf{\Theta}}_g^{(r+1)} = \mathbf{\Theta}_g^{(r)} + \mu \mathbf{D}_g^{(r)},
 				\label{eq:update_additive}
 			\end{equation}
-			where $\gamma$ is the step size refinable by the Armijo rule \cite{Armijo1966};
+			where $\mu$ is the step size refinable by the Armijo rule \cite{Armijo1966};
 			\item \emph{Retract for feasibility \cite{Absil2009,Li2023b}:} The resulting point needs to be projected back onto the Stiefel manifold by
 			\begin{equation}
 				\mathbf{\Theta}_g^{(r+1)} = \bar{\mathbf{\Theta}}_g^{(r+1)} \bigl({\bar{\mathbf{\Theta}}_g^{(r+1)\mathsf{H}}} \bar{\mathbf{\Theta}}_g^{(r+1)}\bigr)^{-1/2}.
@@ -475,6 +475,7 @@
 			One can also combine the addition \eqref{eq:update_additive} and retraction \eqref{eq:retraction} in one step
 			\begin{equation}
 				\mathbf{\Theta}_g^{(r+1)} = \bigl(\mathbf{\Theta}_g^{(r)} + \mu \mathbf{D}_g^{(r)}\bigr) \bigl( \mathbf{I} + \mu^2 {\mathbf{D}_g^{(r)\mathsf{H}}} \mathbf{D}_g^{(r)} \bigr)^{-1/2},
+				\label{eq:add_then_retract}
 			\end{equation}
 			and determine the step size therein.
 		\end{enumerate}
@@ -486,96 +487,45 @@
 		A Lie group is simultaneously a continuous group and a differentiable manifold.
 		Lie algebra refers to the tangent space of the Lie group at the identity element.
 		The exponential map acts as a bridge between the Lie algebra and Lie group, which allows one to recapture the local group structure using linear algebra techniques.
-		% On the other hand, a geodesic is a curve representing the shortest path between two points in a Riemannian manifold.
-		% Its tangent vectors remain parallel when transported along the curve and the acceleration vectors stay normal to the motion.
-		Since unitary matrices forms a Lie group that is closed under multiplication and inversion, and the corresponding geodesic emanating from $\mathbf{\Theta}_g$ with a velocity matrix $\mathbf{S}$ can be described by \cite{Edelman1998}
+		Note that the set of unitary matrices $\mathbb{U}^{L \times L}$ forms a Lie group $U(L)$ under multiplication, and the corresponding Lie algebra $\mathfrak{u}(L) \triangleq \mathcal{T}_{\mathbf{I}}\mathbb{U}^{L \times L} = \{\mathbf{M} \in \mathbb{C}^{L \times L} \mid \mathbf{M}^\mathsf{H} + \mathbf{M} = \mathbf{0}\}$ consists of skew-Hermitian matrices.
+		A geodesic emanating from the identity with velocity $\mathbf{D} \in \mathfrak{u}(L)$ can be described by \cite{Edelman1998}
 		\begin{equation}
-			\mathbf{G}_g = \exp(t \mathbf{S}) \mathbf{\Theta}_g,
+			\mathbf{G}_\mathbf{I}(\mu) = \exp(\mu \mathbf{D}),
+			\label{eq:geodesic_identity}
 		\end{equation}
-
-
-		% Lie groups are closed under multiplication and inversion, and the set of unitary matrices $\mathbb{U}^{L \times L}$ forms a Lie group.
-		% The set of unitary matrices $\mathbb{U}^{L \times L}$ forms a Lie group that is closed under multiplication and inversion.
-		% Since unitary matrices in the Stiefel manifold $\mathbb{U}^{L \times L}$ constitute a Lie group, the corresponding geodesic emanating from $\mathbf{\Theta}_g$ with velocity $\mathbf{S}$ is described by the exponential map \cite{Edelman1998}
-		% \begin{equation}
-		% 	\mathbf{G}_g = \exp(t \mathbf{S}) \mathbf{\Theta}_g,
-		% \end{equation}
-		% $\mathbf{\Theta}_g^{(r)}$ with velocity $\mathbf{D}_g^{(r)}$ and step size $\mu$ is described compactly by the exponential map \cite{Edelman1998}
-
-
-		% A Lie group is a group that is also a differentiable manifold.
-		% The Lie group of unitary matrices $\mathbb{U}^{L \times L}$ is a manifold that is closed under multiplication and inversion.
-		% A geodesic is a curve representing the shortest path between two points in a Riemannian manifold.
-		% locally minimizes the distance between two points in a Riemannian manifold.
-
-		% Inspired by \cite{Abrudan2008,Abrudan2009}, we propose a group-wise \gls{rcg} algorithm along the geodesics on the Lie group of unitary matrices $\mathbb{U}^{L \times L}$.
-
-		% It is worth noticing that the feasible domain
-
-
-		% It is worth noting that the objective \eqref{ob:pareto} is smooth in $\mathbf{\Theta}$ and the feasible domain \eqref{co:pareto_unitary} corresponds to the Stiefel manifold for group $g$.
-
-		% Both properties are often satisfied in \gls{bd}-\gls{ris} optimization problems, and there exists two general solutions in the literature:
-		% \begin{itemize}
-		% 	\item \emph{Quasi-Newton method \cite{Shen2020a}:}
-		% 	% This is a general-purpose optimization algorithm that approximates the Hessian matrix by the gradient and iteratively updates the scattering matrix along the negative gradient direction.
-		% \end{itemize}
-
-
-		% have exploited either the quasi-Newton method on the reactance
-		% Instead of solving it directly, we zoom out to general \gls{bd}-\gls{ris} optimization problem and propose an efficient and universal solution.
-		% Next, we zoom out to general smooth maximization problems of asymmetric \gls{bd}-\gls{ris}.
-
-		Inspired by \cite{Abrudan2008,Abrudan2009}, we propose a group-wise \gls{rcg} algorithm along the geodesics on the Lie group of unitary matrices $\mathbb{U}^{L \times L}$.
-		It leverages the fact that unitary matrices are closed under multiplication.
-		At iteration $r$, the gradient is computed in the Euclidean space and translated to the Riemannian manifold \cite{Absil2009}
-		% \begin{gather}
-		% 	\nabla_{\mathrm{E},g}^{(r)} = \frac{\partial f(\mathbf{\Theta}_g^{(r)})}{\partial \mathbf{\Theta}_g^*},\label{eq:gradient_euclidean}\\
-		% 	\nabla_{\mathrm{R},g}^{(r)} = \nabla_{\mathrm{E},g}^{(r)} {\mathbf{\Theta}_g^{(r)\mathsf{H}}} - \mathbf{\Theta}_g^{(r)} {\nabla_{\mathrm{E},g}^{(r)\mathsf{H}}}.\label{eq:gradient_riemannian} % $\mathcal{O}(N_\mathrm{S}^3)$
-		% \end{gather}
-		% The Polak-Ribierre parameter \cite{Polak1969} is approximated as \cite{Abrudan2009}
-		% \begin{equation}
-		% 	\gamma_g^{(r)} = \frac{\mathrm{tr}\bigl((\nabla_{\mathrm{R},g}^{(r)} - \nabla_{\mathrm{R},g}^{(r-1)}) {\nabla_{\mathrm{R},g}^{(r)\mathsf{H}}}\bigr)}{\mathrm{tr}\bigl(\nabla_{\mathrm{R},g}^{(r-1)} {\nabla_{\mathrm{R},g}^{(r-1)\mathsf{H}}}\bigr)}, % $\mathcal{O}(2 N_\mathrm{S}^3 + N_\mathrm{S}^2 + 2 N_\mathrm{S})$
-		% 	\label{eq:parameter_cg}
-		% \end{equation}
-		% and the conjugate direction is
-		% \begin{equation}
-		% 	\mathbf{D}_g^{(r)} = \nabla_{\mathrm{R},g}^{(r)} + \gamma_g^{(r)} \mathbf{D}_g^{(r-1)}. % $\mathcal{O}(N_\mathrm{S}^2)$
-		% 	\label{eq:direction_cg}
-		% \end{equation}
-		on the Stiefel manifold, the geodesic emanating from $\mathbf{\Theta}_g^{(r)}$ with velocity $\mathbf{D}_g^{(r)}$ and step size $\mu$ is described compactly by the exponential map \cite{Edelman1998}
+		where $\exp(\mathbf{A}) = \sum_{k=0}^\infty (\mathbf{A}^k/k!)$ is the matrix exponential and $\mu$ is the step size (i.e., magnitude of the tangent vector).
+		Note that the right translation is an isometry in $U(L)$.
+		During the optimization of group $g$, the geodesic evaluated at the identity \eqref{eq:geodesic_identity} should be translated to $\mathbf{\Theta}_g^{(r)}$ for successive updates \cite{Abrudan2008}
 		\begin{equation}
-			\mathbf{G}_g^{(r)}(\mu) = \exp(\mu \mathbf{D}_g^{(r)}) \mathbf{\Theta}_g^{(r)}. % $\mathcal{O}(N_\mathrm{S}^3)$
-			\label{eq:geodesic}
+			\mathbf{G}_g^{(r)}(\mu) = \mathbf{G}_\mathbf{I}(\mu) \mathbf{\Theta}_g^{(r)} = \exp(\mu \mathbf{D}_g^{(r)}) \mathbf{\Theta}_g^{(r)},
+			\label{eq:geodesic_translated}
 		\end{equation}
-		An appropriate $\mu^\star$ can be obtained by the Armijo rule \cite{Armijo1966}.\footnote{To double the step size, one only need to square the rotation matrix instead of recomputing the matrix exponential, i.e., $\exp(2 \mu \mathbf{D}_g^{(r)}) = \exp^2(\mu \mathbf{D}_g^{(r)})$.}
-		Finally, the scattering matrix is updated along the geodesic as
+		while the Riemannian gradient evaluated at $\mathbf{\Theta}_g^{(r)}$ \eqref{eq:gradient_riemannian} should be translated back to the identity for exploiting the Lie algebra \cite{Abrudan2008}
 		\begin{equation}
-			\mathbf{\Theta}_g^{(r+1)} = \mathbf{G}_g^{(r)}(\mu^\star).
+			\tilde{\nabla}_{\mathrm{R},g}^{(r)} = \nabla_{\mathrm{R},g}^{(r)} \mathbf{\Theta}_g^{(r)\mathsf{H}} = \nabla_{\mathrm{E},g}^{(r)} \mathbf{\Theta}_g^{(r)\mathsf{H}} - \mathbf{\Theta}_g^{(r)} {\nabla_{\mathrm{E},g}^{(r)\mathsf{H}}}.
+			\label{eq:gradient_translated}
+		\end{equation}
+		After gradient translation, the deviation parameter and conjugate direction can be determined similarly to \eqref{eq:parameter_cg} and \eqref{eq:direction_cg}
+		\begin{equation}
+			\tilde{\gamma}_g^{(r)} = \frac{\mathrm{tr}\bigl((\tilde{\nabla}_{\mathrm{R},g}^{(r)} - \tilde{\nabla}_{\mathrm{R},g}^{(r-1)}) {\tilde{\nabla}_{\mathrm{R},g}^{(r)\mathsf{H}}}\bigr)}{\mathrm{tr}\bigl(\tilde{\nabla}_{\mathrm{R},g}^{(r-1)} {\tilde{\nabla}_{\mathrm{R},g}^{(r-1)\mathsf{H}}}\bigr)}. % $\mathcal{O}(2 N_\mathrm{S}^3 + N_\mathrm{S}^2 + 2 N_\mathrm{S})$
+			\label{eq:parameter_cg_geodesic}
+		\end{equation}
+		\begin{equation}
+			{\mathbf{D}}_g^{(r)} = \tilde{\nabla}_{\mathrm{R},g}^{(r)} + \tilde{\gamma}_g^{(r)} {\mathbf{D}}_g^{(r-1)},
+			\label{eq:direction_cg_geodesic}
+		\end{equation}
+		The solution can thus be updated along the geodesic in a multiplicative rotational manner
+		\begin{equation}
+			\mathbf{\Theta}_g^{(r+1)} = \mathbf{G}_g^{(r)}(\mu) = \exp(\mu \mathbf{D}_g^{(r)}) \mathbf{\Theta}_g^{(r)},
 			\label{eq:update_geodesic}
 		\end{equation}
-
-		It is worth mentioning that the updates can be performed in parallel for all groups, which is particularly suitable for large-scale \gls{bd}-\gls{ris} optimization problems.
-		One can also avoid group-wise updates by treating the entire scattering matrix as a single optimization variable, but this may lead to higher computational complexity and slower convergence.
-
-
-
-		Algorithm~\ref{ag:rcg} summarizes the proposed group-wise geodesic \gls{rcg} method for smooth maximization problems of asymmetric \gls{bd}-\gls{ris}.
-		Convergence to stationary points is guaranteed.
-
-		\begin{remark}
-			Compared with universal manifold optimization \cite{Absil2009,Pan2022d}, Algorithm~\ref{ag:rcg} inherits a trifold benefit from \cite{Abrudan2008,Abrudan2009}:
-			\begin{enumerate}
-				\item No retraction thanks to rotational update \eqref{eq:geodesic}, \eqref{eq:update_geodesic};
-				\item Lower computational complexity per iteration;
-				\item Faster convergence thanks to proper parameter space.
-			\end{enumerate}
-		\end{remark}
+		where an appropriate $\mu$ may be obtained by the Armijo rule.
+		To double the step size, one can simply square the rotation matrix instead of recomputing the matrix exponential, since $\exp^2(\mu \mathbf{D}_g^{(r)}) = \exp(2 \mu \mathbf{D}_g^{(r)})$.
 
 		\setalgorithmcaptionfont{\small}
 		\begin{algorithm}[!t]
 			\small
-			\caption{Group-wise geodesic \gls{rcg} for asymmetric \gls{bd}-\gls{ris}}
+			\caption{Group-wise geodesic \gls{rcg} for \gls{bd}-\gls{ris} design}
 			\label{ag:rcg}
 			\begin{algorithmic}[1]
 				\Require $f(\mathbf{\Theta})$, $G$
@@ -584,14 +534,14 @@
 				\Repeat
 					\For {$g \gets 1$ to $G$}
 						\State $\nabla_{\mathrm{E},g}^{(r)} \gets$ \eqref{eq:gradient_euclidean} \label{ln:gradient_euclidean}
-						\State $\nabla_{\mathrm{R},g}^{(r)} \gets$ \eqref{eq:gradient_riemannian}
-						\State $\gamma_g^{(r)} \gets$ \eqref{eq:parameter_cg}
-						\State $\mathbf{D}_g^{(r)} \gets$ \eqref{eq:direction_cg}
-						\If {$\Re\bigl\{\mathrm{tr}({\mathbf{D}_g^{(r)\mathsf{H}}} \nabla_{\mathrm{R},g}^{(r)})\bigr\} < 0$} \Comment{not an ascent direction}
+						\State $\tilde{\nabla}_{\mathrm{R},g}^{(r)} \gets$ \eqref{eq:gradient_translated}
+						\State $\tilde{\gamma}_g^{(r)} \gets$ \eqref{eq:parameter_cg_geodesic}
+						\State $\mathbf{D}_g^{(r)} \gets$ \eqref{eq:direction_cg_geodesic}
+						\If {$\Re\bigl\{\mathrm{tr}({\mathbf{D}_g^{(r)\mathsf{H}}} \tilde{\nabla}_{\mathrm{R},g}^{(r)})\bigr\} < 0$} \Comment{not an ascent direction}
 							\State $\mathbf{D}_g^{(r)} \gets \nabla_{\mathrm{R},g}^{(r)}$
 						\EndIf
 						\State $\mu \gets 1$
-						\State $\mathbf{G}_g^{(r)}(\mu) \gets$ \eqref{eq:geodesic}
+						\State $\mathbf{G}_g^{(r)}(\mu) \gets$ \eqref{eq:geodesic_translated}
 						\While {$f\bigl(\mathbf{G}_g^{(r)}(2\mu)\bigr) - f(\mathbf{\Theta}_g^{(r)}) \ge \mu \cdot \mathrm{tr}(\mathbf{D}_g^{(r)} {\mathbf{D}_g^{(r)\mathsf{H}}}) / 2$}
 							\State $\mu \gets 2 \mu$
 						\EndWhile
@@ -604,9 +554,14 @@
 				\Until $\lvert f(\mathbf{\Theta}^{(r)}) - f(\mathbf{\Theta}^{(r-1)}) \rvert / f(\mathbf{\Theta}^{(r-1)}) \le \epsilon$
 			\end{algorithmic}
 		\end{algorithm}
+
+		Algorithm~\ref{ag:rcg} summarizes the proposed \gls{bd}-\gls{ris} design framework based on group-wise geodesic \gls{rcg}.
+		Compared to the non-geodesic approach, our method leverages the properties of unitary group to replace the add-then-retract update \eqref{eq:add_then_retract} with a multiplicative rotational update \eqref{eq:update_geodesic} along the geodesic.
+		This leads to faster convergence and simplifies the step size tuning thanks to an appropriate parameter space.
+
+		Both approaches can be performed in parallel for all groups to facilitate large-scale \gls{bd}-\gls{ris} optimization problems.
+		Since block-unitary matrices are also closed under multiplication, one can avoid group-wise updates by operating directly on $\mathbf{\Theta}$ and pinching (i.e., keeping the block diagonal and nulling the other entries) the Euclidean gradient \eqref{eq:gradient_euclidean}, at the cost of higher computational complexity and slower convergence.
 	\end{subsection}
-
-
 \end{section}
 
 \begin{section}{Channel Singular Values Redistribution}
