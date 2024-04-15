@@ -294,6 +294,7 @@
 	$(\cdot)^*$, $(\cdot)^\mathsf{T}$, $(\cdot)^\mathsf{H}$, $(\cdot)^\dagger$ $(\cdot)^{(r)}$, $(\cdot)^{\star}$ denote the conjugate, transpose, conjugate transpose (Hermitian), Moore-Penrose inverse, $r$-th iterated point, and stationary point, respectively.
 	$(\cdot)_{[x:y]}$ is a shortcut for $(\cdot)_x,(\cdot)_{x+1},\ldots,(\cdot)_y$.
 	$\lvert \cdot \rvert$, $\lVert \cdot \rVert$, and $\lVert \cdot \rVert _\mathrm{F}$ denote the absolute value, Euclidean norm, and Frobenius norm, respectively.
+	$\odot$ represents the element-wise (Hadamard) product.
 	$\mathcal{CN}(\mathbf{0}, \mathbf{\Sigma})$ is the multivariate \gls{cscg} distribution with mean $\mathbf{0}$ and covariance $\mathbf{\Sigma}$.
 	$\sim$ means ``distributed as''.
 \end{section}
@@ -342,6 +343,7 @@
 		\item \emph{Subspace alignment:} Each group can align the singular vectors of the associated backward-forward (intra-group, multiplicative) channels and direct-indirect (inter-group, additive) channels. In \gls{siso}, subspace alignment boils down to phase matching and the optimal scattering matrix of group $g$ that maximizes the channel gain is
 		\begin{equation}
 			\mathbf{\Theta}_g^\star = \exp \bigl(\jmath \mathrm{arg}(h_\mathrm{D})\bigr) \mathbf{V}_{\mathrm{B},g} \mathbf{U}_{\mathrm{F},g}^\mathsf{H},
+			\label{eq:scattering_siso}
 		\end{equation}
 		where $\mathbf{V}_{\mathrm{B},g} = \bigl[\mathbf{h}_{\mathrm{B},g}/\lVert \mathbf{h}_{\mathrm{B},g} \rVert, \mathbf{N}_{\mathrm{B},g}\bigr] \in \mathbb{U}^{L \times L}$, $\mathbf{U}_{\mathrm{F},g} = \bigl[\mathbf{h}_{\mathrm{F},g}/\lVert \mathbf{h}_{\mathrm{F},g} \rVert, \mathbf{N}_{\mathrm{F},g}\bigr] \in \mathbb{U}^{L \times L}$, and $\mathbf{N}_{\mathrm{B},g}, \mathbf{N}_{\mathrm{F},g} \in \mathbb{C}^{L \times (L-1)}$ are the orthonormal bases of the null spaces of $\mathbf{h}_{\mathrm{B},g}$ and $\mathbf{h}_{\mathrm{F},g}$, respectively.
 		Diagonal \gls{ris} ($L=1$, empty null spaces) thus suffices for perfect phase matching in \gls{siso}.
@@ -487,7 +489,7 @@
 		A Lie group is simultaneously a continuous group and a differentiable manifold.
 		Lie algebra refers to the tangent space of the Lie group at the identity element.
 		The exponential map acts as a bridge between the Lie algebra and Lie group, which allows one to recapture the local group structure using linear algebra techniques.
-		Note that the set of unitary matrices $\mathbb{U}^{L \times L}$ forms a Lie group $U(L)$ under multiplication, and the corresponding Lie algebra $\mathfrak{u}(L) \triangleq \mathcal{T}_{\mathbf{I}}\mathbb{U}^{L \times L} = \{\mathbf{M} \in \mathbb{C}^{L \times L} \mid \mathbf{M}^\mathsf{H} + \mathbf{M} = \mathbf{0}\}$ consists of skew-Hermitian matrices.
+		The set of unitary matrices $\mathbb{U}^{L \times L}$ forms a Lie group $U(L)$ under multiplication, and the corresponding Lie algebra $\mathfrak{u}(L) \triangleq \mathcal{T}_{\mathbf{I}}\mathbb{U}^{L \times L} = \{\mathbf{M} \in \mathbb{C}^{L \times L} \mid \mathbf{M}^\mathsf{H} + \mathbf{M} = \mathbf{0}\}$ consists of skew-Hermitian matrices.
 		A geodesic emanating from the identity with velocity $\mathbf{D} \in \mathfrak{u}(L)$ can be described by \cite{Edelman1998}
 		\begin{equation}
 			\mathbf{G}_\mathbf{I}(\mu) = \exp(\mu \mathbf{D}),
@@ -560,14 +562,13 @@
 		This leads to faster convergence and simplifies the step size tuning thanks to an appropriate parameter space.
 
 		Both approaches can be performed in parallel for all groups to facilitate large-scale \gls{bd}-\gls{ris} optimization problems.
-		Since block-unitary matrices are also closed under multiplication, one can avoid group-wise updates by operating directly on $\mathbf{\Theta}$ and pinching (i.e., keeping the block diagonal and nulling the other entries) the Euclidean gradient \eqref{eq:gradient_euclidean}, at the cost of higher computational complexity and slower convergence.
+		Since block-unitary matrices are also closed under multiplication, one can avoid group-wise updates by directly operating on $\mathbf{\Theta}$ and pinching (i.e., keeping the block diagonal and nulling the other entries) the Euclidean gradient \eqref{eq:gradient_euclidean}, at the cost of higher computational complexity and slower convergence.
 	\end{subsection}
 \end{section}
 
 \begin{section}{Channel Singular Values Redistribution}
 	\begin{subsection}{Toy Example}\label{sc:toy_example}
-		We first illustrate the channel shaping capabilities of different \gls{ris} architectures by a toy example.
-		% We first use a toy example to illustrate that \gls{bd}-\gls{ris} can provide a wider dynamic range of channel singular values.
+		We first illustrate the channel shaping capabilities of different \gls{ris} models by a toy example.
 		Consider a $2 \times 2 \times 2$ setup where the direct link is blocked.
 		The diagonal \gls{ris} is modeled by $\mathbf{\Theta}_\mathrm{D} = \mathrm{diag}(e^{\jmath \theta_1}, e^{\jmath \theta_2})$ while the unitary \gls{bd}-\gls{ris} has 4 independent angular parameters
 		\begin{equation}
@@ -591,16 +592,16 @@
 		This example shows \gls{bd}-\gls{ris} can provide a wider dynamic range of channel singular values and motivates further studies on channel shaping.
 	\end{subsection}
 
-	\begin{subsection}{Pareto Frontier Characterization}
-		We then characterize the Pareto frontier of channel singular values by maximizing their weighted sum
+	\begin{subsection}{Pareto Frontier Characterization}\label{sc:pareto_frontier}
+		We then characterize the Pareto frontier of singular values of a general $N_\mathrm{T} \times N_\mathrm{S} \times N_\mathrm{R}$ channel \eqref{eq:channel_equivalent} by maximizing their weighted sum
 		\begin{maxi!}
 			{\scriptstyle{\mathbf{\Theta}}}{\sum_n \rho_n \sigma_n(\mathbf{H})}{\label{op:pareto}}{\label{ob:pareto}}
 			\addConstraint{\mathbf{\Theta}_g^\mathsf{H} \mathbf{\Theta}_g=\mathbf{I},}{\quad \forall g,}{\label{co:pareto_unitary}}
 		\end{maxi!}
 		where $n \in \mathcal{N} \triangleq \{1,\ldots,N\}$, $N \triangleq \min(N_\mathrm{T}, N_\mathrm{R})$ is the maximum channel rank, and $\rho_n$ is the weight of the $n$-th singular value that can be positive, zero, or negative.
 		Varying $\{\rho_n\}_{n \in \mathcal{N}}$ characterizes the Pareto frontier that encloses the entire achievable singular value region.
-		Thus, we claim \eqref{op:pareto} generalizes most relevant channel shaping problems.
-		% It is worth noting that the objective \eqref{ob:pareto} is smooth in $\mathbf{\Theta}$ and the feasible domain \eqref{co:pareto_unitary} corresponds to the Stiefel manifold for group $g$.
+		Thus, we claim the singular value Pareto problem \eqref{op:pareto} generalizes most relevant channel shaping problems.
+		It can be solved by the proposed group-wise geodesic \gls{rcg} method with the following gradient expression.
 
 		\begin{lemma}\label{lm:pareto_gradient}
 			The Euclidean gradient of \eqref{ob:pareto} w.r.t. \gls{bd}-\gls{ris} group $g$ is
@@ -614,34 +615,29 @@
 			Please refer to Appendix~\ref{ap:pareto_gradient}.
 		\end{proof}
 
-		%  The Euclidean gradient of \gls{bd}-\gls{ris} group $g$ is computed as
-		% where $\mathbf{U} \in \mathbb{C}^{N_\mathrm{R} \times N}$ and $\mathbf{V} \in \mathbb{C}^{N_\mathrm{T} \times N}$ are the left and right compact singular matrices of $\mathbf{H}$, respectively.
-		Algorithm~\ref{ag:rcg} can thus be invoked for the Pareto singular value problem \eqref{op:pareto} where line \ref{ln:gradient_euclidean} uses \eqref{eq:pareto_gradient} explicitly.
-		% \eqref{eq:pareto_gradient} is used in line \ref{ln:gradient_euclidean}.
+		Algorithm~\ref{ag:rcg} can thus be invoked for problem \eqref{op:pareto} where line \ref{ln:gradient_euclidean} uses \eqref{eq:pareto_gradient} explicitly.
+		With proper initialization, it is guaranteed to converge to (at least local) optimal points.
 	\end{subsection}
 
 	\begin{subsection}{Some Analytical Bounds}\label{sc:bounds}
 		We then discuss some analytical bounds related to channel singular values.
-		\begin{proposition}[degree of freedom]\label{pp:dof}
+		\begin{proposition}[Degree of freedom]\label{pp:dof}
 			In point-to-point \gls{mimo}, \gls{bd}-\gls{ris} cannot achieve a higher \gls{dof} than diagonal \gls{ris}.
 		\end{proposition}
 		\begin{proof}
 			Please refer to Appendix~\ref{ap:dof}.
 		\end{proof}
 
-		\begin{proposition}[rank-deficient channel]\label{pp:rank_deficient}
-			% If the forward/backward channel is rank-$k$, then a \gls{bd}-\gls{ris} can at most enlarge the $n$-th ($n > k$) channel singular value to the $n-k$-th singular value of $\mathbf{T}$, or suppress the $n$-th ($n < N - k + 1$) channel singular value to the $n$-th singular value of $\mathbf{T}$.
-			% If the forward/backward channel is rank-$k$, then a sufficiently large \gls{bd}-\gls{ris} can at most enlarge (resp. suppress) the first (resp. last) $k$ equivalent channel singular values without bounds.
-			If the forward or backward channel is rank-$k$, then regardless of the \gls{ris} size and architecture, the $n$-th singular value of the equivalent channel is bounded by
-			\begin{align}
-				\sigma_n(\mathbf{H}) & \le \sigma_{n-k}(\mathbf{T}), &  & \text{if } n > k, \label{iq:sv_bound_enlarge}          \\
-				\sigma_n(\mathbf{H}) & \ge \sigma_n(\mathbf{T}),     &  & \text{if } n < N - k + 1, \label{iq:sv_bound_suppress}
-			\end{align}
+		\begin{proposition}[Rank-deficient channel]\label{pp:rank_deficient}
+			If the forward or backward channel is rank-$k$ ($k \le N$), then regardless of the passive \gls{ris} size and architecture, the $n$-th singular value of the equivalent channel is bounded by
+			\begin{subequations}
+				\begin{align}
+					\sigma_n(\mathbf{H}) & \le \sigma_{n-k}(\mathbf{T}), &  & \text{if } n > k, \label{iq:sv_bound_enlarge}          \\
+					\sigma_n(\mathbf{H}) & \ge \sigma_n(\mathbf{T}),     &  & \text{if } n < N - k + 1, \label{iq:sv_bound_suppress}
+				\end{align}
+				\label{iq:sv_bound_rank_deficient}
+			\end{subequations}
 			where
-			% \begin{align}
-			% 	\mathbf{T} \mathbf{T}^\mathsf{H} = \mathbf{H}_\mathrm{D} (\mathbf{I} - \mathbf{V}_\mathrm{F} \mathbf{V}_\mathrm{F}^\mathsf{H}) \mathbf{H}_\mathrm{D}^\mathsf{H}, & \text{if } \mathrm{rank}(\mathbf{H}_\mathrm{F}) = k, \\
-			% 	\mathbf{T}^\mathsf{H} \mathbf{T} = \mathbf{H}_\mathrm{D}^\mathsf{H} (\mathbf{I} - \mathbf{U}_\mathrm{F} \mathbf{U}_\mathrm{F}^\mathsf{H}) \mathbf{H}_\mathrm{D}, & \text{if } \mathrm{rank}(\mathbf{H}_\mathrm{B}) = k.
-			% \end{align}
 			\begin{equation}
 				\mathbf{T} \mathbf{T}^\mathsf{H} =
 				\begin{cases}
@@ -651,35 +647,36 @@
 				\label{eq:auxiliary_matrix}
 			\end{equation}
 			and $\mathbf{V}_\mathrm{F}$ and $\mathbf{U}_\mathrm{B}$ are the right and left compact singular matrices of $\mathbf{H}_\mathrm{F}$ and $\mathbf{H}_\mathrm{B}$, respectively.
-			% where $\mathbf{T} \mathbf{T}^\mathsf{H} = \mathbf{H}_\mathrm{D} (\mathbf{I} - \mathbf{V}_\mathrm{F} \mathbf{V}_\mathrm{F}^\mathsf{H}) \mathbf{H}_\mathrm{D}$ if the forward channel is rank-$k$ and $\mathbf{T}^\mathsf{H} \mathbf{T} = \mathbf{H}_\mathrm{D} (\mathbf{I} - \mathbf{U}_\mathrm{F} \mathbf{U}_\mathrm{F}^\mathsf{H}) \mathbf{H}_\mathrm{D}$ if the backward channel is rank-$k$.
 		\end{proposition}
 		\begin{proof}
 			Please refer to Appendix~\ref{ap:rank_deficient}.
 		\end{proof}
 
-		% \begin{corollary}[degree of freedom]
-		% 	In point-to-point \gls{mimo} with or without direct link, \gls{bd}-\gls{ris} cannot provide a higher \gls{dof} than diagonal \gls{ris}.
-		% \end{corollary}
-
-		\begin{corollary}[extreme singular values\label{co:extreme}]
-			With a sufficiently large \gls{ris}, the first $k$ channel singular values are unbounded above while the last $k$ channel singular values can be suppressed to zero.
-			% For a rank-$k$ forward or backward channel with a sufficiently large \gls{ris}, the first $k$ singular values of the equivalent channel are unbounded above while the last $k$ singular values can be suppressed to zero.
-			% If the forward or backward channel is rank-$k$ and the \gls{ris} is sufficiently large, then the first $k$ singular values of the equivalent channel are unbounded above while the last $k$ singular values can be suppressed to zero.
-			% If the forward/backward channel is rank-$k$, then the first (resp. last) $k$ singular values of the equivalent channel are unbounded above (resp. below).
-			% a sufficiently large \gls{ris} can at most enlarge (resp. suppress) the first (resp. last) $k$ singular values of the equivalent channel without bounds.
+		\begin{corollary}[Extreme singular values\label{co:extreme}]
+			With a sufficiently large passive \gls{ris} of arbitrary architecture, the first $k$ channel singular values are unbounded above\footnote{The energy conservation law $\sum_n \sigma_n^2(\mathbf{H}) \le 1$ still has to be respected. This constraint is omitted in the following context for brevity.} while the last $k$ channel singular values can be suppressed to zero.
 		\end{corollary}
 
-		\begin{corollary}[\gls{los} channel\footnote{A similar result has been derived for diagonal \gls{ris} in \cite{Semmler2023}.}\label{co:los}]
-			If the forward or backward channel is \gls{los}, then a \gls{ris} can at most enlarge (resp. suppress) the $n$-th ($n \ge 2$) channel singular value to the $(n-1)$-th (resp. $n$-th) singular value of $\mathbf{T}$, that is,
+		\begin{proof}
+			This is a direct result of \eqref{iq:sv_bound_rank_deficient}.
+		\end{proof}
+
+		\begin{corollary}[\gls{los} channel\footnote{A similar result has been derived for diagonal \gls{ris} \cite{Semmler2023}.}\label{co:los}]
+			% If the forward or backward channel is \gls{los}, then a \gls{ris} can at most enlarge (resp. suppress) the $n$-th ($n \ge 2$) channel singular value to the $(n-1)$-th (resp. $n$-th) singular value of $\mathbf{T}$, that is,
+			If the forward or backward channel is \gls{los}, then a passive \gls{ris} of arbitrary architecture can at most enlarge the $n$-th ($n \ge 2$) channel singular value to the $(n-1)$-th singular value of $\mathbf{T}$, or suppress the $n$-th channel singular value to the $n$-th singular value of $\mathbf{T}$.
+			That is,
 			\begin{equation}
 				\sigma_1(\mathbf{H}) \ge \sigma_1(\mathbf{T}) \ge {\sigma_2(\mathbf{H})} \ge \ldots \ge \sigma_{N-1}(\mathbf{T}) \ge {\sigma_N(\mathbf{H})} \ge \sigma_N(\mathbf{T}).
 				\label{iq:sv_bound_los}
 			\end{equation}
 		\end{corollary}
 
-		In Section~\ref{sc:simulation}, we will show by simulation that a finite-size \gls{bd}-\gls{ris} can approach those bounds better than diagonal \gls{ris}.
+		\begin{proof}
+			This is a direct result of \eqref{iq:sv_bound_rank_deficient} with $k = 1$.
+		\end{proof}
 
-		\begin{proposition}[unitary \gls{ris} without direct link]\label{pp:fully_connected}
+		In Section~\ref{sc:simulation}, we will show by simulation that a finite-size \gls{bd}-\gls{ris} can better approach those bounds than diagonal \gls{ris}.
+
+		\begin{proposition}[Unitary \gls{ris} without direct link]\label{pp:fully_connected}
 			% If the \gls{bd}-\gls{ris} is unitary and the direct link is absent, then the singular value bounds on $\mathbf{H}$ are equivalent to the singular value bounds on $\mathbf{BF}$, where $\mathbf{B}$ and $\mathbf{F}$ are arbitrary matrices with the same singular values as $\mathbf{H}_\mathrm{B}$ and $\mathbf{H}_\mathrm{F}$, respectively,
 			If the \gls{bd}-\gls{ris} is unitary and the direct link is absent, then the channel singular values can be manipulated up to
 			% If the \gls{bd}-\gls{ris} is unitary and the direct link is absent, then the bounds on the channel singular values are equivalent to the singular values of the equivalent channel, that is,
@@ -695,60 +692,137 @@
 			Please refer to Appendix~\ref{ap:fully_connected}.
 		\end{proof}
 
-		The problem now becomes how the singular values of matrix product are bounded by the singular values of its individual factors.
-		Let $N' = \max(N_\mathrm{T},N_\mathrm{S},N_\mathrm{R})$ and $\sigma_n(\mathbf{H})=\sigma_n(\mathbf{H}_\mathrm{F})=\sigma_n(\mathbf{H}_\mathrm{B})=0$ for $N < n \le N'$.
+		The problem now becomes, how the singular values of matrix product are bounded by the singular values of its individual factors.
+		Let $\bar{N} = \max(N_\mathrm{T},N_\mathrm{S},N_\mathrm{R})$ and $\sigma_n(\mathbf{H})=\sigma_n(\mathbf{H}_\mathrm{F})=\sigma_n(\mathbf{H}_\mathrm{B})=0$ for $N < n \le \bar{N}$.
 		We have the following corollaries.
 
-		\begin{corollary}[generic singular value bounds \cite{Fulton2000}]
+		\begin{corollary}[Generic singular value bounds\label{co:sv_bound_horn}]
 			\begin{equation}
 				\prod_{k \in {K}} \sigma_k(\mathbf{H}) \le \prod_{i \in {I}} \sigma_i(\mathbf{H}_\mathrm{B}) \prod_{j \in {J}} \sigma_j(\mathbf{H}_\mathrm{F}),
 				\label{iq:sv_bound_fc}
 			\end{equation}
-			for all admissible triples $(I, J, K) \in T_r^{N'}$ with $r < N'$, where
+			for all admissible triples $(I, J, K) \in T_r^{\bar{N}}$ with $r < \bar{N}$, where
 			\begin{equation*}
 				\begin{gathered}
-					% T_r^{N'} \triangleq \Bigl\{(I, J, K) \in U_r^{N'} \mid \text{for all } p < r \text{ and all } (F, G, H) \text{ in } T_p^r,\\
+					% T_r^{\bar{N}} \triangleq \Bigl\{(I, J, K) \in U_r^{\bar{N}} \mid \text{for all } p < r \text{ and all } (F, G, H) \text{ in } T_p^r,\\
 					% \sum_{f \in F} i_f + \sum_{g \in G} j_g \le \sum_{h \in H} k_h + p(p+1)/2 \Bigr\},
-					T_r^{N'} \triangleq \Bigl\{(I, J, K) \in U_r^{N'} \mid \forall p < r, (F, G, H) \in T_p^r,\\
+					T_r^{\bar{N}} \triangleq \Bigl\{(I, J, K) \in U_r^{\bar{N}} \mid \forall p < r, (F, G, H) \in T_p^r,\\
 					\sum_{f \in F} i_f + \sum_{g \in G} j_g \le \sum_{h \in H} k_h + p(p+1)/2 \Bigr\},
 				\end{gathered}
 			\end{equation*}
 			\begin{equation*}
-				U_r^{N'} \triangleq \Bigl\{(I, J, K) \mid \sum_{i \in I} i + \sum_{j \in J} j = \sum_{k \in K} k + r(r+1)/2\Bigr\}.
+				U_r^{\bar{N}} \triangleq \Bigl\{(I, J, K) \mid \sum_{i \in I} i + \sum_{j \in J} j = \sum_{k \in K} k + r(r+1)/2\Bigr\}.
 			\end{equation*}
 		\end{corollary}
 
-		\begin{corollary}[upper bound on the largest singular value]
+		\begin{proof}
+			Please refer to \cite[Theorem~8]{Fulton2000}.
+		\end{proof}
+
+		Corollary \eqref{co:sv_bound_horn} is by far the most comprehensive singular value bound over Proposition~\ref{pp:fully_connected}, which is also recognized as a variation of Horn's inequality \cite{Bhatia2001}.
+		It is worth mentioning that the number of admissible triples (and bounds) grows exponentially with $\bar{N}$.
+		For example, the number of inequalities described by \eqref{iq:sv_bound_fc} grows from 12 to 2062 when $\bar{N}$ increases from 3 to 7.
+		This renders it computationally expensive for applications in large-scale \gls{mimo} systems.
+		Next, we showcase some useful inequalities enclosed by \eqref{iq:sv_bound_fc}.
+		Readers are referred to \cite[Chapter 16, 24]{Hogben2013} for more examples.
+
+		\begin{corollary}[Upper bound on the largest singular value\label{co:sv_largest}]
 			\begin{equation}
 				\sigma_1(\mathbf{H}) \le \sigma_1(\mathbf{H}_\mathrm{B}) \sigma_1(\mathbf{H}_\mathrm{F}).
 			\end{equation}
 		\end{corollary}
 
-		% \begin{corollary}[lower bound on the smallest singular value]
-		% 	\begin{equation}
-		% 		\sigma_{N'}(\mathbf{H}) \ge \sigma_{N'}(\mathbf{H}_\mathrm{B}) \sigma_{N'}(\mathbf{H}_\mathrm{F}).
-		% 	\end{equation}
-		% \end{corollary}
+		\begin{proof}
+			This is a direct result of \eqref{iq:sv_bound_fc} with $r = 1$.
+		\end{proof}
 
-		\begin{corollary}[upper bound on the product of first $k$ singular values]
+		\begin{corollary}[Lower bound on the smallest singular value\label{co:sv_smallest}]
+			\begin{equation}
+				\sigma_{\bar{N}}(\mathbf{H}) \ge \sigma_{\bar{N}}(\mathbf{H}_\mathrm{B}) \sigma_{\bar{N}}(\mathbf{H}_\mathrm{F}).
+			\end{equation}
+		\end{corollary}
+
+		\begin{proof}
+			This can be deducted from \eqref{iq:sv_bound_fc} with $r_1 = \bar{N}{-}1$ and $r_2 = \bar{N}$.
+		\end{proof}
+
+		\begin{corollary}[Upper bound on the product of first $k$ singular values]
 			\begin{equation}
 				\prod_{n=1}^k \sigma_n(\mathbf{H}) \le \prod_{n=1}^k \sigma_n(\mathbf{H}_\mathrm{B}) \prod_{n=1}^k \sigma_n(\mathbf{H}_\mathrm{F}).
 			\end{equation}
 		\end{corollary}
 
-		% \begin{corollary}[lower bound on the product of last $k$ singular values]
+		\begin{proof}
+			This is a direct result of \eqref{iq:sv_bound_fc} with $r = k$.
+		\end{proof}
+
+		\begin{corollary}[Lower bound on the product of last $k$ singular values\label{co:sv_product_smallest}]
+			\begin{equation}
+				\prod_{n=\bar{N}}^{\bar{N}-k+1} \sigma_n(\mathbf{H}) \ge \prod_{n=\bar{N}}^{\bar{N}-k+1} \sigma_n(\mathbf{H}_\mathrm{B}) \prod_{n=\bar{N}}^{\bar{N}-k+1} \sigma_n(\mathbf{H}_\mathrm{F}).
+			\end{equation}
+		\end{corollary}
+
+		\begin{proof}
+			This can be deducted from \eqref{iq:sv_bound_fc} with $r_1 = \bar{N}-k$ and $r_2 = \bar{N}$.
+		\end{proof}
+
+		Corollaries \ref{co:sv_smallest} and \ref{co:sv_product_smallest} are less informative when $\bar{N} \ne N$ (i.e., unequal number of transmit, scatter, and receive antennas) as the lower bounds would be zero.
+
+		% \begin{corollary}[Upper bound on the sum of first $k$ singular values to the positive $p$-th power\label{co:sum_power} {\cite[Inequality~24.4.7]{Hogben2013}}]
 		% 	\begin{equation}
-		% 		\prod_{n=N'}^{N'-k+1} \sigma_n(\mathbf{H}) \ge \prod_{n=N'}^{N'-k+1} \sigma_n(\mathbf{H}_\mathrm{B}) \prod_{n=N'}^{N'-k+1} \sigma_n(\mathbf{H}_\mathrm{F}).
+		% 		\sum_{n=1}^k \sigma_n^p(\mathbf{H}) \le \sum_{n=1}^k \sigma_n^p(\mathbf{H}_\mathrm{B}) \sigma_n^p(\mathbf{H}_\mathrm{F}), \quad p > 0.
+		% 		\label{iq:sv_bound_fc_power}
+		% 	\end{equation}
+		% 	When $k = N$ and $p = 2$, \eqref{iq:sv_bound_fc_power} suggests the channel power is upper bounded by the sum of (sorted) element-wise power product of backward and forward subchannels
+		% 	\begin{equation}
+		% 		\lVert \mathbf{H} \rVert _\mathrm{F}^2 \le \sum_{n=1}^N \sigma_n^2(\mathbf{H}_\mathrm{B}) \sigma_n^2(\mathbf{H}_\mathrm{F}),
 		% 	\end{equation}
 		% \end{corollary}
 
-		\begin{corollary}[upper bound on the sum of first $k$ singular values to the power of $p$\label{co:sum_power}]
+		\begin{corollary}[Upper bound on the channel power gain\label{co:sum_power}]
+			% The channel power gain is upper bounded by the sum of sorted element-wise power product of backward and forward subchannels
+			The channel power gain is upper bounded by the sum of sorted element-wise product of squared singular values of backward and forward subchannels
 			\begin{equation}
-				\sum_{n=1}^k \sigma_n^p(\mathbf{H}) \le \sum_{n=1}^k \sigma_n^p(\mathbf{H}_\mathrm{B}) \sigma_n^p(\mathbf{H}_\mathrm{F}), \quad p > 0.
-				\label{iq:sv_bound_fc_power}
+				\lVert \mathbf{H} \rVert _\mathrm{F}^2 = \sum_{n=1}^N \sigma_n^2(\mathbf{H}) \le \sum_{n=1}^N \sigma_n^2(\mathbf{H}_\mathrm{B}) \sigma_n^2(\mathbf{H}_\mathrm{F}).
+				\label{iq:power_gain}
 			\end{equation}
-			When $k = N'$ and $p = 2$, \eqref{iq:sv_bound_fc_power} suggests the channel power is upper bounded by the sum of (sorted) element-wise power product of backward and forward subchannels.
 		\end{corollary}
+
+		\begin{proof}
+			Please refer to \cite[Inequality~24.4.7]{Hogben2013}.
+		\end{proof}
+
+		To achieve the equalities in Corollaries \eqref{co:sv_largest} -- \eqref{co:sum_power}, the \gls{ris} needs to completely align the subspaces of $\mathbf{H}_\mathrm{B}$ and $\mathbf{H}_\mathrm{F}$.
+		The resulting scattering matrix is generally required to be unitary
+		\begin{equation}
+			\mathbf{\Theta}^\star = \mathbf{V}_\mathrm{B} \mathbf{U}_\mathrm{F}^\mathsf{H},
+			\label{eq:scattering_fc_optimal}
+		\end{equation}
+		which can be concluded from \eqref{eq:scattering_fc} and \eqref{eq:channel_equivalent_fc} in Appendix~\ref{ap:fully_connected}.
+		Interestingly, diagonal \gls{ris} can attain those equalities if and only if $\mathbf{H}_\mathrm{B}$ and $\mathbf{H}_\mathrm{F}$ are both rank-1.
+		In such case, the equivalent channel reduces to $\mathbf{H} = \sigma_\mathrm{B} \sigma_\mathrm{F} \mathbf{u}_\mathrm{B} \mathbf{v}_\mathrm{B}^\mathsf{H} \mathbf{\Theta} \mathbf{u}_\mathrm{F} \mathbf{v}_\mathrm{F}^\mathsf{H}$ and the \gls{ris} only needs to align $\mathbf{v}_\mathrm{B}^\mathsf{H}$ and $\mathbf{u}_\mathrm{F}$ by
+		\begin{equation}
+			\mathbf{\Theta}^\star = \mathbf{v}_\mathrm{B} \mathbf{u}_\mathrm{F}^\mathsf{H} \odot \mathbf{I},
+		\end{equation}
+		which becomes a special case of \eqref{eq:scattering_siso}.
+		On the other hand, when $\mathbf{H}_\mathrm{B}$ and $\mathbf{H}_\mathrm{F}$ are both in Rayleigh fading, the expected maximum channel power gain $\mathbb{E}\bigl\{ \lVert \mathbf{H} \rVert _ \mathrm{F} \bigr\}_{\max}$ can be evaluated as
+		\begin{equation}
+			\sum_{n=1}^N \int_0^\infty f_{\lambda_n^{\min(N_\mathrm{R},N_\mathrm{S})}}(x_n) d x_n \int_0^\infty f_{\lambda_n^{\min(N_\mathrm{S},N_\mathrm{T})}}(x_n) d x_n,
+			\label{eq:power_gain_rayleigh}
+		\end{equation}
+		where $\lambda_n^{\dot{N}}$ is the $n$-th eigenvalue of the complex $\dot{N} \times \dot{N}$ Wishart matrix with probability density function $f_{\lambda_n^{\dot{N}}}(x_n)$ given by \cite[Equation 51]{Zanella2009}.
+		We notice \eqref{eq:power_gain_rayleigh} is a generalization of \cite[Equation 58]{Shen2020a} to \gls{mimo}.
+
+
+		% and $f_{\lambda_{\mathrm{F},n}}$ are their corresponding probability density functions.
+
+		% the singular values of a rank-1 matrix are invariant under unitary transformations.
+
+		% unless both $\mathbf{H}_\mathrm{B}$ and $\mathbf{H}_\mathrm{F}$ are rank-1.
+		% optimal passive \gls{ris} design should align the subspaces of $\mathbf{H}_\mathrm{B}$ and $\mathbf{H}_\mathrm{F}$ by rotation and pair the subchannels from strongest to weakest.
+		% When both backward and forward channels are rank-1
+		% When the backward and forward channels are in Rayleigh fading,
+		% we can derive an explicit upper bound on the channel power gain when the backward and forward channels are Rayleigh fading.
 
 		% \begin{remark}
 		% 	From \eqref{eq:scattering_fc} and \eqref{eq:channel_equivalent_fc} in the proof of Proposition \ref{pp:fully_connected}, we notice that \eqref{iq:sv_bound_fc}--\eqref{iq:sv_bound_fc_power} are simultaneously tight when
@@ -764,10 +838,11 @@
 		% 	\end{itemize}
 		% \end{remark}
 
-		Tight bounds are inapplicable when a \gls{mimo} direct link is present, as the \gls{ris} needs to balance the direct-indirect (additive) and backward-forward (multiplicative) subspace alignments.
-		Such a balance often involves optimization approaches and another example will be discussed in Section~\ref{sc:low_complexity}.
+		Tighter bounds than Proposition \ref{pp:rank_deficient} are generally inapplicable when a \gls{mimo} direct link is present or the \gls{bd}-\gls{ris} is not unitary.
+		% Proposition \ref{pp:fully_connected} only applies to unitary \gls{ris} without direct link, since t
+		This is because there exists a trade-off between the direct-indirect and backward-forward subspace alignments.
+		In such case, a balance could be struck by optimization approaches from a singular value perspective (discussed in Section~\ref{sc:pareto_frontier}) or a power gain perspective (will be discussed in Section~\ref{sc:rate}).
 	\end{subsection}
-
 \end{section}
 
 \begin{section}{Achievable Rate Maximization}\label{sc:rate}
@@ -1050,7 +1125,7 @@
 				}
 				\label{fg:singular_bound}
 			\end{figure}
-			Fig. \ref{fg:singular_bound} illustrates the analytical singular value bounds in Proposition \ref{pp:rank_deficient} and the numerical results obtained by solving problem \eqref{op:pareto} with $\rho_n = \pm 1$ and $\rho_{n'} = 0$, $\forall n' \ne n$.
+			Fig. \ref{fg:singular_bound} illustrates the analytical singular value bounds in Proposition \ref{pp:rank_deficient} and the numerical results obtained by solving problem \eqref{op:pareto} with $\rho_n = \pm 1$ and $\rho_{\bar{N}} = 0$, $\forall \bar{N} \ne n$.
 			Here we assme a rank-$k$ forward channel without loss of generality.
 			When the \gls{ris} is in the vicinity of the transmitter, Figs. \subref*{fg:singular_bound_rank1_sx32} and \subref*{fg:singular_bound_rank1_sx64} show that the achievable channel singular values indeed satisfy Corollary \ref{co:los}, namely $\sigma_1(\mathbf{H}) \ge \sigma_1(\mathbf{T})$, $\sigma_2(\mathbf{T}) \le \sigma_2(\mathbf{H}) \le \sigma_1(\mathbf{T})$, etc.
 			It is obvious that \gls{bd}-\gls{ris} can approach those bounds better than diagonal \gls{ris} especially for a small $N_\mathrm{S}$.
@@ -1082,7 +1157,7 @@
 				\label{fg:power_bond}
 			\end{figure}
 
-			Fig. \ref{fg:power_bond} compares the analytical channel power bound in Corollary \ref{co:sum_power} with $k=N'$, $p=2$ and the numerical results obtained by solving problem \eqref{op:power_passive} when the direct link is absent.
+			Fig. \ref{fg:power_bond} compares the analytical channel power bound in Corollary \ref{co:sum_power} with $k=\bar{N}$, $p=2$ and the numerical results obtained by solving problem \eqref{op:power_passive} when the direct link is absent.
 			Here, a unitary \gls{bd}-\gls{ris} can attain the upper bound either in closed form \eqref{eq:scattering_fc_tight} or via optimization approach \eqref{eq:scattering_power}.
 			% Recall that a unitary \gls{bd}-\gls{ris} in closed form \eqref{eq:scattering_fc_tight} can attain the bound.
 			% We observe that the bound is also tight for unitary \gls{bd}-\gls{ris}.
@@ -1228,7 +1303,7 @@
 	\end{subsection}
 
 	\begin{subsection}{Proof of Proposition \ref{pp:dof}}\label{ap:dof}
-		The scattering matrix of \gls{bd}-\gls{ris} can be decomposed as\footnote{This is because (block) unitary matrices are closed under multiplication.}
+		The scattering matrix of \gls{bd}-\gls{ris} can be decomposed as
 		\begin{equation}
 			\mathbf{\Theta} = \mathbf{L} \mathbf{\Theta}_\mathrm{D} \mathbf{R}^\mathsf{H},
 		\end{equation}
