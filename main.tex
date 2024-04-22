@@ -134,22 +134,26 @@
 \maketitle
 
 \begin{abstract}
-	This paper investigates how a passive \gls{ris} can manipulate the \gls{mimo} point-to-point channel in terms of singular values and power gain.
-	We depart from the widely-adopted diagonal phase shift model to a \gls{bd} architecture, which enables {cooperative} wave scattering thanks to in-group connections between elements.
-	An efficient and universal \gls{bd}-\gls{ris} design framework is proposed over group-wise {geodesic} \gls{rcg} on the Stiefel manifold, which performs multiplicative rotational (instead of add-then-retract) updates for faster convergence.
-	% For the singular value shaping problem, we numerically characterize their Pareto frontiers by weighted sum optimization via geodesic \gls{rcg}, which generalizes most relevant metrics (e.g., degree of freedom and condition number).
-	% Many analytical singular value bounds are also derived for rank-deficient channels and unitary (a.k.a. unitary) \gls{ris}.
-	For the singular value problem, we numerically characterize their Pareto frontiers by geodesic \gls{rcg} and derive analytical bounds for rank-deficient channels and fully-connected (a.k.a. unitary) \gls{ris}.
-	% For the singular value problem, we consider a numerical optimization approach that characterizes the Pareto frontiers as well as an analytical bounding approach in special (i.e., rank-deficient and fully-connected) scenarios.
-	For the power gain problem, we provide a closed-form iterative solution by group-wise \gls{svd} that features even faster convergence.
-	% Those channel shaping designs have a two-fold advantage.
-	Those channel shaping designs have two major implications.
-	First, they demystify the performance gain from off-diagonal entries in terms of {subchannel rearrangement} and {subspace alignment}.
+	This paper investigates the limit to which a passive \gls{ris} can redistribute the singular values of a point-to-point \gls{mimo} channel.
+	We depart from the widely-adopted diagonal phase shift model to a \gls{bd}-\gls{ris} architecture, which enables {cooperative} wave scattering thanks to in-group connections between elements.
+	% An efficient and universal \gls{bd}-\gls{ris} design framework is proposed over group-wise {geodesic} \gls{rcg} on the Stiefel manifold, which performs multiplicative rotational (instead of add-then-retract) updates for faster convergence.
+	The Pareto frontiers of channel singular values are characterized via a novel geodesic manifold optimization, and the resulting region comprehensively encapsulates relevant metrics (e.g., degree of freedom and condition number).
+	To quantify the shaping capability of diagonal and \gls{bd}-\gls{ris}, we also derive individual and collective singular value bounds for rank-deficient channels and fully-connected \gls{ris} via matrix analysis.
+	% For the power gain problem, we provide a closed-form iterative solution by group-wise \gls{svd} that features even faster convergence.
+	Those results help to explain the shaping advantage from off-diagonal entries in terms of subchannel rearrangement and subspace alignment.
+	% Subchannel rearrangement is a unique feature of off-diagonal entries that allows each group to rearrange and recombine the forward and backward subchannels.
+	% Subspace alignment generalizes phase matching in \gls{siso} and introduces a trade-off between multiplicative backward-forward and additive direct-indirect channel combinations.
+	% Those channel shaping designs have two major implications.
+	% First, they demystify the performance gain from off-diagonal entries in terms of {subchannel rearrangement} and {subspace alignment}.
 	% help to demystify the gain from off-diagonal entries and reveal the shaping advantage of \gls{bd}-\gls{ris} in subchannel rearrangement and subspace alignment.
-	Second, they inspire a two-stage suboptimal solution that decouples joint active and passive beamforming design.
+	% Second, they inspire a two-stage suboptimal solution that decouples joint active and passive beamforming design.
 	% \gls{ris}-transceiver optimization and suggest a low-complexity suboptimal solution based on channel power maximization.
-	As a side product, we tackle the \gls{bd}-\gls{ris}-aided \gls{mimo} rate maximization problem by a local-optimal \gls{ao} approach and a two-stage shaping-inspired approach.
-	Simulation results indicate that the rate deficit from the latter diminishes as the \gls{ris} evolves from diagonal towards unitary, while the relative gain of \gls{bd}-\gls{ris} increase with \gls{mimo} dimensions and decrease with spatial correlation.
+	As a side product, we tackle \gls{ris}-aided \gls{mimo} rate maximization by a local-optimal \gls{ao} approach and a low-complexity shaping-based approach.
+	Simulation results highlight that \gls{bd}-\gls{ris} provides a wider dynamic range and better trade-off on channel singular values, while its power and rate gains over diagonal \gls{ris} scale with \gls{mimo} dimensions.
+
+	% wider dynamic range (with better tradeoff) of singular values and significant power and rate gains, especially in large-scale \gls{mimo} systems.
+
+	% indicate that the rate deficit from the latter diminishes as the \gls{ris} evolves from diagonal towards unitary, while the relative gain of \gls{bd}-\gls{ris} increase with \gls{mimo} dimensions and decrease with spatial correlation.
 
 	% , and .
 
