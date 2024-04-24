@@ -134,13 +134,18 @@
 \maketitle
 
 \begin{abstract}
-	This paper investigates the limit to which a passive \gls{ris} can redistribute the singular values of a point-to-point \gls{mimo} channel.
-	We depart from the widely-adopted diagonal phase shift model to a \gls{bd}-\gls{ris} architecture, which enables {cooperative} wave scattering thanks to in-group connections between elements.
+	This paper investigates how significantly a passive \gls{ris} can redistribute the singular values of a \gls{mimo} point-to-point channel.
+	% the limit to which
+	We depart from the widely-adopted diagonal phase shift model to a \gls{bd}-\gls{ris} architecture featuring in-group connections between elements.
+	% This powerful model allows cooperative wave scattering with both amplitude and phase control, and we uniquely attribute the shaping advantage to subchannel rearrangement and subspace alignment.
+	This powerful model enables cooperative wave scattering with both amplitude and phase control, and we provide unique shaping insights in terms of subchannel rearrangement and subspace alignment.
+	% uniquely explain the extra design freedom from off-diagonal entries as subchannel rearrangement and subspace alignment.
+	% while the shaping advantage from off-diagonal entries is uniquely attributed to subchannel rearrangement and subspace alignment.
 	% An efficient and universal \gls{bd}-\gls{ris} design framework is proposed over group-wise {geodesic} \gls{rcg} on the Stiefel manifold, which performs multiplicative rotational (instead of add-then-retract) updates for faster convergence.
-	The Pareto frontiers of channel singular values are characterized via a novel geodesic manifold optimization, and the resulting region comprehensively encapsulates relevant metrics (e.g., degree of freedom and condition number).
+	The Pareto frontiers of channel singular values are characterized via a novel geodesic manifold optimization, and the resulting region comprehensively encapsulates relevant metrics (e.g., spectral norm and condition number).
 	To quantify the shaping capability of diagonal and \gls{bd}-\gls{ris}, we also derive individual and collective singular value bounds for rank-deficient channels and fully-connected \gls{ris} via matrix analysis.
 	% For the power gain problem, we provide a closed-form iterative solution by group-wise \gls{svd} that features even faster convergence.
-	Those results help to explain the shaping advantage from off-diagonal entries in terms of subchannel rearrangement and subspace alignment.
+	% We uniquely attribute the shaping advantage from off-diagonal entries to subchannel rearrangement and subspace alignment.
 	% Subchannel rearrangement is a unique feature of off-diagonal entries that allows each group to rearrange and recombine the forward and backward subchannels.
 	% Subspace alignment generalizes phase matching in \gls{siso} and introduces a trade-off between multiplicative backward-forward and additive direct-indirect channel combinations.
 	% Those channel shaping designs have two major implications.
@@ -148,8 +153,8 @@
 	% help to demystify the gain from off-diagonal entries and reveal the shaping advantage of \gls{bd}-\gls{ris} in subchannel rearrangement and subspace alignment.
 	% Second, they inspire a two-stage suboptimal solution that decouples joint active and passive beamforming design.
 	% \gls{ris}-transceiver optimization and suggest a low-complexity suboptimal solution based on channel power maximization.
-	As a side product, we tackle \gls{ris}-aided \gls{mimo} rate maximization by a local-optimal \gls{ao} approach and a low-complexity shaping-based approach.
-	Simulation results highlight that \gls{bd}-\gls{ris} provides a wider dynamic range and better trade-off on channel singular values, while its power and rate gains over diagonal \gls{ris} scale with \gls{mimo} dimensions.
+	As a side product, we tackle \gls{ris}-aided \gls{mimo} achievable rate maximization by a local-optimal \gls{ao} approach and a low-complexity shaping-based approach.
+	Simulation results highlight that \gls{bd}-\gls{ris} provides a wider dynamic range and better trade-off on channel singular values, while its power and rate gains over diagonal \gls{ris} increase with \gls{mimo} dimensions.
 
 	% wider dynamic range (with better tradeoff) of singular values and significant power and rate gains, especially in large-scale \gls{mimo} systems.
 
@@ -181,44 +186,54 @@
 	This is empowered by the recent advances in \gls{ris}, a programmable metasurface that recycles and redistributes ambient electromagnetic waves for improved wireless performance.
 	A typical \gls{ris} consists of numerous low-power sub-wavelength non-resonant scattering elements, whose response can be engineered in real-time to manipulate the amplitude, phase, frequency, and polarization of the scattered waves \cite{Basar2019}.
 	It not only experiences negligible noise and supports full-duplex transmissions, but also features better flexibility than reflectarrays, lighter footprint than various relays, and greater scalability than conventional multi-antenna techniques.
-	The most popular \gls{ris} application is \emph{joint beamforming} design with transceivers, which has attracted significant attention in wireless communication \cite{Wu2019,Guo2020,Liu2022}, sensing \cite{He2022,Luo2022,Hua2023}, and power transfer literature \cite{Wu2020a,Feng2022,Zhao2022}.
-	Since coherent scattering can be decomposed as equal-gain combining and transmission, \gls{ris} elements usually offer a squared asymptotic performance (e.g., second-order array gain and fourth-order power scaling law \cite{Zhao2022}) than transceiver antennas.
-	% However, a large-dimensional \gls{ris} is generally required to compensate the power loss from double fading.
-	On the other hand, \gls{ris} can also be employed for \emph{backscatter modulation} by periodically switching its reflection pattern.
-	This creates a free-ride message stream (similar to index modulation \cite{Basar2017}) that can be either integrated into the legacy transmitter for enhanced channel capacity \cite{Karasik2020,Basar2020,Ye2022}, or exploited by surrounding low-power devices for energy-efficient uplink communications \cite{Liang2020,Zhao2022a,Yang2024}.
-
-	Despite the great potentials and fruitful outcomes, one critical unanswered question is the {channel shaping} capability: \emph{To what extent can a passive \gls{ris} reshape \gls{mimo} channels?}
-	The answer depends heavily on the scattering model and hardware architecture.
-	Most existing works assumed that each scattering element is tuned by a dedicated impedance and acts as an \emph{individual} phase shifter \cite{Wu2020}.
-	This ideally translates to a diagonal scattering matrix with unit-magnitude entries, which only controls the phase of the scattered waves but cannot redistribute their amplitude.
-	The concept was soon generalized to \gls{bd}-\gls{ris} \cite{Shen2020a} which physically groups adjacent elements using passive reconfigurable components.\footnote{Those components can be either symmetric (e.g., capacitors and inductors) or asymmetric (e.g., ring hybrids and branch-line hybrids) \cite{Ahn2006}, resulting in symmetric and asymmetric scattering matrices respectively.}
-	This allows \emph{cooperative} scattering --- wave impinging on one element can propagate losslessly within the circuit and depart partially from any element in the same group.
-	It can thus control both the amplitude and phase of the scattered wave without power loss, generalizing the scattering matrix to block-diagonal with unitary blocks.
-	Such a powerful model can be realized at reduced hardware complexity using tree- and forest-connected architectures using graph theory \cite{Nerini2024}.
-	\gls{bd}-\gls{ris} can also function in hybrid transmitting-and-reflecting mode \cite{Li2023b} and multi-sector mode \cite{Li2023c} for full-space coverage and multi-user support.
-	Many practical design challenges have been addressed including channel estimation \cite{Li2024}, mutual coupling \cite{Li2023f}, and wideband modelling \cite{Li2024a}.
-	Its superiority has been studied extensively in \gls{siso} and \gls{miso} systems in terms of single-user \gls{snr} maximization \cite{Shen2020a,Nerini2023,Nerini2024,Santamaria2023} and multi-user \gls{wsr} maximization \cite{Fang2023,Zhou2023,Li2023c,Soleymani2024}.
-	When it comes to \gls{mimo}, most existing works are limited to very specific scenarios.
-	For example, the authors of \cite{Bartoli2023} investigated the rate-optimal joint beamforming design under the assumption of unitary \gls{ris} without direct link.
-	Received power maximization problem is extended to \gls{mimo} for continuous-valued \cite{Nerini2023} and discrete-valued \cite{Nerini2023b} scattering matrices, but they only considered single-stream transmission with given precoder and combiner (which is equivalent to \gls{siso}).
-	Transmitter-side \gls{bd}-\gls{ris} design over statistical \gls{csi} has been introduced to massive \gls{mimo} networks for improved spectral efficiency \cite{Mishra2024}, but was again constrained to unitary \gls{ris} without direct link.
-	A practical frequency-dependent \gls{bd}-\gls{ris} model has been recently proposed for multi-band multi-cell \gls{mimo} networks to facilitate practical deployments \cite{Sena2024}.
-	Although the results are insightful, it remains unclear how the off-diagonal entries contribute to channel shaping and whether the relative gain of \gls{bd}-\gls{ris} over diagonal \gls{ris} scales with \gls{mimo} dimensions.
-	% Therefore, \gls{bd}-\gls{ris} is envisioned as the next generation channel shaper with stronger signal processing flexibility \cite{Li2023g}.
-
-	Channel shaping is different from passive beamforming since the \gls{ris} is exploited as a stand-alone device to modify the inherent properties of the channel itself, instead of optimizing for a specific performance metric.
-	This not only allows one to decouple the joint \gls{ris}-transceiver design, but also unveils the fundamental limits of wave manipulation and provides an all-in-one tool for various wireless applications.
-	Relevant designs can be classified into two categories:
+	The most popular \gls{ris} research direction is \emph{joint beamforming} design with transceivers for a specific performance measure, which has attracted significant attention in wireless communication \cite{Wu2019,Guo2020,Liu2022}, sensing \cite{He2022,Luo2022,Hua2023}, and power transfer literature \cite{Wu2020a,Feng2022,Zhao2022}.
+	While passive beamforming suffers severe attenuation from double fading, it usually offers a squared asymptotic behavior than active beamforming (e.g., second-order array gain and fourth-order harvested power \cite{Zhao2022}).
+	On the other hand, \gls{ris} can also be used for \emph{backscatter modulation} by periodically switching its reflection pattern within channel coherence time.
+	This creates a free-ride message stream (similar to index modulation \cite{Basar2017}) with dual benefits: integrating with the legacy transmitter for enhanced channel capacity \cite{Karasik2020,Basar2020,Ye2022} or serving as a dedicated source for passive uplink communication \cite{Liang2020,Zhao2022a,Yang2024}.
+	Different from above directions, \emph{channel shaping} exploits the \gls{ris} as a stand-alone device to modify the inherent properties of the propagation environment.
+	This provides a ubiquitous wave scattering benchmark for different wireless applications and greatly simplifies the \gls{ris}-transceiver design.
+	Relevant shaping metrics can be classified into two categories:
 	\begin{itemize}
-		\item \emph{Singular value centric:} Focus on the singular values of the equivalent channel matrix, which are sensitive to minor perturbations but precisely related to the capacity and diversity-multiplexing trade-off. It has been mainly studied in terms of minimum singular value \cite{ElMossallamy2021}, effective rank \cite{ElMossallamy2021,Meng2023}, condition number \cite{Zheng2022,Huang2023}, and degree of freedom \cite{Bafghi2022,Zheng2023,Chae2023}.
-		\item \emph{Power centric:} Focus on the second-order characteristics of the equivalent channel matrix, which are useful in \gls{siso} and \gls{miso} but less informative in \gls{mimo}. It has been mainly studied in terms of channel power gain \cite{Wu2019,Shen2020a,Nerini2023,Nerini2024,Santamaria2023} and leakage interference \cite{Santamaria2023a}.
+		\item \emph{Singular value centric:} Closely related to the performance measures (e.g., achievable rate and harvested power \cite{Shen2021}) but sensitive to numerical perturbations. The impact of \gls{ris} has been studied in terms of minimum singular value \cite{ElMossallamy2021}, effective rank \cite{ElMossallamy2021,Meng2023}, condition number \cite{Zheng2022,Huang2023}, and degree of freedom \cite{Bafghi2022,Zheng2023,Chae2023}.
+		\item \emph{Power centric:} The second-order statistics are less informative in \gls{mimo} but easier to analyze and optimize. The impact of \gls{ris} has been studied in terms of channel power gain \cite{Wu2019,Shen2020a,Nerini2023,Nerini2024,Santamaria2023} and leakage interference \cite{Santamaria2023a}.
 	\end{itemize}
 
-	While the above works offer promising glimpses into the channel shaping potential of passive \gls{ris}, they neither suggest the achievable singular value region nor address the most general scenario with direct link and arbitrary group size.
-	On the other hand, \gls{bd}-\gls{ris} has been mainly investigated for beamforming and its channel shaping potential in \gls{mimo} has not been fully understood.
+	While those works offer initial glimpses into the channel shaping potential, one critical question remains unaddressed: \emph{To what extent can a passive \gls{ris} reshape the \gls{mimo} channel in terms of singular values?}
+	% \begin{enumerate}
+	% 	\item What is the entire achievable singular value region of a \gls{mimo} channel with \gls{ris}?
+	% \end{enumerate}
+	% they neither discuss the limitation
+	% depict the entire singular value region nor provide a universal optimization framework.
+	% It motivates the ultimate question: \emph{To what extent can a passive \gls{ris} reshape \gls{mimo} channels in terms of singular values?}
+	% Despite the great potentials and fruitful outcomes, one critical unanswered question is the {channel shaping} capability: \emph{To what extent can a passive \gls{ris} reshape \gls{mimo} channels?}
+	The answer depends heavily on the scattering model and hardware architecture.
+	Most relevant works \cite{ElMossallamy2021,Meng2023,Zheng2022,Huang2023,Bafghi2022,Zheng2023,Chae2023,Wu2019,Santamaria2023a} assumed that each \gls{ris} element is tuned by a dedicated impedance and acts as an \emph{individual} scatterer \cite{Wu2020}.
+	This ideally translates to a scattering matrix with unit-magnitude entries on the main diagonal and zeros elsewhere, applying merely a phase shift to the signal.
+	The concept was soon generalized to \gls{bd}-\gls{ris} \cite{Shen2020a} that physically groups adjacent elements using passive reconfigurable components.\footnote{Those components can be either symmetric (e.g., capacitors and inductors) or asymmetric (e.g., ring hybrids and branch-line hybrids) \cite{Ahn2006}, resulting in symmetric and asymmetric scattering matrices, respectively.}
+	This allows \emph{cooperative} scattering --- wave impinging on one element can propagate within the circuit and depart partially from any element in the same group.
+	It can thus redistribute both amplitude and phase of the scattered wave with zero power loss, generalizing the scattering matrix to block-diagonal with unitary blocks.
+	Such a powerful model can be realized at reduced cost using tree- and forest-connected architectures inspired by graph theory \cite{Nerini2024}.
+	\gls{bd}-\gls{ris} can also function in hybrid transmitting-and-reflecting mode \cite{Li2023b} and multi-sector mode \cite{Li2023c} for full-space coverage and multi-user support.
+	Many practical design challenges have been addressed including channel estimation \cite{Li2024}, mutual coupling \cite{Li2023f}, and wideband modelling \cite{Li2024a}.
+	Its beamforming superiority has been studied extensively in \gls{siso} and \gls{miso} systems in terms of single-user \gls{snr} maximization \cite{Shen2020a,Nerini2023,Nerini2024,Santamaria2023} and multi-user \gls{wsr} maximization \cite{Fang2023,Zhou2023,Li2023c,Soleymani2024}.
+	However, the interplay between \gls{bd}-\gls{ris} and \gls{mimo} systems is still in the infancy stage.
+	The authors of \cite{Bartoli2023} investigated the rate-optimal joint beamforming design for a specific \gls{bd}-\gls{ris}-aided \gls{mimo} system with blocked direct link and unitary (a.k.a. fully-connected) \gls{ris}.
+	Similar constraints were also adopted in \cite{Mishra2024}, which introduces transmitter-side \gls{bd}-\gls{ris} to massive \gls{mimo} for improved spectral efficiency.
+	Received power maximization problem was studied over continuous-valued \cite{Nerini2023} and discrete-valued \cite{Nerini2023b} block-unitary scattering matrices, but the proposed single-stream transceiver is rate-suboptimal and the problem is equivalent to \gls{siso}.
+	A practical frequency-dependent \gls{bd}-\gls{ris} model has been recently proposed for multi-band multi-cell \gls{mimo} networks to facilitate practical deployments \cite{Sena2024}.
+	Although the results are promising, there lacks a study of \gls{bd}-\gls{ris} in general \gls{mimo} systems and its shaping potential over diagonal \gls{ris} has not been fully understood.
+	% remains unclear how the off-diagonal entries contribute to channel shaping and whether the relative gain of \gls{bd}-\gls{ris} over diagonal \gls{ris} scales with \gls{mimo} dimensions.
+	% While the above works offer promising glimpses into the channel shaping potential of passive \gls{ris}, they neither suggest the achievable singular value region nor address the most general scenario with direct link and arbitrary group size.
+	% On the other hand, \gls{bd}-\gls{ris} has been mainly investigated for beamforming and its channel shaping potential in \gls{mimo} has not been fully understood.
 	% the great potential of \gls{bd}-\gls{ris} (especially in \gls{mimo}) has not been fully understood and an efficient design framework is still missing.
 	This paper aims for a comprehensive answer to the channel shaping question through theoretical analysis and numerical optimization.
 	The contributions are summarized below.
+
+
+	% 1. need a general study on BD-RIS x MIMO and explain the potential from off-diagonal entries
+	% 2. need a general optimization framework for BD-RIS
+	% 3. need a comprehensive answer to the channel shaping question
+	% 4. need a low-complexity solution from shaping
 
 	First, we demystify the gain from off-diagonal entries of \gls{bd}-\gls{ris} in terms of subchannel rearrangement and subspace alignment.
 	Subchannel rearrangement is a unique feature of cooperative scattering that allows each group to rearrange and recombine the associated forward and backward subchannels.
@@ -829,7 +844,7 @@
 			{\scriptstyle{\mathbf{\Theta}}}{\lVert \mathbf{H}_\mathrm{D} + \mathbf{H}_\mathrm{B} \mathbf{\Theta} \mathbf{H}_\mathrm{F} \rVert _\mathrm{F}^2}{\label{op:power_passive}}{\label{ob:power_passive}}
 			\addConstraint{\mathbf{\Theta}_g^\mathsf{H} \mathbf{\Theta}_g=\mathbf{I}, \quad \forall g,}{}{}
 		\end{maxi!}
-		which generalizes the case of \gls{siso} \cite{Shen2020a}, \gls{miso} \cite{Santamaria2023,Fang2023}, single-stream \gls{mimo} \cite{Nerini2023,Nerini2023b}, and direct-less \gls{mimo} with unitary \gls{ris} \eqref{eq:scattering_fc_optimal}.
+		which generalizes the case of \gls{siso} \cite{Shen2020a}, \gls{miso} \cite{Santamaria2023,Fang2023}, single-stream \gls{mimo} \cite{Nerini2023,Nerini2023b}, and direct link-blocked \gls{mimo} with unitary \gls{ris} \eqref{eq:scattering_fc_optimal}.
 		The key of solving \eqref{op:power_passive} is to balance the additive and multiplicative subspace alignments.
 		Interestingly, in terms of maximizing the inner product $\langle \mathbf{H}_\mathrm{D}, \mathbf{H}_\mathrm{B} \mathbf{\Theta} \mathbf{H}_\mathrm{F} \rangle$, \eqref{op:power_passive} is reminiscent of the weighted orthogonal Procrustes problem \cite{Gower2004}
 		\begin{mini!}
