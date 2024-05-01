@@ -201,7 +201,7 @@
 
 	While those works offer initial glimpses into the channel shaping potential, one critical question remains unaddressed: \emph{To what extent can a passive \gls{ris} reshape the \gls{mimo} channel in terms of singular values?}
 	% \begin{enumerate}
-	% 	\item What is the entire achievable singular value region of a \gls{mimo} channel with \gls{ris}?
+	% 	\item What is the entire singular value region of a \gls{mimo} channel with \gls{ris}?
 	% \end{enumerate}
 	% they neither discuss the limitation
 	% depict the entire singular value region nor provide a universal optimization framework.
@@ -253,7 +253,7 @@
 	Third, we quantify the capability of a \gls{bd}-\gls{ris} to redistribute the singular values of a point-to-point \gls{mimo} channel.
 	The {Pareto frontiers} are characterized by optimizing the {weighted sum of singular values}, where the weights can be positive, zero, or negative.
 	This problem is solved by the proposed geodesic \gls{rcg} algorithm.
-	The resulting achievable singular value region generalizes most relevant metrics and provides an intuitive channel shaping benchmark.
+	The resulting singular value region generalizes most relevant metrics and provides an intuitive channel shaping benchmark.
 	% We also and derive some analytical singular value bounds for rank-deficient \gls{mimo} and unitary \gls{ris}.
 	To explore the shaping limits of different \gls{ris} architectures, we also derive individual and collective singular value bounds for rank-deficient channels and unitary \gls{ris} via matrix analysis.
 	Results validate those bounds and show that increasing \gls{bd}-\gls{ris} group size significantly enlarges the singular value region, providing wider dynamic range and better trade-off.
@@ -534,6 +534,7 @@
 		while the Riemannian gradient evaluated at $\mathbf{\Theta}_g^{(r)}$ \eqref{eq:gradient_riemannian} should be translated back to the identity for exploiting the Lie algebra \cite{Abrudan2008}
 		\begin{equation}
 			\tilde{\nabla}_{\mathrm{R},g}^{(r)} = \nabla_{\mathrm{R},g}^{(r)} \mathbf{\Theta}_g^{(r)\mathsf{H}} = \nabla_{\mathrm{E},g}^{(r)} \mathbf{\Theta}_g^{(r)\mathsf{H}} - \mathbf{\Theta}_g^{(r)} {\nabla_{\mathrm{E},g}^{(r)\mathsf{H}}}.
+			% $\mathcal{O}(2 L^3)$
 			\label{eq:gradient_translated}
 		\end{equation}
 		After gradient translation, the deviation parameter and conjugate direction can be determined similarly to \eqref{eq:parameter_cg} and \eqref{eq:direction_cg}
@@ -569,16 +570,16 @@
 						\State $\tilde{\gamma}_g^{(r)} \gets$ \eqref{eq:parameter_cg_geodesic}
 						\State $\mathbf{D}_g^{(r)} \gets$ \eqref{eq:direction_cg_geodesic}
 						\If {$\Re\bigl\{\mathrm{tr}({\mathbf{D}_g^{(r)\mathsf{H}}} \tilde{\nabla}_{\mathrm{R},g}^{(r)})\bigr\} < 0$} \Comment{not an ascent direction}
-							\State $\mathbf{D}_g^{(r)} \gets \nabla_{\mathrm{R},g}^{(r)}$
+							\State $\mathbf{D}_g^{(r)} \gets \tilde{\nabla}_{\mathrm{R},g}^{(r)}$
 						\EndIf
 						\State $\mu \gets 1$
 						\State $\mathbf{G}_g^{(r)}(\mu) \gets$ \eqref{eq:geodesic_translated}
-						\While {$f\bigl(\mathbf{G}_g^{(r)}(2\mu)\bigr) - f(\mathbf{\Theta}_g^{(r)}) \ge \mu \cdot \mathrm{tr}(\mathbf{D}_g^{(r)} {\mathbf{D}_g^{(r)\mathsf{H}}}) / 2$}
+						\While {$f\bigl(\mathbf{G}_g^{(r)}(2\mu)\bigr) - f(\mathbf{\Theta}_g^{(r)}) \ge \mu \cdot \mathrm{tr}(\mathbf{D}_g^{(r)} {\mathbf{D}_g^{(r)\mathsf{H}}}) / 2$} \label{ln:armijo_start}
 							\State $\mu \gets 2 \mu$
 						\EndWhile
 						\While {$f\bigl(\mathbf{G}_g^{(r)}(\mu)\bigr) - f(\mathbf{\Theta}_g^{(r)}) < \mu / 2 \cdot \mathrm{tr}(\mathbf{D}_g^{(r)} {\mathbf{D}_g^{(r)\mathsf{H}}}) / 2$}
 							\State $\mu \gets \mu / 2$
-						\EndWhile
+						\EndWhile \label{ln:armijo_end}
 						\State $\mathbf{\Theta}_g^{(r+1)} \gets$ \eqref{eq:update_geodesic}
 					\EndFor
 					\State $r \gets r+1$
@@ -587,11 +588,12 @@
 		\end{algorithm}
 
 		Algorithm~\ref{ag:rcg} summarizes the proposed \gls{bd}-\gls{ris} design framework based on group-wise geodesic \gls{rcg}.
-		Compared to the non-geodesic approach, our method leverages the properties of unitary group to replace the add-then-retract update \eqref{eq:add_then_retract} with a multiplicative rotational update \eqref{eq:update_geodesic} along the geodesic.
-		This leads to faster convergence and simplifies the step size tuning thanks to an appropriate parameter space.
-
-		Both approaches can be performed in parallel for all groups to facilitate large-scale \gls{bd}-\gls{ris} optimization problems.
-		Since block-unitary matrices are also closed under multiplication, one can avoid group-wise updates by directly operating on $\mathbf{\Theta}$ and pinching (i.e., keeping the block diagonal and nulling the other entries) the Euclidean gradient \eqref{eq:gradient_euclidean}, at the cost of higher computational complexity and slower convergence.
+		Compared to the non-geodesic approach, it leverages the Lie group properties to replace the add-then-retract update \eqref{eq:add_then_retract} with a multiplicative rotational update \eqref{eq:update_geodesic} along the geodesic.
+		This leads to faster convergence and simplifies the step size tuning thanks to appropriate parameter space.
+		% Despite the difference in
+		Convergence to a local optimum is still guaranteed if not initialized at a stationary point.
+		Note that the group-wise updates can be performed in parallel to facilitate large-scale \gls{bd}-\gls{ris} optimization problems.
+		Since block-unitary matrices are also closed under multiplication, one can avoid group-wise updates by directly operating on $\mathbf{\Theta}$ and pinching (i.e., keeping the block diagonal and nulling the other entries) the Euclidean gradient \eqref{eq:gradient_euclidean}, with potentially higher computational complexity and slower convergence.
 	\end{subsection}
 \end{section}
 
@@ -628,9 +630,10 @@
 			\addConstraint{\mathbf{\Theta}_g^\mathsf{H} \mathbf{\Theta}_g=\mathbf{I},}{\quad \forall g,}{\label{co:pareto_unitary}}
 		\end{maxi!}
 		where $n \in \mathcal{N} \triangleq \{1,\ldots,N\}$, $N \triangleq \min(N_\mathrm{T}, N_\mathrm{R})$ is the maximum channel rank, and $\rho_n$ is the weight of the $n$-th singular value that can be positive, zero, or negative.
-		Varying $\{\rho_n\}_{n \in \mathcal{N}}$ characterizes the Pareto frontier that encloses the entire achievable singular value region.
-		Thus, we claim the singular value Pareto problem \eqref{op:pareto} generalizes most relevant channel shaping problems.
-		It can be solved by the proposed group-wise geodesic \gls{rcg} method with the following gradient expression.
+		Varying $\{\rho_n\}_{n \in \mathcal{N}}$ characterizes the Pareto frontier that encloses the entire singular value region.
+		Thus, we claim problem \eqref{op:pareto} generalizes most singular value shaping problems.
+		It can be solved optimally by Algorithm~\ref{ag:rcg} with the Euclidean gradient given by Lemma \ref{lm:pareto_gradient}.
+		% It can be solved optimally by Algorithm~\ref{ag:rcg} where line \ref{ln:gradient_euclidean} uses the following Euclidean gradient expression \eqref{eq:pareto_gradient}.
 
 		\begin{lemma}\label{lm:pareto_gradient}
 			The Euclidean gradient of \eqref{ob:pareto} with respect to \gls{bd}-\gls{ris} group $g$ is
@@ -638,14 +641,15 @@
 				\frac{\partial \sum_n \rho_n \sigma_n(\mathbf{H})}{\partial \mathbf{\Theta}_g^*} = \mathbf{H}_{\mathrm{B},g}^\mathsf{H} \mathbf{U} \mathrm{diag}(\rho_1,\ldots,\rho_N) \mathbf{V}^\mathsf{H} \mathbf{H}_{\mathrm{F},g}^\mathsf{H},
 				\label{eq:pareto_gradient}
 			\end{equation}
-			where $\mathbf{U}$ and $\mathbf{V}$ are the left and right singular matrices of $\mathbf{H}$, respectively.
+			where $\mathbf{U}$ and $\mathbf{V}$ are the left and right compact singular matrices of $\mathbf{H}$, respectively.
 		\end{lemma}
 		\begin{proof}
 			Please refer to Appendix~\ref{ap:pareto_gradient}.
 		\end{proof}
 
-		Algorithm~\ref{ag:rcg} can thus be invoked for problem \eqref{op:pareto} where line \ref{ln:gradient_euclidean} uses \eqref{eq:pareto_gradient} explicitly.
-		With proper initialization, it is guaranteed to converge to (at least local) optimal points.
+		We then analyze the computational complexity of solving Pareto singular value problem \eqref{op:pareto} by Algorithm~\ref{ag:rcg}.
+		To update each \gls{bd}-\gls{ris} group, compact \gls{svd} of $\mathbf{H}$ requires $\mathcal{O}(N N_\mathrm{T} N_\mathrm{R})$, Euclidean gradient \eqref{eq:pareto_gradient} requires $\mathcal{O}\bigl(L N (N_\mathrm{T}+N_\mathrm{R}+L+1) \bigr)$, Riemannian gradient translation \eqref{eq:gradient_translated} requires $\mathcal{O}(L^3)$, deviation parameter \eqref{eq:parameter_cg_geodesic} and conjugate direction \eqref{eq:direction_cg_geodesic} together require $\mathcal{O}(L^2)$, and matrix exponential \eqref{eq:update_geodesic} requires $\mathcal{O}(L^3)$ operations \cite{Moler2003}.
+		The overall complexity is thus $\mathcal{O}\bigl(I_\text{RCG} G \bigl(N N_\mathrm{T} N_\mathrm{R} + L N (N_\mathrm{T}+N_\mathrm{R}+L+1) + I_\text{BLS} L^3\bigr)\bigr)$, where $I_\text{RCG}$ and $I_\text{BLS}$ are the number of iterations for geodesic \gls{rcg} and backtracking line search (line \ref{ln:armijo_start}--\ref{ln:armijo_end} of Algorithm \ref{ag:rcg}), respectively.
 	\end{subsection}
 
 	\begin{subsection}{Some Analytical Bounds}\label{sc:bounds}
@@ -872,7 +876,7 @@
 			\mathbf{\Theta} = \mathbf{U} \mathbf{V}^\mathsf{H},
 			\label{eq:orthogonal_procrustes_solution}
 		\end{equation}
-		where $\mathbf{U}$ and $\mathbf{V}$ are respectively the left and right singular matrices of $\mathbf{H}_\mathrm{B}^\dagger \mathbf{H}_\mathrm{D} \mathbf{H}_\mathrm{F}^\mathsf{H}$ or $\mathbf{H}_\mathrm{B}^\mathsf{H} \mathbf{H}_\mathrm{D} \mathbf{H}_\mathrm{F}^\dagger$ \cite{Golub2013}.
+		where $\mathbf{U}$ and $\mathbf{V}$ are respectively the left and right compact singular matrices of $\mathbf{H}_\mathrm{B}^\dagger \mathbf{H}_\mathrm{D} \mathbf{H}_\mathrm{F}^\mathsf{H}$ or $\mathbf{H}_\mathrm{B}^\mathsf{H} \mathbf{H}_\mathrm{D} \mathbf{H}_\mathrm{F}^\dagger$ \cite{Golub2013}.
 		We emphasize that \eqref{eq:scattering_fc_optimal} and \eqref{eq:orthogonal_procrustes_solution} are valid unitary \gls{ris} solutions to \eqref{op:power_passive} when the direct link is absent and present, but the latter is neither optimal nor a generalization of the former due to the lossy transformation.
 
 		Inspired by \cite{Nie2017}, we propose an optimal solution to problem \eqref{op:power_passive} with arbitrary group size.
@@ -884,7 +888,7 @@
 				\mathbf{\Theta}_g^{(r+1)} = \mathbf{U}_g^{(r)} \mathbf{V}_g^{(r)}, \quad \forall g.
 				\label{eq:scattering_power}
 			\end{equation}
-			converges to a stationary point of \eqref{op:power_passive}, where $\mathbf{U}_g^{(r)}$ and $\mathbf{V}_g^{(r)}$ are the left and right compact singular matrix of
+			converges to a stationary point of \eqref{op:power_passive}, where $\mathbf{U}_g^{(r)}$ and $\mathbf{V}_g^{(r)}$ are the left and right compact singular matrices of
 			\begin{equation}
 				\mathbf{M}_g^{(r)} = \mathbf{H}_{\mathrm{B},g}^\mathsf{H} \Bigl(\mathbf{H}_\mathrm{D} + \mathbf{H}_\mathrm{B} \mathrm{diag}\bigl(\mathbf{\Theta}_{[1:g-1]}^{(r+1)},\mathbf{\Theta}_{[g:G]}^{(r)}\bigr) \mathbf{H}_\mathrm{F}\Bigr) \mathbf{H}_{\mathrm{F},g}^\mathsf{H}
 				\label{eq:auxiliary_matrix_power}
@@ -894,6 +898,10 @@
 		\begin{proof}
 			Please refer to Appendix~\ref{ap:power}.
 		\end{proof}
+
+		We then analyze the computational complexity of solving channel gain maximization problem \eqref{op:power_passive} by Proposition \ref{pp:power}.
+		To update each \gls{bd}-\gls{ris} group, matrix multiplication \eqref{eq:auxiliary_matrix_power} requires $\mathcal{O}\bigl(N_\mathrm{T} N_\mathrm{R} + (G+1)(NL^2+N_\mathrm{T} N_\mathrm{R} L)\bigr)$ operations and its compact \gls{svd} requires $\mathcal{O}(L^3)$ operations.
+		The overall complexity is thus $\mathcal{O}\bigl(I_\text{SAA} G \bigl(N_\mathrm{T} N_\mathrm{R} + (G+1)(NL^2+N_\mathrm{T} N_\mathrm{R} L) + L^3\bigr)\bigr)$, where $I_\text{SAA}$ is the number iterations for successive affine approximation.
 	\end{subsection}
 
 	\begin{subsection}{Achievable Rate Maximization}\label{sc:rate}
@@ -915,6 +923,7 @@
 				\addConstraint{\mathbf{\Theta}_g^\mathsf{H} \mathbf{\Theta}_g=\mathbf{I}, \quad \forall g,}{}{}
 			\end{maxi!}
 			where $\mathbf{Q} \triangleq \mathbf{W} \mathbf{W}^\mathsf{H}$ is the transmit covariance matrix.
+			Problem \eqref{op:rate_passive} can be solved optimally by Algorithm \ref{ag:rcg} with the Euclidean gradient given by Lemma \ref{lm:rate_gradient}.
 			\begin{lemma}\label{lm:rate_gradient}
 				The Euclidean gradient of \eqref{ob:rate_passive} with respect to \gls{bd}-\gls{ris} block $g$ is
 				\begin{equation}
@@ -926,21 +935,24 @@
 			\begin{proof}
 				Please refer to Appendix~\ref{ap:rate_gradient}.
 			\end{proof}
-			Algorithm \ref{ag:rcg} can thus be invoked for problem \eqref{op:rate} where line \ref{ln:gradient_euclidean} uses \eqref{eq:rate_gradient} explicitly.
-			Since \eqref{ob:rate_passive} is a concave function of $\mathbf{\Theta}$, convergence to (at least local) optimal points is guaranteed.
 			For a given $\mathbf{\Theta}$, the global optimal transmit precoder is given by eigenmode transmission \cite{Clerckx2013}
 			\begin{equation}
 				\mathbf{W}^\star = \mathbf{V} {\mathrm{diag}(\mathbf{s}^\star)}^{1/2},
 				\label{eq:precoder_eigenmode}
 			\end{equation}
 			where $\mathbf{V}$ is the right singular matrix of the equivalent channel and $\mathbf{s}^\star$ is the optimal water-filling power allocation obtainable by the iterative method \cite{Tse2005}.
-			The overall \gls{ao} algorithm is guaranteed to converge to local-optimal points of problem \eqref{op:rate} since each subproblem is solved optimally and the objective is bounded above.
+
+			The \gls{ao} algorithm is guaranteed to converge to local-optimal points of problem \eqref{op:rate} since each subproblem is solved optimally and the objective is bounded above.
+			Similar to the analysis in Section \ref{sc:pareto_frontier}, the computational complexity of solving subproblem \eqref{op:rate_passive} by geodesic \gls{rcg} is $\mathcal{O}\bigl(I_\text{RCG} G (NL^2 + L N_\mathrm{T} N_\mathrm{R} + N_\mathrm{T}^2 N_\mathrm{R} + N_\mathrm{T} N_\mathrm{R}^2 + N_\mathrm{R}^3 + I_\text{BLS} L^3)\bigr)$.
+			On the other hand, the complexity of solving active beamforming subproblem by \eqref{eq:precoder_eigenmode} is $\mathcal{O}\bigl(N N_\mathrm{T} N_\mathrm{R}\bigr)$.
+			The overall complexity is thus $\mathcal{O}\bigl(I_\text{AO}\bigl(I_\text{RCG} G (NL^2 + L N_\mathrm{T} N_\mathrm{R} + N_\mathrm{T}^2 N_\mathrm{R} + N_\mathrm{T} N_\mathrm{R}^2 + N_\mathrm{R}^3 + I_\text{BLS} L^3) + N N_\mathrm{T} N_\mathrm{R}\bigr)\bigr)$, where $I_\text{AO}$ is the number of iterations for \gls{ao}.
 		\end{subsubsection}
 
 		\begin{subsubsection}{Low-Complexity Solution}\label{sc:low_complexity}
 			We then propose a suboptimal two-stage solution to problem \eqref{op:rate} that decouples the joint \gls{ris}-transceiver design.
-			The idea is to first consider channel shaping and replace the rate maximization problem \eqref{op:rate_passive} by channel power gain maximization problem \eqref{op:power_passive}, then proceed to conventional eigenmode transmission \eqref{eq:precoder_eigenmode}.
-			Both steps are solved in closed form and the computational complexity is significantly reduced.
+			The idea is to first consider channel shaping and replace the rate maximization subproblem \eqref{op:rate_passive} by channel power gain maximization problem \eqref{op:power_passive}, then proceed to conventional eigenmode transmission \eqref{eq:precoder_eigenmode}.
+			Both steps are solved in closed form and the computational complexity is $\mathcal{O}\bigl(I_\text{SAA} G \bigl(N_\mathrm{T} N_\mathrm{R} + (G+1)(NL^2+N_\mathrm{T} N_\mathrm{R} L) + L^3\bigr) + N N_\mathrm{T} N_\mathrm{R}\bigr)$.
+			While suboptimal, this shaping-inspired solution avoids outer iterations and implements inner iterations more efficiently.
 		\end{subsubsection}
 	\end{subsection}
 \end{section}
@@ -1010,8 +1022,10 @@
 			When the direct link is present, the shape of the singular value region depends heavily on the relative strength of the indirect link.
 			In Fig. \subref*{fg:singular_pareto_sx32}, a 32-element \gls{ris} is insufficient to compensate the \qty{35}{dB} path loss imbalance and results in a limited singular value region that is symmetric around the direct point.
 			As the group size $L$ increases, the shape of the region evolves from elliptical to square.
-			This transformation not only provides a better trade-off in subchannel manipulation but also improves the dynamic range of $\sigma_1(\mathbf{H})$ and $\sigma_2(\mathbf{H})$ by \qty{22}{\percent} and \qty{38}{\percent}, respectively.
-			The achievable singular value region also enlarges as the number of scattering elements $N_\mathrm{S}$ increases.
+			This transformation not only improves the dynamic range of $\sigma_1(\mathbf{H})$ and $\sigma_2(\mathbf{H})$ by \qty{22}{\percent} and \qty{38}{\percent}, but also provides a better trade-off in manipulating both singular values.
+			It suggests the design freedom from larger group size allows better alignment of multiple subspaces simultaneously.
+			% not only provides a better trade-off in subchannel manipulation but also improves the dynamic range of $\sigma_1(\mathbf{H})$ and $\sigma_2(\mathbf{H})$ by \qty{22}{\percent} and \qty{38}{\percent}, respectively.
+			The singular value region also enlarges as the number of scattering elements $N_\mathrm{S}$ increases.
 			In particular, Fig. \subref*{fg:singular_pareto_sx128} shows that the equivalent channel can be completely nulled (corresponding to the origin) by a 128-element \gls{bd}-\gls{ris} but not by a diagonal one.
 			Those results demonstrate the superior channel shaping capability of \gls{bd}-\gls{ris} and emphasizes the importance of cooperative wave scattering.
 		\end{subsubsection}
