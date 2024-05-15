@@ -247,7 +247,7 @@
 	This is the first paper to study \gls{bd}-\gls{ris} in general \gls{mimo} systems.
 	%  and discuss its shaping potential.
 
-	Second, we propose an efficient \gls{bd}-\gls{ris} design framework that solves general optimization problems by geodesic\footnote{A geodesic refers to the shortest path between two points in a Riemannian manifold.} \gls{rcg}.
+	Second, we propose an efficient \gls{bd}-\gls{ris} design framework that solves general optimization problems (e.g., singular value redistribution and rate maximization) by geodesic\footnote{A geodesic refers to the shortest path between two points in a Riemannian manifold.} \gls{rcg}.
 	% to numerically analyze the channel shaping capability of \gls{bd}-\gls{ris}, we exploit the Riemannian geometry of the Stiefel manifold and
 	This method modified from \cite{Abrudan2008,Abrudan2009} exploits the Riemannian geometry of the Stiefel manifold and performs group-wise multiplicative rotational updates along the geodesics, which avoids retraction and facilitates step size selection.
 	It thus converges faster than existing non-geodesic approaches \cite{Absil2009,Pan2022d}.
@@ -493,20 +493,27 @@
 	% In this section, we first provide an overview on signal processing techniques for group-connected \gls{bd}-\gls{ris} design problems, then propose a novel group-wise geodesic \gls{rcg} method that exploits the properties of unitary group and operates directly on the Stiefel manifold.
 	% The proposed method is applicable to any smooth optimization problem on the Stiefel manifold and is particularly suitable for \gls{bd}-\gls{ris} design problems.
 	% We will later show that the proposed method provides better objective value and faster convergence for smooth optimization problems of arbitrary group size.
-	A geodesic is a curve representing the shortest path between two points in a Riemannian manifold, whose tangent vectors remain parallel when transporting along the curve.
-	We notice that the feasible domain of scattering matrix of each \gls{bd}-\gls{ris} group is a $L$-dimensional Stiefel manifold $\mathbf{\Theta}_g \in \mathbb{U}^{L \times L}$, which is non-convex and non-Euclidean.
+
+	Many group-connected \gls{bd}-\gls{ris} design problems can be formulated in the following general form
+	\begin{maxi!}
+		{\scriptstyle{\mathbf{\Theta}}}{f(\mathbf{\Theta})}{\label{op:general}}{\label{ob:general}}
+		\addConstraint{\mathbf{\Theta}_g^\mathsf{H} \mathbf{\Theta}_g=\mathbf{I},}{\quad \forall g,}{\label{co:general_unitary}}
+	\end{maxi!}
+	where the objective function $f(\mathbf{\Theta})$ can be any function of the \gls{bd}-\gls{ris} scattering matrix $\mathbf{\Theta}$, for example, channel singular value (to be discussed in Section \ref{sc:singular_value}) and achievable rate (to be discussed in Section \ref{sc:power_rate}).
+	The feasible domain of each group is a $L$-dimensional Stiefel manifold $\mathbf{\Theta}_g \in \mathbb{U}^{L \times L}$, which is non-convex and non-Euclidean.
 	Therefore, relevant optimization problems are usually solved by relax-then-project methods \cite{Fang2023} or universal non-geodesic manifold \gls{rcg} \cite{Li2023b,Li2023c,Bartoli2023}.
-	The former solves an unconstrained version of original problem by quasi-Newton methods, then projects the solution back to the Stiefel manifold.
+	The former solves an unconstrained problem \eqref{ob:general} by quasi-Newton methods, then projects the solution back to the Stiefel manifold.
 	It has no guarantee of optimality and may suffer from numerical instability.
 	The latter generalizes the conjugate gradient methods to any Riemannian manifold, which updates the feasible point by progressing along the conjugate direction and projecting back to the manifold at each step.
-	In this section, we first discuss the existing non-geodesic \gls{rcg} method and its drawbacks, then propose a novel group-wise geodesic \gls{rcg} method that operates directly on the Stiefel manifold for faster convergence.
+	In the following context, we first discuss the existing non-geodesic \gls{rcg} method and its drawbacks, then propose a novel group-wise geodesic \gls{rcg} method that operates directly on the Stiefel manifold for faster convergence.
 
 	\begin{subsection}{Non-Geodesic \glsfmtshort{rcg}}
-		This universal \gls{rcg} method is applicable to optimization problems over arbitrary manifolds \cite{Absil2009,Pan2022d}.
+		A geodesic is a curve representing the shortest path between two points in a Riemannian manifold, whose tangent vectors remain parallel when transporting along the curve.
+		The universal \gls{rcg} method proposed in \cite{Absil2009,Pan2022d} is non-geodesic and applicable to optimization problems over arbitrary manifolds.
 		The main idea is to perform {additive} updates along the conjugate direction guided by the Riemannian gradient, then {project} the solution back onto the manifold.
 		% update the feasible point by progressing along conjugate directions then project back to the manifold.
 		% The main idea is to update the feasible point by progressing along conjugate directions then project back to the manifold.
-		For maximization problem with smooth objective $f$ and block-unitary constraint \eqref{eq:bd_ris}, the steps for \gls{bd}-\gls{ris} group $g$ at iteration $r$ are summarized below:
+		For optimization problem \eqref{op:general}, the steps for \gls{bd}-\gls{ris} group $g$ at iteration $r$ are summarized below:
 		\begin{enumerate}
 			\item \emph{Compute the Euclidean gradient \cite{Hjorungnes2007}:} The gradient of $f$ with respect to $\mathbf{\Theta}_g^*$ in the Euclidean space is
 			\begin{equation}
@@ -565,9 +572,7 @@
 
 	\begin{subsection}{Geodesic \glsfmtshort{rcg}}
 		Before introducing geodesic \gls{rcg}, we revisit some basic concepts in differential geometry and Lie algebra.
-
 		% \cite{Abrudan2008,Abrudan2009}.
-
 		A Lie group is simultaneously a continuous group and a differentiable manifold.
 		Lie algebra refers to the tangent space of the Lie group at the identity element.
 		The exponential map acts as a bridge between the Lie algebra and Lie group, which allows one to recapture the local group structure using linear algebra techniques.
@@ -651,6 +656,7 @@
 \end{section}
 
 \begin{section}{Channel Singular Values Redistribution}
+	\label{sc:singular_value}
 	In this section, we first provide a toy example to illustrate the channel shaping advantage of \gls{bd}-\gls{ris} architecture.
 	Next, we numerically characterize the channel singular value region based on the proposed Algorithm \ref{ag:rcg}.
 	Finally, we derive some analytical singular value bounds in specific scenarios.
@@ -907,7 +913,8 @@
 	\end{subsection}
 \end{section}
 
-\begin{section}{Power Gain and Achievable Rate Maximization}\label{sc:power_rate}
+\begin{section}{Power Gain and Achievable Rate Maximization}
+	\label{sc:power_rate}
 	\begin{subsection}{Channel Power Gain}\label{sc:power}
 		The \gls{mimo} channel power gain maximization problem is formulated with respect to the \gls{bd}-\gls{ris} scattering matrix
 		\begin{maxi!}
@@ -1258,7 +1265,7 @@
 	We consider a general \gls{bd} architecture that allows elements within the same group to interact, enabling more sophisticated manipulation than diagonal \gls{ris}.
 	This translates to a wider dynamic range (with better tradeoff) of singular values and significant power and rate gains, especially in large-scale \gls{mimo} systems.
 	We characterize the Pareto frontiers of channel singular values via optimization approach and provide analytical bounds in rank-deficient and unitary scenarios.
-	Specifically, the former is done by proposing an efficient \gls{rcg} algorithm for smooth \gls{bd}-\gls{ris} optimization problems, which offers better objective value and faster convergence than existing methods.
+	Specifically, the former is done by proposing an efficient \gls{rcg} algorithm for \gls{bd}-\gls{ris} optimization problems, which offers better objective value and faster convergence than existing methods.
 	We also present two beamforming designs for rate maximization problem, one based on alternating optimization for optimal performance and the other decouples the \gls{ris}-transceiver design for lower complexity.
 	Extensive simulations show that the advantage of \gls{bd}-\gls{ris} stems from its superior space alignment and channel rearrangement capability, which scales with the number of elements, group size, \gls{mimo} dimensions, and channel diversity.
 
