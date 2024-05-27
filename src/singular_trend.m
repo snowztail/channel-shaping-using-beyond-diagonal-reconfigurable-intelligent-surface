@@ -47,7 +47,7 @@ xlabel('$\alpha$');
 ylabel('$\psi$');
 zlabel({'Singular Value'});
 set(gca, 'XTick', 0 : pi / 2 : 2 * pi, 'YTick', 0 : pi / 2 : 2 * pi, 'XTickLabel',{'0', '0.5$\pi$', '$\pi$', '1.5$\pi$', '2$\pi$'}, 'YTickLabel',{'0', '0.5$\pi$', '$\pi$', '1.5$\pi$', '2$\pi$'});
-title('Symmetry Unitary RIS');
+title('Symmetry Unitary BD-RIS');
 linkaxes(handle.axis);
 savefig('plots/singular_trend.fig');
 saveas(gcf, '../assets/simulation/singular_trend', 'epsc');

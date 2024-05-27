@@ -60,6 +60,12 @@
 \usetikzlibrary{decorations.pathmorphing,decorations.pathreplacing,decorations.shapes,shapes.geometric}
 \usepgfplotslibrary{groupplots,patchplots}
 \pgfplotsset{compat=newest}
+\pgfplotsset{every axis/.append style={
+	title style={font=\Large},
+	label style={font=\Large},
+	tick label style={font=\Large},
+	legend style={font=\Large},
+}}
 
 % Double superscript
 \newcommand\herm[2][-4]{{#2}^{\mkern#1mu\mathsf{H}}}
@@ -136,16 +142,19 @@
 \begin{abstract}
 	This paper investigates to what extent a passive \gls{ris} can redistribute the singular values of a \gls{mimo} point-to-point channel.
 	% the limit to which
-	We depart from the widely-adopted diagonal phase shift model to a \gls{bd}-\gls{ris} architecture featuring in-group connections between elements, which enables cooperative wave scattering with amplitude and phase control.
+	We depart from the conventional diagonal phase shift model and adopt a \gls{bd}-\gls{ris} architecture featuring in-group connections between elements, which enables signal amplitude and phase control.
 	% This powerful model allows cooperative wave scattering with both amplitude and phase control, and we uniquely attribute the shaping advantage to channel rearrangement and space alignment.
 	% This powerful model enables cooperative wave scattering with both amplitude and phase control, and we provide unique shaping insights in terms of channel rearrangement and space alignment.
 	% uniquely explain the extra design freedom from off-diagonal entries as channel rearrangement and space alignment.
 	% while the shaping advantage from off-diagonal entries is uniquely attributed to channel rearrangement and space alignment.
 	% An efficient and universal \gls{bd}-\gls{ris} design framework is proposed over group-wise {geodesic} \gls{rcg} on the Stiefel manifold, which performs multiplicative rotational (instead of add-then-retract) updates for faster convergence.
 	% The Pareto frontiers of channel singular values are characterized via a novel geodesic manifold optimization, and the resulting region comprehensively encapsulates relevant metrics (e.g., spectral norm and condition number).
-	Specifically, we first provide unique shaping insights by characterizing the Pareto frontiers of channel singular values via a novel geodesic manifold optimization.
+	Specifically, we first provide shaping insights by characterizing the Pareto frontiers of channel singular values via a novel geodesic manifold optimization.
 	The resulting region comprehensively encapsulates most relevant metrics (e.g., spectral norm and condition number).
-	To explore the shaping limits of passive \gls{bd}-\gls{ris}, we also derive individual and collective singular value bounds respectively in rank-deficient channels and for fully-connected \gls{bd}-\gls{ris} via matrix analysis.
+	To explore the shaping limits of passive \gls{bd}-\gls{ris}, we also derive
+	% 0ol. individual and collective
+	singular value bounds for 1) rank-deficient forward/backward channel and 2) blocked direct channel.
+	% respectively in rank-deficient channels and for fully-connected \gls{bd}-\gls{ris} via matrix analysis.
 	% For the power gain problem, we provide a closed-form iterative solution by group-wise \gls{svd} that features even faster convergence.
 	% We uniquely attribute the shaping advantage from off-diagonal entries to channel rearrangement and space alignment.
 	% Channel rearrangement is a unique feature of off-diagonal entries that allows each group to rearrange and recombine the forward and backward channels.
@@ -155,9 +164,12 @@
 	% help to demystify the gain from off-diagonal entries and reveal the shaping advantage of \gls{bd}-\gls{ris} in channel rearrangement and space alignment.
 	% Second, they inspire a two-stage suboptimal solution that decouples joint active and passive beamforming design.
 	% \gls{ris}-transceiver optimization and suggest a low-complexity suboptimal solution based on channel power maximization.
-	As a side product, we tackle \gls{bd}-\gls{ris}-aided \gls{mimo} achievable rate maximization by a local-optimal \gls{ao} approach and a low-complexity shaping-inspired approach.
-	Simulation results highlight that \gls{bd}-\gls{ris} significantly improves the dynamic range of and trade-off between channel singular values.
-	Results also show the power and rate gain of \gls{bd}-\gls{ris} over diagonal \gls{ris} increase with \gls{mimo} dimensions.
+	As a side product, we tackle \gls{bd}-\gls{ris}-aided \gls{mimo} achievable rate maximization by a local-optimal \gls{ao} approach and a suboptimal shaping-inspired design over channel gain maximization.
+	% The former alternates between active and passive beamformers until convergence, while the latter maximizes
+	% solves the problem in closed form by a channel power maximization and \gls{mimo} transmission subproblem.
+	% shaping-inspired approach.
+	Simulation results show that \gls{bd}-\gls{ris} improves the dynamic range of and trade-off between channel singular values significantly, compared to conventional diagonal \gls{ris}.
+	Results also highlight that the power and rate gain of \gls{bd}-\gls{ris} over diagonal \gls{ris} increase with \gls{mimo} dimensions.
 
 	% wider dynamic range (with better tradeoff) of singular values and significant power and rate gains, especially in large-scale \gls{mimo} systems.
 
@@ -189,22 +201,23 @@
 	This is empowered by the recent advances in \gls{ris}, a programmable passive planar surface that recycles and redistributes ambient electromagnetic waves for improved wireless performance.
 	A typical \gls{ris} consists of numerous low-power sub-wavelength non-resonant scattering elements, whose response can be engineered in real-time to manipulate the amplitude, phase, frequency, and polarization of the scattered waves \cite{Basar2019}.
 	% It not only experiences negligible noise and supports full-duplex transmissions, but also features better flexibility than reflectarrays, lighter footprint than various relays, and greater scalability than conventional multi-antenna techniques.
-	It enables low-noise, full-duplex operation, and also features better flexibility than reflectarrays, lighter footprint than various relays, and greater scalability than conventional \gls{mimo} systems.
+	It enables low-noise, full-duplex operation, and also features better flexibility than reflectarrays, lighter footprint than relays, and greater scalability than \gls{mimo} systems.
 	The most popular \gls{ris} research direction is \emph{joint passive and active beamforming} design with transceivers for a specific performance measure, which has attracted significant attention in wireless communication \cite{Wu2019,Guo2020,Liu2022}, sensing \cite{He2022,Luo2022,Hua2023}, and power transfer literature \cite{Wu2020a,Feng2022,Zhao2022}.
-	While passive beamforming at \gls{ris} suffers severe attenuation from double fading, it offers better asymptotic behaviors than active beamforming at transceivers (e.g., second-order array gain and fourth-order harvested power \cite{Zhao2022}).
-	Another feature is that \gls{ris} can also be used for \emph{backscatter modulation} by periodically switching its reflection pattern within the channel coherence time.
-	This creates a free-ride message stream (similar to index modulation \cite{Basar2017}) with dual benefits: integrating with the legacy transmitter for enhanced channel capacity \cite{Karasik2020,Basar2020,Ye2022} or serving as a dedicated source for low-power uplink communication \cite{Liang2020,Zhao2024,Yang2024}.
-	Different from above directions, \emph{channel shaping} exploits the \gls{ris} as a stand-alone device to modify the inherent properties of the wireless environment.
+	While passive beamforming at \gls{ris} suffers signal attenuation from double fading, it offers better asymptotic behaviors than active beamforming at transceivers (e.g., second-order array gain and fourth-order harvested power \cite{Zhao2022}).
+	Another \gls{ris} application is \emph{backscatter modulation} by periodically switching its reflection pattern within the channel coherence time.
+	This creates a free-ride message stream (similar to index modulation \cite{Basar2017}) with dual benefits: integrating with the legacy transmitter for enhanced channel capacity \cite{Karasik2020,Basar2020,Ye2022} or serving as an information source for low-power uplink communication \cite{Liang2020,Zhao2024,Yang2024}.
+	Different from above, \emph{channel shaping} exploits the \gls{ris} as a stand-alone device to modify the inherent properties of the wireless environment.
 	To name a few, it can compensate for the Doppler effect \cite{Basar2021}, transform frequency-selective channels into frequency-flat \cite{Arslan2022}, improve the spatial diversity for \gls{mimo} systems \cite{Ozdogan2020a}, and create artificial time diversity for orthogonal \cite{Yang2019} and non-orthogonal \cite{Chen2023} multiple accesses.
-	Channel shaping also provides a ubiquitous benchmark for different wireless applications and helps to decouple the \gls{ris}-transceiver design in a shape-then-transmit manner.
-	At a specific time and frequency, channel metrics can be roughly classified into two categories:
+	Channel shaping also provides a ubiquitous solution for different wireless applications, which decouples joint \gls{ris}-transceiver designs by first optimizing the channel and then the communication system.
+	% and helps to decouple the \gls{ris}-transceiver design in a distributed manner.
+	At a specific resource block, relevant metrics can be classified into two categories:
 	% shaping metrics can be classified into two categories:
 	\begin{itemize}
-		\item \emph{Singular value:} Relevant metrics are in general closely related to the performance measures (e.g., achievable rate and harvested power \cite{Shen2021}) but sensitive to numerical perturbations of the channel matrix. The impact of \gls{ris} has been studied in terms of minimum singular value \cite{ElMossallamy2021}, effective rank \cite{ElMossallamy2021,Meng2023}, condition number \cite{Zheng2022,Huang2023}, and degree of freedom \cite{Bafghi2022,Zheng2023,Chae2023}.
-		\item \emph{Power:} Second-order statistics are less informative in \gls{mimo} but easier to analyze and optimize. The impact of \gls{ris} has been studied in terms of channel power gain \cite{Wu2019,Shen2020a,Nerini2023,Nerini2024,Santamaria2023} and leakage interference \cite{Santamaria2023a}.
+		\item \emph{Singular value:} The impact of \gls{ris} has been studied in terms of minimum singular value \cite{ElMossallamy2021}, effective rank \cite{ElMossallamy2021,Meng2023}, condition number \cite{Zheng2022,Huang2023}, and degree of freedom \cite{Bafghi2022,Zheng2023,Chae2023}. Those metrics are closely related to performance measures (e.g., achievable rate and harvested power \cite{Shen2021}) but sensitive to small perturbations of the channel matrix.
+		\item \emph{Power:} The impact of \gls{ris} has been studied in terms of channel power gain \cite{Wu2019,Shen2020a,Nerini2023,Nerini2024,Santamaria2023} in point-to-point channels and leakage interference \cite{Santamaria2023a} in interference channels. Those second-order metrics are less informative in \gls{mimo} but easier to analyze and optimize.
 	\end{itemize}
 
-	Although those works offer initial glimpses into the channel shaping potential, one critical question has not been fully addressed: \emph{What is the ultimate channel shaping capability of a passive \gls{ris} in terms of singular values?}
+	Although above works offer initial glimpses into the channel shaping potential of \gls{ris}, one critical question has not been fully addressed: \emph{What is the ultimate channel singular value shaping capability of a passive \gls{ris}?}
 	% \begin{enumerate}
 	% 	\item What is the entire singular value region of a \gls{mimo} channel with \gls{ris}?
 	% \end{enumerate}
@@ -212,26 +225,31 @@
 	% depict the entire singular value region nor provide a universal optimization framework.
 	% It motivates the ultimate question: \emph{To what extent can a passive \gls{ris} reshape \gls{mimo} channels in terms of singular values?}
 	% Despite the great potentials and fruitful outcomes, one critical unanswered question is the {channel shaping} capability: \emph{To what extent can a passive \gls{ris} reshape \gls{mimo} channels?}
-	The answer depends heavily on the hardware architecture of \gls{ris} and its scattering model.
-	Most relevant works \cite{ElMossallamy2021,Meng2023,Zheng2022,Huang2023,Bafghi2022,Zheng2023,Chae2023,Wu2019,Santamaria2023a} considered a diagonal \gls{ris} model where each element is connected to a dedicated impedance and is disconnected from others, such that wave impinging on one element is entirely reflected by the same element.
+	The answer depends heavily on \gls{ris} hardware architecture and scattering model.
+	Most relevant works \cite{ElMossallamy2021,Meng2023,Zheng2022,Huang2023,Bafghi2022,Zheng2023,Chae2023,Wu2019,Santamaria2023a} considered a diagonal \gls{ris} model where each element is connected to a dedicated impedance and disconnected from others, such that wave impinging on one element is entirely reflected by the same element.
 	% is tuned by a dedicated impedance and acts as an \emph{individual} scatterer \cite{Wu2020}.
-	This simple architecture mathematically translates to a diagonal scattering matrix with unit-magnitude entries on the main diagonal and zeros elsewhere, applying merely a phase shift to the incoming signal.
-	The concept was soon generalized to \gls{bd}-\gls{ris} with a group-connected architecture \cite{Shen2020a} that groups adjacent elements and connects them via passive reconfigurable components.\footnote{Those components can be either symmetric (e.g., capacitors and inductors) or asymmetric (e.g., ring hybrids and branch-line hybrids) \cite{Ahn2006}, resulting in symmetric and asymmetric scattering matrices, respectively.\label{fn:symmetric}}
-	This allows wave impinging on one element to propagate within the circuit and depart partially from any element in the same group.
-	It can thus redistribute both amplitude and phase of the scattered wave with zero power loss, generalizing the scattering matrix to block-diagonal with unitary blocks.
-	Such a powerful model can be realized at reduced hardware cost using tree- and forest-connected architectures inspired by graph theory \cite{Nerini2024}.
+	This simple architecture ideally maps to a diagonal scattering matrix with unit-magnitude entries on the main diagonal and zeros elsewhere, which only applies a phase shift to the incoming signal.
+	The concept was then generalized to \gls{bd}-\gls{ris} with a group-connected architecture \cite{Shen2020a} that connects adjacent elements via passive reconfigurable components\footnote{Those components can be either symmetric (e.g., capacitors and inductors) or asymmetric (e.g., ring hybrids and branch-line hybrids) \cite{Ahn2006}, resulting in symmetric and asymmetric scattering matrices, respectively.\label{fn:symmetric}}.
+	This allows wave impinging on one element to propagate losslessly within the circuit and depart partially from any element in the same group.
+	It can thus manipulate both amplitude and phase of the scattered wave, generalizing the scattering matrix from diagonal to block-diagonal with unitary blocks.
+	Such a powerful model can be realized at reduced hardware cost using tree- and forest-connected architectures according to graph theory \cite{Nerini2024}.
 	\gls{bd}-\gls{ris} can also function in hybrid transmitting-and-reflecting mode \cite{Li2023b} and multi-sector mode \cite{Li2023c} to provide full-space coverage and multi-user support.
-	Many practical design challenges of \gls{bd}-\gls{ris} have also been addressed including channel estimation \cite{Li2024}, mutual coupling \cite{Li2023f}, and wideband modelling \cite{Li2024a}.
-	From the beamforming perspective, the superiority of \gls{bd}-\gls{ris} over diagonal \gls{ris} has been studied extensively in \gls{siso} and \gls{miso} systems, where the problems were cast as single-user \gls{snr} maximization \cite{Shen2020a,Nerini2023,Nerini2024,Santamaria2023} and multi-user \gls{wsr} maximization \cite{Fang2023,Zhou2023,Li2023c,Soleymani2024}.
+	Many practical \gls{bd}-\gls{ris} design challenges, including channel estimation \cite{Li2024}, mutual coupling \cite{Li2023f}, and wideband modelling \cite{Li2024a}, have also been investigated in the literature.
+	The passive beamforming superiority of \gls{bd}-\gls{ris} over diagonal \gls{ris} has been studied mainly in \gls{siso} and \gls{miso} communication systems, where the problems have been cast as single-user \gls{snr} maximization \cite{Shen2020a,Nerini2023,Nerini2024,Santamaria2023} and multi-user \gls{wsr} maximization \cite{Fang2023,Zhou2023,Li2023c,Soleymani2024}.
 	However, the interplay between \gls{bd}-\gls{ris} and \gls{mimo} systems is still in the infancy stage.
-	The authors of \cite{Bartoli2023} investigated the rate-optimal joint beamforming design for a specific \gls{bd}-\gls{ris}-aided \gls{mimo} system with blocked direct link and fully-connected \gls{ris}.
-	Similar constraints were also adopted in \cite{Mishra2024}, which introduces a transmitter-side \gls{bd}-\gls{ris} to massive \gls{mimo} that exploits statistical \gls{csi} for improved spectral efficiency.
-	Received power maximization problem was studied over continuous-valued \cite{Nerini2023} and discrete-valued \cite{Nerini2023b} \gls{bd}-\gls{ris}, but the proposed single-stream transceiver is rate-suboptimal and the passive beamforming problem is equivalent to \gls{siso}.
+	The authors of \cite{Bartoli2023} investigated the rate-optimal joint beamforming design for a \gls{bd}-\gls{ris}-aided \gls{mimo} system with blocked direct link and fully-connected \gls{bd}-\gls{ris}.
+	Those assumptions simplify the problem but limit the generality of the results.
+	A transmitter-side \gls{bd}-\gls{ris} was introduced to massive \gls{mimo} systems for improved spectral efficiency \cite{Mishra2024}, but the problem was again limited to blocked direct link and fully-connected \gls{bd}-\gls{ris}.
+	Received power maximization with continuous-valued \cite{Nerini2023} and discrete-valued \cite{Nerini2023b} \gls{bd}-\gls{ris} have also been tackled in the literature, but the resulting single-stream transceiver is rate-suboptimal and the corresponding \gls{bd}-\gls{ris} design is equivalent to \gls{siso} shaping.
 	% A practical frequency-dependent \gls{bd}-\gls{ris} model has been recently proposed for multi-band multi-cell \gls{mimo} networks to facilitate practical deployments \cite{Sena2024}.
 	% Although the results are promising, the channel shaping capability from off-diagonal entries deserves further investigation, and there lacks a universal yet efficient \gls{bd}-\gls{ris} design framework.
-	Although the results are promising, the channel shaping capability of \gls{bd}-\gls{ris} deserves further investigation.
-	Moreover, no previous work has attempted to characterize the singular value region of a \gls{mimo} channel manipulated by any type of \gls{ris}, and the \gls{bd}-\gls{ris}-aided \gls{mimo} rate maximization problem remains unsolved.
-	This paper aims for a comprehensive answer to the channel shaping capability of \gls{bd}-\gls{ris} through theoretical analysis and numerical optimization.
+	We notice that there lacks a comprehensive study of \gls{bd}-\gls{ris} in point-to-point \gls{mimo} systems --- the shaping benefits of \gls{bd}-\gls{ris} are not fully understood and the general rate maximization problem remains open.
+	% and the channel shaping potential of \gls{bd}-\gls{ris} remains unexplored.
+	% The channel shaping capability of \gls{bd}-\gls{ris} deserves further investigation.
+	% Although the results are promising, the channel shaping capability of \gls{bd}-\gls{ris} deserves further investigation.
+	Moreover, no previous work has characterized the \gls{mimo} channel singular value region manipulated by any type of \gls{ris}.
+	% , and the \gls{bd}-\gls{ris}-aided \gls{mimo} rate maximization problem remains unsolved.
+	This paper aims to narrow those gaps and provide a comprehensive answer to the channel shaping capability question through theoretical analysis and numerical optimization.
 	The contributions are summarized below.
 
 
@@ -240,7 +258,7 @@
 	% 3. need a comprehensive answer to the channel shaping question
 	% 4. need a low-complexity solution from shaping
 
-	First, we interpret the channel shaping potential of \gls{bd}-\gls{ris} in terms of channel rearrangement and space alignment.
+	First, we interpret the channel shaping potential of \gls{bd}-\gls{ris} in \gls{mimo} as channel rearrangement and space alignment.
 	Channel rearrangement refers to rearranging and recombining the forward and backward channel branches (i.e., entries of the channel matrix) according to their strength.
 	Space alignment generalizes phase matching in \gls{siso} and \gls{miso} to the high-dimensional singular vector space in \gls{mimo}.
 	The off-diagonal entries of \gls{bd}-\gls{ris} scattering matrix provides a higher design freedom and exploits channel spatial diversity more effectively than diagonal \gls{ris}.
@@ -264,16 +282,16 @@
 	Results show that increasing \gls{bd}-\gls{ris} group size enlarges the singular value region, improving both dynamic range of and trade-off between singular values.
 	% , where the dynamic range and trade-off between are both improved.
 	% significantly enlarges the singular value region, improveing the dynamic range and trade-off in-between.
-	% We also and derive some analytical singular value bounds for rank-deficient \gls{mimo} and fully-connected \gls{ris}.
+	% We also and derive some analytical singular value bounds for rank-deficient \gls{mimo} and fully-connected \gls{bd}-\gls{ris}.
 
 	Fourth, we leverage matrix analysis tools and provide an analytical answer to the singular value shaping question.
 	% revisit the channel singular value shaping problem from an analytical perspective via matrix analysis.
 	% To explore the ultimate shaping limits, we derive individual and collective singular value bounds for rank-deficient forward/backward channel and blocked direct channel.
 	% Asymptotic bounds shared by diagonal and \gls{bd}-\gls{ris} are derived in the former case, while exact bounds for unitary \gls{bd}-\gls{ris} are derived in the latter case.
-	Asymptotic channel singular value bounds shared by diagonal and \gls{bd}-\gls{ris} are derived for rank-deficient forward/backward channel.
-	On the other hand, attainable bounds in the presence of fully-connected \gls{ris} are derived for blocked direct channel.
+	Asymptotic channel singular value bounds applying to diagonal and \gls{bd}-\gls{ris} are derived for rank-deficient forward/backward channel.
+	On the other hand, tight bounds for fully-connected \gls{bd}-\gls{ris} with finite number of elements are derived for blocked direct channel.
 	Results validate those bounds and emphasizes the shaping advantage of \gls{bd}-\gls{ris}.
-	This is the first work to quantify the singular value redistribution capability from either numerical or analytical perspective.
+	This is the first work to quantify the singular value redistribution capability of \gls{bd}-\gls{ris} from either numerical or analytical perspective.
 	% Results validate those bounds and show that
 	% fully-connected \gls{bd}-\gls{ris} without direct link.
 
@@ -281,19 +299,19 @@
 
 
 	% % respectively in rank-deficient channels and for fully-connected \gls{bd}-\gls{ris}
-	% collective singular value bounds	for rank-deficient channels and fully-connected \gls{ris}, respectively.
+	% collective singular value bounds	for rank-deficient channels and fully-connected \gls{bd}-\gls{ris}, respectively.
 	% 	Results validate those bounds and show
-	% for rank-deficient channels and fully-connected \gls{ris}, respectively.
+	% for rank-deficient channels and fully-connected \gls{bd}-\gls{ris}, respectively.
 	% Results validate those bounds and show that increasing \gls{bd}-\gls{ris} group size significantly enlarges the singular value region, providing wider dynamic range and better trade-off.
 	% dynamic range and trade-off of singular values are significantly improved by \gls{bd}-\gls{ris}, especially in large-scale \gls{mimo} systems.
 	% This is the first work to comprehensively answer the channel shaping capability question from both numerical and analytical perspectives in the most general \gls{bd}-\gls{ris} setup.
 	% from a Pareto perspective.
 
 	Fifth, we tackle \gls{bd}-\gls{ris}-aided \gls{mimo} rate maximization problem by two beamforming solutions: a local-optimal \gls{ao} approach and a low-complexity approach inspired by channel shaping insights.
-	The former updates active beamforming by eigenmode transmission and passive beamforming by geodesic \gls{rcg} until convergence.
-	The latter suboptimally decouples the problem as channel power gain maximization at \gls{ris} and conventional \gls{mimo} transmission at transceiver, then solves both in closed form.
+	The former updates active beamforming by eigenmode transmission and passive beamforming by proposed geodesic \gls{rcg} until convergence.
+	The latter suboptimally decouples the problem as channel power gain maximization at \gls{bd}-\gls{ris} and conventional \gls{mimo} transmission at transceiver, then solves both in closed form.
 	% The problem is solved by a closed-form two-stage method.
-	Results show that \gls{bd}-\gls{ris} provides higher power gain and achievable rate than diagonal \gls{ris}, and the rate gap between two approaches diminishes as the \gls{ris} evolves from single-connected to fully-connected.
+	Results show that \gls{bd}-\gls{ris} provides higher power gain and achievable rate than diagonal \gls{ris}, and the rate gap of two approaches diminishes as the \gls{bd}-\gls{ris} evolves from single-connected to fully-connected.
 	It suggests channel shaping offers a promising path to decouple joint \gls{ris}-transceiver designs.
 	% Interestingly, the rate difference between the optimal and low-complexity designs diminishes as the \gls{ris} evolves from diagonal to unitary.
 	% Those results emphasize the importance of using \gls{bd}-\gls{ris} in large-scale \gls{mimo} systems and suggest channel shaping offers a promising path to decouple joint \gls{ris}-transceiver designs.
@@ -356,7 +374,7 @@
 \end{section}
 
 \begin{section}{\glsfmtshort{bd}-\glsfmtshort{ris} Model}
-	Consider a \gls{bd}-\gls{ris} aided point-to-point \gls{mimo} system with $N_\mathrm{T}$, $N_\mathrm{S}$, $N_\mathrm{R}$ transmit, scatter, and receive antennas, respectively.
+	Consider a \gls{bd}-\gls{ris} aided point-to-point \gls{mimo} system with $N_\mathrm{T}$ and $N_\mathrm{R}$ transmit and receive antennas, respectively, and $N_\mathrm{S}$ scattering elements at the \gls{bd}-\gls{ris}.
 	This configuration is denoted as $N_\mathrm{T} \times N_\mathrm{S} \times N_\mathrm{R}$ in the following context.
 	The \gls{bd}-\gls{ris} can be modeled as an $N_\mathrm{S}$-port network \cite{Ivrlac2010} that further divides into $G$ individual groups, each containing $L \triangleq N_\mathrm{S} / G$ elements interconnected by real-time reconfigurable components \cite{Shen2020a}.
 	To simplify the analysis and explore the performance limits, we assume a lossless asymmetric network without mutual coupling between scattering elements, as previously considered in \cite{Li2023b,Li2023c,Bartoli2023}.
@@ -369,9 +387,9 @@
 	Note that diagonal \gls{ris} can be regarded as its extreme case with group size $L=1$.
 	Some potential physical architectures of \gls{bd}-\gls{ris} are illustrated in \cite[Fig. 3]{Shen2020a}, \cite[Fig. 5]{Li2023c}, and \cite[Fig. 2]{Nerini2024}, where the
 	% radiation pattern and
-	circuit topology need to be modelled in the scattering matrix.
+	circuit topology is modelled in the scattering matrix.
 
-	Let $\mathbf{H}_\mathrm{D} \in \mathbb{C}^{N_\mathrm{R} \times N_\mathrm{T}}$, $\mathbf{H}_\mathrm{B} \in \mathbb{C}^{N_\mathrm{R} \times N_\mathrm{S}}$, $\mathbf{H}_\mathrm{F} \in \mathbb{C}^{N_\mathrm{S} \times N_\mathrm{T}}$ denote the direct (transmitter-receiver), backward (\gls{ris}-receiver), and forward (transmitter-\gls{ris}) channels, respectively.
+	Let $\mathbf{H}_\mathrm{D} \in \mathbb{C}^{N_\mathrm{R} \times N_\mathrm{T}}$, $\mathbf{H}_\mathrm{B} \in \mathbb{C}^{N_\mathrm{R} \times N_\mathrm{S}}$, $\mathbf{H}_\mathrm{F} \in \mathbb{C}^{N_\mathrm{S} \times N_\mathrm{T}}$ denote the direct (i.e., transmitter-receiver), backward (i.e., \gls{ris}-receiver), and forward (i.e., transmitter-\gls{ris}) channels, respectively.
 	The equivalent channel is a function of the scattering matrix
 	\begin{equation}
 		\mathbf{H} = \mathbf{H}_\mathrm{D} + \mathbf{H}_\mathrm{B} \mathbf{\Theta} \mathbf{H}_\mathrm{F} = \mathbf{H}_\mathrm{D} + \sum_g \underbrace{\mathbf{H}_{\mathrm{B},g} \mathbf{\Theta}_g \mathbf{H}_{\mathrm{F},g}}_{\triangleq \mathbf{H}_g},
@@ -413,7 +431,7 @@
 		\end{equation}
 		where $\mathbf{V}_{\mathrm{B},g} = \bigl[\mathbf{h}_{\mathrm{B},g}/\lVert \mathbf{h}_{\mathrm{B},g} \rVert, \mathbf{N}_{\mathrm{B},g}\bigr] \in \mathbb{U}^{L \times L}$, $\mathbf{U}_{\mathrm{F},g} = \bigl[\mathbf{h}_{\mathrm{F},g}/\lVert \mathbf{h}_{\mathrm{F},g} \rVert, \mathbf{N}_{\mathrm{F},g}\bigr] \in \mathbb{U}^{L \times L}$, and $\mathbf{N}_{\mathrm{B},g}, \mathbf{N}_{\mathrm{F},g} \in \mathbb{C}^{L \times (L-1)}$ are the orthonormal bases of the null spaces of $\mathbf{h}_{\mathrm{B},g}$ and $\mathbf{h}_{\mathrm{F},g}$, respectively.
 		Diagonal \gls{ris} with empty null space thus suffices for perfect phase matching in \gls{siso}.
-		When it comes to \gls{mimo}, each element of diagonal \gls{ris} can only apply a common phase shift to the ``pinhole'' indirect channel passing through itself by $\mathbf{H}_g = \mathbf{h}_{\mathrm{B},g} \Theta_g \mathbf{h}_{\mathrm{F},g}^\mathsf{H} \in \mathbb{C}^{N_\mathrm{R} \times N_\mathrm{T}}$.
+		When it comes to \gls{mimo}, element $g$ of diagonal \gls{ris} can only apply a common phase shift to the ``pinhole''\footnote{The pinhole effect refers to channel rank reduction due to diffraction in the propagation environment \cite{Almers2006}. For element $g$ of diagonal \gls{ris}, the indirect channel $\mathbf{H}_g$ is rank-1 and the pinhole is $\Theta_g$.} indirect channel passing through itself by $\mathbf{H}_g = \mathbf{h}_{\mathrm{B},g} \Theta_g \mathbf{h}_{\mathrm{F},g}^\mathsf{H} \in \mathbb{C}^{N_\mathrm{R} \times N_\mathrm{T}}$.
 		That is, the disadvantage of diagonal \gls{ris} in space alignment scales with \gls{mimo} dimensions.
 		% As will be shown later, even if the \gls{bd}-\gls{ris} is unitary, there still exists a tradeoff between the alignment of direct-indirect and backward-forward spaces.
 	\end{itemize}
@@ -432,7 +450,7 @@
 
 	% For the \gls{siso} case in Fig. \subref*{fg:power_bond_txrx1_nd}, the maximum channel power is approximately \num{4e-6} by diagonal \gls{ris} and \num{6.5e-6} by fully-connected \gls{bd}-\gls{ris}, corresponding to a \qty{62.5}{\percent} gain.
 	% This aligns with the asymptotic \gls{bd}-\gls{ris} scaling law derived for \gls{siso} in \cite{Shen2020a}.
-	% Interestingly, the gain surges to \qty{270}{\percent} in 4T4R \gls{mimo} as shown in Fig. \subref*{fg:power_bond_txrx4_nd}.
+	% Interestingly, the gain surges to \qty{270}{\percent} in $N_\mathrm{T}=N_\mathrm{S}=4$ \gls{mimo} as shown in Fig. \subref*{fg:power_bond_txrx4_nd}.
 	% This is because space alignment boils down to phase matching in \gls{siso} such that both triangular and Cauchy-Schwarz inequalities in \cite[(50)]{Shen2020a} can be simultaneously tight regardless of the group size.
 	% That is, diagonal \gls{ris} is sufficient for space alignment in \gls{siso} while the \qty{62.5}{\percent} gain from \gls{bd}-\gls{ris} comes purely from channel rearrangement (i.e., pairing the forward and backward channels from strongest to weakest).
 	% Now consider a diagonal \gls{ris} in \gls{mimo}.
@@ -480,7 +498,7 @@
 
 
 	% \begin{remark}
-	% 	\gls{bd}-\gls{ris} reduces to diagonal \gls{ris} and fully-connected \gls{ris} with group size $L$ 1 and $N_\mathrm{S}$, respectively.
+	% 	\gls{bd}-\gls{ris} reduces to diagonal \gls{ris} and fully-connected \gls{bd}-\gls{ris} with group size $L$ 1 and $N_\mathrm{S}$, respectively.
 	% \end{remark}
 	% \begin{remark}
 	% 	Individual forward and backward \gls{csi} are required for \gls{bd}-\gls{ris} designs.
@@ -494,7 +512,7 @@
 	% The proposed method is applicable to any smooth optimization problem on the Stiefel manifold and is particularly suitable for \gls{bd}-\gls{ris} design problems.
 	% We will later show that the proposed method provides better objective value and faster convergence for smooth optimization problems of arbitrary group size.
 
-	Many group-connected \gls{bd}-\gls{ris} design problems can be formulated in the following general form
+	Most group-connected \gls{bd}-\gls{ris} design problems can be formulated in the following general form
 	\begin{maxi!}
 		{\scriptstyle{\mathbf{\Theta}}}{f(\mathbf{\Theta})}{\label{op:general}}{\label{ob:general}}
 		\addConstraint{\mathbf{\Theta}_g^\mathsf{H} \mathbf{\Theta}_g=\mathbf{I},}{\quad \forall g,}{\label{co:general_unitary}}
@@ -663,7 +681,7 @@
 	\begin{subsection}{Toy Example}\label{sc:toy_example}
 		We first illustrate the channel shaping capabilities of different \gls{ris} models by a toy example.
 		Consider a $2 \times 2 \times 2$ setup where the direct link is blocked.
-		The diagonal \gls{ris} is modeled by $\mathbf{\Theta}_\mathrm{D} = \mathrm{diag}(e^{\jmath \theta_1}, e^{\jmath \theta_2})$ while the fully-connected \gls{ris} has 4 independent angular parameters
+		The diagonal \gls{ris} is modeled by $\mathbf{\Theta}_\mathrm{D} = \mathrm{diag}(e^{\jmath \theta_1}, e^{\jmath \theta_2})$ while the fully-connected \gls{bd}-\gls{ris} has 4 independent angular parameters
 		\begin{equation}
 			\mathbf{\Theta}_\mathrm{U} = e^{\jmath \phi} \begin{bmatrix}
 				e^{\jmath \alpha} \cos \psi  & e^{\jmath \beta} \sin \psi   \\
@@ -672,17 +690,35 @@
 			\label{eq:unitary_ris}
 		\end{equation}
 		It is worth noting that $\phi$ has no impact on the singular value because $\mathrm{sv}(e^{\jmath \phi} \mathbf{A}) = \mathrm{sv}(\mathbf{A})$.
-		To simplify the analysis, we also enforce symmetry $\mathbf{\Theta}_\mathrm{U} = \mathbf{\Theta}_\mathrm{U}^\mathsf{T}$ by $\beta = \pi / 2$ such that both architectures have the same number of optimization variables.
+		To simplify the analysis, we also enforce symmetry $\mathbf{\Theta}_\mathrm{U} = \mathbf{\Theta}_\mathrm{U}^\mathsf{T}$ by $\beta = \pi / 2$ such that both architectures have the same number of variables in the scattering matrix.
 		\begin{figure}
 			\centering
 			\includegraphics[width=\columnwidth]{assets/simulation/singular_trend.eps}
-			\caption{$2 \times 2 \times 2$ (no direct) channel singular value shaping by diagonal and symmetric fully-connected \gls{ris}.}
+			\caption{$2 \times 2 \times 2$ (no direct) channel singular value shaping by diagonal \gls{ris} and symmetric fully-connected \gls{bd}-\gls{ris}.}
 			\label{fg:singular_trend}
 		\end{figure}
-		Fig.~\ref{fg:singular_trend} shows the channel singular values achieved by an exhaustive grid search over $(\theta_1, \theta_2)$ for diagonal \gls{ris} and $(\alpha, \psi)$ for symmetric fully-connected \gls{ris}.
-		In this particular example, we observe that both singular values can be manipulated up to $9\%$ using diagonal \gls{ris} and $42\%$ using symmetric \gls{bd}-\gls{ris}, despite both architectures have the same number of scattering elements and optimization variables.\footnote{However, \gls{bd}-\gls{ris} does require more reconfigurable components that interconnect the scattering elements.}
-		A larger performance gap is expected when the symmetric constraint on \eqref{eq:unitary_ris} can be relaxed.
-		This example shows \gls{bd}-\gls{ris} can provide a wider dynamic range of channel singular values and motivates further studies on channel shaping.
+		Fig.~\ref{fg:singular_trend} compares the achievable singular values of one typical channel realization, where the direct channel is blocked and the forward and backward channels are normalized Rayleigh fading
+		\begin{equation*}
+			\begin{split}
+				\mathbf{H}_\mathrm{B} & =
+				\begin{bmatrix}
+					-0.2059 + 0.5914 \jmath & -0.0909 + 0.5861 \jmath \\
+					0.4131 + 0.2651 \jmath & -0.1960 + 0.4650 \jmath
+				\end{bmatrix},
+				\\
+				\mathbf{H}_\mathrm{F} & =
+				\begin{bmatrix}
+					-0.6362 + 0.1332 \jmath & -0.1572 + 1.5538 \jmath \\
+					0.0196 + 0.4011 \jmath & -0.3170 - 0.2303 \jmath
+				\end{bmatrix}.
+			\end{split}
+		\end{equation*}
+		The results are obtained by an exhaustive grid search over $(\theta_1, \theta_2)$ for diagonal \gls{ris} and $(\alpha, \psi)$ for symmetric fully-connected \gls{bd}-\gls{ris}.
+		In this example, we observe that both singular values can be manipulated up to\footnote{The percentage for manipulating the $n$-th channel singular value is calculated by $\eta_n = \frac{\max \sigma_n(\mathbf{H}) - \min \sigma_n(\mathbf{H})}{2 \bar{\sigma}_n(\mathbf{H})} \times 100\%$. In this case, we notice $\eta_1=\eta_2$ for both \gls{ris} architectures.} $9\%$ by diagonal \gls{ris} (using 2 reconfigurable impedances) and $42\%$ by symmetric fully-connected \gls{bd}-\gls{ris} (using 3 reconfigurable impedances).
+		% , where the former needs 2 reconfigurable impedances and the latter needs 3.
+		The extra performance gain comes purely from connecting both scattering elements, and a larger gain is expected an asymmetric reconfigurable component is available.
+		% and a larger gain is expected when an asymmetric connection is available.
+		This example shows that \gls{bd}-\gls{ris} can provide a wider dynamic range of channel singular values and motivates further studies on channel shaping.
 	\end{subsection}
 
 	\begin{subsection}{Pareto Frontier Characterization}\label{sc:pareto_frontier}
@@ -715,7 +751,13 @@
 	\end{subsection}
 
 	\begin{subsection}{Some Analytical Bounds}\label{sc:bounds}
-		We then discuss some analytical bounds related to channel singular values.
+		We then discuss some analytical bounds related to channel singular values, which help us to explore and understand the channel shaping limits of passive \gls{ris}.
+
+		\gls{dof} (a.k.a. multiplexing gain) refers to the maximum number of independent streams that can be transmitted in parallel over a \gls{mimo} channel, which is defined as
+		\begin{equation}
+			d = \lim_{\rho \to \infty} \frac{\log \det(\mathbf{I} + \rho \mathbf{H} \mathbf{H}^\mathsf{H})}{\log \rho},
+		\end{equation}
+		where $\rho$ is the \gls{snr}.
 		\begin{proposition}[Degree of freedom]\label{pp:dof}
 			In point-to-point \gls{mimo}, \gls{bd}-\gls{ris} cannot achieve a higher \gls{dof} than diagonal \gls{ris}.
 		\end{proposition}
@@ -724,7 +766,9 @@
 		\end{proof}
 
 		\begin{proposition}[Rank-deficient channel]\label{pp:rank_deficient}
-			If the forward or backward channel is rank-$k$ ($k \le N$), then regardless of the passive \gls{ris} size and architecture, the $n$-th singular value of the equivalent channel is bounded by
+			% If the forward or backward channel is rank-$k$ ($k \le N$),
+			If the minimum rank of forward and backward channels is $k$ ($k \le N$),
+			then for diagonal \gls{ris} or \gls{bd}-\gls{ris} of arbitrary number of elements, the $n$-th singular value of the equivalent channel is bounded above and below respectively by
 			\begin{subequations}
 				\begin{align}
 					\sigma_n(\mathbf{H}) & \le \sigma_{n-k}(\mathbf{T}), &  & \text{if } n > k, \label{iq:sv_bound_enlarge}          \\
@@ -732,7 +776,7 @@
 				\end{align}
 				\label{iq:sv_bound_rank_deficient}
 			\end{subequations}
-			where
+			where $\mathbf{T}$ is an auxiliary matrix satisfying
 			\begin{equation}
 				\mathbf{T} \mathbf{T}^\mathsf{H} =
 				\begin{cases}
@@ -747,17 +791,28 @@
 			Please refer to Appendix~\ref{ap:rank_deficient}.
 		\end{proof}
 
-		\begin{corollary}[Extreme singular values\label{co:extreme}]
-			With a sufficiently large passive \gls{ris} of arbitrary architecture, the first $k$ channel singular values are unbounded above\footnote{The energy conservation law $\sum_n \sigma_n^2(\mathbf{H}) \le 1$ still has to be respected. This constraint is omitted in the following context for brevity.} while the last $k$ channel singular values can be suppressed to zero.
-		\end{corollary}
+		Inequality \eqref{iq:sv_bound_enlarge} states that
+		if the forward and backward channels are at least rank $k$, then
+		% with a diagonal \gls{ris} or \gls{bd}-\gls{ris} of sufficiently large number of scattering elements,
+		the $n$-th singular value of $\mathbf{H}$ can be enlarged to the $(n-k)$-th singular value of $\mathbf{T}$, or suppressed to the $n$-th singular value of $\mathbf{T}$.
+		Moreover, the first $k$ channel singular values are unbounded above\footnote{The energy conservation law $\sum_n \sigma_n^2(\mathbf{H}) \le 1$ still has to be respected. This constraint is omitted in the following context for brevity.} while the last $k$ channel singular values can be suppressed to zero.
+		An example is given in Corollary \ref{co:los} for \gls{los} channels (i.e., $k=1$)\footnote{We notice a similar eigenvalue result has been derived in \cite{Semmler2023} but is limited to diagonal \gls{ris}.}.
+		% states that the $n$-th channel singular value can be enlarged to the $(n-k)$-th singular value of $\mathbf{T}$.
 
-		\begin{proof}
-			This is a direct result of \eqref{iq:sv_bound_rank_deficient}.
-		\end{proof}
 
-		\begin{corollary}[\gls{los} channel\footnote{A similar result has been derived for diagonal \gls{ris} \cite{Semmler2023}.}\label{co:los}]
+		% We would like to give some insights into Proposition \ref{pp:rank_deficient}.
+
+		% \begin{corollary}[Extreme singular values\label{co:extreme}]
+		% 	If the minimum rank of forward and backward channels is $k$ ($k \le N$), then with a diagonal \gls{ris} or \gls{bd}-\gls{ris} of sufficiently large number of scattering elements, the first $k$ channel singular values are unbounded above\footnote{The energy conservation law $\sum_n \sigma_n^2(\mathbf{H}) \le 1$ still has to be respected. This constraint is omitted in the following context for brevity.} while the last $k$ channel singular values can be suppressed to zero.
+		% \end{corollary}
+
+		% \begin{proof}
+		% 	This is a direct result of \eqref{iq:sv_bound_rank_deficient}.
+		% \end{proof}
+
+		\begin{corollary}[\gls{los} channel\label{co:los}]
 			% If the forward or backward channel is \gls{los}, then a \gls{ris} can at most enlarge (resp. suppress) the $n$-th ($n \ge 2$) channel singular value to the $(n-1)$-th (resp. $n$-th) singular value of $\mathbf{T}$, that is,
-			If the forward or backward channel is \gls{los}, then a passive \gls{ris} of arbitrary architecture can at most enlarge the $n$-th ($n \ge 2$) channel singular value to the $(n-1)$-th singular value of $\mathbf{T}$, or suppress the $n$-th channel singular value to the $n$-th singular value of $\mathbf{T}$.
+			If the forward or backward channel is \gls{los}, then a diagonal \gls{ris} or \gls{bd}-\gls{ris} can at most enlarge the $n$-th ($n \ge 2$) channel singular value to the $(n-1)$-th singular value of $\mathbf{T}$, or suppress the $n$-th channel singular value to the $n$-th singular value of $\mathbf{T}$.
 			That is,
 			\begin{equation}
 				\sigma_1(\mathbf{H}) \ge \sigma_1(\mathbf{T}) \ge {\sigma_2(\mathbf{H})} \ge \ldots \ge \sigma_{N-1}(\mathbf{T}) \ge {\sigma_N(\mathbf{H})} \ge \sigma_N(\mathbf{T}).
@@ -769,17 +824,22 @@
 			This is a direct result of \eqref{iq:sv_bound_rank_deficient} with $k = 1$.
 		\end{proof}
 
-		In Section~\ref{sc:simulation}, we will show by simulation that a finite-size \gls{bd}-\gls{ris} can better approach those bounds than diagonal \gls{ris}.
+		We would like to highlight that Proposition \ref{pp:rank_deficient} holds for both diagonal and \gls{bd}-\gls{ris} with arbitrary number of elements, regardless of the presence of direct channel.
+		The bounds are asymptotically tight when the number of scattering elements approaches infinity.
+		On the other hand, we will show in Section \ref{sc:simulation} that with a finite number of elements, \gls{bd}-\gls{ris} can approach those bounds better than diagonal \gls{ris}.
+		Proposition \ref{pp:rank_deficient} evaluates the ultimate channel shaping limits of passive \gls{ris} and provides a selection guideline for scattering element number in a practical deployment scenario.
 
-		\begin{proposition}[Fully-connected \gls{ris} without direct link]\label{pp:fully_connected}
-			% If the \gls{bd}-\gls{ris} is unitary and the direct link is absent, then the singular value bounds on $\mathbf{H}$ are equivalent to the singular value bounds on $\mathbf{BF}$, where $\mathbf{B}$ and $\mathbf{F}$ are arbitrary matrices with the same singular values as $\mathbf{H}_\mathrm{B}$ and $\mathbf{H}_\mathrm{F}$, respectively,
-			If the \gls{bd}-\gls{ris} is unitary and the direct link is absent, then the channel singular values can be manipulated up to
-			% If the \gls{bd}-\gls{ris} is unitary and the direct link is absent, then the bounds on the channel singular values are equivalent to the singular values of the equivalent channel, that is,
+
+		\begin{proposition}[Blocked direct channel]\label{pp:fully_connected}
+			% If the \gls{bd}-\gls{ris} is unitary and the direct link is blocked, then the singular value bounds on $\mathbf{H}$ are equivalent to the singular value bounds on $\mathbf{BF}$, where $\mathbf{B}$ and $\mathbf{F}$ are arbitrary matrices with the same singular values as $\mathbf{H}_\mathrm{B}$ and $\mathbf{H}_\mathrm{F}$, respectively,
+
+			If the direct link is blocked and the \gls{bd}-\gls{ris} is fully-connected, then the channel singular values can be manipulated up to
+			% If the \gls{bd}-\gls{ris} is unitary and the direct link is blocked, then the bounds on the channel singular values are equivalent to the singular values of the equivalent channel, that is,
 			% only bounds that apply here are those that apply to the singular values of
 			\begin{equation}
 				\mathrm{sv}(\mathbf{H}) = \mathrm{sv}(\mathbf{BF}),
 			\end{equation}
-			where $\mathbf{B}$ and $\mathbf{F}$ are arbitrary matrices with the same singular values as $\mathbf{H}_\mathrm{B}$ and $\mathbf{H}_\mathrm{F}$, respectively,
+			where $\mathbf{B}$ and $\mathbf{F}$ are arbitrary matrices with $\mathrm{sv}(\mathbf{B})=\mathrm{sv}(\mathbf{H}_\mathrm{B})$ and $\mathrm{sv}(\mathbf{F})=\mathrm{sv}(\mathbf{H}_\mathrm{F})$.
 			% Our focus thus shifts to how the singular values of matrix product are bounded by the singular values of its individual factors.
 		\end{proposition}
 
@@ -787,7 +847,27 @@
 			Please refer to Appendix~\ref{ap:fully_connected}.
 		\end{proof}
 
-		The problem now becomes, how the singular values of matrix product are bounded by the singular values of its individual factors.
+		Proposition \ref{pp:fully_connected} states that if the direct channel is blocked and the \gls{bd}-\gls{ris} is fully-connected, the only singular value bounds on the equivalent channel are the singular value bounds on the product of unitary-transformed forward and backward channels.
+		% , a group-connected \gls{bd}-\gls{ris} in its most powerful form can manipulate the channel singular values to any possible state with zero power loss.
+		For example, consider a $2 \times 2 \times 2$ setup with
+		% $\mathrm{sv}(\mathbf{H}_\mathrm{B}) = [3, 2]^\mathsf{T}$ and $\mathrm{sv}(\mathbf{H}_\mathrm{B}) = [4, 1]^\mathsf{T}$.
+		\begin{equation*}
+			\mathbf{H}_\mathrm{B} =
+				\begin{bmatrix}
+					3 & 0 \\
+					0 & 2
+				\end{bmatrix},
+				\quad
+				\mathbf{H}_\mathrm{F} =
+				\begin{bmatrix}
+					1 & 0 \\
+					0 & 4
+				\end{bmatrix}.
+		\end{equation*}
+		It is apparent that any diagonal \gls{ris} can only achieve singular values $\mathrm{sv}(\mathbf{H}) = [8, 3]^\mathsf{T}$, but a fully connected \gls{bd}-\gls{ris} with $\mathbf{\Theta} = \begin{bsmallmatrix} 0 & 1 \\ 1 & 0 \end{bsmallmatrix}$ can achieve $\mathrm{sv}(\mathbf{H}) = [12, 2]^\mathsf{T}$.
+		That is, fully-connected \gls{bd}-\gls{ris} applies right unitary transformation on $\mathbf{H}_\mathrm{B}$ and left unitary transformation on $\mathbf{H}_\mathrm{F}$, widening the singular values to $8 \le \sigma_1(\mathbf{H}) \le 12$ and $2 \le \sigma_2(\mathbf{H}) \le 3$.
+
+		Proposition \ref{pp:fully_connected} transforms the shaping capacity question to a mathematical one, namely how the singular values of matrix product are bounded by the singular values of its individual factors.
 		Let $\bar{N} = \max(N_\mathrm{T},N_\mathrm{S},N_\mathrm{R})$ and $\sigma_n(\mathbf{H})=\sigma_n(\mathbf{H}_\mathrm{F})=\sigma_n(\mathbf{H}_\mathrm{B})=0$ for $N < n \le \bar{N}$.
 		We have the following corollaries.
 
@@ -817,7 +897,7 @@
 		Corollary \eqref{co:sv_bound_horn} is by far the most comprehensive singular value bound over Proposition~\ref{pp:fully_connected}, which is also recognized as a variation of Horn's inequality \cite{Bhatia2001}.
 		It is worth mentioning that the number of admissible triples (and bounds) grows exponentially with $\bar{N}$.
 		For example, the number of inequalities described by \eqref{iq:sv_bound_fc} grows from 12 to 2062 when $\bar{N}$ increases from 3 to 7.
-		This renders it computationally expensive for applications in large-scale \gls{mimo} systems.
+		This renders the analytic approach computationally expensive for large-scale \gls{mimo} systems.
 		Next, we showcase some useful inequalities enclosed by \eqref{iq:sv_bound_fc}.
 		Readers are referred to \cite[Chapter 16, 24]{Hogben2013} for more examples.
 
@@ -861,7 +941,7 @@
 			This can be deducted from \eqref{iq:sv_bound_fc} with $r_1 = \bar{N}-k$ and $r_2 = \bar{N}$.
 		\end{proof}
 
-		Corollaries \ref{co:sv_smallest} and \ref{co:sv_product_smallest} are less informative when $\bar{N} \ne N$ (i.e., unequal number of transmit, scatter, and receive antennas) as the lower bounds would coincide at zero.
+		Corollaries \ref{co:sv_smallest} and \ref{co:sv_product_smallest} are less informative when $\bar{N} \ne N$ (i.e., unequal number of transmit and receive antennas and scattering elements) as the lower bounds would coincide at zero.
 
 		% \begin{corollary}[Upper bound on the sum of first $k$ singular values to the positive $p$-th power\label{co:sum_power} {\cite[Inequality~24.4.7]{Hogben2013}}]
 		% 	\begin{equation}
@@ -908,7 +988,10 @@
 		where $\lambda_n^{K}$ is the $n$-th eigenvalue of the complex $K \times K$ Wishart matrix with probability density function $f_{\lambda_n^{K}}(x_n)$ given by \cite[Equation 51]{Zanella2009}.
 		We notice \eqref{eq:power_gain_rayleigh} is a generalization of \cite[Equation 58]{Shen2020a} to \gls{mimo}.
 
-		Tighter bounds are generally inapplicable when the direct link is present or the \gls{bd}-\gls{ris} is not unitary, since the direct-indirect channels and backward-forward channels cannot be completely aligned at the same time.
+		Proposition \ref{pp:fully_connected} and Corollaries \ref{co:sv_largest} -- \ref{co:sum_power} provide a comprehensive answer to singular value bounds and channel power gain limits for fully-connected \gls{bd}-\gls{ris} with blocked direct channel.
+		% understanding of the channel power gain limits of passive \gls{ris}.
+		% and suggest the impact of channel rearrangement and space alignment on redistributing channel singular values.
+		Tight bounds are inapplicable in more general cases since the direct-indirect channels and backward-forward channels cannot be completely aligned at the same time.
 		In such case, we can exploit optimization approaches from a singular value perspective (Section~\ref{sc:pareto_frontier}) or a power gain perspective (Section~\ref{sc:power}).
 	\end{subsection}
 \end{section}
@@ -921,26 +1004,29 @@
 			{\scriptstyle{\mathbf{\Theta}}}{\lVert \mathbf{H}_\mathrm{D} + \mathbf{H}_\mathrm{B} \mathbf{\Theta} \mathbf{H}_\mathrm{F} \rVert _\mathrm{F}^2}{\label{op:power_passive}}{\label{ob:power_passive}}
 			\addConstraint{\mathbf{\Theta}_g^\mathsf{H} \mathbf{\Theta}_g=\mathbf{I}, \quad \forall g,}{}{}
 		\end{maxi!}
-		which generalizes the case of \gls{siso} \cite{Shen2020a}, \gls{miso} \cite{Santamaria2023,Fang2023}, single-stream \gls{mimo} \cite{Nerini2023,Nerini2023b}, and direct link-blocked \gls{mimo} with fully-connected \gls{ris} \eqref{eq:scattering_fc_optimal}.
+		which generalizes the case of \gls{siso} \cite{Shen2020a}, \gls{miso} \cite{Santamaria2023,Fang2023}, single-stream \gls{mimo} \cite{Nerini2023,Nerini2023b}, and direct link-blocked \gls{mimo} with fully-connected \gls{bd}-\gls{ris} \eqref{eq:scattering_fc_optimal}.
 		The key of solving \eqref{op:power_passive} is to balance the additive and multiplicative space alignments.
-		Interestingly, in terms of maximizing the inner product $\langle \mathbf{H}_\mathrm{D}, \mathbf{H}_\mathrm{B} \mathbf{\Theta} \mathbf{H}_\mathrm{F} \rangle$, \eqref{op:power_passive} is reminiscent of the weighted orthogonal Procrustes problem \cite{Gower2004}
-		\begin{mini!}
-			{\scriptstyle{\mathbf{\Theta}}}{\lVert \mathbf{H}_\mathrm{D} - \mathbf{H}_\mathrm{B} \mathbf{\Theta} \mathbf{H}_\mathrm{F} \rVert _\mathrm{F}^2}{\label{op:weighted_orthogonal_procrustes}}{}
-			\addConstraint{\mathbf{\Theta}^\mathsf{H} \mathbf{\Theta}=\mathbf{I},}{\label{cs:power_block_unitary}}{}
-		\end{mini!}
-		which relaxes the block-unitary constraint \eqref{cs:power_block_unitary} to unitary but still has no trivial solution.
-		One lossy transformation exploits the Moore-Penrose inverse and moves $\mathbf{\Theta}$ to one side of the product \cite{Bell2003}, formulating two standard orthogonal Procrustes problems
-		\begin{mini!}
-			{\scriptstyle{\mathbf{\Theta}}}{\lVert \mathbf{H}_\mathrm{B}^\dagger \mathbf{H}_\mathrm{D} - \mathbf{\Theta} \mathbf{H}_\mathrm{F} \rVert _\mathrm{F}^2 \text{ or } \lVert \mathbf{H}_\mathrm{D} \mathbf{H}_\mathrm{F}^\dagger - \mathbf{H}_\mathrm{B} \mathbf{\Theta} \rVert _\mathrm{F}^2}{\label{op:standard_orthogonal_procrustes}}{}
-			\addConstraint{\mathbf{\Theta}^\mathsf{H} \mathbf{\Theta}=\mathbf{I},}{}{}
-		\end{mini!}
-		which have global optimal solutions
-		\begin{equation}
-			\mathbf{\Theta} = \mathbf{U} \mathbf{V}^\mathsf{H},
-			\label{eq:orthogonal_procrustes_solution}
-		\end{equation}
-		where $\mathbf{U}$ and $\mathbf{V}$ are respectively the left and right compact singular matrices of $\mathbf{H}_\mathrm{B}^\dagger \mathbf{H}_\mathrm{D} \mathbf{H}_\mathrm{F}^\mathsf{H}$ or $\mathbf{H}_\mathrm{B}^\mathsf{H} \mathbf{H}_\mathrm{D} \mathbf{H}_\mathrm{F}^\dagger$ \cite{Golub2013}.
-		We emphasize that \eqref{eq:scattering_fc_optimal} and \eqref{eq:orthogonal_procrustes_solution} are valid fully-connected \gls{ris} solutions to \eqref{op:power_passive} when the direct link is absent and present, but the latter is neither optimal nor a generalization of the former due to the lossy transformation.
+
+		\begin{remark}
+			Interestingly, in terms of maximizing the inner product $\langle \mathbf{H}_\mathrm{D}, \mathbf{H}_\mathrm{B} \mathbf{\Theta} \mathbf{H}_\mathrm{F} \rangle$, \eqref{op:power_passive} is reminiscent of the weighted orthogonal Procrustes problem \cite{Gower2004}
+			\begin{mini!}
+				{\scriptstyle{\mathbf{\Theta}}}{\lVert \mathbf{H}_\mathrm{D} - \mathbf{H}_\mathrm{B} \mathbf{\Theta} \mathbf{H}_\mathrm{F} \rVert _\mathrm{F}^2}{\label{op:weighted_orthogonal_procrustes}}{}
+				\addConstraint{\mathbf{\Theta}^\mathsf{H} \mathbf{\Theta}=\mathbf{I},}{\label{cs:power_block_unitary}}{}
+			\end{mini!}
+			which relaxes the block-unitary constraint \eqref{cs:power_block_unitary} to unitary but still has no trivial solution.
+			One lossy transformation exploits the Moore-Penrose inverse and moves $\mathbf{\Theta}$ to one side of the product \cite{Bell2003}, formulating two standard orthogonal Procrustes problems
+			\begin{mini!}
+				{\scriptstyle{\mathbf{\Theta}}}{\lVert \mathbf{H}_\mathrm{B}^\dagger \mathbf{H}_\mathrm{D} - \mathbf{\Theta} \mathbf{H}_\mathrm{F} \rVert _\mathrm{F}^2 \text{ or } \lVert \mathbf{H}_\mathrm{D} \mathbf{H}_\mathrm{F}^\dagger - \mathbf{H}_\mathrm{B} \mathbf{\Theta} \rVert _\mathrm{F}^2}{\label{op:standard_orthogonal_procrustes}}{}
+				\addConstraint{\mathbf{\Theta}^\mathsf{H} \mathbf{\Theta}=\mathbf{I},}{}{}
+			\end{mini!}
+			which have global optimal solutions
+			\begin{equation}
+				\mathbf{\Theta} = \mathbf{U} \mathbf{V}^\mathsf{H},
+				\label{eq:orthogonal_procrustes_solution}
+			\end{equation}
+			where $\mathbf{U}$ and $\mathbf{V}$ are respectively the left and right compact singular matrices of $\mathbf{H}_\mathrm{B}^\dagger \mathbf{H}_\mathrm{D} \mathbf{H}_\mathrm{F}^\mathsf{H}$ or $\mathbf{H}_\mathrm{B}^\mathsf{H} \mathbf{H}_\mathrm{D} \mathbf{H}_\mathrm{F}^\dagger$ \cite{Golub2013}.
+			We emphasize that \eqref{eq:scattering_fc_optimal} and \eqref{eq:orthogonal_procrustes_solution} are valid fully-connected \gls{bd}-\gls{ris} solutions to \eqref{op:power_passive} when the direct link is blocked and present, but the latter is neither optimal nor a generalization of the former due to the lossy transformation.
+		\end{remark}
 
 		Inspired by \cite{Nie2017}, we propose an optimal solution to problem \eqref{op:power_passive} with arbitrary group size.
 		The idea is to successively approximate the quadratic objective \eqref{ob:power_passive} by local Taylor expansions and solve each step in closed form by group-wise \gls{svd}.
@@ -1021,18 +1107,6 @@
 \end{section}
 
 \begin{section}{Simulation Results}\label{sc:simulation}
-	\begin{table*}[!t]
-		\caption{Average Performance of Geodesic and Non-Geodesic \gls{rcg} Algorithms on Problem \eqref{op:pareto}}
-		\label{tb:complexity_test}
-		\centering
-		\begin{tabular}{ccccccc}
-			\toprule
-			\multirow{2}{*}{\gls{rcg} path} & \multicolumn{3}{c}{$N_\mathrm{S}=16$} & \multicolumn{3}{c}{$N_\mathrm{S}=256$}                                                               \\ \cmidrule(lr){2-4} \cmidrule(lr){5-7}
-											& Objective                             & Iterations                             & Time [s]         & Objective        & Iterations & Time [s] \\ \midrule
-			Geodesic                        & $\num{4.359e-3}$                      & 11.59                                  & $\num{1.839e-2}$ & $\num{1.163e-2}$ & 25.58      & 3.461    \\
-			Non-geodesic                    & $\num{4.329e-3}$                      & 30.92                                  & $\num{5.743e-2}$ & $\num{1.116e-2}$ & 61.40      & 13.50    \\ \bottomrule
-		\end{tabular}
-	\end{table*}
 	In this section, we provide numerical results to evaluate the proposed \gls{bd}-\gls{ris} designs.
 	Consider a distance-dependent path loss model $\Lambda(d) = \Lambda_0 d^{-\gamma}$ where $\Lambda_0$ is the reference path loss at distance \qty{1}{m}, $d$ is the propagation distance, and $\gamma$ is the path loss exponent.
 	The small-scale fading model is $\mathbf{H} = \sqrt{\kappa/(1+\kappa)} \mathbf{H}_\text{LoS} + \sqrt{1/(1+\kappa)} \mathbf{H}_\text{NLoS}$, where $\kappa$ is the Rician $K$-factor, $\mathbf{H}_\text{LoS}$ is the deterministic \gls{los} component, and $\mathbf{H}_\text{NLoS} \sim \mathcal{CN}(\mathbf{0}, \mathbf{I})$ is the Rayleigh component.
@@ -1041,7 +1115,19 @@
 	Rayleigh fading (i.e., $\kappa = 0$) is assumed for all channels unless otherwise specified.
 
 	\begin{subsection}{Algorithm Evaluation}
-		We first compare the geodesic and non-geodesic \gls{rcg} algorithm on problem \eqref{op:pareto} in a 4T4R system with \gls{bd}-\gls{ris} group size $L=4$.
+		\begin{table*}[!t]
+			\caption{Average Performance of Geodesic and Non-Geodesic \gls{rcg} Algorithms on Problem \eqref{op:pareto}}
+			\label{tb:complexity_test}
+			\centering
+			\begin{tabular}{ccccccc}
+				\toprule
+				\multirow{2}{*}{\gls{rcg} path} & \multicolumn{3}{c}{$N_\mathrm{S}=16$} & \multicolumn{3}{c}{$N_\mathrm{S}=256$}                                                               \\ \cmidrule(lr){2-4} \cmidrule(lr){5-7}
+												& Objective                             & Iterations                             & Time [s]         & Objective        & Iterations & Time [s] \\ \midrule
+				Geodesic                        & $\num{4.359e-3}$                      & 11.59                                  & $\num{1.839e-2}$ & $\num{1.163e-2}$ & 25.58      & 3.461    \\
+				Non-geodesic                    & $\num{4.329e-3}$                      & 30.92                                  & $\num{5.743e-2}$ & $\num{1.116e-2}$ & 61.40      & 13.50    \\ \bottomrule
+			\end{tabular}
+		\end{table*}
+		We first compare in Table \ref{tb:complexity_test} the geodesic and non-geodesic \gls{rcg} algorithm on problem \eqref{op:pareto} in an $N_\mathrm{T}=N_\mathrm{S}=4$ system with \gls{bd}-\gls{ris} group size $L=4$.
 		The statistics are averaged over \num{100} independent runs.
 		It is observed that the geodesic \gls{rcg} method achieves a slightly higher objective value with significantly (up to 3$\times$) lower number of iterations and shorter (up to 4$\times$) computational time than the non-geodesic method.
 		The results demonstrate the efficiency of the proposed geodesic \gls{rcg} algorithm especially in large-scale \gls{bd}-\gls{ris} design problems.
@@ -1072,15 +1158,15 @@
 						\input{assets/simulation/singular_pareto_sx128.tex}
 					}
 				}
-				\caption{Pareto frontiers of singular values of a 2T2R channel reshaped by a \gls{ris}.}
+				\caption{Pareto frontiers of singular values of an $N_\mathrm{T}=N_\mathrm{R}=2$ channel reshaped by a \gls{ris}.}
 				\label{fg:singular_pareto}
 			\end{figure}
 			% Fig. \ref{fg:singular_pareto} shows the Pareto frontiers of channel singular values reshaped by \gls{bd}-\gls{ris}.
-			Fig. \ref{fg:singular_pareto} shows the Pareto singular values of a 2T2R \gls{mimo} reshaped by a \gls{ris}.
-			When the direct link is absent, the achievable regions in Fig. \subref*{fg:singular_pareto_sx32_nd} are shaped like pizza slices.
+			Fig. \ref{fg:singular_pareto} shows the Pareto singular values of an $N_\mathrm{T}=N_\mathrm{R}=2$ \gls{mimo} reshaped by a \gls{ris}.
+			When the direct link is blocked, the achievable regions in Fig. \subref*{fg:singular_pareto_sx32_nd} are shaped like pizza slices.
 			This is because $\sigma_1(\mathbf{H}) \ge \sigma_2(\mathbf{H}) \ge 0$ and there exists a trade-off between the alignment of two spaces.
 			%  since $\sigma_1(\mathbf{H}) \ge \sigma_2(\mathbf{H}) \ge 0$.
-			We observe that the smallest singular value can be enhanced up to \num{2e-4} by single-connected \gls{ris} and \num{3e-4} by fully-connected \gls{ris}, corresponding to a \qty{50}{\percent} gain.
+			We observe that the smallest singular value can be enhanced up to \num{2e-4} by single-connected \gls{ris} and \num{3e-4} by fully-connected \gls{bd}-\gls{ris}, corresponding to a \qty{50}{\percent} gain.
 			When the direct link is present, the shape of the singular value region depends heavily on the relative strength of the indirect link.
 			In Fig. \subref*{fg:singular_pareto_sx32}, a 32-element \gls{ris} is insufficient to compensate the \qty{35}{dB} path loss imbalance and results in a limited singular value region that is symmetric around the direct point.
 			As the group size $L$ increases, the shape of the region evolves from elliptical to square.
@@ -1088,8 +1174,8 @@
 			It suggests the design freedom from larger group size allows better alignment of multiple spaces simultaneously.
 			% not only provides a better trade-off in channel manipulation but also improves the dynamic range of $\sigma_1(\mathbf{H})$ and $\sigma_2(\mathbf{H})$ by \qty{22}{\percent} and \qty{38}{\percent}, respectively.
 			The singular value region also enlarges as the number of scattering elements $N_\mathrm{S}$ increases.
-			In particular, Fig. \subref*{fg:singular_pareto_sx128} shows that the equivalent channel can be completely nulled (corresponding to the origin) by a 128-element \gls{bd}-\gls{ris} but not by a diagonal one.
-			Those results demonstrate the superior channel shaping capability of \gls{bd}-\gls{ris} and emphasizes the importance of cooperative wave scattering.
+			In particular, Fig. \subref*{fg:singular_pareto_sx128} shows that the equivalent channel can be completely nulled (corresponding to the origin) by a 128-element \gls{bd}-\gls{ris} thanks to its superior channel shaping capability, but not by a diagonal one.
+			Those results demonstrate the superior channel shaping capability of \gls{bd}-\gls{ris} and emphasizes the importance of reconfigurable inter-connection between elements.
 		\end{subsubsection}
 
 		\begin{subsubsection}{Analytical Bounds and Numerical Results}
@@ -1126,14 +1212,14 @@
 				\label{fg:singular_bound}
 			\end{figure}
 			Fig. \ref{fg:singular_bound} illustrates the analytical singular value bounds in Proposition \ref{pp:rank_deficient} and the numerical results obtained by solving problem \eqref{op:pareto} with $\rho_n = \pm 1$ and $\rho_{n'} = 0$, $\forall n' \ne n$.
-			Here we assme a rank-$k$ forward channel without loss of generality.
+			Here we assume a rank-$k$ forward channel without loss of generality.
 			When the \gls{ris} is in the vicinity of the transmitter, Figs. \subref*{fg:singular_bound_rank1_sx32} and \subref*{fg:singular_bound_rank1_sx64} show that the achievable channel singular values indeed satisfy Corollary \ref{co:los}, namely $\sigma_1(\mathbf{H}) \ge \sigma_1(\mathbf{T})$, $\sigma_2(\mathbf{T}) \le \sigma_2(\mathbf{H}) \le \sigma_1(\mathbf{T})$, etc.
 			It is obvious that \gls{bd}-\gls{ris} can approach those bounds better than diagonal \gls{ris} especially for a small $N_\mathrm{S}$.
 			% Another example is given in Fig. \subref*{fg:singular_bound_rank2_sx128} where the forward channel is rank-2.
 			Another example is given in Fig. \subref*{fg:singular_bound_rank2_sx128} with rank-2 forward channel.
 			% The observations align with Proposition \ref{pp:rank_deficient} that t
 			The first two channel singular values are unbounded above and bounded below by the first two singular values of $\mathbf{T}$, while the last two singular values can be suppressed to zero and bounded above by the first two singular values of $\mathbf{T}$.
-			Those observations align with Proposition \ref{pp:rank_deficient} and Corollary \ref{co:extreme}.
+			Those observations align with Proposition \ref{pp:rank_deficient}.
 			Finally, Fig. \subref*{fg:singular_bound_rank4_sx256} confirms there are no extra singular value bounds when both forward and backward channels are full-rank.
 			This can be predicted from \eqref{eq:auxiliary_matrix} where the compact singular matrix $\mathbf{V}_\mathrm{F}$ becomes unitary and $\mathbf{T}=\mathbf{0}$.
 			The numerical results are consistent with the analytical bounds, and we conclude that the channel shaping advantage of \gls{bd}-\gls{ris} over diagonal \gls{ris} scales with forward and backward channel ranks.
@@ -1153,12 +1239,13 @@
 				}
 				\caption{
 					Average maximum channel power versus \gls{bd}-\gls{ris} group size and \gls{mimo} dimensions.
+					The direct channel is blocked.
 					`Cascaded' refers to the available power of the cascaded channel, i.e., the sum of (sorted) element-wise power product of backward and forward channels.
 				}
 				\label{fg:power_bond}
 			\end{figure}
 
-			Fig. \ref{fg:power_bond} compares the analytical channel power bound in Corollary \ref{co:sum_power} and the numerical results obtained by solving problem \eqref{op:power_passive} when the direct link is absent.
+			Fig. \ref{fg:power_bond} compares the analytical channel power bound in Corollary \ref{co:sum_power} and the numerical results obtained by solving problem \eqref{op:power_passive} when the direct link is blocked.
 			Here, a fully-connected \gls{bd}-\gls{ris} can attain the upper bound either in closed form \eqref{eq:scattering_fc_optimal} or via optimization approach \eqref{eq:scattering_power}.
 			% Recall that a fully-connected \gls{bd}-\gls{ris} in closed form \eqref{eq:scattering_fc_tight} can attain the bound.
 			% We observe that the bound is also tight for fully-connected \gls{bd}-\gls{ris}.
@@ -1169,7 +1256,7 @@
 			% We observe that the bound is tight for fully-connected \gls{bd}-\gls{ris} in \gls{siso} and \gls{mimo}.
 			For the \gls{siso} case in Fig. \subref*{fg:power_bond_txrx1_nd}, the maximum channel power is approximately \num{4e-6} by diagonal \gls{ris} and \num{6.5e-6} by fully-connected \gls{bd}-\gls{ris}, corresponding to a \qty{62.5}{\percent} gain.
 			This aligns with the asymptotic \gls{bd}-\gls{ris} scaling law derived for \gls{siso} in \cite{Shen2020a}.
-			Interestingly, the gain surges to \qty{270}{\percent} in 4T4R \gls{mimo} as shown in Fig. \subref*{fg:power_bond_txrx4_nd}.
+			Interestingly, the gain surges to \qty{270}{\percent} in $N_\mathrm{T}=N_\mathrm{S}=4$ \gls{mimo} as shown in Fig. \subref*{fg:power_bond_txrx4_nd}.
 			This is because space alignment boils down to phase matching in \gls{siso} such that both triangular and Cauchy-Schwarz inequalities in \cite[(50)]{Shen2020a} can be simultaneously tight regardless of the group size.
 			That is, diagonal \gls{ris} is sufficient for space alignment in \gls{siso} while the \qty{62.5}{\percent} gain from \gls{bd}-\gls{ris} comes purely from channel rearrangement.
 			Now consider a diagonal \gls{ris} in \gls{mimo}.
@@ -1210,7 +1297,7 @@
 		We first focus on channel power gain maximization problem \eqref{op:power_passive}.
 		Fig. \ref{fg:power_sx} shows the achievable channel power under different \gls{ris} configurations.
 		An interesting observation is that the relative power gain of \gls{bd}-\gls{ris} over diagonal \gls{ris} is even larger with direct link.
-		For example, a 64-element fully \gls{bd}-\gls{ris} can almost provide the same channel power as a 256-element diagonal \gls{ris} in Fig. \ref{fg:power_sx_txrx16}, but not in Fig. \ref{fg:power_sx_txrx16_nd}.
+		For example, a 64-element fully \gls{bd}-\gls{ris} can almost provide the same channel power as a 256-element diagonal \gls{ris} in Fig. \subref*{fg:power_sx_txrx16}, but not in Fig. \subref*{fg:power_sx_txrx16_nd}.
 		% This again credits to the superior space alignment capability of \gls{bd}-\gls{ris}.
 		This is because the \gls{ris} needs to balance the multiplicative forward-backward combining and the additive direct-indirect combining, such that the space alignment advantage of \gls{bd}-\gls{ris} becomes more pronounced.
 		We also notice that the suboptimal solutions \eqref{eq:orthogonal_procrustes_solution} for fully-connected \gls{bd}-\gls{ris} by lossy transformation \eqref{op:standard_orthogonal_procrustes} are very close to optimal especially for a large $N_\mathrm{S}$.
@@ -1248,11 +1335,11 @@
 		\end{figure}
 
 		Fig. \ref{fg:rate} presents the achievable rate under different \gls{mimo} and \gls{ris} configurations.
-		At a transmit power of \qty{10}{dB}, Fig. \subref*{fg:rate_beamforming} shows that introducing a 128-element diagonal \gls{ris} to 4T4R \gls{mimo} can improve the achievable rate from \qty{22.2}{bps/Hz} to \qty{29.2}{bps/Hz} ($+\qty{31.5}{\percent}$).
+		At a transmit power of \qty{10}{dB}, Fig. \subref*{fg:rate_beamforming} shows that introducing a 128-element diagonal \gls{ris} to $N_\mathrm{T}=N_\mathrm{S}=4$ \gls{mimo} can improve the achievable rate from \qty{22.2}{bps/Hz} to \qty{29.2}{bps/Hz} ($+\qty{31.5}{\percent}$).
 		In contrast, a \gls{bd}-\gls{ris} of group size 4 and 128 can further improve the rate to \qty{32.1}{bps/Hz} ($+\qty{44.6}{\percent}$) and \qty{34}{bps/Hz}  ($+\qty{53.2}{\percent}$), respectively.
 		Interestingly, the gap between the optimal \gls{ao} approach \eqref{op:rate_passive}--\eqref{eq:precoder_eigenmode} and the low-complexity solution \eqref{eq:scattering_power} and \eqref{eq:precoder_eigenmode} narrows as the group size increases, and completely vanishes for a fully-connected \gls{bd}-\gls{ris}.
 		This implies that the \gls{ris}-transceiver design can often be decoupled via channel shaping with marginal performance loss.
-		Figs. \subref*{fg:rate_txrx} and \subref*{fg:rate_sx} also confirm the advantage of \gls{bd}-\gls{ris} grows with the number of transmit, scatter, and receive antennas.
+		Figs. \subref*{fg:rate_txrx} and \subref*{fg:rate_sx} also confirm the advantage of \gls{bd}-\gls{ris} grows with the number of transmit and receive antennas and scattering elements.
 		In the low power regime (\num{-20} to \qty{-10}{dB}), the slope of the achievable rate is significantly larger with \gls{bd}-\gls{ris}, suggesting that multiple streams can be activated at a much lower \gls{snr}.
 		This is because \gls{bd}-\gls{ris} not only spreads the channel singular values to a wider range, but also provides a better trade-off between channels (c.f. Fig. \ref{fg:singular_pareto}).
 		Finally, Fig. \subref*{fg:rate_kfactor} shows that the gap between diagonal and \gls{bd}-\gls{ris} narrows as the Rician $K$-factor increases and becomes indistinguishable in \gls{los} environment.
@@ -1263,15 +1350,15 @@
 \begin{section}{Conclusion}
 	This paper analyzes the channel shaping capability of \gls{ris} in terms of singular values redistribution.
 	We consider a general \gls{bd} architecture that allows elements within the same group to interact, enabling more sophisticated manipulation than diagonal \gls{ris}.
-	This translates to a wider dynamic range (with better tradeoff) of singular values and significant power and rate gains, especially in large-scale \gls{mimo} systems.
-	We characterize the Pareto frontiers of channel singular values via optimization approach and provide analytical bounds in rank-deficient and unitary scenarios.
+	This translates to a wider dynamic range of and better tradeoff between singular values and significant power and rate gains, especially in large-scale \gls{mimo} systems.
+	We characterize the Pareto frontiers of channel singular values via optimization approach and provide analytical bounds for rank-deficient forward/backward channel and blocked direct channel.
 	Specifically, the former is done by proposing an efficient \gls{rcg} algorithm for \gls{bd}-\gls{ris} optimization problems, which offers better objective value and faster convergence than existing methods.
 	We also present two beamforming designs for rate maximization problem, one based on alternating optimization for optimal performance and the other decouples the \gls{ris}-transceiver design for lower complexity.
 	Extensive simulations show that the advantage of \gls{bd}-\gls{ris} stems from its superior space alignment and channel rearrangement capability, which scales with the number of elements, group size, \gls{mimo} dimensions, and channel diversity.
 
-	One future direction is introducing \gls{bd}-\gls{ris} to \gls{mimo} interference channel for interference alignment or cancellation.
-	Another open issue is to exploit different groups of \gls{bd}-\gls{ris} to enhance the channel response (and possibly ride extra information) at different frequencies.
-	Incorporating a \gls{ris} at both transmitter and receiver sides provides even stronger manipulation that potentially align both direct-indirect and forward-backward spaces simultaneously.
+	% One future direction is introducing \gls{bd}-\gls{ris} to \gls{mimo} interference channel for interference alignment or cancellation.
+	% Another open issue is to exploit different groups of \gls{bd}-\gls{ris} to enhance the channel response (and possibly ride extra information) at different frequencies.
+	% Incorporating a \gls{ris} at both transmitter and receiver sides provides even stronger manipulation that potentially align both direct-indirect and forward-backward spaces simultaneously.
 	% Finally, integrating the \gls{ris} into the \gls{mimo} precoding and combining design is also an interesting topic for future research.
 	% into the \gls{mimo} precoding and combining design is also an interesting topic for future research.
 	% even better channel shaping can be achieved by incorporating the \gls{ris} into the \gls{mimo} precoding and combining design.
@@ -1348,7 +1435,7 @@
 
 	\begin{subsection}{Proof of Proposition \ref{pp:fully_connected}}\label{ap:fully_connected}
 		Let $\mathbf{H}_\mathrm{B} = \mathbf{U}_\mathrm{B} \mathbf{\Sigma}_\mathrm{B} \mathbf{V}_\mathrm{B}^\mathsf{H}$ and $\mathbf{H}_\mathrm{F} = \mathbf{U}_\mathrm{F} \mathbf{\Sigma}_\mathrm{F} \mathbf{V}_\mathrm{F}^\mathsf{H}$ be the \gls{svd} of the backward and forward channels, respectively.
-		The scattering matrix of fully-connected \gls{ris} can be decomposed as
+		The scattering matrix of fully-connected \gls{bd}-\gls{ris} can be decomposed as
 		\begin{equation}
 			\mathbf{\Theta} = \mathbf{V}_\mathrm{B} \mathbf{X} \mathbf{U}_\mathrm{F}^\mathsf{H},
 			\label{eq:scattering_fc}
