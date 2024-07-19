@@ -100,7 +100,7 @@
 \glsdisablehyper
 \setabbreviationstyle[acronym]{long-short}
 \newacronym{ao}{AO}{Alternating Optimization}
-\newacronym{bd}{BD}{Beyond-Diagonal}
+\newacronym{bd}{BD}{Beyond Diagonal}
 \newacronym{bcd}{BCD}{Block Coordinate Descent}
 \newacronym{d}{D}{Diagonal}
 \newacronym{dof}{DoF}{Degree of Freedom}
@@ -125,7 +125,7 @@
 
 
 \begin{document}
-\title{Channel Shaping Using Beyond-Diagonal Reconfigurable Intelligent Surface:\\Analysis, Optimization, and Implications}
+\title{Channel Shaping Using Beyond Diagonal Reconfigurable Intelligent Surface:\\Analysis, Optimization, and Enhanced Flexibility}
 \author{
 	\IEEEauthorblockN{
 		Yang~Zhao,~\IEEEmembership{Member,~IEEE,}
@@ -149,7 +149,7 @@
 	% the limit to which
 	This paper investigates the capability of a passive \gls{ris} to redistribute the singular values of point-to-point \gls{mimo} channels for achieving power and rate gains.
 	We depart from the conventional \gls{d}-\gls{ris} with diagonal phase shift matrix
-	and adopt a \gls{bd} architecture featuring element-wise connections for signal amplitude and phase control.
+	and adopt a \gls{bd} architecture not restricted to diagonal scattering matrix and featuring element-wise connections for extra wave manipulation flexibility.
 	% featuring element-wise connections for signal amplitude and phase control.
 	% featuring element-wise connections for amplitude and phase control.
 	% in-group connections between elements, which enables signal amplitude and phase control.
@@ -193,7 +193,7 @@
 	Those observations become more pronounced when \gls{mimo} and \gls{ris} dimensions increase.
 	% Results show that compared to \gls{d}-\gls{ris}, \gls{bd}-\gls{ris} significantly improves the dynamic range of all channel singular values as well as the trade-off in manipulating them.
 	% We also notice the power and rate gain of \gls{bd}-\gls{ris} over \gls{d}-\gls{ris} increase with the number of scattering elements and \gls{mimo} dimensions.
-	Of particular interest, \gls{bd}-\gls{ris} is shown to activate multi-stream transmission at lower transmit power than \gls{d}-\gls{ris}, hence attaining the full \gls{dof} at lower \gls{snr} thanks to its higher flexibility of shaping the distribution of channel singular values.
+	Of particular interest, \gls{bd}-\gls{ris} is shown to activate multi-stream transmission at lower transmit power than \gls{d}-\gls{ris}, hence better approaching \gls{dof} at low \gls{snr} thanks to its higher flexibility of shaping the distribution of channel singular values.
 	% wider dynamic range (with better tradeoff) of singular values and significant power and rate gains, especially in large-scale \gls{mimo} systems.
 
 	% indicate that the rate deficit from the latter diminishes as the \gls{ris} evolves from diagonal towards unitary, while the relative gain of \gls{bd}-\gls{ris} increase with \gls{mimo} dimensions and decrease with spatial correlation.
@@ -364,7 +364,7 @@
 
 		% pioneer
 		Third, we provide a numerical answer to the shaping question by characterizing the Pareto frontiers of channel singular values.
-		The enclosed region generalizes most relevant metrics and provides an intuitive singular value shaping benchmark.
+		The enclosed region generalizes most relevant metrics and provides an intuitive shaping benchmark.
 		Results show that increasing \gls{bd}-\gls{ris} group size enlarges this region, improving the dynamic range of all singular values and the trade-off in manipulating them.
 		% enlarges the singular value region, improving both dynamic range of and trade-off between singular values.
 
@@ -382,9 +382,9 @@
 		% We also and derive some analytical singular value bounds for rank-deficient \gls{mimo} and fully-connected \gls{bd}-\gls{ris}.
 
 		Fourth, we provide an analytical answer to the shaping question in two special channel conditions.
-		For rank-deficient forward/backward channel, we derive asymptotic singular value bounds applying to \gls{d}- and \gls{bd}-\gls{ris}.
+		For rank-deficient forward/backward channel, we derive singular value bounds applying to \gls{d}- and \gls{bd}-\gls{ris} with asymptotically large number of elements.
 		For blocked direct channel, we derive singular value bounds applying to fully-connected \gls{bd}-\gls{ris} with arbitrary number of elements.
-		Those bounds are validated by comparing with numerical results above.
+		Those bounds are validated by comparing with the numerical results above.
 		Results show that for a fixed number of elements, \gls{bd}-\gls{ris} can approach the asymptotic bounds better than \gls{d}-\gls{ris}.
 
 		% Results validate those bounds and emphasizes the shaping advantage of \gls{bd}-\gls{ris}.
@@ -423,12 +423,18 @@
 
 
 
-		Fifth, we tackle \gls{bd}-\gls{ris}-aided \gls{mimo} rate maximization problem through a local-optimal \gls{ao} and a low-complexity shaping-inspired approach.
-		The former updates active beamforming by eigenmode transmission and passive beamforming by geodesic \gls{rcg} until convergence.
-		The latter shapes the channel for maximum power gain and then performs eigenmode transmission.
-		Interestingly, the rate gap in between diminishes as the \gls{ris} evolves from diagonal to fully-connected.
-		We highlight that the power and rate gains of \gls{bd}-\gls{ris} over \gls{d}-\gls{ris} increase with the number of scattering elements and \gls{mimo} dimensions.
-		Besides, \gls{bd}-\gls{ris} can help to activate more streams and better approach the \gls{dof} than \gls{d}-\gls{ris} at low transmit \gls{snr}.
+		Fifth, we tackle \gls{bd}-\gls{ris}-aided \gls{mimo} rate maximization problem by a local-optimal \gls{ao} and a low-complexity shaping-inspired approach.
+		The former iteratively updates active beamforming by eigenmode transmission and passive beamforming by geodesic \gls{rcg}, until convergence.
+		The latter exploits the \gls{bd}-\gls{ris} to shape the channel for maximum power gain then performs eigenmode transmission.
+		% simply shapes the channel by \gls{bd}-\gls{ris} for maximum power gain and performs eigenmode transmission.
+		Interestingly, the rate deficit from the shaping-inspired approach diminishes as the \gls{bd}-\gls{ris} evolves towards fully-connected.
+		% gap in between diminishes as the \gls{ris} evolves from diagonal to fully-connected.
+		We conclude that: 1) channel shaping decouples joint beamforming for reduced design complexity; 2) the power and rate gains of \gls{bd}-\gls{ris} over \gls{d}-\gls{ris} increase with the number of scattering elements and \gls{mimo} dimensions; 3) at low transmit power, \gls{bd}-\gls{ris} can activate more streams and better approach \gls{dof} than \gls{d}-\gls{ris}, thanks to its higher flexibility of shaping the distribution of channel singular values.
+		% Interestingly, the rate gap in between diminishes as the \gls{ris} evolves from diagonal to fully-connected.
+		% Channel shaping helps to decouple joint beamforming by first designing the channel and then the transmitter.
+
+		% We highlight that the power and rate gains of \gls{bd}-\gls{ris} over \gls{d}-\gls{ris} increase with the number of scattering elements and \gls{mimo} dimensions.
+		% Besides, \gls{bd}-\gls{ris} can help to activate more streams and achieves higher \gls{dof} than \gls{d}-\gls{ris} at low transmit \gls{snr}.
 		% \gls{bd}-\gls{ris} is shown to activate multi-stream transmission at lower transmit power than \gls{d}-\gls{ris}, hence attaining the full \gls{dof} at lower \gls{snr} thanks to its higher flexibility of shaping the distribution of channel singular values.
 
 
@@ -588,7 +594,7 @@
 		It is thus apparent that \gls{d}-\gls{ris} suffices
 		% \gls{d}-\gls{ris} thus suffices
 		for perfect phase matching in \gls{siso}.
-		When it comes to \gls{mimo}, each \gls{d}-\gls{ris} element can only apply a common phase shift to the rank-1 indirect channel matrix passing through itself.
+		When it comes to \gls{mimo}, each \gls{d}-\gls{ris} element can only apply a scalar phase shift to the associated indirect channel matrix of size $N_\mathrm{R} \times N_\mathrm{T}$ defined in \eqref{eq:channel_equivalent}.
 		We thus conclude that the disadvantage of \gls{d}-\gls{ris} in space alignment deteriorates with \gls{mimo} dimensions.
 		% When it comes to \gls{mimo}, element $g$ of \gls{d}-\gls{ris} can only apply a common phase shift to the ``pinhole''\footnote{The pinhole effect refers to channel rank reduction due to diffraction in the propagation environment \cite{Almers2006}. For element $g$ of \gls{d}-\gls{ris}, the indirect channel $\mathbf{H}_g$ is rank-1 and the pinhole is $\Theta_g$.} indirect channel passing through itself by $\mathbf{H}_g = \mathbf{h}_{\mathrm{B},g} \Theta_g \mathbf{h}_{\mathrm{F},g}^\mathsf{H} \in \mathbb{C}^{N_\mathrm{R} \times N_\mathrm{T}}$.
 		% Thus, we conclude that
