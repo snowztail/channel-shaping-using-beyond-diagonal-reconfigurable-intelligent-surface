@@ -12,7 +12,7 @@
 \usepackage{bookmark}
 \usepackage{booktabs}
 \usepackage[makeroom]{cancel}
-% \usepackage{cases}
+\usepackage{cases}
 \usepackage[american]{circuitikz}
 \usepackage{cite}
 % \usepackage{fixmath}
@@ -35,6 +35,7 @@
 \usepackage{multirow}
 \usepackage{booktabs}
 % \usepackage{cleveref}
+\usepackage{enumitem}
 
 % page limit hacks
 % \usepackage{setspace}
@@ -63,6 +64,10 @@
 \newtheorem{remark}{Remark}
 \newtheorem{lemma}{Lemma}
 \newtheorem{corollary}{Corollary}[proposition]
+
+% enumitem
+\setlist[itemize]{leftmargin=5mm}
+\setlist[enumerate]{leftmargin=5mm}
 
 % PGF/TikZ
 \usetikzlibrary{arrows,calc,matrix,patterns,plotmarks,positioning,shapes}
@@ -886,7 +891,7 @@
 		Proposition \ref{pp:rank_deficient} and Corollary \ref{co:los} apply to both \gls{d}- and \gls{bd}-\gls{ris} configurations regardless of the status of the direct channel.
 		Out of $2N$ bounds in \eqref{iq:sv_bound_rank_deficient} or \eqref{iq:sv_bound_los}, $N$ of them
 		% The equalities in \eqref{iq:sv_bound_rank_deficient} and \eqref{iq:sv_bound_los}
-		can be \emph{simultaneously} tight as $N_\mathrm{S}$ goes to infinity, namely, when the direct channel becomes negligible\footnote{Negligible direct channel refers to the case where the power of the signal arriving at the receiver through the direct path is negligible compared to that through the scattering of \gls{ris}, i.e., $\mathbf{H} \approx \sum_g \mathbf{H}_g$. This can result from a very large number of \gls{ris} elements (as discussed in Proposition~\ref{pp:rank_deficient}) or physical obstacles in the propagation path (as discussed in Proposition~\ref{pp:direct_negligible}).}.
+		can be \emph{simultaneously} tight as $N_\mathrm{S} \to \infty$, namely, when the direct channel becomes negligible\footnote{Negligible direct channel refers to the case where the power of the signal arriving at the receiver through the direct path is negligible compared to that through the scattering of \gls{ris}, i.e., $\mathbf{H} \approx \sum_g \mathbf{H}_g$. This can result from a very large number of \gls{ris} elements (as discussed in Proposition~\ref{pp:rank_deficient}) or physical obstacles in the propagation path (as discussed in Proposition~\ref{pp:direct_negligible}).}.
 		For a finite $N_\mathrm{S}$, the \gls{ris} may prioritize a subset of those by aligning the corresponding modes, and we will later show by simulation that \gls{bd}-\gls{ris} outperforms \gls{d}-\gls{ris} on this purpose.
 		Proposition \ref{pp:rank_deficient} provides a reference on the selection of $N_\mathrm{S}$ in low-multipath application scenarios.
 		% Proposition \ref{pp:rank_deficient} evaluates the ultimate channel shaping limits of passive \gls{ris} and provides a benchmark for $N_\mathrm{S}$ selection in low-multipath deployment scenarios.
@@ -981,110 +986,73 @@
 			\end{equation}
 			where $(i, j) \in [\bar{N}]^2$.
 			The upper and lower bounds are attained respectively at
-			% \begin{subequations}
-			% 	\begin{align}
-			% 		\mathbf{\Theta}_{\textnormal{sv-}n\textnormal{-max}}^\textnormal{MIMO-ND} & = \mathbf{V}_\mathrm{B} \mathbf{P} \mathbf{\Theta}_\mathrm{D} \mathbf{U}_\mathrm{F}^\mathsf{H}, \label{eq:sv_nth_max} \\
-			% 		\mathbf{\Theta}_{\textnormal{sv-}n\textnormal{-min}}^\textnormal{MIMO-ND} & = \mathbf{V}_\mathrm{B} \mathbf{Q} \mathbf{\Theta}_\mathrm{D} \mathbf{U}_\mathrm{F}^\mathsf{H}, \label{eq:sv_nth_min}
-			% 	\end{align}
-			% \end{subequations}
 			\begin{subequations}
+				\label{eq:sv_nth}
 				\begin{align}
-					\mathbf{\Theta}_{\textnormal{sv-}n\textnormal{-max}}^\textnormal{MIMO-ND} & = \mathbf{V}_\mathrm{B} \mathbf{L} \mathbf{P} \mathbf{R} \mathbf{U}_\mathrm{F}^\mathsf{H}, \label{eq:sv_nth_max} \\
-					\mathbf{\Theta}_{\textnormal{sv-}n\textnormal{-min}}^\textnormal{MIMO-ND} & = \mathbf{V}_\mathrm{B} \mathbf{L} \mathbf{Q} \mathbf{R} \mathbf{U}_\mathrm{F}^\mathsf{H}, \label{eq:sv_nth_min}
+					\mathbf{\Theta}_{\textnormal{sv-}n\textnormal{-max}}^\textnormal{MIMO-ND} & = \mathbf{V}_\mathrm{B} \mathbf{P} \mathbf{U}_\mathrm{F}^\mathsf{H}, \label{eq:sv_nth_max} \\
+					\mathbf{\Theta}_{\textnormal{sv-}n\textnormal{-min}}^\textnormal{MIMO-ND} & = \mathbf{V}_\mathrm{B} \mathbf{Q} \mathbf{U}_\mathrm{F}^\mathsf{H}, \label{eq:sv_nth_min}
 				\end{align}
 			\end{subequations}
-			where $\mathbf{V}_\mathrm{B}, \mathbf{U}_\mathrm{F} \in \mathbb{U}^{N_\mathrm{S} \times N_\mathrm{S}}$ are the right and left singular matrices of $\mathbf{H}_\mathrm{B}$ and $\mathbf{H}_\mathrm{F}$, respectively, $\mathbf{L}, \mathbf{R}$ are arbitrary block-diagonal unitary matrices with size of block $n \in [N_\mathrm{S}]$ equal to the multiplicity of $\sigma_n(\mathbf{H}_\mathrm{B})$ and $\sigma_n(\mathbf{H}_\mathrm{B})$, respectively,
-			% $\mathbf{\Theta}_\mathrm{D}$ is arbitrary diagonal matrix with unit-magnitude diagonal entries,
-			and $\mathbf{P}$ and $\mathbf{Q}$ are arbitrary doubly stochastic matrices of dimension $N_\mathrm{S}$ satisfying:
+			where $\mathbf{V}_\mathrm{B}, \mathbf{U}_\mathrm{F} \in \mathbb{U}^{N_\mathrm{S} \times N_\mathrm{S}}$ are the right and left singular matrices\footnote{We highlight the non-uniqueness of $\mathbf{V}_\mathrm{B}$ and $\mathbf{U}_\mathrm{F}$. When a singular value has multiplicity $k$, the corresponding singular vectors can be any orthonormal basis of the $k$-dimensional subspace. Even if all singular values are distinct, the singular vectors of each can be scaled by a phase factor of choice.} of $\mathbf{H}_\mathrm{B}$ and $\mathbf{H}_\mathrm{F}$, respectively,
+			and $\mathbf{P}$ and $\mathbf{Q}$ are arbitrary permutation matrices of dimension $N_\mathrm{S}$ satisfying:
 			\begin{itemize}
-				\item The $(i, j)$-th entries sum up to $1$, where
-				\begin{equation*}
-					(i, j) =
-					\begin{cases}
-						\underset{i+j=n+1}{\arg\min} \sigma_i(\mathbf{H}_\mathrm{B}) \sigma_j(\mathbf{H}_\mathrm{F}) \triangleq \mathcal{S}_n(\mathbf{P}) & \text{for } \mathbf{P}, \\
-						\underset{i+j=n+\bar{N}}{\arg\max} \sigma_i(\mathbf{H}_\mathrm{B}) \sigma_j(\mathbf{H}_\mathrm{F}) \triangleq \mathcal{S}_n(\mathbf{Q}) & \text{for } \mathbf{Q};
-					\end{cases}
-				\end{equation*}
-				\item The submatrix with $i$-th rows and $j$-th columns deleted, $(i,j) \in \mathcal{S}_n$, denoted as $\mathbf{Y}$, is arbitrary doubly stochastic matrix of dimension $N_\mathrm{S}-\card(\mathcal{S}_n)$ satisfying
-				\begin{align*}
-					\sigma_{n-1}(\hat{\mathbf{\Sigma}}_{\mathrm{B}} \mathbf{Y} \hat{\mathbf{\Sigma}}_{\mathrm{F}}) & \ge \min_{i+j=n+1} \sigma_i(\mathbf{H}_\mathrm{B}) \sigma_j(\mathbf{H}_\mathrm{F}) && \text{for } \mathbf{P}, \\
-					\sigma_{n+1}(\hat{\mathbf{\Sigma}}_{\mathrm{B}} \mathbf{Y} \hat{\mathbf{\Sigma}}_{\mathrm{F}}) & \le \max_{i+j=n+\bar{N}} \sigma_i(\mathbf{H}_\mathrm{B}) \sigma_j(\mathbf{H}_\mathrm{F}) && \text{for } \mathbf{Q},
-				\end{align*}
-				where $\hat{\mathbf{\Sigma}}_{\mathrm{B}}$ and $\hat{\mathbf{\Sigma}}_{\mathrm{F}}$ are diagonal singular value matrices of $\mathbf{H}_\mathrm{B}$ and $\mathbf{H}_\mathrm{F}$ with the $i$-th rows and $j$-th columns deleted, $(i,j) \in \mathcal{S}_n$.
-			\end{itemize}
+				\item The $(i, j)$-th entry is $1$, where
+				% \begin{equation*}
+				% 	(i, j) =
+				% 	\begin{cases}
+				% 		\underset{i+j=n+1}{\arg\min} \sigma_i(\mathbf{H}_\mathrm{B}) \sigma_j(\mathbf{H}_\mathrm{F}) & \text{for } \mathbf{P}, \\
+				% 		\underset{i+j=n+\bar{N}}{\arg\max} \sigma_i(\mathbf{H}_\mathrm{B}) \sigma_j(\mathbf{H}_\mathrm{F}) & \text{for } \mathbf{Q},
+				% 	\end{cases}
+				% \end{equation*}
+				\begin{subnumcases}{(i, j) =}
+					\underset{i+j=n+1}{\arg\min} \sigma_i(\mathbf{H}_\mathrm{B}) \sigma_j(\mathbf{H}_\mathrm{F}) & for $\mathbf{P}$, \label{eq:sv_nth_max_pair} \\
+					\underset{i+j=n+\bar{N}}{\arg\max} \sigma_i(\mathbf{H}_\mathrm{B}) \sigma_j(\mathbf{H}_\mathrm{F}) & for $\mathbf{Q}$, \label{eq:sv_nth_min_pair}
+				\end{subnumcases}
+				% \begin{equation*}
+				% 	(i, j) =
+				% 	\begin{cases}
+				% 		\underset{i+j=n+1}{\arg\min} \sigma_i(\mathbf{H}_\mathrm{B}) \sigma_j(\mathbf{H}_\mathrm{F}) & \text{for } \mathbf{P}, \\
+				% 		\underset{i+j=n+\bar{N}}{\arg\max} \sigma_i(\mathbf{H}_\mathrm{B}) \sigma_j(\mathbf{H}_\mathrm{F}) & \text{for } \mathbf{Q},
+				% 	\end{cases}
+				% \end{equation*}
+				and ties may be broken arbitrarily;
+				% with ties broken arbitrarily;
+				% and the tie-breaking rule is arbitrary.
+				\item After deleting the $i$-th row and $j$-th column, the resulting submatrix $\mathbf{Y}$ is arbitrary permutation matrix of dimension $N_\mathrm{S}-1$ satisfying
+				% \begin{subequations}
+				% 	\begin{alignat}{1}
+				% 		\sigma_{n{-}1}(\hat{\mathbf{\Sigma}}_{\mathrm{B}} \mathbf{Y} \hat{\mathbf{\Sigma}}_{\mathrm{F}}) {\ge} \min_{i+j=n+1} \sigma_i(\mathbf{H}_\mathrm{B}) \sigma_j(\mathbf{H}_\mathrm{F}) & \text{ for } \mathbf{P}, \hspace{-0.17cm} \label{eq:sv_nth_max_condition} \\
+				% 		\sigma_{n{+}1}(\hat{\mathbf{\Sigma}}_{\mathrm{B}} \mathbf{Y} \hat{\mathbf{\Sigma}}_{\mathrm{F}}) {\le} \max_{i+j=n+\bar{N}} \sigma_i(\mathbf{H}_\mathrm{B}) \sigma_j(\mathbf{H}_\mathrm{F}) & \text{ for } \mathbf{Q}, \hspace{-0.17cm} \label{eq:sv_nth_min_condition}
+				% 	\end{alignat}
+				% \end{subequations}
 
-			% where $\mathbf{P}, \mathbf{Q}$ can be any unitary matrix whose $(i, j)$-th entry is of unit-magnitude, and $(i, j) = \arg \min_{i+j=n+1} \sigma_i(\mathbf{H}_\mathrm{B}) \sigma_j(\mathbf{H}_\mathrm{F})$ for $\mathbf{P}$ and $(i, j) = \arg \max_{i+j=n+\bar{N}} \sigma_i(\mathbf{H}_\mathrm{B}) \sigma_j(\mathbf{H}_\mathrm{F})$ for $\mathbf{Q}$.
-			% where $\mathbf{P}, \mathbf{Q}$ can be any unitary matrix whose $(i, j)$-th entry is of unit-magnitude, and $(i, j) = \arg \min_{i+j=n+1} \sigma_i(\mathbf{H}_\mathrm{B}) \sigma_j(\mathbf{H}_\mathrm{F})$ for $\mathbf{P}$ and $(i, j) = \arg \max_{i+j=n+\bar{N}} \sigma_i(\mathbf{H}_\mathrm{B}) \sigma_j(\mathbf{H}_\mathrm{F})$ for $\mathbf{Q}$.
-			% that reorders the singular values of $\mathbf{H}_\mathrm{B}$ and $\mathbf{H}_\mathrm{F}$.
+				\begin{subequations}
+					\begin{alignat}{2}
+						\sigma_{n{-}1}(\hat{\mathbf{\Sigma}}_{\mathrm{B}} \mathbf{Y} \hat{\mathbf{\Sigma}}_{\mathrm{F}}) & {\ge} \min_{i+j=n+1} \sigma_i(\mathbf{H}_\mathrm{B}) \sigma_j(\mathbf{H}_\mathrm{F}) && \text{ for } \mathbf{P}, \label{eq:sv_nth_max_condition} \\
+						\sigma_{n{+}1}(\hat{\mathbf{\Sigma}}_{\mathrm{B}} \mathbf{Y} \hat{\mathbf{\Sigma}}_{\mathrm{F}}) & {\le} \max_{i+j=n+\bar{N}} \sigma_i(\mathbf{H}_\mathrm{B}) \sigma_j(\mathbf{H}_\mathrm{F}) && \text{ for } \mathbf{Q}, \label{eq:sv_nth_min_condition}
+					\end{alignat}
+				\end{subequations}
+				% \begin{subequations}
+				% 	\begin{align}
+				% 		\sigma_{n-1}(\hat{\mathbf{\Sigma}}_{\mathrm{B}} \mathbf{Y} \hat{\mathbf{\Sigma}}_{\mathrm{F}}) & \ge \min_{i+j=n+1} \sigma_i(\mathbf{H}_\mathrm{B}) \sigma_j(\mathbf{H}_\mathrm{F}) \text{for } \mathbf{P}, \label{eq:sv_nth_max_condition} \MoveEqLeft[1] \\
+				% 		\sigma_{n+1}(\hat{\mathbf{\Sigma}}_{\mathrm{B}} \mathbf{Y} \hat{\mathbf{\Sigma}}_{\mathrm{F}}) & \le \max_{i+j=n+\bar{N}} \sigma_i(\mathbf{H}_\mathrm{B}) \sigma_j(\mathbf{H}_\mathrm{F}) \text{for } \mathbf{Q}, \label{eq:sv_nth_min_condition}
+				% 	\end{align}
+				% \end{subequations}
+				where $\hat{\mathbf{\Sigma}}_{\mathrm{B}}$ and $\hat{\mathbf{\Sigma}}_{\mathrm{F}}$ are diagonal singular value matrices of $\mathbf{H}_\mathrm{B}$ and $\mathbf{H}_\mathrm{F}$ with both $i$-th row and $j$-th column deleted, respectively.
+			\end{itemize}
 		\end{corollary}
 
 		\begin{proof}
-			In \eqref{iq:sv_nth}, the set of upper bounds
-			\begin{equation}
-				\bigl\{\sigma_n(\mathbf{H}) \le \sigma_i(\mathbf{H}_\mathrm{B}) \sigma_j(\mathbf{H}_\mathrm{F}) \mid [i,j,k] \in [\bar{N}]^3, i+j=n+1\bigr\}
-				\label{iq:sv_nth_upper_set}
-			\end{equation}
-			is a special case of \eqref{iq:sv_bound_fc} with $(I, J, K) \in [\bar{N}]^3$.
-			The minimum\footnote{One may think to take the \emph{maximum} of those upper bounds as the problem of interest is the attainable dynamic range of $n$-th singular value. However, this is infeasible since the singular values will be reordered therein.} of \eqref{iq:sv_nth_upper_set} is selected as the tightest upper bound in \eqref{iq:sv_nth}.
-			On the other hand, the set of lower bounds
-			\begin{equation}
-				\bigl\{\sigma_n(\mathbf{H}) \ge \sigma_i(\mathbf{H}_\mathrm{B}) \sigma_j(\mathbf{H}_\mathrm{F}) \mid [i,j,k] \in [\bar{N}]^3, i+j=n+\bar{N}\bigr\}
-				\label{iq:sv_nth_lower_set}
-			\end{equation}
-			can be induced by \eqref{iq:sv_nth_upper_set}, \eqref{eq:sv_product}, and the non-negativity of singular values.
-			The maximum of \eqref{iq:sv_nth_lower_set} is selected as the tightest lower bound in \eqref{iq:sv_nth}.
-
-			To attain the upper bound, the \gls{bd}-\gls{ris} needs to maximize the minimum of the first $n$ singular values of $\mathbf{H}$.
-			It follows from \eqref{eq:sv_nth_max} that
-			\begin{equation*}
-				\begin{split}
-					\sv(\mathbf{H})
-					& = \sv(\mathbf{H}_\mathrm{B} \mathbf{V}_\mathrm{B} \mathbf{P} \mathbf{\Theta}_\mathrm{D} \mathbf{U}_\mathrm{F}^\mathsf{H} \mathbf{H}_\mathrm{F}) \\
-					& = \sv(\mathbf{U}_\mathrm{B} \mathbf{\Sigma}_\mathrm{B} \mathbf{P} \mathbf{\Theta}_\mathrm{D} \mathbf{\Sigma}_\mathrm{F} \mathbf{U}_\mathrm{F}^\mathsf{H}) \\
-					& = \sv(\mathbf{U}_\mathrm{B} \mathbf{\Sigma}_\mathrm{B} \mathbf{P} \mathbf{\Sigma}_\mathrm{F} \mathbf{\Theta}_\mathrm{D} \mathbf{U}_\mathrm{F}^\mathsf{H}) \\
-					& = \sv(\mathbf{\Sigma}_\mathrm{B} \mathbf{P} \mathbf{\Sigma}_\mathrm{F}) \\
-				\end{split}
-			\end{equation*}
-			where $\mathbf{H}_\mathrm{B} = \mathbf{U}_\mathrm{B} \mathbf{\Sigma}_\mathrm{B} \mathbf{V}_\mathrm{B}^\mathsf{H}$ and $\mathbf{H}_\mathrm{F} = \mathbf{U}_\mathrm{F} \mathbf{\Sigma}_\mathrm{F} \mathbf{V}_\mathrm{F}^\mathsf{H}$.
-
-			The doubly stochastic matrix $\mathbf{P}$ should align the modes of $\mathbf{H}_\mathrm{B}$ and $\mathbf{H}_\mathrm{F}$ such that the first $n$ modes of $\mathbf{H}$ are maximized.
-
-			One feasible solution is to align and order the first $n$ modes of $\mathbf{H}_\mathrm{B}$ and $\mathbf{H}_\mathrm{F}$, resulting in $\sigma_n(\mathbf{H}) = \min_{i+j=n+1} \sigma_i(\mathbf{H}_\mathrm{B}) \sigma_j(\mathbf{H}_\mathrm{F})$.
-			If such $(i,j)$ pairs are not unique, then any mixture of them would produce the same result.
-			% We emphasize that the solution is not unique and mixture of such $(i,j)$ pairs would produce the same result.
-			% It is worth mentioning that the solution is not unique and any mixture of such $(i,j)$ pairs would produce the same result.
-			However, since we only care about the $n$-th singular value, the first $n-1$ singular values can be arbitrarily reordered.
-			% This is achieved by aligning and reordering the first $n$ modes of $\mathbf{H}_\mathrm{B}$ and $\mathbf{H}_\mathrm{F}$.
-
-			proper matching of the first $n$ modes of $\mathbf{H}_\mathrm{B}$ to the first $n$ modes of $\mathbf{H}_\mathrm{F}$.
-			In particular, mode $i$ of $\mathbf{H}_\mathrm{B}$ should be completely aligned with mode $j$ of $\mathbf{H}_\mathrm{F}$ where $(i, j) = \arg \min_{i+j=n+1} \sigma_i(\mathbf{H}_\mathrm{B}) \sigma_j(\mathbf{H}_\mathrm{F})$ for $\mathbf{P}$
-
-			% Interested readers are referred to \cite[Equation~2.0.3]{Zhang2005} for more information.
-			% $i$-th mode of $\mathbf{H}_\mathrm{B}$ with the $j$-th mode of $\mathbf{H}_\mathrm{F}$ such that the $n$-th mode of $\mathbf{H}$ is maximized.
-
-			% Maximizing $\sigma_n(\mathbf{H}) = \sigma_n(\mathbf{H}) \le \min_{i+j=n+1} \sigma_i(\mathbf{H}_\mathrm{B}) \sigma_j(\mathbf{H}_\mathrm{F})$ is equivalent to maximizing the minimum of the first $n$ channel singular values.
-			% As such, the \gls{bd}-\gls{ris} needs to align t
-			% align the modes of $\mathbf{H}_\mathrm{B}$ and $\mathbf{H}_\mathrm{F}$ such that the first $n$ modes of $\mathbf{H}$ are maximized.
-			% To maximize the $n$-th channel singular value, the \gls{bd}-\gls{ris} needs to ensure
-			% that the first $n$ modes of $\mathbf{H}$ are
-
-			% should align the modes of $\mathbf{H}_\mathrm{B}$ and $\mathbf{H}_\mathrm{F}$ such that
-
-			% \cite[Equation~2.0.3]{Zhang2005}
-
-
-
-
-
-			% Please refer to Appendix~\ref{ap:sv_nth}.
+			Please refer to Appendix~\ref{ap:sv_nth}.
 		\end{proof}
 
-
-		Now we can see the alignment by $V_B$ $U_F$ and ordering by $P$ $Q$.
-
-		We highlight the solution (15) is not unique.
-
-		In particular, the extreme singular values can be manipulated up to
+		% Although Corollary \ref{co:sv_nth} and Proposition \ref{pp:direct_negligible}
+		% are derived under the assumption of negligible direct channel and fully-connected \gls{bd}-\gls{ris}, they are still useful for practical scenarios.
+		Corollary \ref{co:sv_nth} and Proposition \ref{pp:rank_deficient} both reveal the shaping limits of individual channel singular values.
+		They are not special cases of each other and are derived under different assumptions.
+		Importantly, Corollary \ref{co:sv_nth} establishes upper and lower bounds for \emph{all} channel singular values and provides general structures for fully-connected \gls{bd}-\gls{ris} of \emph{arbitrary size} to achieve those.
+		We emphasize in \eqref{eq:sv_nth} the mode alignment is realized by $\mathbf{V}_\mathrm{B}$ and $\mathbf{U}_\mathrm{F}$ and the ordering is enabled by $\mathbf{P}$ and $\mathbf{Q}$ which are special cases of unitary $\mathbf{X}$ defined in \eqref{eq:scattering_fc}.
+		Specially, the extreme channel singular values can be manipulated up to
 		\begin{subequations}
 			\label{iq:sv_extreme}
 			\begin{gather}
@@ -1092,19 +1060,8 @@
 				\min_{i+j=n+1} \sigma_i(\mathbf{H}_\mathrm{B}) \sigma_j(\mathbf{H}_\mathrm{F}) {\ge} \sigma_{\bar{N}}(\mathbf{H}) {\ge} \sigma_{\bar{N}}(\mathbf{H}_\mathrm{B}) \sigma_{\bar{N}}(\mathbf{H}_\mathrm{F}), \label{iq:sv_smallest}
 			\end{gather}
 		\end{subequations}
-		where the arguments of $\max$ and $\min$ are essentially $\sigma_1(\mathbf{H}_\mathrm{B}) \sigma_{\bar{N}}(\mathbf{H}_\mathrm{F}), \sigma_2(\mathbf{H}_\mathrm{B}) \sigma_{\bar{N}-1}(\mathbf{H}_\mathrm{F}), \ldots, \sigma_{\bar{N}}(\mathbf{H}_\mathrm{B}) \sigma_1(\mathbf{H}_\mathrm{F})$.
-		We notice that the right side inequalities in \eqref{iq:sv_largest} and \eqref{iq:sv_smallest} are special cases of \eqref{iq:sv_product_largest} and \eqref{iq:sv_product_smallest} when $k=1$, respectively.
-		It is evident from \eqref{iq:sv_nth} that to enlarge the $n$-th singular value of $\mathbf{H}$, one should
-
-		enumerate all matching pairs $(i, j) \in [\bar{N}]^2 \mid i+j=n+1$, find the one with the minimum product singular value
-
-		match the singular
-
-		align the $i$-th singular value of $\mathbf{H}_\mathrm{B}$ with the $j$-th singular value of $\mathbf{H}_\mathrm{F}$ such that $i+j=n+\bar{N}$.
-
-		% The lower bound on the smallest singular value reduces to 0 when $\bar{N} \ne N$ (i.e., $N_\mathrm{T} = N_\mathrm{S} = N_\mathrm{R}$ being false).
-		% in \eqref{iq:sv_smallest} is less informative when $\bar{N} \ne N$ (i.e., $N_\mathrm{T} = N_\mathrm{S} = N_\mathrm{R}$ being false) as the lower bounds would coincide at zero.
-		% in \eqref{iq:sv_product_smallest} and \eqref{iq:sv_smallest} reduce to 0 when $\bar{N} \ne N$ (i.e., $N_\mathrm{T} = N_\mathrm{S} = N_\mathrm{R}$ being false).
+		where the arguments of $\max$ and $\min$ coincide at $\bigl\{\sigma_1(\mathbf{H}_\mathrm{B}) \sigma_{\bar{N}}(\mathbf{H}_\mathrm{F}), \sigma_2(\mathbf{H}_\mathrm{B}) \sigma_{\bar{N}-1}(\mathbf{H}_\mathrm{F}), \ldots, \sigma_{\bar{N}}(\mathbf{H}_\mathrm{B}) \sigma_1(\mathbf{H}_\mathrm{F})\bigr\}$.
+		We notice that the right halves in \eqref{iq:sv_largest} and \eqref{iq:sv_smallest} are special cases of \eqref{iq:sv_product_largest} and \eqref{iq:sv_product_smallest} when $k=1$.
 
 		\begin{corollary}[Channel power gain\label{co:sum_power}]
 			The channel power gain is bounded from above (resp. below) by the inner product of squared singular values of $\mathbf{H}_\mathrm{B}$ and $\mathbf{H}_\mathrm{F}$ when they are sorted similarly (resp. oppositely), that is,
@@ -1115,8 +1072,8 @@
 			whose\footnote{As a side note, we notice \cite{Fang1994} discussed a similar bound using extreme singular values $\max\bigl(\sigma_{\bar{N}}(\mathbf{H}_\mathrm{B}) \lVert \mathbf{H}_\mathrm{F} \rVert _\mathrm{F}^2, \sigma_{\bar{N}}(\mathbf{H}_\mathrm{F}) \lVert \mathbf{H}_\mathrm{B} \rVert _\mathrm{F}^2\bigr) \le \lVert \mathbf{H} \rVert _\mathrm{F}^2 \le \min\bigl(\sigma_1(\mathbf{H}_\mathrm{B}) \lVert \mathbf{H}_\mathrm{F} \rVert _\mathrm{F}^2, \sigma_1(\mathbf{H}_\mathrm{F}) \lVert \mathbf{H}_\mathrm{B} \rVert _\mathrm{F}^2\bigr)$. This is a looser version of \eqref{iq:power_gain} and cannot take equalities unless the extreme singular values are of multiplicity $\bar{N}$.} upper and lower bounds are attained respectively at
 			\begin{subequations}
 				\begin{align}
-					\mathbf{\Theta}_\textnormal{P-max}^\textnormal{MIMO-ND} & = \mathbf{V}_\mathrm{B} \mathbf{\Theta}_\mathrm{D} \mathbf{U}_\mathrm{F}^\mathsf{H}, \\
-					\mathbf{\Theta}_\textnormal{P-min}^\textnormal{MIMO-ND} & = \mathbf{V}_\mathrm{B} \mathbf{J} \mathbf{\Theta}_\mathrm{D} \mathbf{U}_\mathrm{F}^\mathsf{H},
+					\mathbf{\Theta}_\textnormal{P-max}^\textnormal{MIMO-ND} & = \mathbf{V}_\mathrm{B} \mathbf{U}_\mathrm{F}^\mathsf{H}, \label{eq:power_max} \\
+					\mathbf{\Theta}_\textnormal{P-min}^\textnormal{MIMO-ND} & = \mathbf{V}_\mathrm{B} \mathbf{J} \mathbf{U}_\mathrm{F}^\mathsf{H} \label{eq:power_min},
 				\end{align}
 			\end{subequations}
 			% \begin{equation}
@@ -1127,6 +1084,8 @@
 		\begin{proof}
 			Please refer to Appendix~\ref{ap:sum_power}.
 		\end{proof}
+
+		We notice that \eqref{eq:power_max} and \eqref{eq:power_min} are special cases of \eqref{eq:sv_nth_max} and \eqref{eq:sv_nth_min} with $\mathbf{P} = \mathbf{I}$ and $\mathbf{Q} = \mathbf{J}$, which also attain the right and left halves of \eqref{iq:sv_extreme}, respectively.
 
 		% ! Talk about when is the assumption hold.
 		% We highlight that the bounds in Corollaries \ref{co:sv_bound_horn} -- \ref{co:sum_power} are asymptotically tight as $N_\mathrm{S}$ goes to infinity.
@@ -2130,6 +2089,38 @@
 	\end{subsection}
 
 	\begin{subsection}{Proof of Corollary \ref{co:sv_nth}}\label{ap:sv_nth}
+		In \eqref{iq:sv_nth}, the set of upper bounds
+		\begin{equation}
+			\bigl\{\sigma_n(\mathbf{H}) \le \sigma_i(\mathbf{H}_\mathrm{B}) \sigma_j(\mathbf{H}_\mathrm{F}) \mid [i,j,k] \in [\bar{N}]^3, i+j=n+1\bigr\}
+			\label{iq:sv_nth_upper_set}
+		\end{equation}
+		is a special case of \eqref{iq:sv_bound_fc} with $(I, J, K) \in [\bar{N}]^3$.
+		The minimum\footnote{One may think to take the \emph{maximum} of those upper bounds as the problem of interest is the attainable dynamic range of $n$-th singular value. However, this is infeasible since the singular values will be reordered therein.} of \eqref{iq:sv_nth_upper_set} is selected as the tightest upper bound in \eqref{iq:sv_nth}.
+		On the other hand, the set of lower bounds
+		\begin{equation}
+			\bigl\{\sigma_n(\mathbf{H}) \ge \sigma_i(\mathbf{H}_\mathrm{B}) \sigma_j(\mathbf{H}_\mathrm{F}) \mid [i,j,k] \in [\bar{N}]^3, i+j=n+\bar{N}\bigr\}
+			\label{iq:sv_nth_lower_set}
+		\end{equation}
+		can be induced by \eqref{iq:sv_nth_upper_set}, \eqref{eq:sv_product}, and the non-negativity of singular values.
+		The maximum of \eqref{iq:sv_nth_lower_set} is selected as the tightest lower bound in \eqref{iq:sv_nth}.
+		Interested readers are also referred to \cite[Equation~2.0.3]{Zhang2005}.
+
+		To attain the upper bound, the \gls{bd}-\gls{ris} needs to maximize the minimum of the first $n$ channel singular values.
+		It follows from \eqref{eq:sv_nth_max} that
+		\begin{equation*}
+			\begin{split}
+				\sv(\mathbf{H})
+				& = \sv(\mathbf{H}_\mathrm{B} \mathbf{V}_\mathrm{B} \mathbf{P} \mathbf{U}_\mathrm{F}^\mathsf{H} \mathbf{H}_\mathrm{F}) \\
+				& = \sv(\mathbf{U}_\mathrm{B} \mathbf{\Sigma}_\mathrm{B} \mathbf{V}_\mathrm{B}^\mathsf{H} \mathbf{V}_\mathrm{B} \mathbf{P} \mathbf{U}_\mathrm{F}^\mathsf{H} \mathbf{U}_\mathrm{F} \mathbf{\Sigma}_\mathrm{F} \mathbf{U}_\mathrm{F}^\mathsf{H}) \\
+				& = \sv(\mathbf{\Sigma}_\mathrm{B} \mathbf{P} \mathbf{\Sigma}_\mathrm{F}).
+			\end{split}
+		\end{equation*}
+		On the one hand, $\mathbf{P}_{ij}=1$ with $(i, j)$ satisfying \eqref{eq:sv_nth_max_pair} ensures $\min_{i+j=n+1} \sigma_i(\mathbf{H}_\mathrm{B}) \sigma_j(\mathbf{H}_\mathrm{F})$ is a singular value of $\mathbf{H}$.
+		It is actually among the first $n$ since the number of pairs $(i',j')$ not majorized by $(i,j)$ is $n-1$.
+		On the other hand, \eqref{eq:sv_nth_max_condition} ensures the first $(n-1)$-th singular values are no smaller than $\min_{i+j=n+1} \sigma_i(\mathbf{H}_\mathrm{B}) \sigma_j(\mathbf{H}_\mathrm{F})$.
+		Combining both facts, we claim the upper bound $\sigma_n(\mathbf{H}) = \min_{i+j=n+1} \sigma_i(\mathbf{H}_\mathrm{B}) \sigma_j(\mathbf{H}_\mathrm{F})$ is attainable by \eqref{eq:sv_nth_max}.
+		The attainability of the lower bound can be proved similarly and the details are omitted.
+
 		% In \eqref{iq:sv_nth}, the set of upper bounds
 		% \begin{equation}
 		% 	\bigl\{\sigma_n(\mathbf{H}) \le \sigma_i(\mathbf{H}_\mathrm{B}) \sigma_j(\mathbf{H}_\mathrm{F}) \mid [i,j,k] \in [\bar{N}]^3, i+j=n+1\bigr\}
