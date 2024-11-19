@@ -66,8 +66,8 @@
 \newtheorem{corollary}{Corollary}[proposition]
 
 % enumitem
-\setlist[itemize]{leftmargin=5mm}
-\setlist[enumerate]{leftmargin=5mm}
+\setlist[itemize]{leftmargin=4mm}
+\setlist[enumerate]{leftmargin=4mm}
 
 % PGF/TikZ
 \usetikzlibrary{arrows,calc,matrix,patterns,plotmarks,positioning,shapes}
@@ -124,8 +124,8 @@
 \newacronym{ris}{RIS}{Reconfigurable Intelligent Surface}
 \newacronym{pc}{PC}{Point-to-point Channel}
 \newacronym{ic}{IC}{Interference Channel}
-\newacronym{snr}{SNR}{Signal-to-Noise Ratio}
 \newacronym{wsr}{WSR}{Weighted Sum-Rate}
+\newacronym{snr}{SNR}{Signal-to-Noise Ratio}
 \newacronym{svd}{SVD}{Singular Value Decomposition}
 \newacronym{mmse}{MMSE}{Minimum Mean-Square Error}
 \newacronym{wmmse}{WMMSE}{Weighted \gls{mmse}}
@@ -663,7 +663,7 @@
 			\lvert h \rvert _{\max} = \lvert h_\mathrm{D} \rvert + \sum_g \sum_l \lvert h_{\mathrm{B},g,\pi_{\mathrm{B},g}(l)} \rvert \lvert h_{\mathrm{F},g,\pi_{\mathrm{F},g}(l)} \rvert,
 			\label{eq:gain_siso}
 		\end{equation}
-		where $h_{\mathrm{B},g,l}$, $h_{\mathrm{F},g,l}$ are the $l$-th entries of $\mathbf{h}_{\mathrm{B},g}$ and $\mathbf{h}_{\mathrm{F},g}$, respectively, and $\pi_{\mathrm{B},g}$, $\pi_{\mathrm{F},g}$ are permutations of $[L]$ sorting their magnitude in non-ascending orders.
+		where $h_{\mathrm{B},g,l}$, $h_{\mathrm{F},g,l}$ are the $l$-th entries of $\mathbf{h}_{\mathrm{B},g}$ and $\mathbf{h}_{\mathrm{F},g}$, respectively, and $\pi_{\mathrm{B},g}$, $\pi_{\mathrm{F},g}$ are permutations of $[L]$ sorting their magnitude in similar orders.
 		That is, the maximum channel gain is attained when each group, apart from phase shifting, matches the $l$-th strongest backward and forward channel branches.
 		A larger $L$ provides better branch matching flexibility and can thus grant a higher channel gain.
 		% It is evident that the branch matching capability increases with $L$.
@@ -920,14 +920,20 @@
 		Proposition \ref{pp:direct_negligible} says that if the direct channel is negligible and the \gls{bd}-\gls{ris} is fully-connected, the only singular value bounds on the equivalent channel are those on the product of unitary-transformed backward and forward channels.
 		It is \emph{not necessarily} an asymptotic result and does \emph{not} depend on any relationship between $N_\mathrm{R}$, $N_\mathrm{S}$, and $N_\mathrm{T}$.
 		Its importance lies in the fact that the channel shaping question in Section \ref{sc:contributions} can be recast as a linear algebra question: \emph{How the singular values of matrix product are bounded by the singular values of its individual factors?}
-		The question is partially answered in Corollaries \ref{co:sv_bound_horn} -- \ref{co:sum_power} over the notation\footnote{This is equivalent to padding zero blocks at the end of $\mathbf{H}$, $\mathbf{H}_\mathrm{B}$, and $\mathbf{H}_\mathrm{F}$ to make square matrices, which generalizes relevant results to non-square case.} $\bar{N} = \max(N_\mathrm{T},N_\mathrm{S},N_\mathrm{R})$ and $\sigma_n(\mathbf{H})=\sigma_n(\mathbf{H}_\mathrm{F})=\sigma_n(\mathbf{H}_\mathrm{B})=0$ for $n \in [\bar{N}] \setminus [N]$.
-		% $N < n \le \bar{N}$.
-		These results are by no means complete and interested readers are referred to \cite[Chapter 16, 24]{Hogben2013} and \cite[Chapter 3]{Horn1994} for more information.
+		The question is partially answered in Corollaries \ref{co:sv_bound_horn} -- \ref{co:sv_nth} over definition\footnote{This is equivalent to padding zero blocks at the end of $\mathbf{H}, \mathbf{H}_\mathrm{B}, \mathbf{H}_\mathrm{F}$ to make square matrices of dimension $\bar{N}$.} $\bar{N} = \max(N_\mathrm{T},N_\mathrm{S},N_\mathrm{R})$ and $\sigma_n(\mathbf{H})=\sigma_n(\mathbf{H}_\mathrm{F})=\sigma_n(\mathbf{H}_\mathrm{B})=0, \ \forall n \in [\bar{N}] \setminus [N]$.
+		% define\footnote{This is equivalent to padding zero blocks at the end of $\mathbf{H}, \mathbf{H}_\mathrm{B}, \mathbf{H}_\mathrm{F}$ to make square matrices.} $\bar{N} = \max(N_\mathrm{T},N_\mathrm{S},N_\mathrm{R})$ and $\sigma_n(\mathbf{H})=\sigma_n(\mathbf{H}_\mathrm{F})=\sigma_n(\mathbf{H}_\mathrm{B})=0$ for $n \in [\bar{N}] \setminus [N]$.
+		% where we assume $N \le N_\mathrm{S}$ for the ease of notation and define\footnote{This is equivalent to padding zero blocks at the end of $\mathbf{H}, \mathbf{H}_\mathrm{B}, \mathbf{H}_\mathrm{F}$ to make square matrices.} $\sigma_n(\mathbf{H})=\sigma_n(\mathbf{H}_\mathrm{F})=\sigma_n(\mathbf{H}_\mathrm{B})=0$ for $n \in [N_\mathrm{S}] \setminus [N]$.
+		% \footnote{This is equivalent to padding zero blocks at the end of $\mathbf{H}$, $\mathbf{H}_\mathrm{B}$, and $\mathbf{H}_\mathrm{F}$ to make square matrices, which generalizes relevant results to non-square case.} $N = \max(N_\mathrm{T},N_\mathrm{S},N_\mathrm{R})$ and $\sigma_n(\mathbf{H})=\sigma_n(\mathbf{H}_\mathrm{F})=\sigma_n(\mathbf{H}_\mathrm{B})=0$ for $n \in [N] \setminus [N]$}.
+		% over the notation\footnote{This is equivalent to padding zero blocks at the end of $\mathbf{H}$, $\mathbf{H}_\mathrm{B}$, and $\mathbf{H}_\mathrm{F}$ to make square matrices, which generalizes relevant results to non-square case.} $N = \max(N_\mathrm{T},N_\mathrm{S},N_\mathrm{R})$ and $\sigma_n(\mathbf{H})=\sigma_n(\mathbf{H}_\mathrm{F})=\sigma_n(\mathbf{H}_\mathrm{B})=0$ for $n \in [N] \setminus [N]$.
+		% $N < n \le N$.
+		The results are by no means complete and interested readers are referred to \cite[Chapter 16, 24]{Hogben2013} and \cite[Chapter 3]{Horn1994} for more information.
 		% We have the following corollaries.
 
 
 		\begin{corollary}[Product of subset of singular values\label{co:sv_bound_horn}]
-			The product of subset of singular values of $\mathbf{H}$ is bounded from above by those of $\mathbf{H}_\mathrm{B}$ and $\mathbf{H}_\mathrm{F}$, that is,
+			If the direct channel is negligible,
+			% and $N \le N_\mathrm{S}$
+			then the product of subset of singular values of $\mathbf{H}$ is bounded from above by those of $\mathbf{H}_\mathrm{B}$ and $\mathbf{H}_\mathrm{F}$, that is,
 			\begin{equation}
 				\prod_{k \in {K}} \sigma_k(\mathbf{H}) \le \prod_{i \in {I}} \sigma_i(\mathbf{H}_\mathrm{B}) \prod_{j \in {J}} \sigma_j(\mathbf{H}_\mathrm{F}),
 				\label{iq:sv_bound_fc}
@@ -935,8 +941,8 @@
 			for all admissible triples $(I, J, K) \in T_r^{\bar{N}}$ with $r < \bar{N}$, where
 			\begin{equation*}
 				\begin{split}
-					T_r^{\bar{N}} \triangleq \Bigl\{(I, J, K) \in U_r^{\bar{N}} & \bigm\vert \forall p < r, \ \forall (F, G, H) \in T_p^r,\\
-					& \quad \sum_{f \in F} i_f + \sum_{g \in G} j_g \le \sum_{h \in H} k_h + \frac{p(p+1)}{2} \Bigr\},
+					T_r^{\bar{N}} \triangleq \Bigl\{(I, J, K) \in U_r^{\bar{N}} \bigm\vert & \forall p < r, \ \forall (F, G, H) \in T_p^r,\\
+					& \sum_{f \in F} i_f + \sum_{g \in G} j_g \le \sum_{h \in H} k_h + \frac{p(p+1)}{2} \Bigr\},
 				\end{split}
 			\end{equation*}
 			\begin{equation*}
@@ -948,21 +954,23 @@
 			Please refer to \cite[Theorem~8]{Fulton2000}.
 		\end{proof}
 
-		Corollary \ref{co:sv_bound_horn}, also recognized as a variation of Horn's inequality \cite{Bhatia2001}, is one of the most comprehensive result under the assumption of Proposition \ref{pp:direct_negligible} (i.e., negligible direct channel and fully-connected \gls{bd}-\gls{ris}).
+		\eqref{iq:sv_bound_fc}, also recognized as a variation of Horn's inequality \cite{Bhatia2001}, is one of the most comprehensive result over Proposition \ref{pp:direct_negligible}.
 		% It is worth mentioning that t
 		% It also helps to induce lower bounds on the channel singular values.
-		The number of admissible triples increases exponentially with $\bar{N}$ despite some resulting inequalities can be redundant.
-		Apart from upper bounds, \eqref{iq:sv_bound_fc} can also induce lower bounds on channel singular values.
+		The number of admissible triples increases exponentially with $N_\mathrm{S}$ despite some resulting bounds can be redundant.
+		Apart from the upper bounds, we will shortly see \eqref{iq:sv_bound_fc} can also induce lower bounds on channel singular values.
 		% It also helps to induce lower (instead of upper) bounds on channel singular values.
-		% ! For example, the number of inequalities described by \eqref{iq:sv_bound_fc} grows from 12 to 2062 when $\bar{N}$ increases from 3 to 7.
+		% ! For example, the number of inequalities described by \eqref{iq:sv_bound_fc} grows from 12 to 2062 when $N_\mathrm{S}$ increases from 3 to 7.
 		% Besides, \eqref{iq:sv_bound_fc} helps to induce lower bounds
-		Those facts render the shaping limit analysis non-trivial for massive \gls{ris}-aided \gls{mimo} systems.
-		Below we showcase some useful results that can be derived from Corollary \ref{co:sv_bound_horn}.
+		Those facts render the analysis of shaping limit non-trivial for massive \gls{ris}-aided \gls{mimo} systems.
+		Below we showcase some useful resulting bounds.
 
 		\begin{corollary}[Product of some largest or smallest singular values\label{co:sv_product}]
-			% \footnote{Corollaries \ref{co:sv_smallest} and \ref{co:sv_product_smallest} are less informative when $\bar{N} \ne N$ (i.e., $N_\mathrm{T} = N_\mathrm{S} = N_\mathrm{R}$ being false) as the lower bounds would coincide at zero.}
-			% For any $k \in [\bar{N}]$,
-			The product of the first (resp. last) $k$ singular values of $\mathbf{H}$ is bounded from above (resp. below) by those of $\mathbf{H}_\mathrm{B}$ and $\mathbf{H}_\mathrm{F}$, that is,
+			% \footnote{Corollaries \ref{co:sv_smallest} and \ref{co:sv_product_smallest} are less informative when $N \ne N$ (i.e., $N_\mathrm{T} = N_\mathrm{S} = N_\mathrm{R}$ being false) as the lower bounds would coincide at zero.}
+			% For any $k \in [N]$,
+			If the direct channel is negligible,
+			% and $N \le N_\mathrm{S}$
+			then the product of the first (resp. last\footnote{The lower bounds coincide at zero when $N \ne N$ (i.e., $N_\mathrm{T} = N_\mathrm{S} = N_\mathrm{R}$ being false).}) $k$ singular values of $\mathbf{H}$ is bounded from above (resp. below) by those of $\mathbf{H}_\mathrm{B}$ and $\mathbf{H}_\mathrm{F}$, that is,
 			% the product of the first (resp. last) $k$ singular values of $\mathbf{H}_\mathrm{B}$ and $\mathbf{H}_\mathrm{F}$ by
 			% upper bounded by the product of first and last $k$ singular values of $\mathbf{H}_\mathrm{B}$ and $\mathbf{H}_\mathrm{F}$ by
 			% $k$ singular values of $\mathbf{H}$ can be upper bounded by the product of first $k$ singular values of $\mathbf{H}_\mathrm{B}$ and $\mathbf{H}_\mathrm{F}$ by
@@ -975,16 +983,20 @@
 		\end{corollary}
 
 		\begin{proof}
-			Please refer to and Appendix~\ref{ap:sv_product}.
+			Please refer to Appendix~\ref{ap:sv_product}.
 		\end{proof}
 
+		% The assumption $N \le N_\mathrm{S}$
+
 		\begin{corollary}[Individual singular value\label{co:sv_nth}]
-			The $n$-th channel singular value can be manipulated up to
+			If the direct channel is negligible,
+			% and $N \le N_\mathrm{S}$,
+			then the $n$-th channel singular value can be manipulated up to
 			\begin{equation}
-				\max_{i+j=n+\bar{N}} \sigma_i(\mathbf{H}_\mathrm{B}) \sigma_j(\mathbf{H}_\mathrm{F}) \le \sigma_n(\mathbf{H}) \le \min_{i+j=n+1} \sigma_i(\mathbf{H}_\mathrm{B}) \sigma_j(\mathbf{H}_\mathrm{F}),
+				\max_{i+j=n+N_\mathrm{S}} \sigma_i(\mathbf{H}_\mathrm{B}) \sigma_j(\mathbf{H}_\mathrm{F}) \le \sigma_n(\mathbf{H}) \le \min_{i+j=n+1} \sigma_i(\mathbf{H}_\mathrm{B}) \sigma_j(\mathbf{H}_\mathrm{F}),
 				\label{iq:sv_nth}
 			\end{equation}
-			where $(i, j) \in [\bar{N}]^2$.
+			where $(i, j) \in [N_\mathrm{S}]^2$.
 			The upper and lower bounds are attained respectively at
 			\begin{subequations}
 				\label{eq:sv_nth}
@@ -1001,18 +1013,18 @@
 				% 	(i, j) =
 				% 	\begin{cases}
 				% 		\underset{i+j=n+1}{\arg\min} \sigma_i(\mathbf{H}_\mathrm{B}) \sigma_j(\mathbf{H}_\mathrm{F}) & \text{for } \mathbf{P}, \\
-				% 		\underset{i+j=n+\bar{N}}{\arg\max} \sigma_i(\mathbf{H}_\mathrm{B}) \sigma_j(\mathbf{H}_\mathrm{F}) & \text{for } \mathbf{Q},
+				% 		\underset{i+j=n+N_\mathrm{S}}{\arg\max} \sigma_i(\mathbf{H}_\mathrm{B}) \sigma_j(\mathbf{H}_\mathrm{F}) & \text{for } \mathbf{Q},
 				% 	\end{cases}
 				% \end{equation*}
 				\begin{subnumcases}{(i, j) =}
 					\underset{i+j=n+1}{\arg\min} \sigma_i(\mathbf{H}_\mathrm{B}) \sigma_j(\mathbf{H}_\mathrm{F}) & for $\mathbf{P}$, \label{eq:sv_nth_max_pair} \\
-					\underset{i+j=n+\bar{N}}{\arg\max} \sigma_i(\mathbf{H}_\mathrm{B}) \sigma_j(\mathbf{H}_\mathrm{F}) & for $\mathbf{Q}$, \label{eq:sv_nth_min_pair}
+					\underset{i+j=n+N_\mathrm{S}}{\arg\max} \sigma_i(\mathbf{H}_\mathrm{B}) \sigma_j(\mathbf{H}_\mathrm{F}) & for $\mathbf{Q}$, \label{eq:sv_nth_min_pair}
 				\end{subnumcases}
 				% \begin{equation*}
 				% 	(i, j) =
 				% 	\begin{cases}
 				% 		\underset{i+j=n+1}{\arg\min} \sigma_i(\mathbf{H}_\mathrm{B}) \sigma_j(\mathbf{H}_\mathrm{F}) & \text{for } \mathbf{P}, \\
-				% 		\underset{i+j=n+\bar{N}}{\arg\max} \sigma_i(\mathbf{H}_\mathrm{B}) \sigma_j(\mathbf{H}_\mathrm{F}) & \text{for } \mathbf{Q},
+				% 		\underset{i+j=n+N_\mathrm{S}}{\arg\max} \sigma_i(\mathbf{H}_\mathrm{B}) \sigma_j(\mathbf{H}_\mathrm{F}) & \text{for } \mathbf{Q},
 				% 	\end{cases}
 				% \end{equation*}
 				and ties may be broken arbitrarily;
@@ -1022,20 +1034,20 @@
 				% \begin{subequations}
 				% 	\begin{alignat}{1}
 				% 		\sigma_{n{-}1}(\hat{\mathbf{\Sigma}}_{\mathrm{B}} \mathbf{Y} \hat{\mathbf{\Sigma}}_{\mathrm{F}}) {\ge} \min_{i+j=n+1} \sigma_i(\mathbf{H}_\mathrm{B}) \sigma_j(\mathbf{H}_\mathrm{F}) & \text{ for } \mathbf{P}, \hspace{-0.17cm} \label{eq:sv_nth_max_condition} \\
-				% 		\sigma_{n{+}1}(\hat{\mathbf{\Sigma}}_{\mathrm{B}} \mathbf{Y} \hat{\mathbf{\Sigma}}_{\mathrm{F}}) {\le} \max_{i+j=n+\bar{N}} \sigma_i(\mathbf{H}_\mathrm{B}) \sigma_j(\mathbf{H}_\mathrm{F}) & \text{ for } \mathbf{Q}, \hspace{-0.17cm} \label{eq:sv_nth_min_condition}
+				% 		\sigma_{n{+}1}(\hat{\mathbf{\Sigma}}_{\mathrm{B}} \mathbf{Y} \hat{\mathbf{\Sigma}}_{\mathrm{F}}) {\le} \max_{i+j=n+N_\mathrm{S}} \sigma_i(\mathbf{H}_\mathrm{B}) \sigma_j(\mathbf{H}_\mathrm{F}) & \text{ for } \mathbf{Q}, \hspace{-0.17cm} \label{eq:sv_nth_min_condition}
 				% 	\end{alignat}
 				% \end{subequations}
 
 				\begin{subequations}
 					\begin{alignat}{2}
 						\sigma_{n{-}1}(\hat{\mathbf{\Sigma}}_{\mathrm{B}} \mathbf{Y} \hat{\mathbf{\Sigma}}_{\mathrm{F}}) & {\ge} \min_{i+j=n+1} \sigma_i(\mathbf{H}_\mathrm{B}) \sigma_j(\mathbf{H}_\mathrm{F}) && \text{ for } \mathbf{P}, \label{eq:sv_nth_max_condition} \\
-						\sigma_{n{+}1}(\hat{\mathbf{\Sigma}}_{\mathrm{B}} \mathbf{Y} \hat{\mathbf{\Sigma}}_{\mathrm{F}}) & {\le} \max_{i+j=n+\bar{N}} \sigma_i(\mathbf{H}_\mathrm{B}) \sigma_j(\mathbf{H}_\mathrm{F}) && \text{ for } \mathbf{Q}, \label{eq:sv_nth_min_condition}
+						\sigma_{n{+}1}(\hat{\mathbf{\Sigma}}_{\mathrm{B}} \mathbf{Y} \hat{\mathbf{\Sigma}}_{\mathrm{F}}) & {\le} \max_{i+j=n+N_\mathrm{S}} \sigma_i(\mathbf{H}_\mathrm{B}) \sigma_j(\mathbf{H}_\mathrm{F}) && \text{ for } \mathbf{Q}, \label{eq:sv_nth_min_condition}
 					\end{alignat}
 				\end{subequations}
 				% \begin{subequations}
 				% 	\begin{align}
 				% 		\sigma_{n-1}(\hat{\mathbf{\Sigma}}_{\mathrm{B}} \mathbf{Y} \hat{\mathbf{\Sigma}}_{\mathrm{F}}) & \ge \min_{i+j=n+1} \sigma_i(\mathbf{H}_\mathrm{B}) \sigma_j(\mathbf{H}_\mathrm{F}) \text{for } \mathbf{P}, \label{eq:sv_nth_max_condition} \MoveEqLeft[1] \\
-				% 		\sigma_{n+1}(\hat{\mathbf{\Sigma}}_{\mathrm{B}} \mathbf{Y} \hat{\mathbf{\Sigma}}_{\mathrm{F}}) & \le \max_{i+j=n+\bar{N}} \sigma_i(\mathbf{H}_\mathrm{B}) \sigma_j(\mathbf{H}_\mathrm{F}) \text{for } \mathbf{Q}, \label{eq:sv_nth_min_condition}
+				% 		\sigma_{n+1}(\hat{\mathbf{\Sigma}}_{\mathrm{B}} \mathbf{Y} \hat{\mathbf{\Sigma}}_{\mathrm{F}}) & \le \max_{i+j=n+N_\mathrm{S}} \sigma_i(\mathbf{H}_\mathrm{B}) \sigma_j(\mathbf{H}_\mathrm{F}) \text{for } \mathbf{Q}, \label{eq:sv_nth_min_condition}
 				% 	\end{align}
 				% \end{subequations}
 				where $\hat{\mathbf{\Sigma}}_{\mathrm{B}}$ and $\hat{\mathbf{\Sigma}}_{\mathrm{F}}$ are diagonal singular value matrices of $\mathbf{H}_\mathrm{B}$ and $\mathbf{H}_\mathrm{F}$ with both $i$-th row and $j$-th column deleted, respectively.
@@ -1049,50 +1061,79 @@
 		% Although Corollary \ref{co:sv_nth} and Proposition \ref{pp:direct_negligible}
 		% are derived under the assumption of negligible direct channel and fully-connected \gls{bd}-\gls{ris}, they are still useful for practical scenarios.
 		Corollary \ref{co:sv_nth} and Proposition \ref{pp:rank_deficient} both reveal the shaping limits of individual channel singular values.
-		They are not special cases of each other and are derived under different assumptions.
-		Importantly, Corollary \ref{co:sv_nth} establishes upper and lower bounds for \emph{all} channel singular values and provides general structures for fully-connected \gls{bd}-\gls{ris} of \emph{arbitrary size} to achieve those.
-		We emphasize in \eqref{eq:sv_nth} the mode alignment is realized by $\mathbf{V}_\mathrm{B}$ and $\mathbf{U}_\mathrm{F}$ and the ordering is enabled by $\mathbf{P}$ and $\mathbf{Q}$ which are special cases of unitary $\mathbf{X}$ defined in \eqref{eq:scattering_fc}.
+		They are derived under different assumptions are not special cases of each other.
+		Importantly, Corollary \ref{co:sv_nth} establishes upper and lower bounds for \emph{each} channel singular value (c.f. first and last few in Proposition \ref{pp:rank_deficient}), applies to fully-connected \gls{bd}-\gls{ris} of arbitrary size, and provides a general solution structure.
+		We emphasize that in \eqref{eq:sv_nth} the mode alignment is realized by $\mathbf{V}_\mathrm{B}$ and $\mathbf{U}_\mathrm{F}$ while the ordering is enabled by permutation matrices $\mathbf{P}$ and $\mathbf{Q}$, which are special cases of unitary $\mathbf{X}$ defined in \eqref{eq:scattering_fc}.
 		Specially, the extreme channel singular values can be manipulated up to
 		\begin{subequations}
 			\label{iq:sv_extreme}
 			\begin{gather}
-				\max_{i+j=n+1} \sigma_i(\mathbf{H}_\mathrm{B}) \sigma_j(\mathbf{H}_\mathrm{F}) {\le} \sigma_1(\mathbf{H}) {\le} \sigma_1(\mathbf{H}_\mathrm{B}) \sigma_1(\mathbf{H}_\mathrm{F}), \label{iq:sv_largest} \\
-				\min_{i+j=n+1} \sigma_i(\mathbf{H}_\mathrm{B}) \sigma_j(\mathbf{H}_\mathrm{F}) {\ge} \sigma_{\bar{N}}(\mathbf{H}) {\ge} \sigma_{\bar{N}}(\mathbf{H}_\mathrm{B}) \sigma_{\bar{N}}(\mathbf{H}_\mathrm{F}), \label{iq:sv_smallest}
+				\max_{i+j=N_\mathrm{S}+1} \sigma_i(\mathbf{H}_\mathrm{B}) \sigma_j(\mathbf{H}_\mathrm{F}) {\le} \sigma_1(\mathbf{H}) {\le} \sigma_1(\mathbf{H}_\mathrm{B}) \sigma_1(\mathbf{H}_\mathrm{F}), \label{iq:sv_largest} \\
+				\min_{i+j=\bar{N}+1} \sigma_i(\mathbf{H}_\mathrm{B}) \sigma_j(\mathbf{H}_\mathrm{F}) {\ge} \sigma_{\bar{N}}(\mathbf{H}) {\ge} \sigma_{\bar{N}}(\mathbf{H}_\mathrm{B}) \sigma_{\bar{N}}(\mathbf{H}_\mathrm{F}). \label{iq:sv_smallest}
 			\end{gather}
 		\end{subequations}
-		where the arguments of $\max$ and $\min$ coincide at $\bigl\{\sigma_1(\mathbf{H}_\mathrm{B}) \sigma_{\bar{N}}(\mathbf{H}_\mathrm{F}), \sigma_2(\mathbf{H}_\mathrm{B}) \sigma_{\bar{N}-1}(\mathbf{H}_\mathrm{F}), \ldots, \sigma_{\bar{N}}(\mathbf{H}_\mathrm{B}) \sigma_1(\mathbf{H}_\mathrm{F})\bigr\}$.
+		% where the arguments of $\max$ and $\min$ coincide at $\bigl\{\sigma_1(\mathbf{H}_\mathrm{B}) \sigma_{N_\mathrm{S}}(\mathbf{H}_\mathrm{F}), \sigma_2(\mathbf{H}_\mathrm{B}) \sigma_{N_\mathrm{S}-1}(\mathbf{H}_\mathrm{F}), \ldots, \sigma_{N_\mathrm{S}}(\mathbf{H}_\mathrm{B}) \sigma_1(\mathbf{H}_\mathrm{F})\bigr\}$.
 		We notice that the right halves in \eqref{iq:sv_largest} and \eqref{iq:sv_smallest} are special cases of \eqref{iq:sv_product_largest} and \eqref{iq:sv_product_smallest} when $k=1$.
 
-		\begin{corollary}[Channel power gain\label{co:sum_power}]
-			The channel power gain is bounded from above (resp. below) by the inner product of squared singular values of $\mathbf{H}_\mathrm{B}$ and $\mathbf{H}_\mathrm{F}$ when they are sorted similarly (resp. oppositely), that is,
-			\begin{equation}
-				\sum_n \sigma_n^2(\mathbf{H}_\mathrm{B}) \sigma_{N_\mathrm{S}-n+1}^2(\mathbf{H}_\mathrm{F}) \le \lVert \mathbf{H} \rVert _\mathrm{F}^2 \le \sum_n \sigma_n^2(\mathbf{H}_\mathrm{B}) \sigma_n^2(\mathbf{H}_\mathrm{F}),
-				\label{iq:power_gain}
-			\end{equation}
-			whose\footnote{As a side note, we notice \cite{Fang1994} discussed a similar bound using extreme singular values $\max\bigl(\sigma_{\bar{N}}(\mathbf{H}_\mathrm{B}) \lVert \mathbf{H}_\mathrm{F} \rVert _\mathrm{F}^2, \sigma_{\bar{N}}(\mathbf{H}_\mathrm{F}) \lVert \mathbf{H}_\mathrm{B} \rVert _\mathrm{F}^2\bigr) \le \lVert \mathbf{H} \rVert _\mathrm{F}^2 \le \min\bigl(\sigma_1(\mathbf{H}_\mathrm{B}) \lVert \mathbf{H}_\mathrm{F} \rVert _\mathrm{F}^2, \sigma_1(\mathbf{H}_\mathrm{F}) \lVert \mathbf{H}_\mathrm{B} \rVert _\mathrm{F}^2\bigr)$. This is a looser version of \eqref{iq:power_gain} and cannot take equalities unless the extreme singular values are of multiplicity $\bar{N}$.} upper and lower bounds are attained respectively at
-			\begin{subequations}
-				\begin{align}
-					\mathbf{\Theta}_\textnormal{P-max}^\textnormal{MIMO-ND} & = \mathbf{V}_\mathrm{B} \mathbf{U}_\mathrm{F}^\mathsf{H}, \label{eq:power_max} \\
-					\mathbf{\Theta}_\textnormal{P-min}^\textnormal{MIMO-ND} & = \mathbf{V}_\mathrm{B} \mathbf{J} \mathbf{U}_\mathrm{F}^\mathsf{H} \label{eq:power_min},
-				\end{align}
-			\end{subequations}
-			% \begin{equation}
-			% 	\mathbf{\Theta}_\textnormal{P-max}^\textnormal{MIMO-ND} = \mathbf{V}_\mathrm{B} \mathbf{U}_\mathrm{F}^\mathsf{H}, \quad \mathbf{\Theta}_\textnormal{P-min}^\textnormal{MIMO-ND} = \mathbf{V}_\mathrm{B} \mathbf{J} \mathbf{U}_\mathrm{F}^\mathsf{H},
-			% \end{equation}
-			where $\mathbf{J}$ is the exchange (a.k.a. backward identity) matrix of dimension $N_\mathrm{S}$.
-		\end{corollary}
-		\begin{proof}
-			Please refer to Appendix~\ref{ap:sum_power}.
-		\end{proof}
-
-		We notice that \eqref{eq:power_max} and \eqref{eq:power_min} are special cases of \eqref{eq:sv_nth_max} and \eqref{eq:sv_nth_min} with $\mathbf{P} = \mathbf{I}$ and $\mathbf{Q} = \mathbf{J}$, which also attain the right and left halves of \eqref{iq:sv_extreme}, respectively.
-
-		% ! Talk about when is the assumption hold.
-		% We highlight that the bounds in Corollaries \ref{co:sv_bound_horn} -- \ref{co:sum_power} are asymptotically tight as $N_\mathrm{S}$ goes to infinity.
-
 		\begin{example}[Bounds on $3 \times 3 \times 3$ shaping]\label{eg:bounds}
-			Consider a $3 \times 3 \times 3$ setup with negligible direct channel.
-			Let $\mathbf{H}_\mathrm{B} = \diag(4, 5, 6)$, $\mathbf{H}_\mathrm{F} = \diag(3, 1, 2)$.
+			Consider a $3 \times 3 \times 3$ setup with $\mathbf{H}_\mathrm{D} = \mathbf{0}$, $\mathbf{H}_\mathrm{B} = \diag(3, 2, 1)$, and $\mathbf{H}_\mathrm{F} = \diag(4, 0, 5)$.
+			\begin{itemize}
+				\item \gls{d}-\gls{ris}: It is evident that any \gls{d}-\gls{ris} can only achieve $\sv(\mathbf{H}) = [12, 5, 0]^\mathsf{T}$ due to limited branch matching and mode alignment capability.
+				\item \gls{bd}-\gls{ris}: According to \eqref{iq:sv_nth}, a fully-connected \gls{bd}-\gls{ris} can manipulate the singular values up to
+				% \begin{align*}
+				% 	8 & \le \sigma_1(\mathbf{H}) \le 15, \\
+				% 	4 & \le \sigma_2(\mathbf{H}) \le 10, \\
+				% 	0 & \le \sigma_3(\mathbf{H}) \le 0,
+				% \end{align*}
+				\begin{equation*}
+					8 \le \sigma_1(\mathbf{H}) \le 15, \quad 4 \le \sigma_2(\mathbf{H}) \le 10, \quad 0 \le \sigma_3(\mathbf{H}) \le 0,
+				\end{equation*}
+				which is consistent with Proposition \ref{pp:dof} that \gls{bd}-\gls{ris} cannot achieve a larger \gls{dof} than \gls{d}-\gls{ris}.
+				To attain the upper and lower bounds, $(i,j)$ in \eqref{eq:sv_nth_max} and \eqref{eq:sv_nth_min} takes $(1, 1)$ and $(2, 2)$ when $n=1$, and $(2, 1)$ and $(3, 2)$ when $n=2$, respectively.
+				% for the upper and lower bounds of $\sigma_1(\mathbf{H})$, respectively.
+				% \begin{equation}
+				% 	\begin{bmatrix}
+				% 		8 \\
+				% 		4 \\
+				% 		0 \\
+				% 	\end{bmatrix}
+				% 	\le \sv(\mathbf{H}) \le
+				% 	\begin{bmatrix}
+				% 		15 \\
+				% 		10 \\
+				% 		0 \\
+				% 	\end{bmatrix}
+				% \end{equation}
+				% \begin{figure*}
+				% 	\begin{subequations}
+				% 		\begin{equation}
+				% 			\begin{alignedat}{2}
+				% 				\max \bigl\{\sigma_1(\mathbf{H}_\mathrm{B}) \sigma_3(\mathbf{H}_\mathrm{F}), \sigma_2(\mathbf{H}_\mathrm{B}) \sigma_2(\mathbf{H}_\mathrm{F}), \sigma_3(\mathbf{H}_\mathrm{B}) \sigma_1(\mathbf{H}_\mathrm{F})\bigr\} &\le \sigma_1(\mathbf{H}) &&\le \sigma_1(\mathbf{H}_\mathrm{B}) \sigma_1(\mathbf{H}_\mathrm{F}), \\
+				% 				\max \bigl\{\sigma_2(\mathbf{H}_\mathrm{B}) \sigma_3(\mathbf{H}_\mathrm{F}), \sigma_3(\mathbf{H}_\mathrm{B}) \sigma_2(\mathbf{H}_\mathrm{F})\bigr\} &\le \sigma_2(\mathbf{H}) &&\le \min \bigl\{\sigma_1(\mathbf{H}_\mathrm{B}) \sigma_2(\mathbf{H}_\mathrm{F}), \sigma_2(\mathbf{H}_\mathrm{B}) \sigma_1(\mathbf{H}_\mathrm{F})\bigr\}, \\
+				% 				\sigma_3(\mathbf{H}_\mathrm{B}) \sigma_3(\mathbf{H}_\mathrm{F}) &\le \sigma_3(\mathbf{H}) &&\le \min \bigl\{\sigma_1(\mathbf{H}_\mathrm{B}) \sigma_3(\mathbf{H}_\mathrm{F}), \sigma_2(\mathbf{H}_\mathrm{B}) \sigma_2(\mathbf{H}_\mathrm{F}), \sigma_3(\mathbf{H}_\mathrm{B}) \sigma_1(\mathbf{H}_\mathrm{F})\bigr\}.
+				% 			\end{alignedat}
+				% 		\end{equation}
+				% 		\begin{equation}
+				% 			\begin{alignedat}{1}
+				% 				\sigma_1(\mathbf{H}) \sigma_2(\mathbf{H}) & \le \sigma_1(\mathbf{H}_\mathrm{B}) \sigma_1(\mathbf{H}_\mathrm{F}) \sigma_2(\mathbf{H}_\mathrm{B}) \sigma_2(\mathbf{H}_\mathrm{F}), \\
+				% 				\sigma_2(\mathbf{H}) \sigma_3(\mathbf{H}) & \le \sigma_2(\mathbf{H}_\mathrm{B}) \sigma_2(\mathbf{H}_\mathrm{F}) \sigma_3(\mathbf{H}_\mathrm{B}) \sigma_3(\mathbf{H}_\mathrm{F}),
+				% 			\end{alignedat}
+				% 		\end{equation}
+				% 		\begin{equation}
+				% 			\begin{alignedat}{1}
+				% 				\sigma_1(\mathbf{H}) \sigma_3(\mathbf{H}) & \le \min \bigl\{\sigma_1(\mathbf{H}) \sigma_3(\mathbf{H}) \sigma_1(\mathbf{H}) \sigma_2(\mathbf{H}), \sigma_1(\mathbf{H}) \sigma_2(\mathbf{H}) \sigma_1(\mathbf{H}) \sigma_3(\mathbf{H})\bigr\}, \\
+				% 				\sigma_2(\mathbf{H}) \sigma_3(\mathbf{H}) & \le \min \bigl\{\sigma_2(\mathbf{H}) \sigma_3(\mathbf{H}) \sigma_1(\mathbf{H}) \sigma_2(\mathbf{H}), \sigma_1(\mathbf{H}) \sigma_2(\mathbf{H}) \sigma_2(\mathbf{H}) \sigma_3(\mathbf{H}), \sigma_1(\mathbf{H}) \sigma_3(\mathbf{H}) \sigma_1(\mathbf{H}) \sigma_3(\mathbf{H})\bigr\}
+				% 			\end{alignedat}
+				% 		\end{equation}
+				% 	\end{subequations}
+				% \end{figure*}
+
+				% \begin{align*}
+				% 	\sigma_1(\mathbf{H}) &\leq \sigma_1(\mathbf{H}_\mathrm{B}) \sigma_1(\mathbf{H}_\mathrm{F}), & \sigma_2(\mathbf{H}) &\leq \sigma_1(\mathbf{H}_\mathrm{B}) \sigma_2(\mathbf{H}_\mathrm{F}) \\
+				% 	\sigma_2(\mathbf{H}) &\leq \sigma_2(\mathbf{H}_\mathrm{B}) \sigma_1(\mathbf{H}_\mathrm{F}), & \sigma_3(\mathbf{H}) &\leq \sigma_1(\mathbf{H}_\mathrm{B}) \sigma_3(\mathbf{H}_\mathrm{F}) \\
+				% 	\sigma_3(\mathbf{H}) &\leq \sigma_3(\mathbf{H}_\mathrm{B}) \sigma_1(\mathbf{H}_\mathrm{F}), & \sigma_3(\mathbf{H}) &\leq \sigma_2(\mathbf{H}_\mathrm{B}) \sigma_2(\mathbf{H}_\mathrm{F})
+				% \end{align*}
+			\end{itemize}
 			% $\sv(\mathbf{H}_\mathrm{B}) = [3, 2]^\mathsf{T}$ and $\sv(\mathbf{H}_\mathrm{B}) = [4, 1]^\mathsf{T}$.
 			% \begin{equation*}
 			% 	\mathbf{H}_\mathrm{B} =
@@ -1108,20 +1149,20 @@
 			% 			0 & 4
 			% 		\end{bmatrix}.
 			% \end{equation*}
-			Apparently any \gls{d}-\gls{ris} can only achieve $\sv(\mathbf{H}) = [12, 12, 5]^\mathsf{T}$ due to limited branch matching capability.
-			On the other hand, Corollary \ref{co:sv_bound_horn} suggests that a fully-connected \gls{bd}-\gls{ris} can manipulate the singular values up to
+			% Evidently, any \gls{d}-\gls{ris} can only achieve $\sv(\mathbf{H}) = [12, 5, 0]^\mathsf{T}$ due to limited branch matching and mode ordering capability.
+			% On the other hand, Corollary \ref{co:sv_bound_horn} suggests that a fully-connected \gls{bd}-\gls{ris} can manipulate the singular values up to
 
 
-			\begin{align*}
-				\sigma_1(\mathbf{H}) &\leq \sigma_1(\mathbf{H}_\mathrm{B}) \sigma_1(\mathbf{H}_\mathrm{F}), & \sigma_2(\mathbf{H}) &\leq \sigma_1(\mathbf{H}_\mathrm{B}) \sigma_2(\mathbf{H}_\mathrm{F}) \\
-				\sigma_2(\mathbf{H}) &\leq \sigma_2(\mathbf{H}_\mathrm{B}) \sigma_1(\mathbf{H}_\mathrm{F}), & \sigma_3(\mathbf{H}) &\leq \sigma_1(\mathbf{H}_\mathrm{B}) \sigma_3(\mathbf{H}_\mathrm{F}) \\
-				\sigma_3(\mathbf{H}) &\leq \sigma_3(\mathbf{H}_\mathrm{B}) \sigma_1(\mathbf{H}_\mathrm{F}), & \sigma_3(\mathbf{H}) &\leq \sigma_2(\mathbf{H}_\mathrm{B}) \sigma_2(\mathbf{H}_\mathrm{F})
-			\end{align*}
+			% \begin{align*}
+			% 	\sigma_1(\mathbf{H}) &\leq \sigma_1(\mathbf{H}_\mathrm{B}) \sigma_1(\mathbf{H}_\mathrm{F}), & \sigma_2(\mathbf{H}) &\leq \sigma_1(\mathbf{H}_\mathrm{B}) \sigma_2(\mathbf{H}_\mathrm{F}) \\
+			% 	\sigma_2(\mathbf{H}) &\leq \sigma_2(\mathbf{H}_\mathrm{B}) \sigma_1(\mathbf{H}_\mathrm{F}), & \sigma_3(\mathbf{H}) &\leq \sigma_1(\mathbf{H}_\mathrm{B}) \sigma_3(\mathbf{H}_\mathrm{F}) \\
+			% 	\sigma_3(\mathbf{H}) &\leq \sigma_3(\mathbf{H}_\mathrm{B}) \sigma_1(\mathbf{H}_\mathrm{F}), & \sigma_3(\mathbf{H}) &\leq \sigma_2(\mathbf{H}_\mathrm{B}) \sigma_2(\mathbf{H}_\mathrm{F})
+			% \end{align*}
 
 
-			while a \gls{bd}-\gls{ris} $\mathbf{\Theta} = \begin{bsmallmatrix} 0 & 1 \\ 1 & 0 \end{bsmallmatrix}$ can match the stronger branches by unitary transformation to achieve $\sv(\mathbf{H}) = [12, 2]^\mathsf{T}$.
-			The bounds on individual singular values are $8 \le \sigma_1(\mathbf{H}) \le 12$ and $2 \le \sigma_2(\mathbf{H}) \le 3$.
-			However, the upper/lower bounds are not simultaneously achievable due to the trade-off between two modes.
+			% while a \gls{bd}-\gls{ris} $\mathbf{\Theta} = \begin{bsmallmatrix} 0 & 1 \\ 1 & 0 \end{bsmallmatrix}$ can match the stronger branches by unitary transformation to achieve $\sv(\mathbf{H}) = [12, 2]^\mathsf{T}$.
+			% The bounds on individual singular values are $8 \le \sigma_1(\mathbf{H}) \le 12$ and $2 \le \sigma_2(\mathbf{H}) \le 3$.
+			% However, the upper/lower bounds are not simultaneously achievable due to the trade-off between two modes.
 			% and the singular value region is a subset of the rectangle due to the trade-off between the alignment of two modes.
 			% but there exists a trade-off in between due to mode alignment.
 			% It is obvious that any \gls{d}-\gls{ris} can only attain $\sv(\mathbf{H}) = [8, 3]^\mathsf{T}$ while a \gls{bd}-\gls{ris} $\mathbf{\Theta} = \begin{bsmallmatrix} 0 & 1 \\ 1 & 0 \end{bsmallmatrix}$ exploits branch matching to achieve $\sv(\mathbf{H}) = [12, 2]^\mathsf{T}$.
@@ -1131,98 +1172,83 @@
 			% That is, fully-connected \gls{bd}-\gls{ris} applies right unitary transformation on $\mathbf{H}_\mathrm{B}$ and left unitary transformation on $\mathbf{H}_\mathrm{F}$, widening the singular values to $8 \le \sigma_1(\mathbf{H}) \le 12$ and $2 \le \sigma_2(\mathbf{H}) \le 3$.
 		\end{example}
 
-		% % TODO enumerate all bounds for 2x2x2
-		% \begin{example}[Individual (no, all) singular value bounds on $2 \times 2 \times 2$ shaping]\label{eg:bounds}
-		% 	Consider a $2 \times 2 \times 2$ setup with
-		% 	% $\sv(\mathbf{H}_\mathrm{B}) = [3, 2]^\mathsf{T}$ and $\sv(\mathbf{H}_\mathrm{B}) = [4, 1]^\mathsf{T}$.
-		% 	\begin{equation*}
-		% 		\mathbf{H}_\mathrm{B} =
-		% 			\begin{bmatrix}
-		% 				3 & 0 \\
-		% 				0 & 2
-		% 			\end{bmatrix},
-		% 			\quad
-		% 			\mathbf{H}_\mathrm{F} =
-		% 			\begin{bmatrix}
-		% 				1 & 0 \\
-		% 				0 & 4
-		% 			\end{bmatrix}.
-		% 	\end{equation*}
-		% 	It is obvious that any \gls{d}-\gls{ris} can only attain $\sv(\mathbf{H}) = [8, 3]^\mathsf{T}$ while a \gls{bd}-\gls{ris} $\mathbf{\Theta} = \begin{bsmallmatrix} 0 & 1 \\ 1 & 0 \end{bsmallmatrix}$ can match the stronger branches by unitary transformation to achieve $\sv(\mathbf{H}) = [12, 2]^\mathsf{T}$.
-		% 	The bounds on individual singular values are $8 \le \sigma_1(\mathbf{H}) \le 12$ and $2 \le \sigma_2(\mathbf{H}) \le 3$.
-		% 	However, the upper/lower bounds are not simultaneously achievable due to the trade-off between two modes.
-		% 	% and the singular value region is a subset of the rectangle due to the trade-off between the alignment of two modes.
-		% 	% but there exists a trade-off in between due to mode alignment.
-		% 	% It is obvious that any \gls{d}-\gls{ris} can only attain $\sv(\mathbf{H}) = [8, 3]^\mathsf{T}$ while a \gls{bd}-\gls{ris} $\mathbf{\Theta} = \begin{bsmallmatrix} 0 & 1 \\ 1 & 0 \end{bsmallmatrix}$ exploits branch matching to achieve $\sv(\mathbf{H}) = [12, 2]^\mathsf{T}$.
+		We conclude from Example \ref{eg:bounds} that a fully-connected \gls{bd}-\gls{ris} can widen the dynamic range of channel singular values by properly aligning and ordering the modes of $\mathbf{H}_\mathrm{B}$ and $\mathbf{H}_\mathrm{F}$.
+		% performing right unitary transformation on $\mathbf{H}_\mathrm{B}$ and left unitary transformation on $\mathbf{H}_\mathrm{F}$, which properly aligns and orders their modes.
+		% properly aligning and ordering the modes of $\mathbf{H}_\mathrm{B}$ and $\mathbf{H}_\mathrm{F}$.
+		% enables right unitary transformation on $\mathbf{H}_\mathrm{B}$ and left unitary transformation on $\mathbf{H}_\mathrm{F}$, widening the singular values
+		% illustrates the shaping limits of a $3 \times 3 \times 3$ setup with $\mathbf{H}_\mathrm{D} = \mathbf{0}$, $\mathbf{H}_\mathrm{B} = \diag(3, 2, 1)$, and $\mathbf{H}_\mathrm{F} = \diag(4, 0, 5)$.
+			% That is, fully-connected \gls{bd}-\gls{ris} applies right unitary transformation on $\mathbf{H}_\mathrm{B}$ and left unitary transformation on $\mathbf{H}_\mathrm{F}$, widening the singular values to $8 \le \sigma_1(\mathbf{H}) \le 12$ and $2 \le \sigma_2(\mathbf{H}) \le 3$.
+		However, when the problem of interest is a function of multiple singular values, their individual bounds \eqref{iq:sv_nth} may not be simultaneously tight.
+		Two case studies are presented below.
 
-		% 	% results in $\sv(\mathbf{H}) = [12, 2]^\mathsf{T}$.
-		% 	% The singular value
-		% 	% That is, fully-connected \gls{bd}-\gls{ris} applies right unitary transformation on $\mathbf{H}_\mathrm{B}$ and left unitary transformation on $\mathbf{H}_\mathrm{F}$, widening the singular values to $8 \le \sigma_1(\mathbf{H}) \le 12$ and $2 \le \sigma_2(\mathbf{H}) \le 3$.
-		% \end{example}
+		\begin{corollary}[Channel power gain\label{co:sum_power}]
+			If the direct channel is negligible, then the channel power gain is bounded from above (resp. below) by the inner product of squared singular values of $\mathbf{H}_\mathrm{B}$ and $\mathbf{H}_\mathrm{F}$ when they are sorted similarly (resp. oppositely), that is,
+			\begin{equation}
+				\sum_{n=1}^N \sigma_n^2(\mathbf{H}_\mathrm{B}) \sigma_{N_\mathrm{S}-n+1}^2(\mathbf{H}_\mathrm{F}) \le \lVert \mathbf{H} \rVert _\mathrm{F}^2 \le \sum_{n=1}^N \sigma_n^2(\mathbf{H}_\mathrm{B}) \sigma_n^2(\mathbf{H}_\mathrm{F}),
+				\label{iq:power_gain}
+			\end{equation}
+			whose\footnote{As a side note, we notice \cite{Fang1994} discussed a similar bound using extreme singular values $\max\bigl(\sigma_{N}(\mathbf{H}_\mathrm{B}) \lVert \mathbf{H}_\mathrm{F} \rVert _\mathrm{F}^2, \sigma_{N}(\mathbf{H}_\mathrm{F}) \lVert \mathbf{H}_\mathrm{B} \rVert _\mathrm{F}^2\bigr) \le \lVert \mathbf{H} \rVert _\mathrm{F}^2 \le \min\bigl(\sigma_1(\mathbf{H}_\mathrm{B}) \lVert \mathbf{H}_\mathrm{F} \rVert _\mathrm{F}^2, \sigma_1(\mathbf{H}_\mathrm{F}) \lVert \mathbf{H}_\mathrm{B} \rVert _\mathrm{F}^2\bigr)$. This is a looser version of \eqref{iq:power_gain} and cannot take equalities unless the extreme singular values are of multiplicity $N$.} upper and lower bounds are attained respectively at
+			\begin{subequations}
+				\begin{align}
+					\mathbf{\Theta}_\textnormal{P-max}^\textnormal{MIMO-ND} & = \mathbf{V}_\mathrm{B} \mathbf{U}_\mathrm{F}^\mathsf{H}, \label{eq:power_max} \\
+					\mathbf{\Theta}_\textnormal{P-min}^\textnormal{MIMO-ND} & = \mathbf{V}_\mathrm{B} \mathbf{J} \mathbf{U}_\mathrm{F}^\mathsf{H} \label{eq:power_min},
+				\end{align}
+			\end{subequations}
+			where $\mathbf{J}$ is the exchange (a.k.a. backward identity) matrix of dimension $N_\mathrm{S}$.
+		\end{corollary}
+		\begin{proof}
+			Please refer to Appendix~\ref{ap:sum_power}.
+		\end{proof}
 
-		Example~\ref{eg:bounds} shows that a fully-connected \gls{bd}-\gls{ris} can apply right unitary transformation on $\mathbf{H}_\mathrm{B}$ and left unitary transformation on $\mathbf{H}_\mathrm{F}$
-		% , widening the singular values to $8 \le \sigma_1(\mathbf{H}) \le 12$ and $2 \le \sigma_2(\mathbf{H}) \le 3$.
-		That is, fully-connected \gls{bd}-\gls{ris} applies right unitary transformation on $\mathbf{H}_\mathrm{B}$ and left unitary transformation on $\mathbf{H}_\mathrm{F}$, widening the singular values to $8 \le \sigma_1(\mathbf{H}) \le 12$ and $2 \le \sigma_2(\mathbf{H}) \le 3$.
-
-		% We thus conclude that a fully-connected \gls{bd}-\gls{ris} can apply right unitary transformation on $\mathbf{H}_\mathrm{B}$ and left unitary transformation on $\mathbf{H}_\mathrm{F}$, which widens channel singular values to $8 \le \sigma_1(\mathbf{H}) \le 12$ and $2 \le \sigma_2(\mathbf{H}) \le 3$ in this example.
-
-		% That is, fully-connected \gls{bd}-\gls{ris} applies right unitary transformation on $\mathbf{H}_\mathrm{B}$ and left unitary transformation on $\mathbf{H}_\mathrm{F}$, widening the singular values to $8 \le \sigma_1(\mathbf{H}) \le 12$ and $2 \le \sigma_2(\mathbf{H}) \le 3$ in this case.
-
-
-
-
-
-
-		All equalities achieved by perfect alignment of all modes.
-
-		To achieve equalities in Corollaries \ref{co:sv_extreme} -- \ref{co:sum_power}, the \gls{ris} needs to completely align the singular vector spaces of $\mathbf{H}_\mathrm{B}$ and $\mathbf{H}_\mathrm{F}$.
-		The resulting scattering matrix is generally required to be unitary
+		We notice that \eqref{eq:power_max} and \eqref{eq:power_min} are special cases of \eqref{eq:sv_nth_max} and \eqref{eq:sv_nth_min} with $\mathbf{P} = \mathbf{I}$ and $\mathbf{Q} = \mathbf{J}$, which also attain the right and left halves of \eqref{iq:sv_extreme}, respectively.
+		As a side note, when both $\mathbf{H}_\mathrm{B}$ and $\mathbf{H}_\mathrm{F}$ follow Rayleigh fading, the expectation of maximum channel power gain can be numerically evaluated as
 		\begin{equation}
-			\mathbf{\Theta}^\star = \mathbf{V}_\mathrm{B} \mathbf{U}_\mathrm{F}^\mathsf{H},
-			\label{eq:scattering_fc_optimal}
-		\end{equation}
-		which can be concluded from \eqref{eq:scattering_fc} and \eqref{eq:channel_equivalent_fc} in Appendix~\ref{ap:direct_negligible}.
-		We notice that \gls{d}-\gls{ris} can attain those equalities if and only if $\mathbf{H}_\mathrm{B}$ and $\mathbf{H}_\mathrm{F}$ are both rank-1.
-		In such case, the equivalent channel reduces to $\mathbf{H} = \sigma_\mathrm{B} \sigma_\mathrm{F} \mathbf{u}_\mathrm{B} \mathbf{v}_\mathrm{B}^\mathsf{H} \mathbf{\Theta} \mathbf{u}_\mathrm{F} \mathbf{v}_\mathrm{F}^\mathsf{H}$ and the \gls{ris} only needs to align $\mathbf{v}_\mathrm{B}^\mathsf{H}$ and $\mathbf{u}_\mathrm{F}$ by
-		\begin{equation}
-			\mathbf{\Theta}^\star = \mathbf{v}_\mathrm{B} \mathbf{u}_\mathrm{F}^\mathsf{H} \odot \mathbf{I},
-		\end{equation}
-		which reduces to a special case of \eqref{eq:scattering_siso} with $L=1$.
-		However, in general \gls{d}-\gls{ris} is not sufficient to achieve the upper bound of channel power gain.
-		This again highlights the benefit of \gls{bd}-\gls{ris} in reshaping available channels.
-
-		As a side note, when both $\mathbf{H}_\mathrm{B}$ and $\mathbf{H}_\mathrm{F}$ follow Rayleigh fading, the maximum expected channel power gain can be numerically evaluated as
-		\begin{equation}
-			\mathbb{E}\bigl\{ \lVert \mathbf{H} \rVert _ \mathrm{F}^2 \bigr\} = \sum_n \int_0^\infty f_{\lambda_n^{\min(N_\mathrm{R},N_\mathrm{S})}}(x) d x \int_0^\infty f_{\lambda_n^{\min(N_\mathrm{S},N_\mathrm{T})}}(x) d x,
+			\begin{split}
+				\mathbb{E}\bigl\{ \lVert \mathbf{H} \rVert _ \mathrm{F}^2 \bigr\} = \sum_{n=1}^N
+				& \int_0^\infty x f_{\lambda_n^{\min(N_\mathrm{R},N_\mathrm{S})}}(x) d x \\
+				& \times \int_0^\infty y f_{\lambda_n^{\min(N_\mathrm{S},N_\mathrm{T})}}(y) d y,
+			\end{split}
 			\label{eq:power_gain_rayleigh}
 		\end{equation}
-		% \begin{equation}
-		% 	\begin{split}
-		% 		\mathbb{E}\bigl\{ \lVert \mathbf{H} \rVert _ \mathrm{F}^2 \bigr\}
-		% 		& = \sum_n \int_0^\infty f_{\lambda_n^{\min(N_\mathrm{R},N_\mathrm{S})}}(x_n) d x_n \\
-		% 		& \quad \times \int_0^\infty f_{\lambda_n^{\min(N_\mathrm{S},N_\mathrm{T})}}(x_n) d x_n,
-		% 	\end{split}
-		% 	\label{eq:power_gain_rayleigh}
-		% \end{equation}
-		where $\lambda_n^{K}$ is the $n$-th eigenvalue of the complex $K \times K$ Wishart matrix with probability density function $f_{\lambda_n^{K}}(x)$ given by \cite[Equation 51]{Zanella2009}.
-		We note that \eqref{eq:power_gain_rayleigh} generalizes the \gls{siso} power gain attainable by \gls{bd}-\gls{ris} \cite[Equation 58]{Shen2020a} to \gls{mimo} and models the contribution of transmit and receive antennas under double Rayleigh fading.
-		In Section \ref{sc:simulation}, we will numerically evaluate the channel power gain and compare it with the theoretical upper bound.
+		where $\lambda_n^{K}$ is the $n$-th eigenvalue of the complex $K \times K$ Wishart matrix with probability density function $f_{\lambda_n^{K}}(\cdot)$ given by \cite[(51)]{Zanella2009}.
+		We note that \eqref{eq:power_gain_rayleigh} generalizes the \gls{siso} power gain attainable by \gls{bd}-\gls{ris} \cite[(58)]{Shen2020a} to \gls{mimo} under double Rayleigh fading.
 
-		% Expression \eqref{eq:power_gain_rayleigh} generalizes the \gls{siso} power gain \cite[Equation 58]{Shen2020a} to \gls{mimo} and unveils
+		\begin{corollary}[Channel capacity at very low and high \gls{snr}\label{co:capacity}]
+			If the direct channel is negligible, then the channel capacity at very low and high \gls{snr} are approximately bounded from above by
+			\begin{subequations}
+				\begin{align}
+					C_{\rho_\downarrow} & \lessapprox \sigma_1^2(\mathbf{H}_\mathrm{B}) \sigma_1^2(\mathbf{H}_\mathrm{F}), \label{iq:capacity_snr_low} \\
+					C_{\rho_\uparrow} & \lessapprox N \log \frac{\rho}{N} + 2 \log \prod_{n=1}^N \sigma_n(\mathbf{H}_\mathrm{B}) \sigma_n(\mathbf{H}_\mathrm{F}), \label{iq:capacity_snr_high}
+				\end{align}
+			\end{subequations}
+			where $\rho$ is the \gls{snr} and the unit is nats/s/Hz.
+			Their upper bounds can be attained by, for example, \eqref{eq:power_max}.
+		\end{corollary}
 
-		% , unveiling how the channel power gain scales with the number of transmit and receive antennas and \gls{bd}-\gls{ris} elements under double Rayleigh fading.
-		% is a generalization of \gls{siso} power gain \cite[Equation 58]{Shen2020a} to \gls{mimo}, which unveils how the channel power gain scales with the number of transmit and receive antennas and \gls{bd}-\gls{ris} elements under double Rayleigh fading.
-		% However, a closed-form expression is non-trivial due to the complexity of distribution of ordered eigenvalues of Wishart matrices.
-		% ordered Wishart matrix eigenvalue distribution.
-		% provides a benchmark for the channel power gain of \gls{bd}-\gls{ris} in Rayleigh fading channels.
+		\begin{proof}
+			Please refer to Appendix~\ref{ap:capacity}.
+		\end{proof}
 
-		Proposition \ref{pp:direct_negligible} and Corollaries \ref{co:sv_bound_horn} -- \ref{co:sum_power} provide a comprehensive answer to the shaping capability question in terms of singular value bounds and channel power gain limits.
-		% understanding of the channel power gain limits of passive \gls{ris}.
-		% and suggest the impact of channel rearrangement and space alignment on redistributing channel singular values.
-		% When the direct channel is present,
-		% Similar results are inapplicable
-		Extending those results to the case of direct channel is non-trivial since the singular vector spaces of direct-indirect channels and backward-forward channels cannot be aligned at the same time.
-		In such case, we can invoke optimization approaches from a singular value perspective (discussed in Section~\ref{sc:pareto_frontier}) or a power gain perspective (to be discussed in Section~\ref{sc:power}).
+		Similar to \eqref{eq:power_gain_rayleigh}, the ergodic counterparts of \eqref{iq:capacity_snr_low} and \eqref{iq:capacity_snr_high} when both $\mathbf{H}_\mathrm{B}$ and $\mathbf{H}_\mathrm{F}$ follow Rayleigh fading can be numerically evaluated as
+		\begin{subequations}
+			\begin{equation}
+				\mathbb{E} \{C_{\rho_\downarrow}\} = \int_0^\infty x f_{\lambda_1^{\min(N_\mathrm{R},N_\mathrm{S})}}(x) d x  \int_0^\infty y f_{\lambda_1^{\min(N_\mathrm{S},N_\mathrm{T})}}(y) d y,
+			\end{equation}
+			\begin{equation}
+				\begin{split}
+					\mathbb{E} \{C_{\rho_\uparrow}\} = N \log \frac{\rho}{N} + \sum_{n=1}^N \log \Bigl( & \int_0^\infty x f_{\lambda_n^{\min(N_\mathrm{R},N_\mathrm{S})}}(x) d x \\
+					\times & \int_0^\infty y f_{\lambda_n^{\min(N_\mathrm{S},N_\mathrm{T})}}(y) d y \Bigr).
+				\end{split}
+			\end{equation}
+		\end{subequations}
+
+		Proposition \ref{pp:dof} -- \ref{pp:direct_negligible} and the resulting Corollaries provide a partial answer to the channel shaping question in terms of singular values and their functions.
+		Extending the analysis to more general cases (e.g., non-negligible direct channel and arbitrary \gls{bd}-\gls{ris} group size) is non-trivial due to limited branch matching and mode alignment capabilities therein.
+		% since the mode alignment and ordering are not guaranteed to be simultaneously achievable.
+		% ose results to the case of direct channel is non-trivial since the singular vector spaces of direct-indirect channels and backward-forward channels cannot be aligned at the same time.
+		To provide a complete channel shaping solution, we invoke optimization approaches and tackle some relevant problems in the next section.
+
+		% from a singular value perspective (discussed in Section~\ref{sc:pareto_frontier}) or a power gain perspective (to be discussed in Section~\ref{sc:power}).
 	% numerical and analytical studies on singular value redistribution by \gls{bd}-\gls{ris} in Sections~\ref{sc:pareto_frontier} and \ref{sc:bounds}, respectively.
 	% further studies on channel shaping.
 
@@ -1480,10 +1506,10 @@
 	\begin{subsection}{Pareto Frontier Characterization}\label{sc:pareto_frontier}
 		We now characterize the Pareto frontier of singular values of a general $N_\mathrm{T} \times N_\mathrm{S} \times N_\mathrm{R}$ channel \eqref{eq:channel_equivalent} by maximizing their weighted sum
 		\begin{maxi!}
-			{\scriptstyle{\mathbf{\Theta}}}{\sum_n \rho_n \sigma_n(\mathbf{H})}{\label{op:pareto}}{\label{ob:pareto}}
+			{\scriptstyle{\mathbf{\Theta}}}{\sum_{n=1}^N \rho_n \sigma_n(\mathbf{H})}{\label{op:pareto}}{\label{ob:pareto}}
 			\addConstraint{\mathbf{\Theta}_g^\mathsf{H} \mathbf{\Theta}_g=\mathbf{I},}{\quad \forall g,}{\label{co:pareto_unitary}}
 		\end{maxi!}
-		where $n \in [N]$ is the maximum channel rank, and $\rho_n$ is the weight of the $n$-th singular value that can be positive, zero, or negative.
+		where $\rho_n$ is the weight of the $n$-th singular value that can be positive, zero, or negative.
 		Varying $\{\rho_n\}_{n \in [N]}$ characterizes the Pareto frontier enclosing the singular value region such that problem \eqref{op:pareto} generalizes most singular value shaping problems.
 		It can be solved optimally by Algorithm~\ref{ag:rcg} with the Euclidean gradient given in Lemma \ref{lm:pareto_gradient}.
 		% It can be solved optimally by Algorithm~\ref{ag:rcg} where line \ref{ln:gradient_euclidean} uses the following Euclidean gradient expression \eqref{eq:pareto_gradient}.
@@ -1884,7 +1910,7 @@
 			\end{figure}
 
 			Fig. \ref{fg:power_bond} compares the analytical channel power bound in Corollary \ref{co:sum_power} and the numerical results obtained by solving problem \eqref{op:power_passive} when the direct channel is negligible.
-			Here, a fully-connected \gls{bd}-\gls{ris} can attain the upper bound either in closed form \eqref{eq:scattering_fc_optimal} or via optimization approach \eqref{eq:scattering_power}.
+			Here, a fully-connected \gls{bd}-\gls{ris} can attain the upper bound either in closed form \eqref{eq:power_max} or via optimization approach \eqref{eq:scattering_power}.
 			% Recall that a fully-connected \gls{bd}-\gls{ris} in closed form \eqref{eq:scattering_fc_tight} can attain the bound.
 			% We observe that the bound is also tight for fully-connected \gls{bd}-\gls{ris}.
 			% Increasing the group size of \gls{bd}-\gls{ris} significantly improves the channel power especially for a large \gls{mimo}.
@@ -1893,7 +1919,7 @@
 			% We observe that using a larger group size can approach the bound better, and full
 			% We observe that the bound is tight for fully-connected \gls{bd}-\gls{ris} in \gls{siso} and \gls{mimo}.
 			For the \gls{siso} case in Fig. \subref*{fg:power_bond_txrx1_nd}, the maximum channel power gain is approximately \num{4e-6} by \gls{d}-\gls{ris} and \num{6.5e-6} by fully-connected \gls{bd}-\gls{ris}, corresponding to a \qty{62.5}{\percent} gain.
-			It comes purely from branch matching and agrees with the asymptotic power scaling law derived for \gls{siso} in \cite[Equation 30]{Shen2020a}.
+			It comes purely from branch matching and agrees with the asymptotic power scaling law derived for \gls{siso} in \cite[(30)]{Shen2020a}.
 			Interestingly, this relative power gain surges to \qty{270}{\percent} in $N_\mathrm{T}=N_\mathrm{R}=4$ \gls{mimo} as shown in Fig. \subref*{fg:power_bond_txrx4_nd}, which can also be predicted from the expectation analysis \eqref{eq:power_gain_rayleigh}.
 			We thus conclude that the power gain of \gls{bd}-\gls{ris} scales with group size and \gls{mimo} dimensions.
 		\end{subsubsection}
@@ -2068,42 +2094,65 @@
 			\label{eq:channel_equivalent_fc}
 		\end{equation}
 		Since $\sv(\mathbf{U} \mathbf{A} \mathbf{V}^\mathsf{H}) = \sv(\mathbf{A})$ for unitary $\mathbf{U}$ and $\mathbf{V}$, we have
-		\begin{align*}
-			\sv(\mathbf{H}) & = \sv(\mathbf{U}_\mathrm{B} \mathbf{\Sigma}_\mathrm{B} \mathbf{X} \mathbf{\Sigma}_\mathrm{F} \mathbf{V}_\mathrm{F}^\mathsf{H})                                                                     \\
+		\begin{equation}
+			\label{eq:sv_factorization}
+			\begin{split}
+				\sv(\mathbf{H}) & = \sv(\mathbf{U}_\mathrm{B} \mathbf{\Sigma}_\mathrm{B} \mathbf{X} \mathbf{\Sigma}_\mathrm{F} \mathbf{V}_\mathrm{F}^\mathsf{H})                                                                     \\
 			                        & = \sv(\mathbf{\Sigma}_\mathrm{B} \mathbf{X} \mathbf{\Sigma}_\mathrm{F})                                                                                                                            \\
 			                        & = \sv(\bar{\mathbf{U}}_\mathrm{B} \mathbf{\Sigma}_\mathrm{B} \mathbf{\bar{V}}_\mathrm{B}^\mathsf{H} \bar{\mathbf{U}}_\mathrm{F} \mathbf{\Sigma}_\mathrm{F} \mathbf{\bar{V}}_\mathrm{F}^\mathsf{H}) \\
 			                        & = \sv(\mathbf{BF}),
-		\end{align*}
-		where $\bar{\mathbf{U}}_{\mathrm{B}/\mathrm{F}}$ and $\bar{\mathbf{V}}_{\mathrm{B}/\mathrm{F}}$ are arbitrary unitary matrices.
+			\end{split}
+		\end{equation}
+		% where $\bar{\mathbf{U}}_{\mathrm{B}/\mathrm{F}}$ and $\bar{\mathbf{V}}_{\mathrm{B}/\mathrm{F}}$ are arbitrary unitary matrices.
+		where $\bar{\mathbf{U}}_{\mathrm{B}} \in \mathbb{U}^{N_\mathrm{R} \times N_\mathrm{R}}$, $\bar{\mathbf{V}}_\mathrm{B}, \bar{\mathbf{U}}_\mathrm{F} \in \mathbb{U}^{N_\mathrm{S} \times N_\mathrm{S}}$, and $\bar{\mathbf{V}}_\mathrm{F} \in \mathbb{U}^{N_\mathrm{T} \times N_\mathrm{T}}$ can be designed arbitrarily.
 	\end{subsection}
 
 	\begin{subsection}{Proof of Corollary \ref{co:sv_product}}\label{ap:sv_product}
-		\eqref{iq:sv_product_largest} is one of the many inequalities enclosed in \eqref{iq:sv_bound_fc} when $r = k$.
-			On the other hand, \ref{eq:sv_fully_connected} implies that
-			$\det(\mathbf{H}) = \det(\mathbf{B}\mathbf{F}) = \det(\mathbf{B})\det(\mathbf{F}) = \det(\mathbf{H}_\mathrm{B})\det(\mathbf{H}_\mathrm{F})$ and thus
-			\begin{equation}
-				\prod_{n=1}^{\bar{N}} \sigma_n(\mathbf{H}) = \prod_{n=1}^{\bar{N}} \sigma_n(\mathbf{H}_\mathrm{B}) \sigma_n(\mathbf{H}_\mathrm{F}).
-				\label{eq:sv_product}
-			\end{equation}
-			\eqref{eq:sv_product} together with \eqref{iq:sv_product_largest} and the non-negativity of singular values results in \eqref{iq:sv_product_smallest}.
+		\eqref{iq:sv_product_largest} follows from \eqref{iq:sv_bound_fc} when $r = k$.
+		On the other hand, if we can prove
+		\begin{equation}
+			\prod_{n=1}^{\bar{N}} \sigma_n(\mathbf{H}) = \prod_{n=1}^{\bar{N}} \sigma_n(\mathbf{H}_\mathrm{B}) \sigma_n(\mathbf{H}_\mathrm{F}),
+			\label{eq:sv_product_all}
+		\end{equation}
+		then \eqref{iq:sv_product_smallest} follows from \eqref{iq:sv_product_largest} and the non-negativity of singular values.
+		To see \eqref{eq:sv_product_all}, we start from a stricter result
+		\begin{equation}
+			\prod_{n=1}^{N_\mathrm{S}} \sigma_n(\mathbf{H}) = \prod_{n=1}^{N_\mathrm{S}} \sigma_n(\mathbf{H}_\mathrm{B}) \sigma_n(\mathbf{H}_\mathrm{F}),
+			\label{eq:sv_product}
+		\end{equation}
+		which is provable by cases.
+		When $N_\mathrm{S} > N$, both sides of \eqref{eq:sv_product} become zero since $\sigma_n(\mathbf{H}) = \sigma_n(\mathbf{H}_\mathrm{B}) = \sigma_n(\mathbf{H}_\mathrm{F}) = 0$ for $n > N$.
+		When $N_\mathrm{S} \le N$, we have
+		\begin{equation*}
+			\begin{split}
+				\prod\nolimits_{n=1}^{N_\mathrm{S}} \sigma_n(\mathbf{H})
+				& = \prod\nolimits_{n=1}^{N_\mathrm{S}} \sigma_n(\mathbf{\Sigma}_\mathrm{B} \mathbf{X} \mathbf{\Sigma}_\mathrm{F}) \\
+				& = \prod\nolimits_{n=1}^{N_\mathrm{S}} \sigma_n(\hat{\mathbf{\Sigma}}_\mathrm{B} \mathbf{X} \hat{\mathbf{\Sigma}}_\mathrm{F}) \\
+				& = \det\bigl(\hat{\mathbf{\Sigma}}_\mathrm{B} \mathbf{X} \hat{\mathbf{\Sigma}}_\mathrm{F}\bigr) \\
+				& = \det\bigl(\hat{\mathbf{\Sigma}}_\mathrm{B}\bigr) \det(\mathbf{X}) \det\bigl(\hat{\mathbf{\Sigma}}_\mathrm{F}\bigr) \\
+				& = \prod\nolimits_{n=1}^{N_\mathrm{S}} \sigma_n(\mathbf{\Sigma}_\mathrm{B}) \sigma_n(\mathbf{\Sigma}_\mathrm{F}),
+			\end{split}
+		\end{equation*}
+		where the first equality follows from \eqref{eq:sv_factorization} and $\hat{\mathbf{\Sigma}}_\mathrm{B}, \hat{\mathbf{\Sigma}}_\mathrm{F}$ truncate $\mathbf{\Sigma}_\mathrm{B}, \mathbf{\Sigma}_\mathrm{F}$ to square matrices of dimension $N_\mathrm{S}$, respectively.
+		It is evident that \eqref{eq:sv_product} implies \eqref{eq:sv_product_all} and thus \eqref{iq:sv_product_smallest}.
 	\end{subsection}
 
 	\begin{subsection}{Proof of Corollary \ref{co:sv_nth}}\label{ap:sv_nth}
 		In \eqref{iq:sv_nth}, the set of upper bounds
 		\begin{equation}
-			\bigl\{\sigma_n(\mathbf{H}) \le \sigma_i(\mathbf{H}_\mathrm{B}) \sigma_j(\mathbf{H}_\mathrm{F}) \mid [i,j,k] \in [\bar{N}]^3, i+j=n+1\bigr\}
+			\bigl\{\sigma_n(\mathbf{H}) \le \sigma_i(\mathbf{H}_\mathrm{B}) \sigma_j(\mathbf{H}_\mathrm{F}) \mid [i,j,k] \in [N_\mathrm{S}]^3, i+j=n+1\bigr\}
 			\label{iq:sv_nth_upper_set}
 		\end{equation}
-		is a special case of \eqref{iq:sv_bound_fc} with $(I, J, K) \in [\bar{N}]^3$.
+		is a special case of \eqref{iq:sv_bound_fc} with $(I, J, K) \in [N_\mathrm{S}]^3$.
 		The minimum\footnote{One may think to take the \emph{maximum} of those upper bounds as the problem of interest is the attainable dynamic range of $n$-th singular value. However, this is infeasible since the singular values will be reordered therein.} of \eqref{iq:sv_nth_upper_set} is selected as the tightest upper bound in \eqref{iq:sv_nth}.
 		On the other hand, the set of lower bounds
 		\begin{equation}
-			\bigl\{\sigma_n(\mathbf{H}) \ge \sigma_i(\mathbf{H}_\mathrm{B}) \sigma_j(\mathbf{H}_\mathrm{F}) \mid [i,j,k] \in [\bar{N}]^3, i+j=n+\bar{N}\bigr\}
+			\bigl\{\sigma_n(\mathbf{H}) \ge \sigma_i(\mathbf{H}_\mathrm{B}) \sigma_j(\mathbf{H}_\mathrm{F}) \mid [i,j,k] \in [N_\mathrm{S}]^3, i+j=n+N_\mathrm{S}\bigr\}
 			\label{iq:sv_nth_lower_set}
 		\end{equation}
 		can be induced by \eqref{iq:sv_nth_upper_set}, \eqref{eq:sv_product}, and the non-negativity of singular values.
 		The maximum of \eqref{iq:sv_nth_lower_set} is selected as the tightest lower bound in \eqref{iq:sv_nth}.
-		Interested readers are also referred to \cite[Equation~2.0.3]{Zhang2005}.
+		Interested readers are also referred to \cite[(2.0.3)]{Zhang2005}.
 
 		To attain the upper bound, the \gls{bd}-\gls{ris} needs to maximize the minimum of the first $n$ channel singular values.
 		It follows from \eqref{eq:sv_nth_max} that
@@ -2123,14 +2172,14 @@
 
 		% In \eqref{iq:sv_nth}, the set of upper bounds
 		% \begin{equation}
-		% 	\bigl\{\sigma_n(\mathbf{H}) \le \sigma_i(\mathbf{H}_\mathrm{B}) \sigma_j(\mathbf{H}_\mathrm{F}) \mid [i,j,k] \in [\bar{N}]^3, i+j=n+1\bigr\}
+		% 	\bigl\{\sigma_n(\mathbf{H}) \le \sigma_i(\mathbf{H}_\mathrm{B}) \sigma_j(\mathbf{H}_\mathrm{F}) \mid [i,j,k] \in [N]^3, i+j=n+1\bigr\}
 		% 	\label{iq:sv_nth_upper_set}
 		% \end{equation}
-		% is a special case of \eqref{iq:sv_bound_fc} with $(I, J, K) \in [\bar{N}]^3$.
+		% is a special case of \eqref{iq:sv_bound_fc} with $(I, J, K) \in [N]^3$.
 		% The minimum\footnote{One may think to take the \emph{maximum} of those upper bounds as the problem of interest is the attainable dynamic range of $n$-th singular value. However, this is infeasible since the singular values will be reordered therein.} of \eqref{iq:sv_nth_upper_set} is selected as the tightest upper bound in \eqref{iq:sv_nth}.
 		% On the other hand, the set of lower bounds
 		% \begin{equation}
-		% 	\bigl\{\sigma_n(\mathbf{H}) \ge \sigma_i(\mathbf{H}_\mathrm{B}) \sigma_j(\mathbf{H}_\mathrm{F}) \mid [i,j,k] \in [\bar{N}]^3, i+j=n+\bar{N}\bigr\}
+		% 	\bigl\{\sigma_n(\mathbf{H}) \ge \sigma_i(\mathbf{H}_\mathrm{B}) \sigma_j(\mathbf{H}_\mathrm{F}) \mid [i,j,k] \in [N]^3, i+j=n+N\bigr\}
 		% 	\label{iq:sv_nth_lower_set}
 		% \end{equation}
 		% can be induced by \eqref{iq:sv_nth_upper_set}, \eqref{eq:sv_product}, and the non-negativity of singular values.
@@ -2166,7 +2215,7 @@
 			\label{eq:channel_power_gain}
 		\end{equation}
 		where $\mathbf{X} \triangleq \mathbf{V}_\mathrm{B}^\mathsf{H} \mathbf{\Theta} \mathbf{U}_\mathrm{F} \in \mathbb{U}^{N_\mathrm{S} \times N_\mathrm{S}}$, $\tilde{\mathbf{B}} \triangleq \mathbf{\Sigma}_\mathrm{B}^\mathsf{H} \mathbf{\Sigma}_\mathrm{B} \in \mathbb{H}_+^{N_\mathrm{S} \times N_\mathrm{S}}$, and $\tilde{\mathbf{F}} \triangleq \mathbf{X} \mathbf{\Sigma}_\mathrm{F} \mathbf{\Sigma}_\mathrm{F}^\mathsf{H} \mathbf{X}^\mathsf{H} \in \mathbb{H}_+^{N_\mathrm{S} \times N_\mathrm{S}}$.
-		By Ruhe's trace inequality for positive semi-definite matrices \cite[H.1.g and H.1.h]{Marshall2010},
+		By Ruhe's trace inequality for positive semi-definite matrices \cite[(H.1.g) and (H.1.h)]{Marshall2010},
 		\begin{equation*}
 			\sum_n \lambda_n(\tilde{\mathbf{B}}) \lambda_{N_\mathrm{S}-n+1}(\tilde{\mathbf{F}}) \le \tr \bigl(\tilde{\mathbf{B}} \tilde{\mathbf{F}}\bigr) \le \sum_n \lambda_n(\tilde{\mathbf{B}}) \lambda_n(\tilde{\mathbf{F}}),
 		\end{equation*}
@@ -2174,6 +2223,33 @@
 		The upper bound is attained when $\mathbf{X}$ is chosen to match the singular values of $\tilde{\mathbf{F}}$ to those of $\tilde{\mathbf{B}}$ in similar order.
 		Apparently this occurs at $\mathbf{X} = \mathbf{I}$ and $\mathbf{\Theta} = \mathbf{V}_\mathrm{B} \mathbf{U}_\mathrm{F}^\mathsf{H}$.
 		On the other hand, the lower bound is attained when the singular values of $\tilde{\mathbf{F}}$ and $\tilde{\mathbf{B}}$ are matched in reverse order, namely $\mathbf{X} = \mathbf{J}$ and $\mathbf{\Theta} = \mathbf{V}_\mathrm{B} \mathbf{J} \mathbf{U}_\mathrm{F}^\mathsf{H}$.
+	\end{subsection}
+
+	\begin{subsection}{Proof of Corollary \ref{co:capacity}}\label{ap:capacity}
+		When perfect \gls{csi} is available at the transmitter, in the low-\gls{snr} regime, the capacity is achieved by dominant eigenmode transmission \cite[(5.26)]{Clerckx2013}
+		\begin{align*}
+			C_{\rho_\downarrow}
+			& = \log\bigl(1 + \rho \lambda_1(\mathbf{H}^\mathsf{H} \mathbf{H})\bigr) \\
+			& = \log\bigl(1 + \rho \sigma_1^2(\mathbf{H})\bigr) \\
+			& \approx \rho \sigma_1^2(\mathbf{H}) \\
+			& \le \rho \sigma_1^2(\mathbf{H}_\mathrm{B}) \sigma_1^2(\mathbf{H}_\mathrm{F}),
+		\end{align*}
+		where the approximation is $\log(1 + x) \approx x$ for small $x$ and the inequality follows from \eqref{iq:sv_product_largest} with $k=1$.
+		In the high-\gls{snr} regime, the capacity is achieved by multiple eigenmode transmission with uniform power location \cite[(5.27)]{Clerckx2013}
+		\begin{align*}
+			C_{\rho_\uparrow}
+			& = \sum\nolimits_{n=1}^N \log\Bigl(1 + \frac{\rho}{N} \lambda_n(\mathbf{H}^\mathsf{H} \mathbf{H})\Bigr) \\
+			& \approx \sum\nolimits_{n=1}^N \log\Bigl(\frac{\rho}{N} \sigma_n^2(\mathbf{H})\Bigr) \\
+			& = N \log \frac{\rho}{N} + \sum\nolimits_{n=1}^N \log \sigma_n^2(\mathbf{H}) \\
+			& = N \log \frac{\rho}{N} + \log \prod\nolimits_{n=1}^N \sigma_n^2(\mathbf{H}) \\
+			& \le N \log \frac{\rho}{N} + 2 \log \prod\nolimits_{n=1}^N \sigma_n(\mathbf{H}_\mathrm{B}) \sigma_n(\mathbf{H}_\mathrm{F}),
+		\end{align*}
+		where the approximation is $\log(1 + x) \approx \log(x)$ for large $x$ and the inequality follows from \eqref{iq:sv_product_largest} with $k=N$.
+
+		We then show \eqref{eq:power_max} can achieve the upper bounds in \eqref{iq:capacity_snr_low} and \eqref{iq:capacity_snr_high} simultaneously.
+		On the one hand, \eqref{eq:power_max} is a special case of \eqref{eq:sv_nth_max} with $\mathbf{P} = \mathbf{I}$, which satisfies \eqref{eq:sv_nth_max_pair} and \eqref{eq:sv_nth_max_condition} for $n=1$ and thus attain $\sigma_1(\mathbf{H}) = \sigma_1(\mathbf{H}_\mathrm{B}) \sigma_1(\mathbf{H}_\mathrm{F})$.
+		On the other hand, since $\log(\cdot)$ is a monotonic function, we can prove similar to Appendix \ref{ap:sum_power} that $\sum_{n=1}^N \log \sigma_n^2(\mathbf{H}) \le \sum_{n=1}^N \log \sigma_n^2(\mathbf{H}_\mathrm{B}) \sigma_n^2(\mathbf{H}_\mathrm{F})$ and the bound is tight at \eqref{eq:power_max}.
+		The proof is complete.
 	\end{subsection}
 
 	\begin{subsection}{Proof of Lemma \ref{lm:pareto_gradient}}\label{ap:pareto_gradient}
