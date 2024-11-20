@@ -56,6 +56,7 @@
 \DeclareMathOperator{\tr}{tr}
 \DeclareMathOperator{\sv}{sv}
 \DeclareMathOperator{\card}{card}
+\DeclareMathOperator{\rank}{rank}
 
 % amsthm
 \newtheorem{definition}{Definition}
@@ -655,12 +656,12 @@
 			\mathbf{\Theta}_g^\textnormal{\gls{siso}} = \frac{h_\mathrm{D}}{\lvert h_\mathrm{D} \rvert} \mathbf{V}_{\mathrm{B},g} \mathbf{U}_{\mathrm{F},g}^\mathsf{H}, \quad \forall g,
 			\label{eq:scattering_siso}
 		\end{equation}
-		where $\mathbf{V}_{\mathrm{B},g} = \bigl[\mathbf{h}_{\mathrm{B},g}/\lVert \mathbf{h}_{\mathrm{B},g} \rVert, \mathbf{N}_{\mathrm{B},g}\bigr] \in \mathbb{U}^{L \times L}$, $\mathbf{U}_{\mathrm{F},g} = \bigl[\mathbf{h}_{\mathrm{F},g}/\lVert \mathbf{h}_{\mathrm{F},g} \rVert, \mathbf{N}_{\mathrm{F},g}\bigr] \in \mathbb{U}^{L \times L}$, and $\mathbf{N}_{\mathrm{B},g}, \mathbf{N}_{\mathrm{F},g} \in \mathbb{C}^{L \times (L-1)}$ are the orthonormal bases of null spaces of $\mathbf{h}_{\mathrm{B},g} \in \mathbb{C}^{L \times 1}$ and $\mathbf{h}_{\mathrm{F},g} \in \mathbb{C}^{1 \times L}$, respectively.
+		where $\mathbf{V}_{\mathrm{B},g} = \bigl[\mathbf{h}_{\mathrm{B},g}/\lVert \mathbf{h}_{\mathrm{B},g} \rVert, \mathbf{N}_{\mathrm{B},g}\bigr] \in \mathbb{U}^{L \times L}$, $\mathbf{U}_{\mathrm{F},g} = \bigl[\mathbf{h}_{\mathrm{F},g}/\lVert \mathbf{h}_{\mathrm{F},g} \rVert, \mathbf{N}_{\mathrm{F},g}\bigr] \in \mathbb{U}^{L \times L}$, and $\mathbf{N}_{\mathrm{B},g}, \mathbf{N}_{\mathrm{F},g} \in \mathbb{C}^{L \times (L-1)}$ are orthonormal bases of null spaces of $\mathbf{h}_{\mathrm{B},g}, \mathbf{h}_{\mathrm{F},g} \in \mathbb{C}^{L \times 1}$, respectively.
 		The corresponding channel gain is a function of $L$
 		% Here any $L \in [N_\mathrm{S}]$ (including \gls{d}-\gls{ris}) suffices for perfect mode alignment between $h_\mathrm{D}$ and indirect channels $\{h_g\}_{g \in [G]}$ using \eqref{eq:scattering_siso}.
 		% However, the branch matching capability is a function of $L$ and the channel gain can be manipulated
 		\begin{equation}
-			\lvert h \rvert _{\max} = \lvert h_\mathrm{D} \rvert + \sum_g \sum_l \lvert h_{\mathrm{B},g,\pi_{\mathrm{B},g}(l)} \rvert \lvert h_{\mathrm{F},g,\pi_{\mathrm{F},g}(l)} \rvert,
+			\max_\mathbf{\Theta} \ \lvert h \rvert = \lvert h_\mathrm{D} \rvert + \sum_g \sum_l \lvert h_{\mathrm{B},g,\pi_{\mathrm{B},g}(l)} \rvert \lvert h_{\mathrm{F},g,\pi_{\mathrm{F},g}(l)} \rvert,
 			\label{eq:gain_siso}
 		\end{equation}
 		where $h_{\mathrm{B},g,l}$, $h_{\mathrm{F},g,l}$ are the $l$-th entries of $\mathbf{h}_{\mathrm{B},g}$ and $\mathbf{h}_{\mathrm{F},g}$, respectively, and $\pi_{\mathrm{B},g}$, $\pi_{\mathrm{F},g}$ are permutations of $[L]$ sorting their magnitude in similar orders.
@@ -842,8 +843,8 @@
 			\begin{equation}
 				\mathbf{T} \mathbf{T}^\mathsf{H} =
 				\begin{cases}
-					\mathbf{H}_\mathrm{D} (\mathbf{I} - \mathbf{V}_\mathrm{F} \mathbf{V}_\mathrm{F}^\mathsf{H}) \mathbf{H}_\mathrm{D}^\mathsf{H}, & \text{if } \mathrm{rank}(\mathbf{H}_\mathrm{F}) = k, \\
-					\mathbf{H}_\mathrm{D}^\mathsf{H} (\mathbf{I} - \mathbf{U}_\mathrm{B} \mathbf{U}_\mathrm{B}^\mathsf{H}) \mathbf{H}_\mathrm{D}, & \text{if } \mathrm{rank}(\mathbf{H}_\mathrm{B}) = k,
+					\mathbf{H}_\mathrm{D} (\mathbf{I} - \mathbf{V}_\mathrm{F} \mathbf{V}_\mathrm{F}^\mathsf{H}) \mathbf{H}_\mathrm{D}^\mathsf{H}, & \text{if } \rank(\mathbf{H}_\mathrm{F}) = k, \\
+					\mathbf{H}_\mathrm{D}^\mathsf{H} (\mathbf{I} - \mathbf{U}_\mathrm{B} \mathbf{U}_\mathrm{B}^\mathsf{H}) \mathbf{H}_\mathrm{D}, & \text{if } \rank(\mathbf{H}_\mathrm{B}) = k,
 				\end{cases}
 				\label{eq:auxiliary_matrix}
 			\end{equation}
@@ -1771,7 +1772,7 @@
 % \end{section}
 
 \begin{section}{Simulation Results}\label{sc:simulation}
-	In this section, we provide numerical results to evaluate the proposed \gls{bd}-\gls{ris} designs.\footnote{The simulation code is publicly available at \url{https://github.com/snowztail/channel-shaping}.}
+	In this section, we provide numerical results to evaluate the proposed \gls{bd}-\gls{ris} designs.\footnote{Source code is available at \url{https://github.com/snowztail/channel-shaping}.}
 	Consider a distance-dependent path loss model $\Lambda(d) = \Lambda_0 d^{-\gamma}$ where $\Lambda_0$ is the reference path loss at distance \qty{1}{m}, $d$ is the propagation distance, and $\gamma$ is the path loss exponent.
 	The small-scale fading model is $\mathbf{H} = \sqrt{\kappa/(1+\kappa)} \mathbf{H}_\text{LoS} + \sqrt{1/(1+\kappa)} \mathbf{H}_\text{NLoS}$, where $\kappa$ is the Rician K-factor, $\mathbf{H}_\text{LoS}$ is the deterministic \gls{los} component, and $\mathbf{H}_\text{NLoS} \sim \mathcal{CN}(\mathbf{0}, \mathbf{I})$ is the Rayleigh component.
 	We set $\Lambda_0=\qty{-30}{dB}$, $d_\mathrm{D}=\qty{14.7}{m}$, $d_\mathrm{F}=\qty{10}{m}$, $d_\mathrm{B}=\qty{6.3}{m}$, $\gamma_\mathrm{D}=3$, $\gamma_\mathrm{F}=2.4$ and $\gamma_\mathrm{B}=2$ for reference, which corresponds to a typical indoor environment with $\Lambda_\mathrm{D}=\qty{-65}{dB}$, $\Lambda_\mathrm{F}=\qty{-54}{dB}$, $\Lambda_\mathrm{B}=\qty{-46}{dB}$.
@@ -2047,10 +2048,10 @@
 		On the other hand, there exists a $\mathbf{\Theta}_\mathrm{D}$ such that
 		\begin{equation*}
 			\begin{split}
-				\mathrm{rank}(\mathbf{H}_\mathrm{B} \mathbf{\Theta}_\mathrm{D} \mathbf{H}_\mathrm{F})
-				 & = \min \bigl( \mathrm{rank}(\mathbf{H}_\mathrm{B}), \mathrm{rank}(\mathbf{\Theta}_\mathrm{D}), \mathrm{rank}(\mathbf{H}_\mathrm{F}) \bigr) \\
-				 & = \min \bigl( \mathrm{rank}(\bar{\mathbf{H}}_\mathrm{B}), N_\mathrm{S}, \mathrm{rank}(\bar{\mathbf{H}}_\mathrm{F}) \bigr)                  \\
-				 & = \max_\mathbf{\Theta} \ \mathrm{rank}(\mathbf{H}_\mathrm{B} \mathbf{\Theta} \mathbf{H}_\mathrm{F})
+				\rank(\mathbf{H}_\mathrm{B} \mathbf{\Theta}_\mathrm{D} \mathbf{H}_\mathrm{F})
+				 & = \min \bigl( \rank(\mathbf{H}_\mathrm{B}), \rank(\mathbf{\Theta}_\mathrm{D}), \rank(\mathbf{H}_\mathrm{F}) \bigr) \\
+				 & = \min \bigl( \rank(\bar{\mathbf{H}}_\mathrm{B}), N_\mathrm{S}, \rank(\bar{\mathbf{H}}_\mathrm{F}) \bigr)                  \\
+				 & = \max_\mathbf{\Theta} \ \rank(\mathbf{H}_\mathrm{B} \mathbf{\Theta} \mathbf{H}_\mathrm{F})
 			\end{split}
 		\end{equation*}
 		The same result holds if the direct channel is significant and the proof is omitted here.

@@ -1,0 +1,416 @@
+\documentclass[final,xcolor={table}]{beamer}
+%% Possible paper sizes: a0, a0b, a1, a2, a3, a4.
+%% Possible orientations: portrait, landscape
+%% Font sizes can be changed using the scale option.
+\usepackage[size=a0,orientation=landscape]{beamerposter}
+
+\usetheme{gemini}
+\usecolortheme{seagull}
+\useinnertheme{rectangles}
+\usefonttheme[onlymath]{serif}
+
+
+% amsmath
+\DeclareMathOperator{\diag}{diag}
+\DeclareMathOperator{\tr}{tr}
+\DeclareMathOperator{\sv}{sv}
+\DeclareMathOperator{\card}{card}
+\DeclareMathOperator{\svd}{svd}
+\DeclareMathOperator{\rank}{rank}
+
+\setlength\lineskip{20pt}
+% \let\OLDitemize\itemize
+% \renewcommand\itemize{\OLDitemize\addtolength{\itemsep}{20pt}}
+% \renewcommand\baselinestretch{1.25}
+
+% ====================
+% Packages
+% ====================
+
+% \usepackage[utf8]{inputenc}
+% \usepackage[table]{xcolor}
+\usepackage{adjustbox}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage[T1]{fontenc}
+\usepackage[sfdefault]{FiraSans}
+\usepackage[acronym]{glossaries-extra}
+\usepackage{siunitx}
+\usepackage[caption=false,font=footnotesize,subrefformat=parens,labelformat=parens]{subfig}
+\usepackage{tabularx}
+\usepackage{multirow}
+\usepackage[american]{circuitikz}
+\usepackage[short]{optidef}
+
+\usetikzlibrary{arrows,calc,matrix,patterns,plotmarks,positioning,shapes}
+\usetikzlibrary{decorations.pathmorphing,decorations.pathreplacing,decorations.shapes,shapes.geometric}
+\usepgfplotslibrary{groupplots,patchplots}
+\pgfplotsset{compat=newest}
+
+
+
+\glsdisablehyper
+\setabbreviationstyle[acronym]{long-short}
+\newacronym{ao}{AO}{Alternating Optimization}
+\newacronym{bd}{BD}{Beyond Diagonal}
+\newacronym{bcd}{BCD}{Block Coordinate Descent}
+\newacronym{d}{D}{Diagonal}
+\newacronym{dof}{DoF}{Degrees of Freedom}
+\newacronym{siso}{SISO}{Single-Input Single-Output}
+\newacronym{miso}{MISO}{Multiple-Input Single-Output}
+\newacronym{mimo}{MIMO}{Multiple-Input Multiple-Output}
+\newacronym{rcg}{RCG}{Riemannian Conjugate Gradient}
+\newacronym{ris}{RIS}{Reconfigurable Intelligent Surface}
+\newacronym{pc}{PC}{Point-to-point Channel}
+\newacronym{ic}{IC}{Interference Channel}
+\newacronym{wsr}{WSR}{Weighted Sum-Rate}
+\newacronym{snr}{SNR}{Signal-to-Noise Ratio}
+\newacronym{svd}{SVD}{Singular Value Decomposition}
+\newacronym{mmse}{MMSE}{Minimum Mean-Square Error}
+\newacronym{wmmse}{WMMSE}{Weighted \gls{mmse}}
+\newacronym{mse}{MSE}{Mean-Square Error}
+\newacronym{los}{LoS}{Line-of-Sight}
+\newacronym{csi}{CSI}{Channel State Information}
+\newacronym{cscg}{CSCG}{Circularly Symmetric Complex Gaussian}
+\newacronym{sca}{SCA}{Successive Convex Approximation}
+\newacronym{kkt}{KKT}{Karush-Kuhn-Tucker}
+
+
+
+% ====================
+% Lengths
+% ====================
+
+% If you have N columns, choose \sepwidth and \colwidth such that
+% (N+1)*\sepwidth + N*\colwidth = \paperwidth
+\newlength{\sepwidth}
+\newlength{\colwidth}
+\setlength{\sepwidth}{0.025\paperwidth}
+\setlength{\colwidth}{0.3\paperwidth}
+% \setlength{\sepwidth}{0.03\paperwidth}
+% \setlength{\colwidth}{0.45\paperwidth}
+
+\newcommand{\separatorcolumn}{\begin{column}{\sepwidth}\end{column}}
+
+% ====================
+% Logo (optional)
+% ====================
+
+% LaTeX logo taken from https://commons.wikimedia.org/wiki/File:LaTeX_logo.svg
+% use this to include logos on the left and/or right side of the header:
+\logoleft{\includegraphics[height=1.5cm]{../assets/poster/logo_imperial.eps}}
+\logoright{\includegraphics[height=4cm]{../assets/poster/qrcode_github.png}}
+
+% ====================
+% Footer (optional)
+% ====================
+
+\footercontent{
+	IEEE ComSoc Workshops @ ICL \hfill
+	November 25 \& 26, 2024 \hfill
+	\href{mailto:yang.zhao@ieee.org}{yang.zhao@ieee.org}
+}
+% (can be left out to remove footer)
+
+% ====================
+% My own customization
+% - BibLaTeX
+% - Boxes with tcolorbox
+% - User-defined commands
+% ====================
+\input{custom-defs.tex}
+
+%% Reference Sources
+% \addbibresource{library.bib}
+\renewcommand{\pgfuseimage}[1]{\includegraphics[scale=2.0]{#1}}
+
+\title{Channel Shaping Using Beyond Diagonal RIS: Analysis, Optimization, and Enhanced Flexibility}
+
+\author{Yang Zhao \and Hongyu Li \and Massimo Franceschetti \and Bruno Clerckx}
+
+\date{January 01, 2025}
+
+\begin{document}
+
+\begin{frame}[t]
+	\begin{columns}[t]
+		\separatorcolumn
+
+		\begin{column}{\colwidth}
+			\begin{block}{Overview}
+				\begin{itemize}\setlength\itemsep{20pt}
+					\item \textbf{What does this paper investigate?}
+
+					The capability of \gls{d} and \gls{bd} \gls{ris} to redistribute the singular values of \glsfmtshort{mimo} channels.
+					\item \textbf{How does it differ from previous work?}
+
+					It derives analytical singular value bounds for specific channel conditions. And proposes a novel \gls{bd}-\gls{ris} optimization framework for general problems.
+					\item \textbf{What are the benefits?}
+
+					\gls{bd}-\gls{ris} improves the dynamic range of individual channel singular values and the trade-off in manipulating them. This boosts channel power gain and capacity.
+				\end{itemize}
+			\end{block}
+
+			\begin{block}{\gls{bd}-\gls{ris} model}
+				\setlength{\leftskip}{\leftmargini}
+				\setlength{\rightskip}{\leftmargini}
+				Consider an $N_\mathrm{T} \times N_\mathrm{S} \times N_\mathrm{R}$ setup with \gls{bd}-\gls{ris} divided into $G$ groups of $L$ elements each.
+				Define $N = \min(N_\mathrm{T}, N_\mathrm{R})$, $\bar{N} = \max(N_\mathrm{T}, N_\mathrm{S}, N_\mathrm{R})$, and $\mathbf{H}_{\mathrm{B}/\mathrm{F}}\stackrel{\svd}{=} \mathbf{U}_{\mathrm{B}/\mathrm{F}} \boldsymbol{\Sigma}_{\mathrm{B}/\mathrm{F}} \mathbf{V}_{\mathrm{B}/\mathrm{F}}^\mathsf{H}$.
+				\begin{equation*}
+					\mathbf{\Theta} = \diag(\mathbf{\Theta}_1,\ldots,\mathbf{\Theta}_G),\quad \mathbf{\Theta}_g^\mathsf{H} \mathbf{\Theta}_g = \mathbf{I}_L \ \forall g, \quad \mathbf{H} = \overbrace{\mathbf{H}_\mathrm{D} + \sum\nolimits_g \underbrace{\mathbf{H}_{\mathrm{B},g} \mathbf{\Theta}_g \mathbf{H}_{\mathrm{F},g}}_{\small{\substack{\text{backward-forward:}\\\text{intra-group, multiplicative}}}}}^{\small{\substack{\text{direct-indirect:}\\\text{inter-group, additive}}}}.
+				\end{equation*}
+
+				\begin{itemize}
+					\setlength{\rightskip}{\leftmargini}
+					\item \textcolor{imperialblue}{Branch matching:} Pairing and combining the entries of $\mathbf{H}_{\mathrm{B},g}$ and $\mathbf{H}_{\mathrm{F},g}$ through unitary transformation $\mathbf{\Theta}_g$.
+					\item \textcolor{imperialblue}{Mode alignment:} Aligning and ordering the singular vectors of $\{\mathbf{H}_g\}$ with those of $\mathbf{H}_\mathrm{D}$ through unitary transformations $\{\mathbf{\Theta}_g\}$.
+				\end{itemize}
+			\end{block}
+
+			\begin{exampleblock}{Example 1: \glsfmtshort{siso} channel gain maximization}
+				\setlength{\leftskip}{\leftmargini}
+				\setlength{\rightskip}{\leftmargini}
+				\glsfmtshort{siso} mode alignment reduces to phase matching and any $L$ (incl. \gls{d}-\gls{ris}) suffices by
+				\begin{equation*}
+					\mathbf{\Theta}_g^\text{\gls{siso}} = \frac{h_\mathrm{D}}{\lvert h_\mathrm{D} \rvert} \mathbf{V}_{\mathrm{B},g} \mathbf{U}_{\mathrm{F},g}^\mathsf{H} \ \forall g,
+					\label{eq:scattering_siso}
+				\end{equation*}
+				where $\mathbf{V}_{\mathrm{B},g} = \bigl[\mathbf{h}_{\mathrm{B},g}/\lVert \mathbf{h}_{\mathrm{B},g} \rVert, \mathbf{N}_{\mathrm{B},g}\bigr]$, $\mathbf{U}_{\mathrm{F},g} = \bigl[\mathbf{h}_{\mathrm{F},g}/\lVert \mathbf{h}_{\mathrm{F},g} \rVert, \mathbf{N}_{\mathrm{F},g}\bigr]$, and $\mathbf{N}_{\mathrm{B},g}, \mathbf{N}_{\mathrm{F},g}$ are orthonormal bases of null spaces of $\mathbf{h}_{\mathrm{B},g}, \mathbf{h}_{\mathrm{F},g}$.
+				The channel gain is a function of $L$
+				\begin{equation*}
+					\max\nolimits_{\mathbf{\Theta}_{\mathrm{BD}}} \ \lvert h \rvert = \lvert h_\mathrm{D} \rvert + \sum\nolimits_g \sum\nolimits_l \lvert h_{\mathrm{B},g,\pi_{\mathrm{B},g}(l)} \rvert \lvert h_{\mathrm{F},g,\pi_{\mathrm{F},g}(l)} \rvert,
+				\end{equation*}
+				which generalizes $\max_{\mathbf{\Theta}_{\mathrm{D}}} \ \lvert h \rvert = \lvert h_\mathrm{D} \rvert + \sum_{n=1}^{N_\mathrm{S}} \lvert h_{\mathrm{B},n} \rvert \lvert h_{\mathrm{F},n} \rvert$ using permutations $\pi_{\mathrm{B},g}, \pi_{\mathrm{F},g}$ that pair the $l$-th strongest backward and forward branches.
+				% This generalizes $\max_{\mathbf{\Theta}_{\mathrm{D}}} \ \lvert h \rvert = \lvert h_\mathrm{D} \rvert + \sum_{n=1}^{N_\mathrm{S}} \lvert h_{\mathrm{B},n} \rvert \lvert h_{\mathrm{F},n} \rvert$.
+			\end{exampleblock}
+
+
+			\begin{exampleblock}{Example 2: $2 \times 2 \times 2$ shaping}
+				\setlength{\leftskip}{\leftmargini}
+				\setlength{\rightskip}{\leftmargini}
+				\gls{d}-\gls{ris} and fully-connected \gls{bd}-\gls{ris} can be modeled by 2 and 4 angular parameters:
+				\begin{equation*}
+					\mathbf{\Theta}_\mathrm{D} = \diag(e^{\jmath \theta_1}, e^{\jmath \theta_2}), \quad
+					\mathbf{\Theta}_\mathrm{BD} = e^{\jmath \phi} \begin{bmatrix}
+						e^{\jmath \alpha} \cos \psi  & e^{\jmath \beta} \sin \psi   \\
+						-e^{-\jmath \beta} \sin \psi & e^{-\jmath \alpha} \cos \psi
+					\end{bmatrix}.
+				\end{equation*}
+
+				Assume the \gls{bd}-\gls{ris} is symmetric (i.e., $\beta = \pi / 2$) and the direct channel is negligible (i.e., $\sv(e^{\jmath \phi} \mathbf{A}) = \sv(\mathbf{A})$).
+				The plot relies on grid search for one channel realization.
+				\begin{figure}
+					\centering
+					\includegraphics[width=0.44\columnwidth]{../assets/simulation/singular_trend.eps}
+					% \caption{
+					% 	\setlength{\leftskip}{\leftmargini}
+					% 	\setlength{\rightskip}{\leftmargini}
+					% 	Singular value shaping by \gls{d}-\gls{ris} and symmetric fully-connected \gls{bd}-\gls{ris}.
+					% 	The maximum and minimum singular values are marked explicitly on the plot.}
+				\end{figure}
+				Here, both singular values are manipulated up to $\pm 9\%$ by \gls{d}-\gls{ris} and $\pm 42\%$ by symmetric fully-connected \gls{bd}-\gls{ris}, using 2 and 3 circuit components respectively.
+			\end{exampleblock}
+		\end{column}
+
+		\separatorcolumn
+
+		\begin{column}{\colwidth}
+			\vspace{-0.5cm}
+			\begin{prop}{\gls{dof}}{}
+				\setlength{\leftskip}{\leftmargini}
+				\setlength{\rightskip}{\leftmargini}
+				In point-to-point \glsfmtshort{mimo}, \gls{bd}-\gls{ris} cannot achieve a larger number of \gls{dof} than \gls{d}-\gls{ris}.
+			\end{prop}
+
+			\begin{prop}{Rank-deficient channels}{}
+				\setlength{\leftskip}{\leftmargini}
+				\setlength{\rightskip}{\leftmargini}
+				If the minimum rank of backward and forward channels is $k$,
+				then for \gls{d}-\gls{ris} or \gls{bd}-\gls{ris} of arbitrary number of elements, the $n$-th channel singular value is bounded by
+				\begin{align*}
+					\sigma_n(\mathbf{H}) & \le \sigma_{n-k}(\mathbf{T}), &  & \text{if } n > k, \\
+					\sigma_n(\mathbf{H}) & \ge \sigma_n(\mathbf{T}),     &  & \text{if } n < N - k + 1,
+				\end{align*}
+				where $\mathbf{T}$ is arbitrary auxiliary matrix satisfying
+				\begin{equation*}
+					\mathbf{T} \mathbf{T}^\mathsf{H} =
+					\begin{cases}
+						\mathbf{H}_\mathrm{D} (\mathbf{I} - \mathbf{V}_\mathrm{F} \mathbf{V}_\mathrm{F}^\mathsf{H}) \mathbf{H}_\mathrm{D}^\mathsf{H}, & \text{if } \mathrm{rank}(\mathbf{H}_\mathrm{F}) = k, \\
+						\mathbf{H}_\mathrm{D}^\mathsf{H} (\mathbf{I} - \mathbf{U}_\mathrm{B} \mathbf{U}_\mathrm{B}^\mathsf{H}) \mathbf{H}_\mathrm{D}, & \text{if } \mathrm{rank}(\mathbf{H}_\mathrm{B}) = k.
+					\end{cases}
+				\end{equation*}
+				\vspace{-0.5cm}
+			\end{prop}
+
+			\begin{coro}{\gls{los} channel}{}
+				\setlength{\leftskip}{\leftmargini}
+				\setlength{\rightskip}{\leftmargini}
+				If one of backward and forward channels is \gls{los}, then a \gls{d}-\gls{ris} or \gls{bd}-\gls{ris} can only manipulate the channel singular values up to
+				\begin{equation*}
+					\sigma_1(\mathbf{H}) \ge \sigma_1(\mathbf{T}) \ge {\sigma_2(\mathbf{H})} \ge \ldots \ge \sigma_{N-1}(\mathbf{T}) \ge {\sigma_N(\mathbf{H})} \ge \sigma_N(\mathbf{T}).
+				\end{equation*}
+				As $N_\mathrm{S} \to \infty$, $N$ out of those $2N$ bounds can be \emph{simultaneously} tight.
+			\end{coro}
+
+			\begin{prop}{Negligible direct channel}{}
+				\setlength{\leftskip}{\leftmargini}
+				\setlength{\rightskip}{\leftmargini}
+				If the direct channel is negligible, then a fully-connected \gls{bd}-\gls{ris} can manipulate the channel singular values up to
+				\begin{equation*}
+					\sv(\mathbf{H}) = \sv(\mathbf{BF}),
+				\end{equation*}
+				where $\mathbf{B}$ and $\mathbf{F}$ are arbitrary matrices with $\sv(\mathbf{B})=\sv(\mathbf{H}_\mathrm{B})$ and $\sv(\mathbf{F})=\sv(\mathbf{H}_\mathrm{F})$.
+			\end{prop}
+
+			\setcounter{coro}{2}
+
+			\begin{coro}{Individual singular value}{}
+				\setlength{\leftskip}{\leftmargini}
+				\setlength{\rightskip}{\leftmargini}
+				If the direct channel is negligible,
+				then the $n$-th channel singular value is bounded by
+				\begin{equation*}
+					\max_{i+j=n+N_\mathrm{S}} \sigma_i(\mathbf{H}_\mathrm{B}) \sigma_j(\mathbf{H}_\mathrm{F}) \le \sigma_n(\mathbf{H}) \le \min_{i+j=n+1} \sigma_i(\mathbf{H}_\mathrm{B}) \sigma_j(\mathbf{H}_\mathrm{F}),
+				\end{equation*}
+				which are attained respectively at
+				\begin{equation*}
+					\mathbf{\Theta}_{\text{sv-}n\text{-max}}^\text{MIMO-ND} = \mathbf{V}_\mathrm{B} \mathbf{P} \mathbf{U}_\mathrm{F}^\mathsf{H}, \quad \mathbf{\Theta}_{\text{sv-}n\text{-min}}^\text{MIMO-ND} = \mathbf{V}_\mathrm{B} \mathbf{Q} \mathbf{U}_\mathrm{F}^\mathsf{H},
+				\end{equation*}
+				where $\mathbf{P}, \mathbf{Q}$ are permutation matrices of dimension $N_\mathrm{S}$ satisfying:
+				\begin{itemize}\color{black}
+					\item The $(i, j)$-th entry is $1$, where
+					\begin{equation*}
+						(i, j) =
+						\begin{cases}
+							\underset{i+j=n+1}{\arg\min} \sigma_i(\mathbf{H}_\mathrm{B}) \sigma_j(\mathbf{H}_\mathrm{F}) & \text{ for } \mathbf{P}, \\
+							\underset{i+j=n+N_\mathrm{S}}{\arg\max} \sigma_i(\mathbf{H}_\mathrm{B}) \sigma_j(\mathbf{H}_\mathrm{F}) & \text{ for } \mathbf{Q},
+						\end{cases}
+					\end{equation*}
+					and ties may be broken arbitrarily;
+					\item After deleting the $i$-th row and $j$-th column, the resulting submatrix $\mathbf{Y}$ is arbitrary permutation matrix of dimension $N_\mathrm{S}-1$ satisfying
+					\begin{alignat*}{2}
+						\sigma_{n{-}1}(\hat{\mathbf{\Sigma}}_{\mathrm{B}} \mathbf{Y} \hat{\mathbf{\Sigma}}_{\mathrm{F}}) & {\ge} \min_{i+j=n+1} \sigma_i(\mathbf{H}_\mathrm{B}) \sigma_j(\mathbf{H}_\mathrm{F}) && \text{ for } \mathbf{P}, \\
+						\sigma_{n{+}1}(\hat{\mathbf{\Sigma}}_{\mathrm{B}} \mathbf{Y} \hat{\mathbf{\Sigma}}_{\mathrm{F}}) & {\le} \max_{i+j=n+N_\mathrm{S}} \sigma_i(\mathbf{H}_\mathrm{B}) \sigma_j(\mathbf{H}_\mathrm{F}) && \text{ for } \mathbf{Q},
+					\end{alignat*}
+					where $\hat{\mathbf{\Sigma}}_{\mathrm{B}}, \hat{\mathbf{\Sigma}}_{\mathrm{F}}$ are ${\mathbf{\Sigma}}_{\mathrm{B}}, {\mathbf{\Sigma}}_{\mathrm{F}}$ with both $i$-th row and $j$-th column deleted.
+				\end{itemize}
+			\end{coro}
+
+			\begin{coro}{Channel power gain}{}
+				\setlength{\leftskip}{\leftmargini}
+				\setlength{\rightskip}{\leftmargini}
+				If the direct channel is negligible, then the channel power gain is bounded by
+				\begin{equation*}
+					\sum\nolimits_{n=1}^N \sigma_n^2(\mathbf{H}_\mathrm{B}) \sigma_{N_\mathrm{S}-n+1}^2(\mathbf{H}_\mathrm{F}) \le \lVert \mathbf{H} \rVert _\mathrm{F}^2 \le \sum\nolimits_{n=1}^N \sigma_n^2(\mathbf{H}_\mathrm{B}) \sigma_n^2(\mathbf{H}_\mathrm{F}),
+				\end{equation*}
+				which are attained respectively at
+				\begin{equation*}
+					\mathbf{\Theta}_\text{P-max}^\text{MIMO-ND} = \mathbf{V}_\mathrm{B} \mathbf{U}_\mathrm{F}^\mathsf{H}, \quad \mathbf{\Theta}_\text{P-min}^\text{MIMO-ND} = \mathbf{V}_\mathrm{B} \mathbf{J} \mathbf{U}_\mathrm{F}^\mathsf{H},
+				\end{equation*}
+				where $\mathbf{J}$ is the backward identity matrix.
+			\end{coro}
+
+			\begin{coro}{Channel capacity at very low and high \glsfmtshort{snr}}{}
+				\setlength{\leftskip}{\leftmargini}
+				\setlength{\rightskip}{\leftmargini}
+				If the direct channel is negligible, then the channel capacity at very low and high \glsfmtshort{snr} are approximately bounded from above by
+				\begin{align*}
+					C_{\rho_\downarrow} & \lessapprox \sigma_1^2(\mathbf{H}_\mathrm{B}) \sigma_1^2(\mathbf{H}_\mathrm{F}), \\
+					C_{\rho_\uparrow} & \lessapprox N \log \frac{\rho}{N} + 2 \log \prod\nolimits_{n=1}^N \sigma_n(\mathbf{H}_\mathrm{B}) \sigma_n(\mathbf{H}_\mathrm{F}).
+				\end{align*}
+				Their upper bounds can be attained at, for example, $\mathbf{\Theta}_\text{P-max}^\text{MIMO-ND}$.
+			\end{coro}
+		\end{column}
+
+		\separatorcolumn
+
+		\begin{column}{\colwidth}
+			\vspace{-0.5cm}
+			\begin{algo}{Group-wise geodesic optimization}{}
+				\setlength{\leftskip}{\leftmargini}
+				\setlength{\rightskip}{\leftmargini}
+				% A geodesic is a curve representing the shortest path between two points in a Riemannian manifold.
+				For \gls{bd}-\gls{ris} optimization problem of the form
+				\begin{maxi*}
+					{\scriptstyle{\mathbf{\Theta}}}{f(\mathbf{\Theta})}{}{}
+					\addConstraint{\mathbf{\Theta}_g^\mathsf{H} \mathbf{\Theta}_g=\mathbf{I},}{\quad \forall g,}{}
+				\end{maxi*}
+				% At iteration $r$, the $g$-th group is updated by \textcolor{imperialblue}{geodesic} \gls{rcg}
+				we propose a \textcolor{pink!50!pink!75!black}{geodesic} \gls{rcg} algorithm below.
+				\vspace{0.5cm}
+
+				\begin{enumerate}\color{black}
+					\item \emph{Compute the Euclidean gradient:}
+					\begin{equation*}
+						\nabla_{\mathrm{E},g}^{(r)} = \frac{\partial f(\mathbf{\Theta}_g^{(r)})}{\partial \mathbf{\Theta}_g^*};
+					\end{equation*}
+					\item \emph{Translate to the Riemannian gradient evaluated at the identity:}
+					\begin{equation*}
+						\tilde{\nabla}_{\mathrm{R},g}^{(r)} = \nabla_{\mathrm{E},g}^{(r)} \mathbf{\Theta}_g^{(r)\mathsf{H}} - \mathbf{\Theta}_g^{(r)} {\nabla_{\mathrm{E},g}^{(r)\mathsf{H}}};
+					\end{equation*}
+					\item \emph{Determine the conjugate direction:}
+					\begin{equation*}
+						{\mathbf{D}}_g^{(r)} = \tilde{\nabla}_{\mathrm{R},g}^{(r)} + \tilde{\gamma}_g^{(r)} {\mathbf{D}}_g^{(r-1)}, \quad \tilde{\gamma}_g^{(r)} = \frac{\tr\bigl((\tilde{\nabla}_{\mathrm{R},g}^{(r)} - \tilde{\nabla}_{\mathrm{R},g}^{(r-1)}) {\tilde{\nabla}_{\mathrm{R},g}^{(r)\mathsf{H}}}\bigr)}{\tr\bigl(\tilde{\nabla}_{\mathrm{R},g}^{(r-1)} {\tilde{\nabla}_{\mathrm{R},g}^{(r-1)\mathsf{H}}}\bigr)};
+					\end{equation*}
+					\item \emph{Perform \textcolor{pink!50!pink!75!black}{multiplicative} update along geodesic:}
+					\begin{equation*}
+						\mathbf{\Theta}_g^{(r+1)} = \mathbf{G}_g^{(r)}(\mu) = \exp(\mu \mathbf{D}_g^{(r)}) \mathbf{\Theta}_g^{(r)},
+					\end{equation*}
+					where $\mu$ is refinable by the Armijo rule.
+				\end{enumerate}
+				\vspace{0.5cm}
+			\end{algo}
+
+			\begin{exampleblock}{Result 1: Algorithm evaluation}
+				\begin{table}[!t]
+					\centering
+					\begin{tabular}{ccccccc}
+						\toprule
+						\multirow{2}{*}{\gls{rcg} path} & \multicolumn{3}{c}{$N_\mathrm{S}=16$} & \multicolumn{3}{c}{$N_\mathrm{S}=256$}                                                                     \\ \cmidrule(lr){2-4} \cmidrule(lr){5-7}
+														& Objective                             & Iterations                               & Time [s]         & Objective        & Iterations   & Time [s]   \\ \midrule
+						Geodesic                        & $\num{4.359e-3}$                      & $11.59$                                  & $\num{1.839e-2}$ & $\num{1.163e-2}$ & $25.58$      & $3.461$    \\
+						Non-geodesic                    & $\num{4.329e-3}$                      & $30.92$                                  & $\num{5.743e-2}$ & $\num{1.116e-2}$ & $61.40$      & $13.50$    \\ \bottomrule
+					\end{tabular}
+				\end{table}
+			\end{exampleblock}
+
+			\begin{exampleblock}{Result 2: Bounds and Pareto frontier of singular values}
+				\begin{figure}[!t]
+					\centering
+					\subfloat[Analytical vs numerical results: $4 \times 128 \times 4, \rank(\mathbf{H}_\mathrm{F}) = 2$]{
+						\resizebox{0.492\linewidth}{!}{
+							\input{../assets/poster/singular_bound_rank2_sx128.tex}
+						}
+					}
+					\subfloat[Pareto frontier: $2 \times 64 \times 2$]{
+						\resizebox{0.462\linewidth}{!}{
+							\input{../assets/poster/singular_pareto_sx64.tex}
+						}
+					}
+				\end{figure}
+			\end{exampleblock}
+
+			\begin{exampleblock}{Result 3: Channel power gain and achievable rate}
+				\begin{figure}[!t]
+					\centering
+					\subfloat[Channel power gain: $16 \times N_\mathrm{S} \times 16$]{
+						\resizebox{0.492\linewidth}{!}{
+							\input{../assets/poster/power_sx_txrx16.tex}
+						}
+					}
+					\subfloat[Achievable rate: $N_\mathrm{T} \times 128 \times N_\mathrm{R}$]{
+						\resizebox{0.462\linewidth}{!}{
+							\input{../assets/poster/rate_txrx.tex}
+						}
+					}
+				\end{figure}
+
+			\end{exampleblock}
+		\end{column}
+
+		\separatorcolumn
+	\end{columns}
+\end{frame}
+\end{document}
