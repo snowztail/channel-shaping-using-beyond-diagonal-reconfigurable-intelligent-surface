@@ -143,7 +143,7 @@
 				\begin{itemize}\setlength\itemsep{20pt}
 					\item \textbf{What does this paper investigate?}
 
-					The capability of \gls{d} and \gls{bd} \gls{ris} to redistribute the singular values of \glsfmtshort{mimo} channels.
+					The capability of \gls{d}- and \gls{bd}-\gls{ris} to redistribute the singular values of \glsfmtshort{mimo} channels.
 					\item \textbf{How does it differ from previous work?}
 
 					It derives analytical singular value bounds for specific channel conditions. And proposes a novel \gls{bd}-\gls{ris} optimization framework for general problems.
@@ -157,7 +157,7 @@
 				\setlength{\leftskip}{\leftmargini}
 				\setlength{\rightskip}{\leftmargini}
 				Consider an $N_\mathrm{T} \times N_\mathrm{S} \times N_\mathrm{R}$ setup with \gls{bd}-\gls{ris} divided into $G$ groups of $L$ elements each.
-				Define $N = \min(N_\mathrm{T}, N_\mathrm{R})$, $\bar{N} = \max(N_\mathrm{T}, N_\mathrm{S}, N_\mathrm{R})$, and $\mathbf{H}_{\mathrm{B}/\mathrm{F}}\stackrel{\svd}{=} \mathbf{U}_{\mathrm{B}/\mathrm{F}} \boldsymbol{\Sigma}_{\mathrm{B}/\mathrm{F}} \mathbf{V}_{\mathrm{B}/\mathrm{F}}^\mathsf{H}$.
+				Define $N = \min(N_\mathrm{T}, N_\mathrm{R})$ and $\mathbf{H}_{\mathrm{B}/\mathrm{F}}\stackrel{\svd}{=} \mathbf{U}_{\mathrm{B}/\mathrm{F}} \boldsymbol{\Sigma}_{\mathrm{B}/\mathrm{F}} \mathbf{V}_{\mathrm{B}/\mathrm{F}}^\mathsf{H}$.
 				\begin{equation*}
 					\mathbf{\Theta} = \diag(\mathbf{\Theta}_1,\ldots,\mathbf{\Theta}_G),\quad \mathbf{\Theta}_g^\mathsf{H} \mathbf{\Theta}_g = \mathbf{I}_L \ \forall g, \quad \mathbf{H} = \overbrace{\mathbf{H}_\mathrm{D} + \sum\nolimits_g \underbrace{\mathbf{H}_{\mathrm{B},g} \mathbf{\Theta}_g \mathbf{H}_{\mathrm{F},g}}_{\small{\substack{\text{backward-forward:}\\\text{intra-group, multiplicative}}}}}^{\small{\substack{\text{direct-indirect:}\\\text{inter-group, additive}}}}.
 				\end{equation*}
@@ -200,10 +200,10 @@
 				\end{equation*}
 
 				Assume the \gls{bd}-\gls{ris} is symmetric (i.e., $\beta = \pi / 2$) and the direct channel is negligible (i.e., $\sv(e^{\jmath \phi} \mathbf{A}) = \sv(\mathbf{A})$).
-				The plot relies on grid search for one channel realization.
+				For one channel realization, we can reveal channel singular values achieved by \gls{d}- and \gls{bd}-\gls{ris} by grid search over $(\theta_1, \theta_2)$ and $(\alpha, \psi)$.
 				\begin{figure}
 					\centering
-					\includegraphics[width=0.44\columnwidth]{../assets/simulation/singular_trend.eps}
+					\includegraphics[width=0.41\columnwidth]{../assets/simulation/singular_trend.eps}
 					% \caption{
 					% 	\setlength{\leftskip}{\leftmargini}
 					% 	\setlength{\rightskip}{\leftmargini}
@@ -328,7 +328,7 @@
 
 		\begin{column}{\colwidth}
 			\vspace{-0.5cm}
-			\begin{algo}{Group-wise geodesic optimization}{}
+			\begin{algo}{Group-wise geodesic optimization for \gls{bd}-\gls{ris}}{}
 				\setlength{\leftskip}{\leftmargini}
 				\setlength{\rightskip}{\leftmargini}
 				% A geodesic is a curve representing the shortest path between two points in a Riemannian manifold.
@@ -358,9 +358,9 @@
 					\begin{equation*}
 						\mathbf{\Theta}_g^{(r+1)} = \mathbf{G}_g^{(r)}(\mu) = \exp(\mu \mathbf{D}_g^{(r)}) \mathbf{\Theta}_g^{(r)},
 					\end{equation*}
-					where $\mu$ is refinable by the Armijo rule.
+					where $\mu$ is refinable by the Armijo rule. To double the step size, one can simply square the rotation matrix instead of recomputing the matrix exponential.
 				\end{enumerate}
-				\vspace{0.5cm}
+				% \vspace{0.5cm}
 			\end{algo}
 
 			\begin{exampleblock}{Result 1: Algorithm evaluation}
@@ -380,12 +380,12 @@
 				\begin{figure}[!t]
 					\centering
 					\subfloat[Analytical vs numerical results: $4 \times 128 \times 4, \rank(\mathbf{H}_\mathrm{F}) = 2$]{
-						\resizebox{0.492\linewidth}{!}{
+						\resizebox{0.485\linewidth}{!}{
 							\input{../assets/poster/singular_bound_rank2_sx128.tex}
 						}
 					}
 					\subfloat[Pareto frontier: $2 \times 64 \times 2$]{
-						\resizebox{0.462\linewidth}{!}{
+						\resizebox{0.454\linewidth}{!}{
 							\input{../assets/poster/singular_pareto_sx64.tex}
 						}
 					}
@@ -396,12 +396,12 @@
 				\begin{figure}[!t]
 					\centering
 					\subfloat[Channel power gain: $16 \times N_\mathrm{S} \times 16$]{
-						\resizebox{0.492\linewidth}{!}{
+						\resizebox{0.485\linewidth}{!}{
 							\input{../assets/poster/power_sx_txrx16.tex}
 						}
 					}
 					\subfloat[Achievable rate: $N_\mathrm{T} \times 128 \times N_\mathrm{R}$]{
-						\resizebox{0.462\linewidth}{!}{
+						\resizebox{0.454\linewidth}{!}{
 							\input{../assets/poster/rate_txrx.tex}
 						}
 					}
