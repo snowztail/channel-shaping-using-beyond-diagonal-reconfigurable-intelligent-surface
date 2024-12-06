@@ -1,0 +1,127 @@
+
+\documentclass[journal]{IEEEtran}
+\usepackage{adjustbox}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{booktabs}
+\usepackage{cases}
+\usepackage{cite}
+\usepackage[acronym]{glossaries-extra}
+\usepackage{hyperref}
+\usepackage{mathtools}
+\usepackage{microtype}
+\usepackage[short]{optidef}
+\usepackage{pgfplots}
+\usepackage[subtle]{savetrees}
+\usepackage{siunitx}
+\usepackage[caption=false,font=footnotesize,subrefformat=parens,labelformat=parens]{subfig}
+\usepackage{tabularx}
+\usepackage{tikz}
+\usepackage{epstopdf}
+\usepackage{multirow}
+\usepackage{enumitem}
+
+% amsmath
+\DeclareMathOperator{\diag}{diag}
+\DeclareMathOperator{\tr}{tr}
+\DeclareMathOperator{\sv}{sv}
+\DeclareMathOperator{\card}{card}
+\DeclareMathOperator{\rank}{rank}
+
+% amsthm
+\newtheorem{definition}{Definition}
+\newtheorem{example}{Example}
+\newtheorem{proposition}{Proposition}
+\newtheorem{remark}{Remark}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}[proposition]
+
+% enumitem
+\setlist[itemize]{leftmargin=5mm}
+\setlist[enumerate]{leftmargin=5mm}
+
+% PGF/TikZ
+\usetikzlibrary{arrows,calc,matrix,patterns,plotmarks,positioning,shapes}
+\usetikzlibrary{decorations.pathmorphing,decorations.pathreplacing,decorations.shapes,shapes.geometric}
+\usepgfplotslibrary{groupplots,patchplots}
+\pgfplotsset{compat=1.18}
+\pgfplotsset{every axis/.append style={
+			title style={font=\Large},
+			label style={font=\Large},
+			tick label style={font=\Large},
+			legend style={font=\Large},
+		}}
+
+% algorithmicx
+\algrenewcommand{\algorithmicrequire}{\textbf{Input:}}
+\algrenewcommand{\algorithmicensure}{\textbf{Output:}}
+\algrenewcommand{\algorithmicwhile}{\textbf{While}}
+\algrenewcommand{\algorithmicend}{\textbf{End}}
+\algrenewcommand{\algorithmicrepeat}{\textbf{Repeat}}
+\algrenewcommand{\algorithmicuntil}{\textbf{Until}}
+\algrenewcommand{\algorithmicfor}{\textbf{For}}
+\algrenewcommand{\algorithmicif}{\textbf{If}}
+\algrenewcommand{\algorithmicelse}{\textbf{Else}}
+\algrenewcommand{\algorithmicdo}{}
+\algrenewcommand{\algorithmicthen}{}
+\algnewcommand{\Initialize}[1]{%
+	\State \textbf{Initialize }{#1}
+}
+
+% glossaries-extra
+\glsdisablehyper
+\setabbreviationstyle[acronym]{long-short}
+\newacronym{ao}{AO}{Alternating Optimization}
+\newacronym{bd}{BD}{Beyond Diagonal}
+\newacronym{bcd}{BCD}{Block Coordinate Descent}
+\newacronym{d}{D}{Diagonal}
+\newacronym{dof}{DoF}{Degrees of Freedom}
+\newacronym{siso}{SISO}{Single-Input Single-Output}
+\newacronym{miso}{MISO}{Multiple-Input Single-Output}
+\newacronym{mimo}{MIMO}{Multiple-Input Multiple-Output}
+\newacronym{rcg}{RCG}{Riemannian Conjugate Gradient}
+\newacronym{ris}{RIS}{Reconfigurable Intelligent Surface}
+\newacronym{pc}{PC}{Point-to-point Channel}
+\newacronym{ic}{IC}{Interference Channel}
+\newacronym{wsr}{WSR}{Weighted Sum-Rate}
+\newacronym{snr}{SNR}{Signal-to-Noise Ratio}
+\newacronym{svd}{SVD}{Singular Value Decomposition}
+\newacronym{mmse}{MMSE}{Minimum Mean-Square Error}
+\newacronym{wmmse}{WMMSE}{Weighted \gls{mmse}}
+\newacronym{mse}{MSE}{Mean-Square Error}
+\newacronym{los}{LoS}{Line-of-Sight}
+\newacronym{csi}{CSI}{Channel State Information}
+\newacronym{cscg}{CSCG}{Circularly Symmetric Complex Gaussian}
+\newacronym{sca}{SCA}{Successive Convex Approximation}
+\newacronym{kkt}{KKT}{Karush-Kuhn-Tucker}
+
+% * page limit hacks
+% \usepackage{setspace}
+% \usepackage[compact]{titlesec}
+% \abovedisplayskip=1mm
+% \belowdisplayskip=1mm
+% \abovedisplayshortskip=1mm
+% \belowdisplayshortskip=1mm
+% \setlength{\jot}{0.1mm}
+% \setlength{\floatsep}{1mm}
+% \setlength{\textfloatsep}{1mm}
+% \setlength{\intextsep}{1mm}
+% \setlength{\skip\footins}{2mm}
+
+% * legacy
+% % Double superscript
+% \newcommand\herm[2][-4]{{#2}^{\mkern#1mu\mathsf{H}}}
+
+% % algpseudocode
+% \makeatletter
+% \renewcommand{\fnum@algorithm}{\fname@algorithm{} \thealgorithm:}
+% \newcommand\setalgorithmcaptionfont[1]{%
+% 	\let\my@floatc@ruled\floatc@ruled          % save \floatc@ruled
+% 	\def\floatc@ruled{%
+% 		\global\let\floatc@ruled\my@floatc@ruled % restore \floatc@ruled
+% 		#1\floatc@ruled}}
+% \makeatother

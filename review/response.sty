@@ -1,0 +1,60 @@
+\RequirePackage{newtxmath}
+\RequirePackage{newtxtext}
+\RequirePackage{scrletter}
+\RequirePackage{xr}
+\RequirePackage[margin=2.5cm]{geometry}
+\RequirePackage[most]{tcolorbox}
+
+% xr
+\externaldocument{../manuscript/main}
+
+% roman index
+\renewcommand{\theequation}{\roman{equation}}
+\renewcommand{\@biblabel}[1]{[\romannumeral 0#1]}
+
+% koma letter
+\renewcommand{\raggedsignature}{\raggedright}
+\setplength{toaddrhpos}{\oddsidemargin+1in}
+
+% counters and commands
+\newcounter{reviewer}
+\newcounter{comment}
+\renewcommand{\thecomment}{\textbf{\textup{\thereviewer.\arabic{comment}}}}
+
+\newtcolorbox{refbox}{
+	colback=lightgray!20,
+	breakable
+}
+
+\providecommand{\summary}[1]{%
+	#1 \par
+}
+
+\renewcommand{\comment}[1]{%
+	\vspace{0.5em}%
+	\medskip\noindent%
+	\refstepcounter{comment}\thecomment \, \textit{#1} \par
+}
+
+
+\providecommand{\reply}[1]{%
+	\medskip\noindent%
+	\textbf{Response} #1 \par
+}
+
+\providecommand{\change}[1]{%
+	\begin{refbox}%
+		#1
+	\end{refbox}%
+}
+
+% environments
+\newenvironment{editor}[1][Editorial Decision]{%
+	\section*{#1}%
+}{}
+
+\newenvironment{reviewer}{%
+	\refstepcounter{reviewer}%
+	\setcounter{comment}{0}%
+	\section*{Reviewer \thereviewer}%
+}{}
