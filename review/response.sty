@@ -1,16 +1,28 @@
 \RequirePackage{newtxmath}
 \RequirePackage{newtxtext}
 \RequirePackage{scrletter}
-\RequirePackage{xr}
+\RequirePackage{xr-hyper}
+\RequirePackage{enumitem}
 \RequirePackage[margin=2.5cm]{geometry}
 \RequirePackage[most]{tcolorbox}
 
-% xr
+% enumitem
+\setenumerate[0]{label=(\alph*)}
+
+% xr-hyper
 \externaldocument{../manuscript/main}
 
 % roman index
+\def\bibcite#1#2{%
+	\@newl@bel{b}{#1\@extra@binfo}{%
+		\hyper@@link[cite]{}{cite.#1\@extra@b@citeb}{\romannumeral 0#2}%
+	}%
+}
+\renewcommand*{\@biblabel}[1]{[\romannumeral 0#1]}
 \renewcommand{\theequation}{\roman{equation}}
-\renewcommand{\@biblabel}[1]{[\romannumeral 0#1]}
+
+% adaptive eqref font
+\renewcommand{\eqref}[1]{(\ref{#1})}
 
 % koma letter
 \renewcommand{\raggedsignature}{\raggedright}

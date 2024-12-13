@@ -4,7 +4,9 @@
 	foldmarks=false
 ]{scrartcl}
 
+\input{../manuscript/preamble}
 \usepackage{response}
+
 
 \setkomavar{signature}{Yang Zhao, Hongyu Li, Bruno Clerckx, and Massimo Franceschetti}
 \setkomavar{date}{\today}
@@ -19,78 +21,116 @@
 	\opening{Dear Editor and Reviewers,}
 	Thank you for giving us the opportunity to submit a revised version of \emph{Channel Shaping Using Beyond Diagonal RIS: Analysis, Optimization, and Enhanced Flexibility}.
 	Your comments and suggestions have been invaluable in helping us improve the quality of the manuscript.
-	% We would like to express our sincere gratitude to your critical comments and suggestions, which helped us improve the quality of the manuscript significantly.
-	Below we prepare a point-to-point response and highlight the corresponding changes made to the manuscript.
+	Below we prepare a point-to-point response and highlight the corresponding in-text changes, where labels have been matched to the latest manuscript for your convenience.
 	We hope that the revisions and clarifications make the manuscript meet the standards of TSP publications.
 	\closing{Yours sincerely,}
 \end{letter}
 
 
 \begin{editor}
-	\summary{The reviewers raised a number of concerns regarding the paper's contribution, novelty, and mathematical correctness, which led to the recommendation for rejection. The main issues identified include: 1) the contribution of the paper is unclear. Specifically, the proposed framework in (7) is not sufficiently general as it does not consider BD-RIS dependent constraints (e.g., QoS, sensing quality). A more general case has already been investigated and solved in the authors' previous work [41]. Some content in Section III are well established methods in the literature [54]. 2) The optimization problems (38) and (45) lacks of novelty. The reviewer pointed that they can be possibly solved by existing methods through appropriate adjustment [33], [47]. Also, it is also pointed out that Corollaries 3.1-3.5 are the standard results from matrix textbook. 3) The correctness and usefulness of the mathematical derivations. For example, the derivation in the proof of Lamma (Appendix A) is incorrect. Convergence proof in Appendix F is questionable. The usefulness of these bounds on singular values of the effective channel H is unclear. 4) The literature review can be enhanced to cover a boarder range of papers that related to the problem addressed. 5) The simulation study can be enhanced. For example, comparisons with the diagonal RIS (D-RIS) and a globally passive BD-RIS were suggested by the reviewer.}
+	\summary{
+		The reviewers raised a number of concerns regarding the paper's contribution, novelty, and mathematical correctness, which led to the recommendation for rejection. The main issues identified include:
+		\begin{enumerate}
+			\item The contribution of the paper is unclear. Specifically, the proposed framework in \eqref{op:general} is not sufficiently general as it does not consider \gls{bd}-\gls{ris} dependent constraints (e.g., \gls{qos}, sensing quality). A more general case has already been investigated and solved in the authors' previous work \cite{Zhou2023}. Some content in Section \ref{sc:framework} are well established methods in the literature \cite{Abrudan2008}.
+			\item The optimization problems \eqref{op:power} and \eqref{op:rate_ris} lacks of novelty. The reviewer pointed that they can be possibly solved by existing methods through appropriate adjustment \cite{Santamaria2023,Li2023b}. Also, it is also pointed out that Corollaries \ref{co:nd_sv_prod_subset} -- \ref{co:nd_sv_prod_tail} are the standard results from matrix textbook.
+			\item The correctness and usefulness of the mathematical derivations. For example, the derivation in the proof of Appendix \ref{ap:pareto} is incorrect. Convergence proof in Appendix \ref{ap:power} is questionable. The usefulness of these bounds on singular values of the effective channel $\mathbf{H}$ is unclear.
+			\item The literature review can be enhanced to cover a boarder range of papers that related to the problem addressed.
+			\item The simulation study can be enhanced. For example, comparisons with the \gls{d}-\gls{ris} and a globally passive \gls{bd}-\gls{ris} were suggested by the reviewer.
+		\end{enumerate}
+	}
 
 	\reply{
-		bbb \ref{iq:sv_bound_rank_deficient} \cite{Fotock2023}
+		Good. \cite{Fotock2023}
 	}
 
 \end{editor}
 
 \begin{reviewer}
-	\summary{This manuscript investigates the impact of beyond-diagonal (BD)-Reconfigurable Intelligent Surface (RIS) to the distribution of singular values of Multiple-Input Multiple-Output (MIMO) channel of a point-to-point communication system. Especially, the authors derive bounds of singular values of BD-RIS channel and propose algorithms to design BD-RIS configuration.}
-
-	\comment{RIS \cite{Moler2003} has been hailed as one of "the" 6G technologies by the academia, but much less so by the industry. How to do you see the potential of your scheme to change this, since it also speaks along the line of Ambient IoT?}
-	\label{cm:1.1}
-
-	% \reply{
-	% 	Many researchers and companies expect RIS to be a massive surface mounted to walls and windows, functioning as an all-purpose programmable RF lens to focus ambient waves on the target. See \eqref{eq:1}.
-	% }
-
-	\reply{
-		Many researchers and companies expect RIS to be a massive surface mounted to walls and windows, functioning as an all-purpose programmable RF lens to focus ambient waves on the target. See \eqref{eq:1}.
-
-
-		\begin{equation}
-			\label{eq:1}
-			a = 1;
-		\end{equation}
-
-		This, on paper, could mitigate two major challenges in 5G: reduce energy consumption of massive MIMO and improve channel condition for mmWave radios.
-		However, outdoor deployment of such large surfaces shall comply with local regulations and requires a cooperation between building constructors, network operators, and equipment vendors, which could be a long-term project.
-		Our RIScatter scheme, on the other hand, aims to unify RIS (wireless channel shaper) and backscatter device (information source) into one batteryless cognitive radio featuring heterogeneous traffic control and universal hardware design.
-		This is especially suitable for indoor environments where the scattering nodes can be geometrically distributed in the proximity of transceivers.
-		Imagine a wireless future where the boundary between the network and environment is blurred --- everything can be “smartened” by coating with a metamaterial layer and attaching a microcontroller. Only a few radiating sources (like the sun) are active, while most objects (like the universe) can exploit ambient waves to energize themselves, sense the environment, communicate with devices, and assist legacy transmissions when idle.
-		% Indoor deployment of RIS seems more feasible,
-		% For the indoor scenario, the cost-effectiveness of RIS over conventional relays remains an open question.
-		% This vision calls for a rethinking of waveform design, receiver architecture, and multiple access schemes to accommodate the new paradigm of ambient IoT.
+	\summary{
+		This manuscript investigates the impact of \gls{bd}-\gls{ris} to the distribution of singular values of \gls{mimo} channel of a point-to-point communication system. Especially, the authors derive bounds of singular values of \gls{bd}-\gls{ris} channel and propose algorithms to design \gls{bd}-\gls{ris} configuration.
 	}
 
 
-	\comment{We can think of a future in which a number of ambient IoT devices do not have a transmitter and instead they communicate based on backscattering. Where do you see the main challenges towards wide adoption of those devices?}
-	\label{cm:1.2}
-
-	\reply{
-		We would like to highlight three main challenges for batteryless ambient IoT devices: energy harvesting, spectrum sharing, and security issue.
-		Far-field wireless power transfer has been recognized as a promising solution to energize ultra-low power devices, but the operation range is quite short (within few meters) and the end-to-end power efficiency is usually low (less than few percents).
-		In such case, idle RIScatter nodes can operate in full RIS mode and redirect local RF waves to those in transmitting mode for higher energy efficiency and backscatter SNR.
-		Spectrum sharing with legacy wireless systems is another challenge, as backscatter devices manipulate existing radio signals to transmit data.
-		This raises concerns about potential interference with other wireless applications operating in the same spectrum, and calls for a rethinking of waveform design, receiver architecture, modulation and coding scheme, and multiple access strategy to ensure a symbiotic coexistence.
-		Finally, security issue is a major concern for batteryless devices since they are vulnerable to eavesdropping, jamming, and spoofing attacks.
-		Please refer to \ref{cm:1.1}
+	\comment{
+		The contribution of Sec. \ref{sc:framework} is unclear for the following two reasons.
+		\begin{enumerate}
+			\item The manuscript claims to propose a universal optimization framework for \gls{bd}-\gls{ris} as in \eqref{op:general}. However, the framework in \eqref{op:general} is indeed not sufficiently general. It does not consider \gls{bd}-\gls{ris} dependent constraints (e.g., \gls{qos}, sensing quality) besides the orthogonal conditions \eqref{cn:general_unitary}. The reviewer notice that a more general framework, which considers \gls{bd}-\gls{ris} constraints in addition to \eqref{cn:general_unitary}, has already been investigated and solved in the authors' previous work \cite{Zhou2023}.
+			\item Besides, both the non-geodesic \gls{rcg} (Sec. \ref{sc:rcg_general}) and geodesic \gls{rcg} (Sec. \ref{sc:rcg_geodesic}) algorithms, e.g., \eqref{eq:geodesic_iden}--\eqref{eq:iterate_mul}, are well established methods in the literature, e.g., \cite{Abrudan2008}. Therefore, the novelty of Sec. \ref{sc:framework} unclear.
+		\end{enumerate}
 	}
 
-	\comment{What was the main criticism you have received during the review process and how did you address it?}
-	\reply{
-		The main technical criticism we received during the review process was the uncompleteness of simulation results.
-		Reviewers were interested in the impact of imperfect CSI and primary/backscatter SNR on the achievable rate region.
-		Those results evaluate the practicality of RIScatter systems and have been added to the revised manuscript.
-		One reviewer also suggested including analytical and numerical results on BER vs SNR.
-		While we fully acknowledge its importance, the BER analysis is non-trivial due to the coexistence of both links, and we would like to reserve this for a future work.
-		Another interesting question was the optimal primary input distribution that maximizes the weighted sum mutual information.
-		It deserves further research but we decided to stay with CSCG primary source for a tractable rate expression.
-		Two reviewers also pointed out that perfect symbol-level synchronization of both links is a strong assumption, especially for large-scale RIScatter system with small spreading ratio.
-		If necessary, some penalty factor can be introduced to the rate expression to compensate for the synchronization error.
-		Please refer to \ref{cm:1.2}
+
+	\comment{
+		In Sec. \ref{sc:pareto}, the manuscript proposes to maximize weighted sum of singular values of the effective channel $\mathbf{H}$. The optimization objective is rather vague. Is the weighted sum of singular values related to any meaningful performance metric (e.g., capacity, power gain, and so on)?
 	}
+
+	\comment{
+		Derivation in the proof of Lemma \ref{lm:pareto} (Appendix \ref{ap:pareto}) is incorrect. Specifically, $(\partial \mathbf{u}^\mathsf{T}) \cdot \mathbf{u}$ is not equal to $\partial (\mathbf{u}^T \mathbf{u})$. Similar error occurs to $\mathbf{v}$. Please note that the derivative of singular value of a matrix with respect to the matrix itself does not exist. In fact, sub-differential should be used instead, e.g., \cite{Cai2010}.
+	}
+
+	\comment{
+		The rank equation in the proof of Prop. \ref{pp:dof} (Appendix \ref{ap:dof}) seems confusing. The rank of product of two matrices is: $\rank(\mathbf{AB}) = \rank(\mathbf{B}) - \dim(\ker(\mathbf{A}) \cap \ran(\mathbf{B}))$. How could one obtain the rank equation in Appendix \ref{ap:dof}? Please clarify.
+	}
+
+	\comment{
+		In Sec. \ref{sc:bounds}, the manuscript provides a number of bounds on singular values of the effective channel $\mathbf{H}$. However, the usefulness of these bounds is unclear. What can these bounds be used for? Note the results Corollaries \ref{co:nd_sv_prod_subset} -- \ref{co:nd_sv_prod_tail} are quite standard results from matrix textbook. The (upper) bound in Corollary \ref{co:nd_power}, which is achieved by aligning its left and right singular-value vectors to that of the forward and backward channels, respectively, is reminiscent of the results in seminal papers on relay beamforming design, e.g., \cite{Rong2009,Rong2009a}.
+	}
+
+	\comment{
+		The optimization problems \eqref{op:power} and \eqref{op:rate_ris} lacks of novelty. In fact, they can still be solved by the methods proposed in existing literature, e.g., \cite{Santamaria2023,Li2023b} through appropriate adjustment.
+	}
+
+	\comment{
+		Convergence proof in Appendix \ref{ap:power} is questionable. First, the manuscript just assumes that solution iterates $\tilde{\mathbf{\Theta}}$ converge. This may not be true (solution iterate could oscillate actually) and is hard to prove. Second, stationary point for constrained problem is more complicated than for the non-constrained case (e.g.  gradient equals zero). Please refer to \cite{Pang2017}.
+	}
+\end{reviewer}
+
+
+\begin{reviewer}
+	\summary{
+	This paper studies the potential of a group-connected \gls{bd}-\gls{ris} to manipulate the \gls{mimo} channel in terms of singular values, power gain, and achievable rate. The analysis and optimization are based on the assumption of asymmetric and lossless \gls{ris} circuit network without mutual coupling. A geodesic design framework is proposed and tested on Pareto frontier shaping and joint beamforming problems. Some analytical bounds on channel singular values and power gain are also provided. Overall, it is a solid work with interesting results. I have some further comments for the authors' reference.
+	}
+
+	\comment{
+		How practical is it to consider asymmetric reconfigurable \gls{bd}-\gls{ris}? How much gain is expected over symmetric ones and at what cost?
+	}
+
+	\comment{
+		The geodesic \gls{rcg} method seems promising especially at large group size $L$. Is it possible to extend the design framework to advanced \gls{bd}-\gls{ris} architectures (e.g., multi-sector mode)?
+	}
+
+	\comment{
+		For fully-connected \gls{bd}-\gls{ris}, the authors mentioned in the result section that power gain-optimal scattering matrix is also rate-optimal. Can you provide a proof on this point?
+	}
+
+	\comment{
+		The authors refer to \cite{Li2024} for estimating forward and backward channels individually. However, it can be challenging to implement those in real time without RF chains at the \gls{ris}. The impact of imperfect \gls{csi} on the achievable rates may also be studied.
+	}
+
+	\comment{
+		Some sentences are confusing to me and the presentation can be improved. For example, ``a group-wise geodesic \gls{rcg} method that operates directly on the Stiefel manifold''. Please elaborate more on this.
+	}
+\end{reviewer}
+
+
+\begin{reviewer}
+	\summary{
+		This paper analyzes the channel shaping of a \gls{p2p} \gls{mimo} system, assisted by passive diagonal and/or non-diagonal \glspl{ris} to enhance power and rate gains. Overall, the topic is timely and interesting. Using \gls{ao}, a local optimal solution of the rate maximization for the \gls{bd}-\gls{ris}-assisted \gls{mimo} \gls{p2p} system is obtained. It is shown that \gls{bd}-\gls{ris} improve the achievable rate. To the best of my knowledge, the analysis is solid. However, there are some suggestions for improving the paper further.
+	}
+
+	\comment{
+		The results for the \gls{p2p} system are insightful. However, a \gls{p2p} system is not typically considered a practical system. It is challenging to extend the results to a system with interfering signals, where the goal is not only to enhance the channel gain of the desired links but also simultaneously to reduce the channel gain of the interfering links. It is more interesting to investigate the rate region of $K$-user \glspl{ic}. It is expected that the authors provide an analysis of the (max-min and sum) rate maximization of multi-user \gls{mimo} systems, assisted by \gls{bd}-\glspl{ris}.
+	}
+
+	\comment{
+		\gls{bd}-\glspl{ris} provide a greater number of optimization variables but at the expense of increased computational and implementation complexities. While the computational complexities of the proposed solutions are discussed in the paper, a comparison with \gls{d}-\gls{ris} is missing, which should be explicitly addressed in both the introduction and the main body. Additionally, the implementation complexities of \gls{bd}-\glspl{ris}, particularly in comparison to \gls{d}-\gls{ris}, necessitate a more comprehensive analysis. For instance, as highlighted in \cite{Soleymani2024b}, the energy efficiency of a \gls{bd}-\gls{ris} is significantly influenced by the static power consumption of its circuit elements. If the implementation cost of a \gls{bd}-\gls{ris} is substantial, its performance advantages could be considerably reduced.
+	}
+
+	\comment{
+		The authors considered a passive \gls{ris} architecture. However, another passive configuration, termed \gls{gp}, is discussed in \cite{Fotock2023,Soleymani2024a}. Employing \gls{ao}, the resulting optimization problem to update $\mathbf{\Theta}$ is convex. Comparing the proposed solutions with a globally passive \gls{bd}-\gls{ris} would provide valuable insights into the performance gains obtained by relaxing the (locally) passive assumption. Hence, it is highly recommended to add the \gls{gp} (both \gls{bd} and diagonal) architecture as a benchmark in the numerical results.
+	}
+
+% 3) The authors considered a passive RIS architecture. However, another passive configuration, termed globally passive (GP), is discussed in [b], [c]. Employing AO, the resulting optimization problem to update $\Theta$ is convex. Comparing the proposed solutions with a globally passive BD-RIS would provide valuable insights into the performance gains obtained by relaxing the (locally) passive assumption. Hence, it is highly recommended to add the GP (both BD and diagonal) architecture as a benchmark in the numerical results.
 
 \end{reviewer}
 
