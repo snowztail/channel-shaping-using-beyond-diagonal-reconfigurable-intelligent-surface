@@ -9,7 +9,7 @@ function [Theta, H] = scatter_rate(H_d, H_f, H_b, W, L, P_n)
 	G = length(Theta) / L;
 	H = channel_aggregate(H_d, H_f, H_b, Theta);
 	[G_e, G_r, D] = deal(zeros(size(Theta)));
-	[iter.converge, iter.tolerance, iter.counter, iter.R] = deal(false, 1e-4, 0, rate_mimo(H, W, P_n));
+	[iter.converge, iter.tolerance, iter.counter, iter.R] = deal(false, 1e-3, 0, rate_mimo(H, W, P_n));
 	while ~iter.converge
 		[iter.G_r, iter.D] = deal(G_r, D);
 		for g = 1 : G

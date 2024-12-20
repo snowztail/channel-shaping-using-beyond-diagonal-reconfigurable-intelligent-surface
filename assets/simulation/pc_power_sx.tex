@@ -1,0 +1,129 @@
+% This file was created by matlab2tikz.
+%
+%The latest updates can be retrieved from
+%  http://www.mathworks.com/matlabcentral/fileexchange/22022-matlab2tikz-matlab2tikz
+%where you can also make suggestions and rate matlab2tikz.
+%
+\definecolor{mycolor1}{rgb}{0.00000,0.44700,0.74100}%
+\definecolor{mycolor2}{rgb}{0.00000,0.44706,0.74118}%
+\definecolor{mycolor3}{rgb}{0.85000,0.32500,0.09800}%
+\definecolor{mycolor4}{rgb}{0.85098,0.32549,0.09804}%
+\definecolor{mycolor5}{rgb}{0.92900,0.69400,0.12500}%
+\definecolor{mycolor6}{rgb}{0.92941,0.69412,0.12549}%
+\definecolor{mycolor7}{rgb}{0.49400,0.18400,0.55600}%
+\definecolor{mycolor8}{rgb}{0.49412,0.18431,0.55686}%
+\definecolor{mycolor9}{rgb}{0.46600,0.67400,0.18800}%
+\definecolor{mycolor10}{rgb}{0.46667,0.67451,0.18824}%
+\definecolor{mycolor11}{rgb}{0.30100,0.74500,0.93300}%
+\definecolor{mycolor12}{rgb}{0.50196,0.50196,0.50196}%
+%
+\begin{tikzpicture}
+
+\begin{axis}[%
+width=7.607cm,
+height=6cm,
+at={(0cm,0cm)},
+scale only axis,
+xmin=1,
+xmax=9,
+xtick={1,2,3,4,5,6,7,8,9},
+xticklabels={{$2^0$},{$2^1$},{$2^2$},{$2^3$},{$2^4$},{$2^5$},{$2^6$},{$2^7$},{$2^8$}},
+xlabel style={font=\color{white!15!black}},
+xlabel={RIS Group Size},
+ymin=0,
+ymax=0.000115972877397993,
+ylabel style={font=\color{white!15!black}},
+ylabel={Channel Power [W]},
+axis background/.style={fill=white},
+xmajorgrids,
+ymajorgrids,
+legend style={at={(0.03,0.97)}, anchor=north west, legend cell align=left, align=left, draw=white!15!black}
+]
+\addplot[only marks, mark=o, mark options={}, mark size=1.5000pt, draw=mycolor2, forget plot] table[row sep=crcr]{%
+x	y\\
+5	7.97355699434511e-07\\
+};
+\addplot[only marks, mark=o, mark options={}, mark size=1.5000pt, draw=mycolor4, forget plot] table[row sep=crcr]{%
+x	y\\
+6	2.44467374534077e-06\\
+};
+\addplot[only marks, mark=o, mark options={}, mark size=1.5000pt, draw=mycolor6, forget plot] table[row sep=crcr]{%
+x	y\\
+7	8.20688590246789e-06\\
+};
+\addplot[only marks, mark=o, mark options={}, mark size=1.5000pt, draw=mycolor8, forget plot] table[row sep=crcr]{%
+x	y\\
+8	2.92944232352197e-05\\
+};
+\addplot[only marks, mark=o, mark options={}, mark size=1.5000pt, draw=mycolor10, forget plot] table[row sep=crcr]{%
+x	y\\
+9	0.000111116834986807\\
+};
+\addplot[only marks, mark=o, mark options={}, mark size=1.5000pt, draw=mycolor12] table[row sep=crcr]{%
+x	y\\
+nan	nan\\
+};
+\addlegendentry{Explicit}
+
+\addplot [color=mycolor2, line width=2.0pt]
+  table[row sep=crcr]{%
+1	5.51363207462289e-07\\
+2	6.17838345393838e-07\\
+3	6.94081419821408e-07\\
+4	7.63324397997057e-07\\
+5	7.94677730055977e-07\\
+};
+\addlegendentry{$N_\mathrm{S} = 16$}
+
+\addplot [color=mycolor4, dashed, line width=2.0pt]
+  table[row sep=crcr]{%
+1	1.30519166344131e-06\\
+2	1.51964370152397e-06\\
+3	1.79956076598358e-06\\
+4	2.10847595748834e-06\\
+5	2.3477592673609e-06\\
+6	2.43406248970469e-06\\
+};
+\addlegendentry{$N_\mathrm{S} = 32$}
+
+\addplot [color=mycolor6, dotted, line width=2.0pt]
+  table[row sep=crcr]{%
+1	3.16119975748769e-06\\
+2	3.88133615484106e-06\\
+3	4.87201167139358e-06\\
+4	6.11096564201415e-06\\
+5	7.28532076153866e-06\\
+6	7.9551284625515e-06\\
+7	8.16535091594136e-06\\
+};
+\addlegendentry{$N_\mathrm{S} = 64$}
+
+\addplot [color=mycolor8, dashdotted, line width=2.0pt]
+  table[row sep=crcr]{%
+1	7.99146649497458e-06\\
+2	1.02693781311302e-05\\
+3	1.37563764650888e-05\\
+4	1.84275764187614e-05\\
+5	2.36208009984931e-05\\
+6	2.71324017455215e-05\\
+7	2.86565226414964e-05\\
+8	2.91315486667727e-05\\
+};
+\addlegendentry{$N_\mathrm{S} = 128$}
+
+\addplot [color=mycolor10, line width=2.0pt]
+  table[row sep=crcr]{%
+1	2.17362015080784e-05\\
+2	2.95367070411585e-05\\
+3	4.18294037335918e-05\\
+4	5.98380359097175e-05\\
+5	8.17678733318869e-05\\
+6	9.81422641039276e-05\\
+7	0.000106055811251013\\
+8	0.000109356733903547\\
+9	0.00011045035942666\\
+};
+\addlegendentry{$N_\mathrm{S} = 256$}
+
+\end{axis}
+\end{tikzpicture}%

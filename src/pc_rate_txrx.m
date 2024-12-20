@@ -4,7 +4,7 @@ clc; clear; close; setup;
 [transmit.power, receive.noise] = deal(db2pow(-20 : 5 : 20), db2pow(-75));
 [channel.pathloss.direct, channel.pathloss.forward, channel.pathloss.backward] = deal(db2pow(-65), db2pow(-54), db2pow(-46));
 [transmit.snr, reflect.bond] = deal(pow2db(transmit.power * channel.pathloss.direct ./ receive.noise), [1, reflect.antenna]);
-[number.bond, number.power, number.antenna, number.realization] = deal(length(reflect.bond), length(transmit.power), length(transmit.antenna), 100);
+[number.bond, number.power, number.antenna, number.realization] = deal(length(reflect.bond), length(transmit.power), length(transmit.antenna), 1e2);
 
 for r = 1 : number.realization
 	for a = 1 : number.antenna
@@ -29,7 +29,7 @@ for r = 1 : number.realization
 	end
 end
 receive.rate = mean(receive.rate, ndims(receive.rate));
-save('data/rate_txrx.mat');
+save('data/pc_rate_txrx.mat');
 
 figure('Name', 'Achievable Rate vs Transmit and Receive Antenna', 'Position', [0, 0, 500, 400]);
 hold all;
@@ -41,5 +41,5 @@ style_plot(handle.rate, 2);
 hold off; grid on; box on; legend('Location', 'nw');
 xlabel('Transmit Power [dB]');
 ylabel('Achievable Rate [bit/s/Hz]');
-savefig('plots/rate_txrx.fig');
-matlab2tikz('../assets/simulation/rate_txrx.tex', 'width', '10cm', 'height', '7.5cm');
+savefig('plots/pc_rate_txrx.fig');
+matlab2tikz('../assets/simulation/pc_rate_txrx.tex', 'width', '10cm', 'height', '7.5cm');

@@ -4,7 +4,7 @@ clc; clear; close; setup;
 [transmit.power, receive.noise] = deal(db2pow(-20 : 5 : 20), db2pow(-75));
 [channel.pathloss.direct, channel.pathloss.forward, channel.pathloss.backward] = deal(db2pow(-65), db2pow(-54), db2pow(-46));
 transmit.snr = pow2db(transmit.power * channel.pathloss.direct ./ receive.noise);
-[number.bond, number.power, number.antenna, number.realization] = deal(2, length(transmit.power), length(reflect.antenna), 100);
+[number.bond, number.power, number.antenna, number.realization] = deal(2, length(transmit.power), length(reflect.antenna), 2);
 
 for r = 1 : number.realization
 	% * No RIS
@@ -37,7 +37,7 @@ for r = 1 : number.realization
 end
 receive.rate.direct = mean(receive.rate.direct, ndims(receive.rate.direct));
 receive.rate.aggregate = mean(receive.rate.aggregate, ndims(receive.rate.aggregate));
-save('data/rate_sx.mat');
+save('data/pc_rate_sx.mat');
 
 figure('Name', 'Achievable Rate vs RIS Configuration', 'Position', [0, 0, 500, 400]);
 hold all;
@@ -50,5 +50,5 @@ style_plot(handle.rate.aggregate, number.bond);
 hold off; grid on; box on; legend('Location', 'nw');
 xlabel('Transmit Power [dB]');
 ylabel('Achievable Rate [bit/s/Hz]');
-savefig('plots/rate_sx.fig');
-matlab2tikz('../assets/simulation/rate_sx.tex', 'width', '10cm', 'height', '7.5cm');
+savefig('plots/pc_rate_sx.fig');
+matlab2tikz('../assets/simulation/pc_rate_sx.tex', 'width', '10cm', 'height', '7.5cm');

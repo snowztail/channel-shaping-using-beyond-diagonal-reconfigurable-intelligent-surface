@@ -1,0 +1,93 @@
+% This file was created by matlab2tikz.
+%
+%The latest updates can be retrieved from
+%  http://www.mathworks.com/matlabcentral/fileexchange/22022-matlab2tikz-matlab2tikz
+%where you can also make suggestions and rate matlab2tikz.
+%
+\definecolor{mycolor1}{rgb}{0.00000,0.44706,0.74118}%
+\definecolor{mycolor2}{rgb}{0.85098,0.32549,0.09804}%
+\definecolor{mycolor3}{rgb}{0.92941,0.69412,0.12549}%
+\definecolor{mycolor4}{rgb}{0.49412,0.18431,0.55686}%
+%
+\begin{tikzpicture}
+
+\begin{axis}[%
+width=7.607cm,
+height=6cm,
+at={(0cm,0cm)},
+scale only axis,
+xmin=1,
+xmax=9,
+xtick={1,2,3,4,5,6,7,8,9},
+xticklabels={{$2^0$},{$2^1$},{$2^2$},{$2^3$},{$2^4$},{$2^5$},{$2^6$},{$2^7$},{$2^8$}},
+xlabel style={font=\color{white!15!black}},
+xlabel={RIS Group Size},
+ymin=0.000235,
+ymax=0.000241,
+ylabel style={font=\color{white!15!black}},
+ylabel={Leakage Interference [W]},
+axis background/.style={fill=white},
+xmajorgrids,
+ymajorgrids,
+legend style={legend cell align=left, align=left, draw=white!15!black}
+]
+\addplot [color=black, line width=2.0pt]
+  table[row sep=crcr]{%
+1	0.000240141571206762\\
+2	0.000240141571206762\\
+3	0.000240141571206762\\
+4	0.000240141571206762\\
+5	0.000240141571206762\\
+6	0.000240141571206762\\
+7	0.000240141571206762\\
+8	0.000240141571206762\\
+9	0.000240141571206762\\
+};
+\addlegendentry{No RIS}
+
+\addplot [color=mycolor1, line width=2.0pt]
+  table[row sep=crcr]{%
+1	0.000240105703938843\\
+2	0.00024009260250466\\
+3	0.000240076795061851\\
+};
+\addlegendentry{$N_\mathrm{S} = 4$}
+
+\addplot [color=mycolor2, dashed, line width=2.0pt]
+  table[row sep=crcr]{%
+1	0.000240003492361074\\
+2	0.00023995295961255\\
+3	0.000239892941920869\\
+4	0.000239848556415014\\
+5	0.000239813838236537\\
+};
+\addlegendentry{$N_\mathrm{S} = 16$}
+
+\addplot [color=mycolor3, dotted, line width=2.0pt]
+  table[row sep=crcr]{%
+1	0.000239588620497906\\
+2	0.000239407764512751\\
+3	0.00023919289905972\\
+4	0.00023900370010785\\
+5	0.000238871285519966\\
+6	0.000238797872025858\\
+7	0.000238761244536266\\
+};
+\addlegendentry{$N_\mathrm{S} = 64$}
+
+\addplot [color=mycolor4, dashdotted, line width=2.0pt]
+  table[row sep=crcr]{%
+1	0.000238087662476826\\
+2	0.000237463475481508\\
+3	0.000236709308802868\\
+4	0.000236071687617869\\
+5	0.000235634478491341\\
+6	0.000235390644540626\\
+7	0.000235271016546214\\
+8	0.000235216727962089\\
+9	0.000235195347908902\\
+};
+\addlegendentry{$N_\mathrm{S} = 256$}
+
+\end{axis}
+\end{tikzpicture}%

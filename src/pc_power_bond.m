@@ -13,8 +13,8 @@ for r = 1 : number.realization
 	channel.forward = sqrt(channel.pathloss.forward) * fading_nlos(reflect.antenna, transmit.antenna);
 	channel.backward = sqrt(channel.pathloss.backward) * fading_nlos(receive.antenna, reflect.antenna);
 	channel.power.cascaded(r) = sum(svds(channel.backward, channel.rank) .^ 2 .* svds(channel.forward, channel.rank) .^ 2);
-	clear scatter_power_max;
 	for b = 1 : number.bond
+		clear scatter_power_max;
 		[reflect.beamformer, channel.aggregate] = scatter_power_max(channel.direct, channel.forward, channel.backward, reflect.bond(b));
 		channel.power.aggregate(b, r) = norm(channel.aggregate, 'fro') ^ 2;
 	end
@@ -22,7 +22,7 @@ end
 channel.power.direct = mean(channel.power.direct, ndims(channel.power.direct));
 channel.power.cascaded = mean(channel.power.cascaded, ndims(channel.power.cascaded));
 channel.power.aggregate = mean(channel.power.aggregate, ndims(channel.power.aggregate));
-save('data/power_bond.mat');
+save('data/pc_power_bond.mat');
 
 figure('Name', 'Channel Power vs RIS Group Size', 'Position', [0, 0, 500, 400]);
 set(gca, 'XLim', [0, number.bond + 1], 'XTick', 1 : number.bond, 'XTickLabel', reflect.bond, 'YLim', [0, max(channel.power.aggregate) * 1.1]);
@@ -37,5 +37,5 @@ set(handle.power.cascaded, 'Color', '#ED8198', 'Marker', 'none', 'LineStyle', '-
 hold off; grid on; box on; legend('Location', 'se');
 xlabel('RIS Group Size');
 ylabel('Channel Power [W]');
-savefig('plots/power_bond.fig');
-matlab2tikz('../assets/simulation/power_bond.tex', 'width', '8cm', 'height', '6cm');
+savefig('plots/pc_power_bond.fig');
+matlab2tikz('../assets/simulation/pc_power_bond.tex', 'width', '8cm', 'height', '6cm');

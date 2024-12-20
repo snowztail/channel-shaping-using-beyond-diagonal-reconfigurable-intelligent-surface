@@ -1,0 +1,121 @@
+% This file was created by matlab2tikz.
+%
+%The latest updates can be retrieved from
+%  http://www.mathworks.com/matlabcentral/fileexchange/22022-matlab2tikz-matlab2tikz
+%where you can also make suggestions and rate matlab2tikz.
+%
+\definecolor{mycolor1}{rgb}{0.00000,0.44706,0.74118}%
+\definecolor{mycolor2}{rgb}{0.85098,0.32549,0.09804}%
+%
+\begin{tikzpicture}
+
+\begin{axis}[%
+width=7.607cm,
+height=6cm,
+at={(0cm,0cm)},
+scale only axis,
+xmin=1,
+xmax=7,
+xtick={1,2,3,4,5,6,7},
+xticklabels={{$2^0$},{$2^1$},{$2^2$},{$2^3$},{$2^4$},{$2^5$},{$2^6$}},
+xlabel style={font=\color{white!15!black}},
+xlabel={RIS Group Size},
+ymin=0,
+ymax=9e-07,
+ylabel style={font=\color{white!15!black}},
+ylabel={Channel Power [W]},
+axis background/.style={fill=white},
+xmajorgrids,
+ymajorgrids,
+legend style={at={(0.03,0.97)}, anchor=north west, legend cell align=left, align=left, draw=white!15!black}
+]
+\addplot [color=mycolor1, line width=2.0pt, mark=o, mark options={solid, mycolor1}]
+  table[row sep=crcr]{%
+1	3.07226159314351e-08\\
+2	4.11492399332381e-08\\
+3	4.88148530601955e-08\\
+4	5.26094766034717e-08\\
+5	5.43186358023285e-08\\
+};
+\addlegendentry{Asymmetric: $N_\mathrm{S} = 16$}
+
+\addplot [color=mycolor1, dashed, line width=2.0pt, mark=o, mark options={solid, mycolor1}]
+  table[row sep=crcr]{%
+1	3.07226159314351e-08\\
+2	2.48110921829919e-08\\
+3	2.09999716084868e-08\\
+4	1.85392359072275e-08\\
+5	1.69392170352418e-08\\
+};
+\addlegendentry{Symmetric-Enforced: $N_\mathrm{S} = 16$}
+
+\addplot [color=mycolor1, dotted, line width=2.0pt, mark=o, mark options={solid, mycolor1}]
+  table[row sep=crcr]{%
+1	2.18823167401622e-08\\
+2	2.58667252589526e-08\\
+3	3.6393122841988e-08\\
+4	4.41807731672663e-08\\
+5	4.8483723780213e-08\\
+};
+\addlegendentry{Symmetric-Legacy: $N_\mathrm{S} = 16$}
+
+\addplot [color=mycolor1, dashdotted, line width=2.0pt, mark=o, mark options={solid, mycolor1}]
+  table[row sep=crcr]{%
+1	3.07226159314351e-08\\
+2	3.78824565046636e-08\\
+3	4.6008649901077e-08\\
+4	5.13929112888468e-08\\
+5	5.39731769119744e-08\\
+};
+\addlegendentry{Symmetric-Takagi: $N_\mathrm{S} = 16$}
+
+\addplot [color=mycolor2, line width=2.0pt, mark=+, mark options={solid, mycolor2}]
+  table[row sep=crcr]{%
+1	3.73674394477017e-07\\
+2	5.420346500246e-07\\
+3	6.85389992643681e-07\\
+4	7.6227451113248e-07\\
+5	8.0069480829595e-07\\
+6	8.18206267524393e-07\\
+7	8.25088677505729e-07\\
+};
+\addlegendentry{Asymmetric: $N_\mathrm{S} = 64$}
+
+\addplot [color=mycolor2, dashed, line width=2.0pt, mark=+, mark options={solid, mycolor2}]
+  table[row sep=crcr]{%
+1	3.73674394477017e-07\\
+2	3.06957520044884e-07\\
+3	2.68618316241873e-07\\
+4	2.45748953801729e-07\\
+5	2.27807576071471e-07\\
+6	2.22821968007804e-07\\
+7	2.16970499497674e-07\\
+};
+\addlegendentry{Symmetric-Enforced: $N_\mathrm{S} = 64$}
+
+\addplot [color=mycolor2, dotted, line width=2.0pt, mark=+, mark options={solid, mycolor2}]
+  table[row sep=crcr]{%
+1	3.02768340133104e-07\\
+2	3.67874038919462e-07\\
+3	5.47929160259681e-07\\
+4	6.80081694767098e-07\\
+5	7.48298918253076e-07\\
+6	7.85561233493806e-07\\
+7	8.04051669342744e-07\\
+};
+\addlegendentry{Symmetric-Legacy: $N_\mathrm{S} = 64$}
+
+\addplot [color=mycolor2, dashdotted, line width=2.0pt, mark=+, mark options={solid, mycolor2}]
+  table[row sep=crcr]{%
+1	3.73674394477017e-07\\
+2	4.73667276858297e-07\\
+3	6.21291346950978e-07\\
+4	7.28822615730252e-07\\
+5	7.83509460162992e-07\\
+6	8.10199796739281e-07\\
+7	8.22445224822532e-07\\
+};
+\addlegendentry{Symmetric-Takagi: $N_\mathrm{S} = 64$}
+
+\end{axis}
+\end{tikzpicture}%

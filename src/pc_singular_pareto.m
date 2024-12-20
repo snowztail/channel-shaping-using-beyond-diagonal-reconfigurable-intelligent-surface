@@ -39,7 +39,7 @@ for r = 1 : number.realization
 end
 channel.singular.direct = mean(channel.singular.direct, ndims(channel.singular.direct));
 channel.singular.aggregate = mean(channel.singular.aggregate, ndims(channel.singular.aggregate));
-% save('data/singular_pareto.mat');
+save('data/pc_singular_pareto.mat');
 
 figure('Name', 'Channel Singular Value Pareto Front vs RIS Group Size', 'Position', [0, 0, 500, 400]);
 hold all;
@@ -53,5 +53,5 @@ style_plot(handle.singular.pareto);
 hold off; grid on; xlim tight; ylim tight; box on; legend([handle.singular.direct, handle.singular.pareto], 'Location', 'nw');
 xlabel('$\sigma_1(\mathbf{H})$');
 ylabel('$\sigma_2(\mathbf{H})$');
-% savefig('plots/singular_pareto.fig');
-% matlab2tikz('../assets/simulation/singular_pareto.tex', 'width', '8cm', 'height', '6cm', 'extraaxisoptions', {'every axis plot/.append style={line width=1.5pt}'});
+savefig('plots/pc_singular_pareto.fig');
+matlab2tikz('../assets/simulation/pc_singular_pareto.tex', 'width', '8cm', 'height', '6cm', 'extraaxisoptions', {'every axis plot/.append style={line width=1.5pt}'});

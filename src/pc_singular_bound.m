@@ -29,7 +29,7 @@ channel.singular.direct = mean(channel.singular.direct, ndims(channel.singular.d
 channel.singular.auxiliary = mean(channel.singular.auxiliary, ndims(channel.singular.auxiliary));
 channel.singular.aggregate.min = mean(channel.singular.aggregate.min, ndims(channel.singular.aggregate.min));
 channel.singular.aggregate.max = mean(channel.singular.aggregate.max, ndims(channel.singular.aggregate.max));
-save('data/singular_bound.mat');
+save('data/pc_singular_bound.mat');
 
 handle.singular = plotBarStackGroups(cat(3, channel.singular.aggregate.min, channel.singular.direct - channel.singular.aggregate.min, channel.singular.aggregate.max - channel.singular.direct), cellstr('$\sigma_' + string(vec(1 : channel.rank.direct)) + '(\mathbf{H})$'));
 for w = 1 : number.weight
@@ -38,8 +38,8 @@ end
 set(handle.bound, {'Color'}, {'#77AC30'}, {'LineStyle'}, {'-'; '--'; ':'; '-.'}, {'DisplayName'}, cellstr('$\sigma_' + string(vec(1 : channel.rank.direct)) + '(\mathbf{T})$'));
 hold off; grid on; box on; legend('Location', 'ne', 'NumColumns', 2);
 ylabel('Amplitude');
-savefig('plots/singular_bound.fig');
-matlab2tikz('../assets/simulation/singular_bound.tex', 'width', '10cm', 'height', '7.5cm', 'extraaxisoptions', {'legend columns=4', 'transpose legend', 'legend style={/tikz/column 2/.style={column sep=5pt}}'});
+savefig('plots/pc_singular_bound.fig');
+matlab2tikz('../assets/simulation/pc_singular_bound.tex', 'width', '10cm', 'height', '7.5cm', 'extraaxisoptions', {'legend columns=4', 'transpose legend', 'legend style={/tikz/column 2/.style={column sep=5pt}}'});
 
 function [H_a] = channel_auxiliary(H_d, H_f)
 	[~, ~, V_f] = svds(H_f, rank(H_f));

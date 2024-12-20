@@ -11,7 +11,7 @@ for s1 = 1 : reflect.sample
 		channel.singular.symmtary(s1, s2, :) = svd(channel.backward * scatter_2x2_symmtary(reflect.azimuth(s1, s2), reflect.elevation(s1, s2)) * channel.forward);
 	end
 end
-save('data/singular_trend.mat');
+save('data/pc_singular_trend.mat');
 
 figure('Name', 'Channel Singular Value vs RIS Configuration', 'Position', [0, 0, 500, 400]);
 handle.window = tiledlayout(2, 1);
@@ -49,8 +49,8 @@ zlabel({'Singular Value'});
 set(gca, 'XTick', 0 : pi / 2 : 2 * pi, 'YTick', 0 : pi / 2 : 2 * pi, 'XTickLabel',{'0', '0.5$\pi$', '$\pi$', '1.5$\pi$', '2$\pi$'}, 'YTickLabel',{'0', '0.5$\pi$', '$\pi$', '1.5$\pi$', '2$\pi$'});
 title('Symmetry Unitary BD-RIS');
 linkaxes(handle.axis);
-savefig('plots/singular_trend.fig');
-saveas(gcf, '../assets/simulation/singular_trend', 'epsc');
+savefig('plots/pc_singular_trend.fig');
+saveas(gcf, '../assets/simulation/pc_singular_trend', 'epsc');
 
 
 function [Theta] = scatter_2x2_diagonal(theta_1, theta_2)

@@ -5,7 +5,7 @@ clc; clear; close; setup;
 [channel.pathloss.direct, channel.pathloss.forward, channel.pathloss.backward] = deal(db2pow(-65), db2pow(-54), db2pow(-46));
 [channel.kfactor.direct, channel.kfactor.forward, channel.kfactor.backward] = deal(0, [0, 10, inf], [0, 10, inf]);
 [transmit.snr, reflect.bond] = deal(pow2db(transmit.power * channel.pathloss.direct ./ receive.noise), [1, reflect.antenna]);
-[number.bond, number.power, number.kfactor, number.realization] = deal(length(reflect.bond), length(transmit.power), length(channel.kfactor.forward), 100);
+[number.bond, number.power, number.kfactor, number.realization] = deal(length(reflect.bond), length(transmit.power), length(channel.kfactor.forward), 1e2);
 
 for r = 1 : number.realization
 	for k = 1 : number.kfactor
@@ -30,7 +30,7 @@ for r = 1 : number.realization
 	end
 end
 receive.rate = mean(receive.rate, ndims(receive.rate));
-save('data/rate_kfactor.mat');
+save('data/pc_rate_kfactor.mat');
 
 figure('Name', 'Achievable Rate vs Ricean K Factor', 'Position', [0, 0, 500, 400]);
 hold all;
@@ -47,5 +47,5 @@ style_plot(handle.rate, 2);
 hold off; grid on; box on; legend('Location', 'nw');
 xlabel('Transmit Power [dB]');
 ylabel('Achievable Rate [bit/s/Hz]');
-savefig('plots/rate_kfactor.fig');
-matlab2tikz('../assets/simulation/rate_kfactor.tex', 'width', '10cm', 'height', '7.5cm');
+savefig('plots/pc_rate_kfactor.fig');
+matlab2tikz('../assets/simulation/pc_rate_kfactor.tex', 'width', '10cm', 'height', '7.5cm');

@@ -5,7 +5,7 @@ clc; clear; close; setup;
 [channel.pathloss.direct, channel.pathloss.forward, channel.pathloss.backward] = deal(db2pow(-65), db2pow(-54), db2pow(-46));
 % transmit.snr.direct = db2pow(-20 : 5 : 20);
 [transmit.snr, reflect.bond] = deal(pow2db(transmit.power .* channel.pathloss.direct ./ receive.noise), [1, 4, reflect.antenna]);
-[number.bond, number.power, number.realization, flag.direct] = deal(length(reflect.bond), length(transmit.power), 100, true);
+[number.bond, number.power, number.realization, flag.direct] = deal(length(reflect.bond), length(transmit.power), 1e2, true);
 
 for r = 1 : number.realization
 	% * No RIS
@@ -42,7 +42,7 @@ end
 receive.rate.direct = mean(receive.rate.direct, ndims(receive.rate.direct));
 receive.rate.alternate = mean(receive.rate.alternate, ndims(receive.rate.alternate));
 receive.rate.decouple = mean(receive.rate.decouple, ndims(receive.rate.decouple));
-save('data/rate_beamforming.mat');
+save('data/pc_rate_beamforming.mat');
 
 figure('Name', 'Achievable Rate vs Beamforming Design', 'Position', [0, 0, 500, 400]);
 hold all;
@@ -55,5 +55,5 @@ style_plot(handle.rate.aggregate, 2);
 hold off; grid on; box on; legend('Location', 'nw');
 xlabel('Transmit Power [dB]');
 ylabel('Achievable Rate [bit/s/Hz]');
-savefig('plots/rate_beamforming.fig');
-matlab2tikz('../assets/simulation/rate_beamforming.tex', 'width', '10cm', 'height', '7.5cm');
+savefig('plots/pc_rate_beamforming.fig');
+matlab2tikz('../assets/simulation/pc_rate_beamforming.tex', 'width', '10cm', 'height', '7.5cm');

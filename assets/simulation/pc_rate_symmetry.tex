@@ -1,0 +1,129 @@
+% This file was created by matlab2tikz.
+%
+%The latest updates can be retrieved from
+%  http://www.mathworks.com/matlabcentral/fileexchange/22022-matlab2tikz-matlab2tikz
+%where you can also make suggestions and rate matlab2tikz.
+%
+\definecolor{mycolor1}{rgb}{0.00000,0.44706,0.74118}%
+\definecolor{mycolor2}{rgb}{0.85098,0.32549,0.09804}%
+%
+\begin{tikzpicture}
+
+\begin{axis}[%
+width=9.509cm,
+height=7.5cm,
+at={(0cm,0cm)},
+scale only axis,
+xmin=-20,
+xmax=20,
+xlabel style={font=\color{white!15!black}},
+xlabel={Transmit Power [dB]},
+ymin=0,
+ymax=60,
+ylabel style={font=\color{white!15!black}},
+ylabel={Achievable Rate [bit/s/Hz]},
+axis background/.style={fill=white},
+xmajorgrids,
+ymajorgrids,
+legend style={at={(0.03,0.97)}, anchor=north west, legend cell align=left, align=left, draw=white!15!black}
+]
+\addplot [color=black, line width=2.0pt]
+  table[row sep=crcr]{%
+-20	0.869712506220171\\
+-15	2.11804892861715\\
+-10	4.32580899488593\\
+-5	7.87508759965494\\
+0	12.6780205038048\\
+5	18.1780871974283\\
+10	24.328728256457\\
+15	30.8030513368595\\
+20	37.3917434238629\\
+};
+\addlegendentry{No RIS}
+
+\addplot [color=mycolor1, line width=2.0pt, mark=o, mark options={solid, mycolor1}]
+  table[row sep=crcr]{%
+-20	1.05029082922333\\
+-15	2.47337886006358\\
+-10	4.92048529343925\\
+-5	8.90477411631522\\
+0	13.9570874291404\\
+5	19.8957463831554\\
+10	26.2933401587038\\
+15	32.8565936354346\\
+20	39.4746708507294\\
+};
+\addlegendentry{Asymmetric BD: $N_\mathrm{S} = 16$}
+
+\addplot [color=mycolor1, dashed, line width=2.0pt, mark=o, mark options={solid, mycolor1}]
+  table[row sep=crcr]{%
+-20	0.970760076661331\\
+-15	2.3188320234014\\
+-10	4.64280739162619\\
+-5	8.41835694674129\\
+0	13.3604486433245\\
+5	19.094165557721\\
+10	25.4186344249109\\
+15	31.9565133951396\\
+20	38.5663724097166\\
+};
+\addlegendentry{Symmetric-Enforced BD: $N_\mathrm{S} = 16$}
+
+\addplot [color=mycolor1, dotted, line width=2.0pt, mark=o, mark options={solid, mycolor1}]
+  table[row sep=crcr]{%
+-20	0.97597456292552\\
+-15	2.30584921620253\\
+-10	4.62292261488193\\
+-5	8.33348997224921\\
+0	13.3557952177725\\
+5	18.9906847997489\\
+10	25.437800763079\\
+15	31.9385728892858\\
+20	38.5311499513319\\
+};
+\addlegendentry{Symmetric-Projected BD: $N_\mathrm{S} = 16$}
+
+\addplot [color=mycolor2, line width=2.0pt, mark=+, mark options={solid, mycolor2}]
+  table[row sep=crcr]{%
+-20	3.77847987240857\\
+-15	6.50928071370314\\
+-10	12.1387730745713\\
+-5	18.5875271015713\\
+0	24.3077905361749\\
+5	33.2971078250378\\
+10	39.928680684664\\
+15	46.5685472744417\\
+20	53.211140381742\\
+};
+\addlegendentry{Asymmetric BD: $N_\mathrm{S} = 256$}
+
+\addplot [color=mycolor2, dashed, line width=2.0pt, mark=+, mark options={solid, mycolor2}]
+  table[row sep=crcr]{%
+-20	2.34847395704067\\
+-15	4.62061866587552\\
+-10	8.87596224335232\\
+-5	14.477655849128\\
+0	20.072194318481\\
+5	28.1693217002636\\
+10	34.7805310048903\\
+15	41.4138537995477\\
+20	48.0542910369292\\
+};
+\addlegendentry{Symmetric-Enforced BD: $N_\mathrm{S} = 256$}
+
+\addplot [color=mycolor2, dotted, line width=2.0pt, mark=+, mark options={solid, mycolor2}]
+  table[row sep=crcr]{%
+-20	2.56771808601858\\
+-15	4.62163031351707\\
+-10	9.02266665728213\\
+-5	15.8352879313011\\
+0	20.2736387755067\\
+5	29.3911431192357\\
+10	35.1742881633618\\
+15	43.1166685548033\\
+20	49.7257139129898\\
+};
+\addlegendentry{Symmetric-Projected BD: $N_\mathrm{S} = 256$}
+
+\end{axis}
+\end{tikzpicture}%
