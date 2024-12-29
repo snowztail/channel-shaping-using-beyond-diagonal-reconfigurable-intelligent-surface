@@ -5,9 +5,9 @@
 % TODO compact or standard SVD
 
 % \title{Channel Shaping Using Beyond Diagonal RIS:\\Analysis, Optimization, and Enhanced Flexibility}
-% \title{MIMO Channel Shaping and Rate Maximization via Beyond Diagonal RIS}
+\title{MIMO Channel Shaping and Rate Maximization\\Using Beyond Diagonal RIS}
 % \title{MIMO Channel Shaping Using Beyond Diagonal RIS: Singular Value Redistribution and Rate Maximization}
-\title{Beyond Diagonal RIS: MIMO Channel Shaping and Rate Maximization}
+% \title{Beyond Diagonal RIS: MIMO Channel Shaping and Rate Maximization}
 \author{
 	\IEEEauthorblockN{
 		Yang Zhao, \IEEEmembership{Member, IEEE,}
@@ -82,7 +82,7 @@
 	% Results show that compared to \gls{d}-\gls{ris}, \gls{bd}-\gls{ris} significantly improves the dynamic range of all channel singular values as well as the trade-off in manipulating them.
 	% We also notice the power and rate gain of \gls{bd}-\gls{ris} over \gls{d}-\gls{ris} increase with the number of scattering elements and \gls{mimo} dimensions.
 	Of particular interest, \gls{bd}-\gls{ris} is shown to activate multi-stream transmission at lower transmit power than \gls{d}-\gls{ris}, hence achieving the asymptotic \gls{dof} at low \gls{snr} thanks to its higher flexibility of shaping the distribution of channel singular values.
-	% wider dynamic range (with better tradeoff) of singular values and significant power and rate gains, especially in large-scale \gls{mimo} systems.
+	% wider dynamic range (with better trade-off) of singular values and significant power and rate gains, especially in large-scale \gls{mimo} systems.
 
 	% indicate that the rate deficit from the latter diminishes as the \gls{ris} evolves from diagonal towards unitary, while the relative gain of \gls{bd}-\gls{ris} increase with \gls{mimo} dimensions and decrease with spatial correlation.
 
@@ -407,7 +407,7 @@
 	$\lvert \cdot \rvert$, $\lVert \cdot \rVert$, and $\lVert \cdot \rVert _\mathrm{F}$ denote the absolute value, Euclidean norm, and Frobenius norm, respectively.
 	$\sigma_n(\cdot)$ and $\lambda_n(\cdot)$ are the $n$-th largest singular value and eigenvalue, respectively.
 	% $\boldsymbol{\sigma}(\cdot)$ and $\boldsymbol{\lambda}(\cdot)$ are the corresponding vectors.
-	$(\cdot)^*$, $(\cdot)^\mathsf{T}$, $(\cdot)^\mathsf{H}$, $(\cdot)^\dagger$ $(\cdot)^{(r)}$, $(\cdot)^{\star}$ denote the conjugate, transpose, conjugate transpose (Hermitian), Moore-Penrose inverse, $r$-th iterated point, and stationary point, respectively.
+	$(\cdot)^*$, $(\cdot)^\mathsf{T}$, $(\cdot)^\mathsf{H}$, $(\cdot)^\dagger$, $(\cdot)^{\star}$ denote the conjugate, transpose, conjugate transpose (Hermitian), Moore-Penrose inverse, and stationary point, respectively.
 	$[N]$ is a shortcut for $\{1,2,\ldots,N\}$.
 	$(\cdot)_{[x:y]}$ is a shortcut for $(\cdot)_x,(\cdot)_{x+1},\ldots,(\cdot)_y$.
 	$\odot$ denotes the element-wise (Hadamard) product.
@@ -453,12 +453,12 @@
 		\end{equation}
 
 		\begin{remark}
-		In \eqref{eq:channel_svd}, the \gls{bd}-\gls{ris} performs a blockwise unitary transformation to combine the backward-forward (intra-group, multiplicative) channels and direct-indirect (inter-group, additive) channels.
-		These two attributes are refined as:
-		\begin{itemize}
-			\item \emph{Branch matching:} It refers to pairing and combining the branches (i.e., entries) of $\mathbf{H}_{\mathrm{B},g}$ and $\mathbf{H}_{\mathrm{F},g}$ through $\mathbf{\Theta}_g$.
-			\item \emph{Mode alignment:} It refers to aligning and ordering the modes (i.e., singular vectors) of $\{\mathbf{H}_g\}_{g \in [G]}$ with those of $\mathbf{H}_\mathrm{D}$ through $\{\mathbf{\Theta}_g\}_{g \in [G]}$.
-		\end{itemize}
+			In \eqref{eq:channel_svd}, the \gls{bd}-\gls{ris} performs a blockwise unitary transformation to combine the backward-forward (intra-group, multiplicative) channels and direct-indirect (inter-group, additive) channels.
+			These two attributes are refined as:
+			\begin{itemize}
+				\item \emph{Branch matching:} It refers to pairing and combining the branches (i.e., entries) of $\mathbf{H}_{\mathrm{B},g}$ and $\mathbf{H}_{\mathrm{F},g}$ through $\mathbf{\Theta}_g$.
+				\item \emph{Mode alignment:} It refers to aligning and ordering the modes (i.e., singular vectors) of $\{\mathbf{H}_g\}_{g \in [G]}$ with those of $\mathbf{H}_\mathrm{D}$ through $\{\mathbf{\Theta}_g\}_{g \in [G]}$.
+			\end{itemize}
 		\end{remark}
 
 		\begin{example}[\gls{siso} channel gain maximization]
@@ -485,14 +485,14 @@
 	\begin{subsection}{MIMO Interference Channel}
 		We also consider a \gls{bd}-\gls{ris} aided \gls{mimo} \gls{ic} of $K$ transceiver pairs where each transmitter and receiver has $N_\mathrm{T}$ and $N_\mathrm{R}$ antennas, respectively, and the \gls{bd}-\gls{ris} has $N_\mathrm{S}$ scattering elements.
 		This configuration is denoted as $(N_\mathrm{T} \times N_\mathrm{S} \times N_\mathrm{R})^K$.
-		Let $\mathbf{H}_\mathrm{D}^{[kj]} \in \mathbb{C}^{N_\mathrm{R} \times N_\mathrm{T}}$, $\mathbf{H}_\mathrm{B}^{[k]} \in \mathbb{C}^{N_\mathrm{R} \times N_\mathrm{S}}$, $\mathbf{H}_\mathrm{F}^{[j]} \in \mathbb{C}^{N_\mathrm{S} \times N_\mathrm{T}}$ denote the direct channel from transmitter $j$ to receiver $k$, the backward channel of receiver $k$, and the forward channel of transmitter $j$, respectively, where $(j,k) \in [K]^2$.
+		Let $\mathbf{H}_\mathrm{D}^{(kj)} \in \mathbb{C}^{N_\mathrm{R} \times N_\mathrm{T}}$, $\mathbf{H}_\mathrm{B}^{(k)} \in \mathbb{C}^{N_\mathrm{R} \times N_\mathrm{S}}$, $\mathbf{H}_\mathrm{F}^{(j)} \in \mathbb{C}^{N_\mathrm{S} \times N_\mathrm{T}}$ denote the direct channel from transmitter $j$ to receiver $k$, the backward channel of receiver $k$, and the forward channel of transmitter $j$, respectively, where $(j,k) \in [K]^2$.
 		Assume all transmitter-\gls{ris}-receiver paths share the same \gls{bd}-\gls{ris} scattering matrix $\mathbf{\Theta}$.
 		The equivalent channel from transmitter $j$ to receiver $k$ is
 		\begin{equation}
-			\mathbf{H}^{[kj]} = \mathbf{H}_\mathrm{D}^{[kj]} + \mathbf{H}_\mathrm{B}^{[k]} \mathbf{\Theta} \mathbf{H}_\mathrm{F}^{[j]} = \mathbf{H}_\mathrm{D}^{[kj]} + \sum_g \mathbf{H}_{\mathrm{B},g}^{[k]} \mathbf{\Theta}_g \mathbf{H}_{\mathrm{F},g}^{[j]},
-			\label{eq:channel_equivalent_ic}
+			\label{eq:channel_interference}
+			\mathbf{H}^{(kj)} = \mathbf{H}_\mathrm{D}^{(kj)} + \mathbf{H}_\mathrm{B}^{(k)} \mathbf{\Theta} \mathbf{H}_\mathrm{F}^{(j)} = \mathbf{H}_\mathrm{D}^{(kj)} + \sum_g \mathbf{H}_{\mathrm{B},g}^{(k)} \mathbf{\Theta}_g \mathbf{H}_{\mathrm{F},g}^{(j)},
 		\end{equation}
-		where $\mathbf{H}_{\mathrm{B},g}^{[k]} \in \mathbb{C}^{N_\mathrm{R} \times L}$ and $\mathbf{H}_{\mathrm{F},g}^{[j]} \in \mathbb{C}^{L \times N_\mathrm{T}}$ are associated with \gls{ris} group $g$, corresponding to the $(g{-}1)L{+}1$ to $gL$ columns of $\mathbf{H}_{\mathrm{B},g}^{[k]}$ and rows of $\mathbf{H}_{\mathrm{F},g}^{[j]}$, respectively,
+		where $\mathbf{H}_{\mathrm{B},g}^{(k)} \in \mathbb{C}^{N_\mathrm{R} \times L}$ and $\mathbf{H}_{\mathrm{F},g}^{(j)} \in \mathbb{C}^{L \times N_\mathrm{T}}$ are associated with \gls{ris} group $g$, corresponding to the $(g{-}1)L{+}1$ to $gL$ columns of $\mathbf{H}_{\mathrm{B},g}^{(k)}$ and rows of $\mathbf{H}_{\mathrm{F},g}^{(j)}$, respectively,
 	\end{subsection}
 \end{section}
 
@@ -586,7 +586,7 @@
 		if $\mathbf{H}_\mathrm{B}$ and $\mathbf{H}_\mathrm{F}$ are at least rank $k$, then
 		with a \gls{d}-\gls{ris} or \gls{bd}-\gls{ris} of sufficiently large $N_\mathrm{S}$,
 		the $n$-th singular value of $\mathbf{H}$ can be enlarged to the $(n-k)$-th singular value of $\mathbf{T}$, or suppressed to the $n$-th singular value of $\mathbf{T}$.
-		Moreover, the first $k$ channel singular values are unbounded above\footnote{The energy conservation law $\sum_n \sigma_n^2(\mathbf{H}) \le 1$ still has to be respected in all cases. This constraint is omitted in context for brevity.} while the last $k$ channel singular values can be suppressed to zero.
+		Moreover, the first $k$ channel singular values are unbounded above\footnote{The energy conservation law $\sum_{n=1}^N \sigma_n^2(\mathbf{H}) \le 1$ still has to be respected in all cases. This constraint is omitted in context for brevity.} while the last $k$ channel singular values can be suppressed to zero.
 		A special case is Corollary \ref{co:los} for \gls{los} channel\footnote{A similar eigenvalue result has been derived for \gls{d}-\gls{ris} only \cite{Semmler2023}.}.
 
 
@@ -807,7 +807,7 @@
 		Corollary \ref{co:nd_capacity_snr_general} also suggests that the power- and rate-optimal scattering matrices \eqref{eq:ris_nd_power_max} and \eqref{eq:ris_nd_rate_max} coincide with each other when the direct channel is negligible and the \gls{bd}-\gls{ris} is fully-connected.
 		When either condition is not satisfied, active and passive beamforming are coupled and the rate-optimal solution involves alternating optimization.
 		However, the power-optimal \gls{ris} still provides for a low-complexity decoupled solution.
-		The details will be discussed in Section~\ref{sc:rate}.
+		The details will be discussed in Section~\ref{sc:rate_pc}.
 
 		\begin{corollary}[Channel capacity at extreme \gls{snr}]
 			\label{co:nd_capacity_snr_extreme}
@@ -857,9 +857,9 @@
 
 		With Proposition \ref{pp:shaping}, one can apply the \emph{relax-then-project} method \cite{Shen2020a,Fang2023} or \emph{non-geodesic\footnote{A geodesic is a curve representing the shortest path between two points in a Riemannian manifold, whose tangent vectors remain parallel when transporting along the curve.} \gls{rcg}} \cite{Li2023b,Li2023c,Zhou2023} to solve Problem \eqref{op:shaping}.
 		The former solves unconstrained problem \eqref{ob:shaping} by quasi-Newton methods and projects the solution back to domain \eqref{cn:shaping_unitary} without guarantee of optimality.
-		The latter generalizes the conjugate gradient methods to Riemannian manifolds and updates the solution by addition and retraction, constituting a zigzag path departing from and returning to the manifold.
+		The latter generalizes the conjugate gradient methods to Riemannian manifolds and updates the solution by addition and retraction, which constitutes a zigzag path departing from and returning to the manifold.
 		Next, we introduce a group-wise \emph{geodesic \gls{rcg}} method modified from \cite{Abrudan2008,Abrudan2009} that performs multiplicative updates along the geodesics on the Stiefel manifold for faster convergence.
-		It is applicable to a wide range of \gls{bd}-\gls{ris} design problems where the objective $f$ is smooth or convex non-smooth (not necessarily the symmetric gauge function \eqref{ob:shaping}) and the only constraint is group-wise unitarity \eqref{cn:shaping_unitary}.
+		It is applicable to a wide range of \gls{bd}-\gls{ris} design problems where the objective $f$ is smooth or convex non-smooth\footnote{$f$ is not necessarily the symmetric gauge function \eqref{ob:shaping}.} and the only constraint is group-wise unitarity \eqref{cn:shaping_unitary}.
 		The steps for updating $\mathbf{\Theta}_g$ at iteration $r$ are summarized below:
 		\begin{enumerate}
 			\item \emph{Compute the Euclidean (sub-)gradient at $\mathbf{\Theta}_g^{(r)}$:} The (sub-)gradient of $f$ with respect to $\mathbf{\Theta}_g$ in the Euclidean space is
@@ -868,18 +868,18 @@
 					\label{eq:gradient_eucl}
 					\nabla_{\mathrm{E},g}^{(r)} = 2 \frac{\partial f(\mathbf{\Theta}_g^{(r)})}{\partial \mathbf{\Theta}_g^*};
 				\end{equation}
-			\item \emph{Translate to the Riemannian gradient at $\mathbf{\Theta}_g^{(r)}$:} At point $\mathbf{\Theta}_g^{(r)}$, the Riemannian gradient gives the steepest ascent direction on the manifold. It lies in the tangent space of the manifold $\mathcal{T}_{\mathbf{\Theta}_g^{(r)}}\mathbb{U}^{L \times L} \triangleq \{\mathbf{M} \in \mathbb{C}^{L \times L} \mid \mathbf{M}^\mathsf{H} \mathbf{\Theta}_g^{(r)} + {\mathbf{\Theta}_g^{(r)\mathsf{H}}} \mathbf{M} = \mathbf{0}\}$ and is obtainable by projection:
+			\item \emph{Translate to the Riemannian (sub-)gradient at $\mathbf{\Theta}_g^{(r)}$:} At point $\mathbf{\Theta}_g^{(r)}$, the Riemannian (sub-)gradient gives the steepest ascent direction on the manifold. It lies in the tangent space of the manifold $\mathcal{T}_{\mathbf{\Theta}_g^{(r)}}\mathbb{U}^{L \times L} \triangleq \{\mathbf{M} \in \mathbb{C}^{L \times L} \mid \mathbf{M}^\mathsf{H} \mathbf{\Theta}_g^{(r)} + {\mathbf{\Theta}_g^{(r)\mathsf{H}}} \mathbf{M} = \mathbf{0}\}$ and is obtainable by projection:
 				\begin{equation}
 					\label{eq:gradient_riem}
 					\nabla_{\mathrm{R},g}^{(r)} = \nabla_{\mathrm{E},g}^{(r)} - \mathbf{\Theta}_g^{(r)} {\nabla_{\mathrm{E},g}^{(r)\mathsf{H}}} \mathbf{\Theta}_g^{(r)};
 				\end{equation}
-			\item \emph{Translate to the Riemannian gradient at the identity:} The Riemannian gradient should be translated back to the identity for exploiting the Lie algebra\footnote{Lie algebra refers to the tangent space of the Lie group at the identity element. A Lie group is simultaneously a continuous group and a differentiable manifold. In this example, $\mathbb{U}^{L \times L}$ formulates a Lie group and the corresponding Lie algebra consists of skew-Hermitian matrices $\mathfrak{u}(L) \triangleq \mathcal{T}_{\mathbf{I}}\mathbb{U}^{L \times L} = \{\mathbf{M} \in \mathbb{C}^{L \times L} \mid \mathbf{M}^\mathsf{H} + \mathbf{M} = \mathbf{0}\}$.}:
+			\item \emph{Translate to the Riemannian (sub-)gradient at the identity:} The Riemannian (sub-)gradient should be translated back to the identity for exploiting the Lie algebra\footnote{Lie algebra refers to the tangent space of the Lie group at the identity element. A Lie group is simultaneously a continuous group and a differentiable manifold. In this example, $\mathbb{U}^{L \times L}$ formulates a Lie group and the corresponding Lie algebra consists of skew-Hermitian matrices $\mathfrak{u}(L) \triangleq \mathcal{T}_{\mathbf{I}}\mathbb{U}^{L \times L} = \{\mathbf{M} \in \mathbb{C}^{L \times L} \mid \mathbf{M}^\mathsf{H} + \mathbf{M} = \mathbf{0}\}$.}:
 				\begin{equation}
 					\label{eq:gradient_riem_tran}
 					\tilde{\nabla}_{\mathrm{R},g}^{(r)} = \nabla_{\mathrm{R},g}^{(r)} \mathbf{\Theta}_g^{(r)\mathsf{H}} = \nabla_{\mathrm{E},g}^{(r)} \mathbf{\Theta}_g^{(r)\mathsf{H}} - \mathbf{\Theta}_g^{(r)} {\nabla_{\mathrm{E},g}^{(r)\mathsf{H}}}.
 					% $\mathcal{O}(2 L^3)$
 				\end{equation}
-			\item \emph{Determine the conjugate direction:} The conjugate direction is obtained over the Riemannian gradient and previous direction as
+			\item \emph{Determine the conjugate direction:} The conjugate direction is obtained over the Riemannian (sub-)gradient and previous direction as
 				\begin{equation}
 					\label{eq:conjugate_dirn_geod}
 					{\mathbf{D}}_g^{(r)} = \tilde{\nabla}_{\mathrm{R},g}^{(r)} + {\gamma}_g^{(r)} {\mathbf{D}}_g^{(r-1)},
@@ -914,15 +914,15 @@
 				\For {$g \gets 1$ to $G$}
 				\State $\nabla_{\mathrm{E},g}^{(r)} \gets$ \eqref{eq:gradient_eucl}, $\tilde{\nabla}_{\mathrm{R},g}^{(r)} \gets$ \eqref{eq:gradient_riem_tran}
 				\State $\tilde{\gamma}_g^{(r)} \gets$ \eqref{eq:conjugate_parm_geod}, $\mathbf{D}_g^{(r)} \gets$ \eqref{eq:conjugate_dirn_geod}
-				\If {$\Re\bigl\{\tr({\mathbf{D}_g^{(r)\mathsf{H}}} \tilde{\nabla}_{\mathrm{R},g}^{(r)})\bigr\} < 0$} \Comment{Non-ascent}
+				\If {$\Re\bigl\{\tr({\mathbf{D}_g^{(r)\mathsf{H}}} \tilde{\nabla}_{\mathrm{R},g}^{(r)})\bigr\} < 0$} \Comment{Not ascent}
 				\State $\mathbf{D}_g^{(r)} \gets \tilde{\nabla}_{\mathrm{R},g}^{(r)}$
 				\EndIf
-				\State $\mu \gets 0.1$ \Comment{Doubling cheaper than halving}
+				\State $\mu \gets 0.1$
 				\State $\mathbf{G}_{\mathbf{\Theta}_g^{(r)}}(\mu) \gets$ \eqref{eq:geodesic_tran}
-				\While {$\scriptstyle f(\mathbf{G}_{\mathbf{\Theta}_g^{(r)}}(2\mu)) - f(\mathbf{\Theta}_g^{(r)}) \ge \mu \cdot \tr(\mathbf{D}_g^{(r)} {\mathbf{D}_g^{(r)\mathsf{H}}}) / 2$} \label{ln:armijo_start}
+				\While {$ f\bigl(\mathbf{G}_{\mathbf{\Theta}_g^{(r)}}(2\mu)\bigr) - f(\mathbf{\Theta}_g^{(r)}) \ge \mu \cdot \frac{\tr(\mathbf{D}_g^{(r)} {\mathbf{D}_g^{(r)\mathsf{H}}})}{2}$}\label{ln:armijo_start}
 				\State $\mu \gets 2 \mu$
 				\EndWhile
-				\While {$\scriptstyle f(\mathbf{G}_{\mathbf{\Theta}_g^{(r)}}(\mu)) - f(\mathbf{\Theta}_g^{(r)}) < \mu / 2 \cdot \tr(\mathbf{D}_g^{(r)} {\mathbf{D}_g^{(r)\mathsf{H}}}) / 2$}
+				\While {$f\bigl(\mathbf{G}_{\mathbf{\Theta}_g^{(r)}}(\mu)\bigr) - f(\mathbf{\Theta}_g^{(r)}) < \frac{\mu}{2} \cdot \frac{\tr(\mathbf{D}_g^{(r)} {\mathbf{D}_g^{(r)\mathsf{H}}})}{2}$}
 				\State $\mu \gets \mu / 2$
 				\EndWhile \label{ln:armijo_end}
 				\State $\mathbf{\Theta}_g^{(r+1)} \gets$ \eqref{eq:geodesic_tran}
@@ -932,7 +932,7 @@
 			\end{algorithmic}
 		\end{algorithm}
 
-		Algorithm~\ref{ag:rcg} summarizes the proposed group-wise geodesic \gls{rcg} method for group-connected \gls{bd}-\gls{ris} design when the objective is smooth or convex non-smooth and the only constraint is group-wise unitarity.
+		Algorithm~\ref{ag:rcg} summarizes the introduced group-wise geodesic \gls{rcg} method.
 		Compared to the non-geodesic approach, it leverages Lie algebra to replace the add-then-retract update with a multiplicative update \eqref{eq:geodesic_tran} along the geodesics of the Stiefel manifold.
 		This appropriate parameter space leads to faster convergence and easier step size tuning.
 		Convergence to a local optimum is still guaranteed if not initialized at a stationary point.
@@ -940,303 +940,365 @@
 		One can also directly operate on $\mathbf{\Theta}$ and pinching (i.e., keeping the main block diagonal and nulling others) relevant expressions to accelerate the algorithm for a large $G$.
 
 		We now analyze the computational complexity of solving singular value shaping problem \eqref{op:shaping} by Algorithm~\ref{ag:rcg}.
-		To update each \gls{bd}-\gls{ris} group, \gls{svd} of $\mathbf{H}$ requires $\mathcal{O}(N N_\mathrm{T} N_\mathrm{R})$, Euclidean gradient \eqref{eq:shaping_subdiff} requires $\mathcal{O}\bigl(L N (N_\mathrm{T}+N_\mathrm{R}+L+1) \bigr)$, Riemannian gradient translation \eqref{eq:gradient_riem_tran} requires $\mathcal{O}(L^3)$, deviation parameter \eqref{eq:conjugate_parm_geod} and conjugate direction \eqref{eq:conjugate_dirn_geod} together require $\mathcal{O}(L^2)$, and matrix exponential \eqref{eq:geodesic_tran} requires $\mathcal{O}(L^3)$ operations \cite{Moler2003}.
-		The overall complexity is thus $\mathcal{O}\bigl(I_\text{RCG} G \bigl(N N_\mathrm{T} N_\mathrm{R} + L N (N_\mathrm{T}+N_\mathrm{R}+L+1) + I_\text{BLS} L^3\bigr)\bigr)$, where $I_\text{RCG}$ and $I_\text{BLS}$ are the number of iterations for geodesic \gls{rcg} and backtracking line search (i.e., line \ref{ln:armijo_start}--\ref{ln:armijo_end} of Algorithm \ref{ag:rcg}), respectively.
+		To update each \gls{bd}-\gls{ris} group, \gls{svd} of $\mathbf{H}$ requires $\mathcal{O}(N N_\mathrm{T} N_\mathrm{R})$, Euclidean sub-gradient \eqref{eq:shaping_subdiff} requires $\mathcal{O}\bigl(L N (N_\mathrm{T}+N_\mathrm{R}+L) \bigr)$, Riemannian sub-gradient translation \eqref{eq:gradient_riem_tran} requires $\mathcal{O}(L^3)$, deviation parameter \eqref{eq:conjugate_parm_geod} and conjugate direction \eqref{eq:conjugate_dirn_geod} together require $\mathcal{O}(L^2)$, and matrix exponential \eqref{eq:geodesic_tran} requires $\mathcal{O}(L^3)$ operations \cite{Moler2003}.
+		The overall complexity is thus $\mathcal{O}\bigl(I_\text{RCG} G \bigl(N N_\mathrm{T} N_\mathrm{R} + L N (N_\mathrm{T}+N_\mathrm{R}+L) + I_\text{BLS} L^3\bigr)\bigr)$, where $I_\text{RCG}$ and $I_\text{BLS}$ are the number of iterations for geodesic \gls{rcg} and backtracking line search (i.e., line \ref{ln:armijo_start}--\ref{ln:armijo_end} of Algorithm \ref{ag:rcg}), respectively.
+		That is, $\mathcal{O}_\mathrm{D}\bigl(N_\mathrm{S}\bigr)$ for \gls{d}-\gls{ris} and $\mathcal{O}_\mathrm{BD}\bigl(N_\mathrm{S}^3\bigr)$ for fully-connected \gls{bd}-\gls{ris}.
+		% That is, $\mathcal{O}_\mathrm{D}\bigl(I_\text{RCG} N_\mathrm{S} \bigl(N N_\mathrm{T} N_\mathrm{R} + N (N_\mathrm{T}+N_\mathrm{R}) + I_\text{BLS}\bigr)\bigr)$ for \gls{d}-\gls{ris} and $\mathcal{O}_\mathrm{BD}\bigl(I_\text{RCG} \bigl(N N_\mathrm{T} N_\mathrm{R} + N_\mathrm{S} N (N_\mathrm{T}+N_\mathrm{R}+N_\mathrm{S}) + I_\text{BLS} N_\mathrm{S}^3\bigr)\bigr)$ for fully-connected \gls{bd}-\gls{ris}.
 
-		% TODO: compare O(D) and O(BD)
-
-
-		% \begin{subsubsection}{Pareto Frontier Characterization}
-		% 	\label{sc:pareto}
-		% 	We now characterize the Pareto frontier of singular values of a general $N_\mathrm{T} \times N_\mathrm{S} \times N_\mathrm{R}$ channel \eqref{eq:channel} by maximizing their weighted sum
-		% 	\begin{maxi!}
-		% 	{\scriptstyle{\mathbf{\Theta}}}{\sum_{n=1}^N \rho_n \sigma_n(\mathbf{H})}{\label{op:pareto}}{\label{ob:pareto}}
-		% 	\addConstraint{\mathbf{\Theta}_g^\mathsf{H} \mathbf{\Theta}_g=\mathbf{I},}{\quad \forall g,}{\label{cn:pareto_unitary}}
-		% 	\end{maxi!}
-		% 	where $\rho_n \ge 0$ is the weight of the $n$-th singular value.
-		% 	% that can be positive, zero, or negative.
-		% 	Varying $\{\rho_n\}_{n \in [N]}$ characterizes the Pareto frontier enclosing the singular value region such that problem \eqref{op:pareto} generalizes most singular value shaping problems.
-		% 	It can be solved optimally by Algorithm~\ref{ag:rcg} with the Euclidean gradient given in Lemma \ref{lm:pareto}.
-		% 	\begin{lemma}
-		% 		\label{lm:pareto}
-		% 		One Euclidean sub-gradient of \eqref{ob:pareto} with respect to \gls{bd}-\gls{ris} group $g$ is
-		% 		\begin{equation}
-		% 			\label{eq:gradient_eucl_pareto}
-		% 			% \frac{\partial \sum_n \rho_n \sigma_n(\mathbf{H})}{\partial \mathbf{\Theta}_g^*} =
-		% 			\mathbf{H}_{\mathrm{B},g}^\mathsf{H} \mathbf{U} \diag(\rho_1,\ldots,\rho_N) \mathbf{V}^\mathsf{H} \mathbf{H}_{\mathrm{F},g}^\mathsf{H} \in \frac{\partial \sum_{n=1}^N \rho_n \sigma_n(\mathbf{H})}{\partial \mathbf{\Theta}_g^*}
-		% 		\end{equation}
-		% 		where $\mathbf{U}$ and $\mathbf{V}$ are any left and right singular matrices of $\mathbf{H}$, respectively.
-		% 	\end{lemma}
-		% 	\begin{proof}
-		% 		Please refer to Appendix~\ref{ap:pareto}.
-		% 	\end{proof}
-		% \end{subsubsection}
+		To validate Algorithm~\ref{ag:rcg} and quantify the shaping capability of \gls{bd}-\gls{ris}, we characterize the achievable singular value region of \gls{bd}-\gls{ris}-aided \gls{mimo} channel by considering the Pareto optimization problem
+		\begin{maxi!}
+			{\scriptstyle{\mathbf{\Theta}}}{\sum_{n=1}^N \rho_n \sigma_n(\mathbf{H})}{\label{op:pareto}}{\label{ob:pareto}}
+			\addConstraint{\mathbf{\Theta}_g^\mathsf{H} \mathbf{\Theta}_g=\mathbf{I},}{\quad \forall g,}{\label{cn:pareto_unitary}}
+		\end{maxi!}
+		where $\rho_n \ge 0$ is the weight associated with the $n$-th channel singular value.
+		Varying those weights help to characterize the Pareto frontier of singular values that encloses the achievable region.
+		While the objective \eqref{ob:pareto} does not suggest any meaningful performance metric (e.g., capacity or power gain), there exists an implicit relation since stronger channel shaping capability translates to better wireless performance.
+		Problem \eqref{op:pareto} also generalizes the \gls{dof} problem in Proposition \ref{pp:dof} and the individual singular value shaping problem in Corollary \ref{co:nd_sv_indl} and Proposition \ref{pp:rd}.
+		It can be solved optimally by Algorithm~\ref{ag:rcg} with $\mathbf{D}_{[n,n]} = \rho_n$ in \eqref{eq:shaping_subdiff}.
 	\end{subsection}
 \end{section}
 
 
 	\begin{section}{Rate Maximization}
-		\label{sc:framework}
-		% Consider a special class of channel shaping problem
-		% \begin{maxi!}
-		% 	{\scriptstyle{\mathbf{\Theta}}}{f(\mathbf{H})}{\label{op:shaping}}{\label{ob:shaping}}
-		% 	\addConstraint{\mathbf{\Theta}_g^\mathsf{H} \mathbf{\Theta}_g=\mathbf{I},}{\quad \forall g,}{\label{cn:shaping_unitary}}
-		% \end{maxi!}
-		% where $f: \mathbb{C}^{N_\mathrm{R} \times N_\mathrm{T}} \to \mathbb{R}$ is a unitary invariant function satisfying $f(\mathbf{U}^\mathsf{H} \mathbf{H} \mathbf{V}) = f(\mathbf{H})$ for any $\mathbf{H} \in \mathbb{C}^{N_\mathrm{R} \times N_\mathrm{T}}$, $\mathbf{U} \in \mathbb{U}^{N_\mathrm{R} \times N_\mathrm{R}}$, $\mathbf{V} \in \mathbb{U}^{N_\mathrm{T} \times N_\mathrm{T}}$.
-		% Examples of such $f$ include the $n$-th channel singular value, channel power gain, and channel capacity.
-		% According to
-
+		\label{sc:rate}
+		In this section, we first solve rate maximization problem for \gls{bd}-\gls{ris}-aided \gls{mimo} point-to-point and interference channels optimally by joint beamforming design, and then exploit channel shaping for a low-complexity two-stage solution.
 
 		\begin{subsection}{MIMO Point-to-Point Channel}
-			\label{sc:rate}
-			We aim to maximize the achievable rate of the \gls{bd}-\gls{ris}-aided \gls{mimo} system by jointly optimizing the active and passive beamforming
+			\label{sc:rate_pc}
+			The achievable rate maximization problem for \gls{bd}-\gls{ris}-aided \gls{mimo} point-to-point channel is formulated as
 			\begin{maxi!}
-			{\scriptstyle{\mathbf{W},\mathbf{\Theta}}}{R = \log \det \biggl(\mathbf{I} + \frac{\mathbf{W}^\mathsf{H}\mathbf{H}^\mathsf{H}\mathbf{H}\mathbf{W}}{\eta}\biggr)}{\label{op:rate}}{\label{ob:rate}}
-			\addConstraint{\lVert \mathbf{W} \rVert _\mathrm{F}^2}{\le P}
-			\addConstraint{\mathbf{\Theta}_g^\mathsf{H} \mathbf{\Theta}_g}{=\mathbf{I}, \quad \forall g,\label{cn:rate_unitary}}
+				{\scriptstyle{\mathbf{W},\mathbf{\Theta}}}{R = \log \det \biggl(\mathbf{I} + \frac{\mathbf{W}^\mathsf{H}\mathbf{H}^\mathsf{H}\mathbf{H}\mathbf{W}}{\eta}\biggr)}{\label{op:rate}}{\label{ob:rate}}
+				\addConstraint{\lVert \mathbf{W} \rVert _\mathrm{F}^2}{\le P}
+				\addConstraint{\mathbf{\Theta}_g^\mathsf{H} \mathbf{\Theta}_g}{=\mathbf{I}, \quad \forall g,\label{cn:rate_unitary}}
 			\end{maxi!}
-			where $\mathbf{W}$ is the transmit precoder, $R$ is the achievable rate, $\eta$ is the average noise power, and $P$ is the transmit power constraint.
+			where $\mathbf{W}$ is the transmit precoder, $R$ is the achievable rate, $\eta$ is the average noise power, and $P$ is maximum average transmit power.
 			Problem \eqref{op:rate} is non-convex due to the block-unitary constraint \eqref{cn:rate_unitary} and the coupling between variables.
-			We propose a local-optimal approach via \gls{ao} and a low-complexity approach based on channel shaping.
+			Two approaches are proposed to solve it optimally or efficiently.
+			% We propose a local-optimal approach based on \gls{ao} and a low-complexity approach based on channel shaping.
 
 			\begin{subsubsection}{Alternating Optimization}
-			This approach updates $\mathbf{\Theta}$ and $\mathbf{W}$ iteratively until convergence.
-			For a given $\mathbf{W}$, the passive beamforming subproblem is
-			\begin{maxi!}
-			{\scriptstyle{\mathbf{\Theta}}}{\log \det \biggl(\mathbf{I} + \frac{\mathbf{H} \mathbf{Q} \mathbf{H}^\mathsf{H}}{\eta}\biggr)}{\label{op:rate_ris}}{\label{ob:rate_ris}}
-			\addConstraint{\mathbf{\Theta}_g^\mathsf{H} \mathbf{\Theta}_g=\mathbf{I}, \quad \forall g,}{}{}
-			\end{maxi!}
-			where $\mathbf{Q} \triangleq \mathbf{W} \mathbf{W}^\mathsf{H}$ is the transmit covariance matrix.
-			Problem \eqref{op:rate_ris} can be solved optimally by Algorithm \ref{ag:rcg} with the Euclidean gradient given in Lemma \ref{lm:rate}.
-			\begin{lemma}
-				\label{lm:rate}
-				The Euclidean gradient of \eqref{ob:rate_ris} with respect to \gls{bd}-\gls{ris} block $g$ is
+				This approach updates $\mathbf{\Theta}$ and $\mathbf{W}$ iteratively until convergence.
+				For a given $\mathbf{W}$, the passive beamforming subproblem is
+				\begin{maxi!}
+					{\scriptstyle{\mathbf{\Theta}}}{\log \det \biggl(\mathbf{I} + \frac{\mathbf{H} \mathbf{Q} \mathbf{H}^\mathsf{H}}{\eta}\biggr)}{\label{op:rate_ris}}{\label{ob:rate_ris}}
+					\addConstraint{\mathbf{\Theta}_g^\mathsf{H} \mathbf{\Theta}_g=\mathbf{I}, \quad \forall g,}{}{}
+				\end{maxi!}
+				where $\mathbf{Q} \triangleq \mathbf{W} \mathbf{W}^\mathsf{H}$ is the transmit covariance matrix.
+				Problem \eqref{op:rate_ris} can be solved optimally by Algorithm \ref{ag:rcg} with the partial derivative given in Lemma \ref{lm:rate}.
+				\begin{lemma}
+					\label{lm:rate}
+					The partial derivative of \eqref{ob:rate_ris} with respect to \gls{bd}-\gls{ris} block $g$ is
+					\begin{equation}
+						\label{eq:gradient_eucl_rate}
+						\frac{\partial R}{\partial \mathbf{\Theta}_g^*} = \frac{1}{\eta} \mathbf{H}_{\mathrm{B},g}^\mathsf{H} \biggl(\mathbf{I} + \frac{\mathbf{H}\mathbf{Q}\mathbf{H}^\mathsf{H}}{\eta}\biggr)^{-1} \mathbf{H} \mathbf{Q} \mathbf{H}_{\mathrm{F},g}^\mathsf{H}.
+					\end{equation}
+				\end{lemma}
+
+				\begin{proof}
+					Please refer to Appendix~\ref{ap:rate}.
+				\end{proof}
+				For a given $\mathbf{\Theta}$, the optimal transmit precoder is given by eigenmode transmission \cite{Clerckx2013}
 				\begin{equation}
-					\label{eq:gradient_eucl_rate}
-					\frac{\partial R}{\partial \mathbf{\Theta}_g^*} = \frac{1}{\eta} \mathbf{H}_{\mathrm{B},g}^\mathsf{H} \biggl(\mathbf{I} + \frac{\mathbf{H}\mathbf{Q}\mathbf{H}^\mathsf{H}}{\eta}\biggr)^{-1} \mathbf{H} \mathbf{Q} \mathbf{H}_{\mathrm{F},g}^\mathsf{H}.
+					\label{eq:precoder_rate}
+					\mathbf{W}^\star = \mathbf{V} {\diag(\mathbf{s}^\star)}^{1/2},
 				\end{equation}
-			\end{lemma}
-
-			\begin{proof}
-				Please refer to Appendix~\ref{ap:rate}.
-			\end{proof}
-			For a given $\mathbf{\Theta}$, the global optimal transmit precoder is given by eigenmode transmission \cite{Clerckx2013}
-			\begin{equation}
-				\label{eq:precoder}
-				\mathbf{W}^\star = \mathbf{V} {\diag(\mathbf{s}^\star)}^{1/2},
-			\end{equation}
-			where $\mathbf{V}$ is the right singular matrix of the equivalent channel and $\mathbf{s}^\star$ is the optimal water-filling power allocation \cite{Clerckx2013}.
-
-			The \gls{ao} algorithm is guaranteed to converge to local-optimal points of problem \eqref{op:rate} since each subproblem is solved optimally and the objective is bounded above.
-			Similar to the analysis in Section \ref{sc:pareto}, the computational complexity of solving subproblem \eqref{op:rate_ris} by geodesic \gls{rcg} is $\mathcal{O}\bigl(I_\text{RCG} G (NL^2 + L N_\mathrm{T} N_\mathrm{R} + N_\mathrm{T}^2 N_\mathrm{R} + N_\mathrm{T} N_\mathrm{R}^2 + N_\mathrm{R}^3 + I_\text{BLS} L^3)\bigr)$.
-			On the other hand, the complexity of solving active beamforming subproblem by \eqref{eq:precoder} is $\mathcal{O}\bigl(N N_\mathrm{T} N_\mathrm{R}\bigr)$.
-			The overall complexity is thus $\mathcal{O}\bigl(I_\text{AO}\bigl(I_\text{RCG} G (NL^2 + L N_\mathrm{T} N_\mathrm{R} + N_\mathrm{T}^2 N_\mathrm{R} + N_\mathrm{T} N_\mathrm{R}^2 + N_\mathrm{R}^3 + I_\text{BLS} L^3) + N N_\mathrm{T} N_\mathrm{R}\bigr)\bigr)$, where $I_\text{AO}$ is the number of iterations for \gls{ao}.
+				where $\mathbf{V}$ is the right singular matrix of $\mathbf{H}$ and $\mathbf{s}^\star$ is the optimal water-filling power allocation \cite{Clerckx2013}.
+				The \gls{ao} algorithm is guaranteed to converge to local-optimal points of problem \eqref{op:rate} since each subproblem is solved optimally and the objective is bounded above.
+				The computational complexity of solving subproblem \eqref{op:rate_ris} by geodesic \gls{rcg} is $\mathcal{O}\bigl(I_\text{RCG} G (NL^2 + L N_\mathrm{T} N_\mathrm{R} + N_\mathrm{T}^2 N_\mathrm{R} + N_\mathrm{T} N_\mathrm{R}^2 + N_\mathrm{R}^3 + I_\text{BLS} L^3)\bigr)$.
+				On the other hand, the complexity of solving active beamforming subproblem by \eqref{eq:precoder_rate} is $\mathcal{O}\bigl(N N_\mathrm{T} N_\mathrm{R}\bigr)$.
+				The overall complexity is thus $\mathcal{O}\bigl(I_\text{AO}\bigl(I_\text{RCG} G (NL^2 + L N_\mathrm{T} N_\mathrm{R} + N_\mathrm{T}^2 N_\mathrm{R} + N_\mathrm{T} N_\mathrm{R}^2 + N_\mathrm{R}^3 + I_\text{BLS} L^3) + N N_\mathrm{T} N_\mathrm{R}\bigr)\bigr)$, where $I_\text{AO}$ is the number of iterations for \gls{ao}.
+				That is, $\mathcal{O}_\mathrm{D}\bigl(N_\mathrm{S}\bigr)$ for \gls{d}-\gls{ris} and $\mathcal{O}_\mathrm{BD}\bigl(N_\mathrm{S}^3\bigr)$ for fully-connected \gls{bd}-\gls{ris}.
+				% That is, $\mathcal{O}_\mathrm{D}\bigl(I_\text{AO}\bigl(I_\text{RCG} N_\mathrm{S} (N + N_\mathrm{T} N_\mathrm{R} + N_\mathrm{T}^2 N_\mathrm{R} + N_\mathrm{T} N_\mathrm{R}^2 + N_\mathrm{R}^3 + I_\text{BLS}) + N N_\mathrm{T} N_\mathrm{R}\bigr)\bigr)$ for \gls{d}-\gls{ris} and $\mathcal{O}_\mathrm{BD}\bigl(I_\text{AO}\bigl(I_\text{RCG} (NN_\mathrm{S}^2 + N_\mathrm{S} N_\mathrm{T} N_\mathrm{R} + N_\mathrm{T}^2 N_\mathrm{R} + N_\mathrm{T} N_\mathrm{R}^2 + N_\mathrm{R}^3 + I_\text{BLS} N_\mathrm{S}^3) + N N_\mathrm{T} N_\mathrm{R}\bigr)\bigr)$ for fully-connected \gls{bd}-\gls{ris}.
 			\end{subsubsection}
 
 			\begin{subsubsection}{Low-Complexity Solution}
-				\label{sc:low_complexity}
-
-
-
-
-				\begin{paragraph}{Channel Power Gain}
-					\label{sc:power}
-				The \gls{mimo} channel power gain maximization problem is formulated with respect to the \gls{bd}-\gls{ris} scattering matrix
+				\label{sc:rate_pc_lc}
+				To reduce the computational complexity, we suboptimally decouple the beamforming design by first shape the channel by \gls{ris} for maximum power gain and then optimize the active beamforming.
+				The channel power gain maximization problem is formulated as\footnote{Problem \eqref{op:power} has been studied in \gls{siso} \cite{Shen2020a} and \gls{miso} equivalents \cite{Santamaria2023,Fang2023,Nerini2023,Nerini2023b} where only one mode is available. Generalizing those to \gls{mimo} is non-trivial due to trade-off between modes.}
 				\begin{maxi!}
-				{\scriptstyle{\mathbf{\Theta}}}{\lVert \mathbf{H}_\mathrm{D} + \mathbf{H}_\mathrm{B} \mathbf{\Theta} \mathbf{H}_\mathrm{F} \rVert _\mathrm{F}^2}{\label{op:power}}{\label{ob:power}}
-				\addConstraint{\mathbf{\Theta}_g^\mathsf{H} \mathbf{\Theta}_g=\mathbf{I}, \quad \forall g,}{\label{cn:power_unitary}}{}
+					{\scriptstyle{\mathbf{\Theta}}}{\lVert \mathbf{H}_\mathrm{D} + \mathbf{H}_\mathrm{B} \mathbf{\Theta} \mathbf{H}_\mathrm{F} \rVert _\mathrm{F}^2}{\label{op:power}}{\label{ob:power}}
+					\addConstraint{\mathbf{\Theta}_g^\mathsf{H} \mathbf{\Theta}_g=\mathbf{I}, \quad \forall g.}{\label{cn:power_unitary}}{}
 				\end{maxi!}
-				which generalizes the problem of \gls{siso} \cite{Shen2020a}, \gls{miso} \cite{Santamaria2023,Fang2023}, single-stream \gls{mimo} \cite{Nerini2023,Nerini2023b}, and \gls{mimo} with negligible direct channel and fully-connected \gls{bd}-\gls{ris} ??.
-				Solving \eqref{op:power} calls for a balance between the additive direct-indirect combining and the multiplicative backward-forward combining.
-				% The key of solving \eqref{op:power} is to balance the additive and multiplicative space alignments.
-
-				\begin{remark}
-				Interestingly, in terms of maximizing the inner product $\langle \mathbf{H}_\mathrm{D}, \mathbf{H}_\mathrm{B} \mathbf{\Theta} \mathbf{H}_\mathrm{F} \rangle$, \eqref{op:power} is reminiscent of the weighted orthogonal Procrustes problem \cite{Gower2004}
-				\begin{mini!}
-				{\scriptstyle{\mathbf{\Theta}}}{\lVert \mathbf{H}_\mathrm{D} - \mathbf{H}_\mathrm{B} \mathbf{\Theta} \mathbf{H}_\mathrm{F} \rVert _\mathrm{F}^2}{\label{op:procrustes_wt}}{}
-				\addConstraint{\mathbf{\Theta}^\mathsf{H} \mathbf{\Theta}=\mathbf{I},}{\label{cn:procrustes_wt}}{}
-				\end{mini!}
-				which relaxes the block-unitary constraint \eqref{cn:power_unitary} to unitary \eqref{cn:procrustes_wt} but still has no trivial solution.
-				One lossy transformation exploits the Moore-Penrose inverse and moves $\mathbf{\Theta}$ to one side of the product \cite{Bell2003}, formulating two standard orthogonal Procrustes problems
-				\begin{mini!}
-				{\scriptstyle{\mathbf{\Theta}}}{\lVert \mathbf{H}_\mathrm{B}^\dagger \mathbf{H}_\mathrm{D} - \mathbf{\Theta} \mathbf{H}_\mathrm{F} \rVert _\mathrm{F}^2 \text{ or } \lVert \mathbf{H}_\mathrm{D} \mathbf{H}_\mathrm{F}^\dagger - \mathbf{H}_\mathrm{B} \mathbf{\Theta} \rVert _\mathrm{F}^2}{\label{op:procrustes}}{}
-				\addConstraint{\mathbf{\Theta}^\mathsf{H} \mathbf{\Theta}=\mathbf{I},}{}{}
-				\end{mini!}
-				which have global optimal solutions
-				\begin{equation}
-					\label{eq:ris_procrustes}
-					\mathbf{\Theta} = \mathbf{U} \mathbf{V}^\mathsf{H},
-				\end{equation}
-				where $\mathbf{U}$ and $\mathbf{V}$ are respectively any left and right singular matrices of $\mathbf{H}_\mathrm{B}^\dagger \mathbf{H}_\mathrm{D} \mathbf{H}_\mathrm{F}^\mathsf{H}$ or $\mathbf{H}_\mathrm{B}^\mathsf{H} \mathbf{H}_\mathrm{D} \mathbf{H}_\mathrm{F}^\dagger$ \cite{Golub2013}.
-				\end{remark}
-
-				It is worth noting that ?? and \eqref{eq:ris_procrustes} are valid fully-connected \gls{bd}-\gls{ris} solutions to \eqref{op:power} when the direct channel is negligible and significant, respectively.
-				However, the latter is neither optimal nor a generalization of the former due to the lossy transformation.
-				Inspired by \cite{Nie2017}, we propose an optimal solution to problem \eqref{op:power} with arbitrary group size.
-				The idea is to successively approximate the quadratic objective \eqref{ob:power} by local Taylor expansions and solve each step in closed form by group-wise \gls{svd}.
+				Inspired by \cite{Nie2017}, we propose a closed-form iterative solution that converges to a stationary point of Problem \eqref{op:power}.
+				The idea is to approximate the quadratic objective \eqref{ob:power} successively by Taylor expansion and solve each subproblem by group-wise \gls{svd}.
 
 				\begin{proposition}
 					\label{pp:power}
 					Starting from any feasible $\mathbf{\Theta}^{(0)}$, the sequence
 					\begin{equation}
 						\label{eq:ris_power}
-						\mathbf{\Theta}_g^{(r+1)} = \mathbf{U}_g^{(r)} \mathbf{V}_g^{(r)}, \quad \forall g.
+						\mathbf{\Theta}_g^{(r+1)} = \mathbf{U}_g^{(r)} \mathbf{V}_g^{(r)}, \quad \forall g
 					\end{equation}
-					converges to a stationary point of \eqref{op:power}, where $\mathbf{U}_g^{(r)}$ and $\mathbf{V}_g^{(r)}$ are any left and right singular matrices of
+					leads to a convergence of the objective function \eqref{ob:power} towards a stationary point,\footnote{However, \eqref{eq:ris_power} might not converge to a single solution point due to the non-uniqueness of \gls{svd}, especially when $\mathbf{M}_g$ is rank-deficient.}
+					% Multiple solutions may yield similar objective function convergence behavior.}
+					where $\mathbf{U}_g^{(r)}$ and $\mathbf{V}_g^{(r)}$ are any left and right singular matrices of\footnote{We notice that the orthogonal projection of $\mathbf{M}_g$ onto the Stiefel manifold $\pi(\mathbf{M}_g) = {\arg\min}_{\mathbf{X}_g \in \mathbb{U}^{L \times L}} \lVert \mathbf{M}_g - \mathbf{X}_g \rVert _\mathrm{F} = \mathbf{U}_g \mathbf{V}_g$ coincides with $\mathbf{\Theta}_g$.} % \cite{Manton2002}
 					\begin{equation}
 						\label{eq:auxiliary_power}
-						\mathbf{M}_g^{(r)} = \mathbf{H}_{\mathrm{B},g}^\mathsf{H} \Bigl(\mathbf{H}_\mathrm{D} + \mathbf{H}_\mathrm{B} \diag\bigl(\mathbf{\Theta}_{[1:g-1]}^{(r+1)},\mathbf{\Theta}_{[g:G]}^{(r)}\bigr) \mathbf{H}_\mathrm{F}\Bigr) \mathbf{H}_{\mathrm{F},g}^\mathsf{H}
+						\mathbf{M}_g^{(r)} = \mathbf{H}_{\mathrm{B},g}^\mathsf{H} \Bigl(\mathbf{H}_\mathrm{D} + \mathbf{H}_\mathrm{B} \diag\bigl(\mathbf{\Theta}_{[1:g-1]}^{(r+1)},\mathbf{\Theta}_{[g:G]}^{(r)}\bigr) \mathbf{H}_\mathrm{F}\Bigr) \mathbf{H}_{\mathrm{F},g}^\mathsf{H}.
 					\end{equation}
-					% \begin{equation}
-					% 	% \begin{split}
-					% 		\mathbf{M}_g^{(r)} = \mathbf{H}_{\mathrm{B},g}^\mathsf{H} \Bigl(\mathbf{H}_\mathrm{D} + \mathbf{H}_\mathrm{B} \diag\bigl(\mathbf{\Theta}_{1}^{(r+1)},\ldots,\mathbf{\Theta}_{g-1}^{(r+1)},\mathbf{\Theta}_{g}^{(r)},\ldots,\mathbf{\Theta}_{G}^{(r)}\bigr) \mathbf{H}_\mathrm{F}\Bigr) \mathbf{H}_{\mathrm{F},g}^\mathsf{H}
-					% 	% \end{split}
-					% 	\label{eq:auxiliary_power}
-					% \end{equation}
 				\end{proposition}
 
 				\begin{proof}
 					Please refer to Appendix~\ref{ap:power}.
 				\end{proof}
 
-				We now analyze the computational complexity of solving channel gain maximization problem \eqref{op:power} by Proposition \ref{pp:power}.
-				To update each \gls{bd}-\gls{ris} group, matrix multiplication \eqref{eq:auxiliary_power} requires $\mathcal{O}\bigl(N_\mathrm{T} N_\mathrm{R} + (G+1)(NL^2+N_\mathrm{T} N_\mathrm{R} L)\bigr)$ operations and its \gls{svd} requires $\mathcal{O}(L^3)$ operations.
-				The overall complexity is thus $\mathcal{O}\bigl(I_\text{SAA} G \bigl(N_\mathrm{T} N_\mathrm{R} + (G+1)(NL^2+N_\mathrm{T} N_\mathrm{R} L) + L^3\bigr)\bigr)$, where $I_\text{SAA}$ is the number iterations for successive affine approximation.
-				\end{paragraph}
+				To update each \gls{bd}-\gls{ris} group, matrix multiplication \eqref{eq:auxiliary_power} requires $\mathcal{O}\bigl(N_\mathrm{T} N_\mathrm{R} + NL^2+N_\mathrm{T} N_\mathrm{R} L\bigr)$ operations and its \gls{svd} requires $\mathcal{O}(L^3)$ operations.
+				The overall complexity is thus $\mathcal{O}\bigl(I_\text{SAA} G \bigl(N_\mathrm{T} N_\mathrm{R} + NL^2+N_\mathrm{T} N_\mathrm{R} L + L^3\bigr)\bigr)$, where $I_\text{SAA}$ is the number iterations for successive affine approximation.
+				That is, $\mathcal{O}_\mathrm{D}\bigl(N_\mathrm{S}\bigr)$ for \gls{d}-\gls{ris} and $\mathcal{O}_\mathrm{BD}\bigl(N_\mathrm{S}^3\bigr)$ for fully-connected \gls{bd}-\gls{ris}.
+				% That is, $\mathcal{O}_\mathrm{D}\bigl(I_\text{SAA} N_\mathrm{S} \bigl(N_\mathrm{T} N_\mathrm{R} + N+N_\mathrm{T} N_\mathrm{R}\bigr)\bigr)$ for \gls{d}-\gls{ris} and $\mathcal{O}_\mathrm{BD}\bigl(I_\text{SAA} \bigl(N_\mathrm{T} N_\mathrm{R} + NN_\mathrm{S}^2+N_\mathrm{T} N_\mathrm{R} N_\mathrm{S} + N_\mathrm{S}^3\bigr)\bigr)$ for fully-connected \gls{bd}-\gls{ris}.
+				% It is noteworthy that the computational complexity can be further reduced
+				For the latter, the computational complexity can be further reduced:
+				\begin{itemize}
+					\item \emph{Negligible direct channel:} The optimal solution to \eqref{op:power} has been solved in closed form by \eqref{eq:ris_nd_power_max}.
+					\item \emph{Non-negligible direct channel:} In terms of maximizing the inner product $\langle \mathbf{H}_\mathrm{D}, \mathbf{H}_\mathrm{B} \mathbf{\Theta} \mathbf{H}_\mathrm{F} \rangle$, \eqref{op:power} is reminiscent of the weighted orthogonal Procrustes problem \cite{Gower2004}
+					\begin{mini!}
+						{\scriptstyle{\mathbf{\Theta}}}{\lVert \mathbf{H}_\mathrm{D} - \mathbf{H}_\mathrm{B} \mathbf{\Theta} \mathbf{H}_\mathrm{F} \rVert _\mathrm{F}^2}{\label{op:procrustes_wt}}{}
+						\addConstraint{\mathbf{\Theta}^\mathsf{H} \mathbf{\Theta}=\mathbf{I},}{\label{cn:procrustes_wt}}{}
+					\end{mini!}
+					which still has no trivial solution.
+					One \emph{lossy} transformation \cite{Bell2003} shifts $\mathbf{\Theta}$ to sides of the product by Moore-Penrose inverse, formulating standard orthogonal Procrustes problems
+					\begin{mini!}
+						{\scriptstyle{\mathbf{\Theta}}}{\lVert \mathbf{H}_\mathrm{B}^\dagger \mathbf{H}_\mathrm{D} - \mathbf{\Theta} \mathbf{H}_\mathrm{F} \rVert _\mathrm{F}^2 \text{ or } \lVert \mathbf{H}_\mathrm{D} \mathbf{H}_\mathrm{F}^\dagger - \mathbf{H}_\mathrm{B} \mathbf{\Theta} \rVert _\mathrm{F}^2}{\label{op:procrustes}}{}
+						\addConstraint{\mathbf{\Theta}^\mathsf{H} \mathbf{\Theta}=\mathbf{I},}{}{}
+					\end{mini!}
+					with optimal solutions \cite[(6.4.1)]{Golub2013}
+					\begin{equation}
+						\label{eq:ris_procrustes}
+						\mathbf{\Theta}_\textnormal{P-max-approx}^\textnormal{MIMO-HD} = \mathbf{U} \mathbf{V}^\mathsf{H},
+					\end{equation}
+					where $\mathbf{U}$ and $\mathbf{V}$ are respectively any left and right singular matrices of $\mathbf{H}_\mathrm{B}^\dagger \mathbf{H}_\mathrm{D} \mathbf{H}_\mathrm{F}^\mathsf{H}$ or $\mathbf{H}_\mathrm{B}^\mathsf{H} \mathbf{H}_\mathrm{D} \mathbf{H}_\mathrm{F}^\dagger$.
+				\end{itemize}
 
-
-
-
-
-				We finally propose a suboptimal two-stage solution to problem \eqref{op:rate} that decouples the joint \gls{ris}-transceiver design.
-				The idea is to first consider channel shaping and replace the rate maximization subproblem \eqref{op:rate_ris} by channel power gain maximization problem \eqref{op:power}, then proceed to conventional eigenmode transmission \eqref{eq:precoder}.
-				Both steps are solved in closed form and the computational complexity is $\mathcal{O}\bigl(I_\text{SAA} G \bigl(N_\mathrm{T} N_\mathrm{R} + (G+1)(NL^2+N_\mathrm{T} N_\mathrm{R} L) + L^3\bigr) + N N_\mathrm{T} N_\mathrm{R}\bigr)$.
-				While suboptimal, this shaping-inspired solution avoids outer iterations and efficiently handles inner iterations.
+				Although \eqref{eq:ris_nd_power_max} and \eqref{eq:ris_procrustes} are of similar form, the latter is neither optimal nor a generalization of the former due to the lossy transformation.
+				We will show in Section \ref{sc:simulation} that $\mathbf{\Theta}_\textnormal{P-max-approx}^\textnormal{MIMO-HD}$ is very close to optimal especially for a large $N_\mathrm{S}$.
+				Once the channel is shaped by \eqref{eq:ris_power} or \eqref{eq:ris_nd_power_max} or \eqref{eq:ris_procrustes}, the active beamforming is retrieved by \eqref{eq:precoder_rate}.
+				This two-stage solution avoids outer iterations and efficiently handles (or avoids) inner iterations.
 			\end{subsubsection}
 		\end{subsection}
 
-		% \begin{subsection}{MIMO Interference Channel}
+		\begin{subsection}{MIMO Interference Channel}
+			On top of \eqref{eq:channel_interference}, the achievable rate of transmission $k$ is
+			\begin{equation}
+				R_k = \log \det \biggl(\mathbf{I} + \mathbf{W}_k {\mathbf{H}^{(kj)\mathsf{H}}} \mathbf{Q}_k^{-1} {\mathbf{H}^{(kj)}} \mathbf{W}_k\biggr),
+			\end{equation}
+			where $\mathbf{W}_k$ is the precoder at transmitter $k$ and $\mathbf{Q}_k = \sum_{j \ne k} {\mathbf{H}^{(kj)}} \mathbf{W}_j \mathbf{W}_j^\mathsf{H} {\mathbf{H}^{(kj)\mathsf{H}}} + \eta \mathbf{I}$ is the interference-plus-noise covariance matrix at receiver $k$.
+			The weighted sum-rate maximization problem for \gls{bd}-\gls{ris}-aided \gls{mimo} interference channel is formulated as
+			\begin{maxi!}
+				{\scriptstyle{\mathbf{\Theta}, \{\mathbf{W}_k\}_{k \in [K]}}}{\sum_{k=1}^K \rho_k R_k}{\label{op:wsr}}{\label{ob:wsr}}
+				\addConstraint{\mathbf{\Theta}_g^\mathsf{H} \mathbf{\Theta}_g=\mathbf{I}, \quad \forall g}{}{}
+				\addConstraint{\lVert \mathbf{W}_k \rVert _\mathrm{F}^2 \le P_k. \quad \forall k}{}{}
+			\end{maxi!}
+			where $\rho_k \ge 0$ is the weight associated with transmission $k$.
+			This non-convex problem can be solved by extending both solutions covered in Section \ref{sc:rate_pc} as detailed below.
 
-			\begin{subsection}{Leakage Interference Minimization}
-				Leakage interference refers to the sum of all interference terms in \gls{ic}.
-				Assume all transmitter sends $N_\mathrm{E} \le N \triangleq \min(N_\mathrm{T}, N_\mathrm{R})$ data streams to its intended receiver.
-				The leakage interference minimization problem is formulated with respect to all transmit precoders, all receiver combiners, and the scattering matrix as
-				\begin{mini!}
-					{\scriptstyle{\mathbf{\Theta}, \{\mathbf{G}_k\}, \{\mathbf{W}_k\}}}{\mathop{\sum\sum}_{j \neq k} \left\lVert \mathbf{G}_k (\mathbf{H}^{[kj]}_\mathrm{D} + \mathbf{H}^{[k]}_\mathrm{B} \mathbf{\Theta} \mathbf{H}^{[j]}_{\mathrm{F}}) \mathbf{W}_j \right\rVert _{\mathrm{F}}^2}{\label{op:leakage}}{}
-					\addConstraint{\mathbf{\Theta}_g^\mathsf{H} \mathbf{\Theta}_g=\mathbf{I}, \quad}{\forall g}{\label{co:scatter}}
-					\addConstraint{\mathbf{G}_k \mathbf{G}_k^\mathsf{H}=\mathbf{I}, \quad}{\forall k}{\label{co:combiner}}
-					\addConstraint{\mathbf{W}_j^\mathsf{H} \mathbf{W}_j=\mathbf{I}, \quad}{\forall j,}{\label{co:precoder}}
-				\end{mini!}
-				where $\mathbf{G}_k \in \mathbb{C}^{N_\mathrm{D} \times N_\mathrm{R}}$ is the combiner at receiver $k$ and $\mathbf{W}_j \in \mathbb{C}^{N_\mathrm{T} \times N_\mathrm{D}}$ is the precoder at transmitter $j$.
-				It is worth noting that $\mathbf{\Theta}_g$ is a square unitary matrix and $\mathbf{\Theta}_g^\mathsf{H} \mathbf{\Theta}_g=\mathbf{I}$ is equivalent to $\mathbf{\Theta}_g \mathbf{\Theta}_g^\mathsf{H}=\mathbf{I}$, while $\mathbf{G}_k$ and $\mathbf{W}_j$ may be respectively ``fat'' and ``tall'' rectangular semi-unitary matrices such that \eqref{co:combiner} and \eqref{co:precoder} are required.
-				The non-convex problem can be solved iteratively by the \gls{bcd} method detailed below.
-
-				\begin{subsubsection}{Combiner and Precoder Design}
-					For a given $\mathbf{\Theta}$, problem \eqref{op:leakage} reduces to conventional linear beamforming problem, for which an iterative algorithm alternating between the original and reciprocal networks is proposed in \cite{Gomadam2011,Clerckx2013}.
-					At iteration $r$, the combiner at receiver $k$ is updated as
-					\begin{equation}
-						\mathbf{G}_k^{(r)} = {\mathbf{U}_{k,N}^{(r-1)}}^\mathsf{H},
-						\label{eq:combiner_leakage}
-					\end{equation}
-					where $\mathbf{U}_{k,N}^{(r-1)}$ is the eigenvectors corresponding to $N$ smallest eigenvalues of the interference covariance matrix $\mathbf{Q}_k^{(r-1)} = \sum_{j \ne k} {\mathbf{H}^{[kj]}} \mathbf{W}_j^{(r-1)} {\mathbf{W}_j^{(r-1)}}^\mathsf{H} {\mathbf{H}^{[kj]}}^\mathsf{H}$.
-					The precoder at transmitter $j$ is updated as
-					\begin{equation}
-						\mathbf{W}_j^{(r)} = \bar{\mathbf{U}}_{j,N}^{(r)},
-						\label{eq:precoder_leakage}
-					\end{equation}
-					where $\bar{\mathbf{U}}_{j,N}^{(r)}$ corresponds $\bar{\mathbf{Q}}_j^{(r)} = \sum_{k \ne j} {\mathbf{H}^{[kj]}}^\mathsf{H} {\mathbf{G}_k^{(r)}}^\mathsf{H} \mathbf{G}_k^{(r)} {\mathbf{H}^{[kj]}}$ in the reciprocal network.
-				\end{subsubsection}
-
-				\begin{subsubsection}{Scattering Matrix Design}
-					Once $\{\mathbf{G}_k\}$ and $\{\mathbf{W}_j\}$ are determined, we define $\bar{\mathbf{H}}^{[kj]}_\mathrm{D} \triangleq \mathbf{G}_k \mathbf{H}^{[kj]}_\mathrm{D} \mathbf{W}_j$, $\bar{\mathbf{H}}^{[k]}_\mathrm{B} \triangleq \mathbf{G}_k \mathbf{H}^{[k]}_\mathrm{B}$, and $\bar{\mathbf{H}}^{[j]}_\mathrm{F} \triangleq \mathbf{H}^{[j]}_\mathrm{F} \mathbf{W}_j$.
-					The \gls{bd}-\gls{ris} subproblem boils down to
-					\begin{mini!}
-						{\scriptstyle{\mathbf{\Theta}}}{\mathop{\sum\sum}_{j \neq k} \left\lVert (\bar{\mathbf{H}}^{[kj]}_\mathrm{D} + \bar{\mathbf{H}}^{[k]}_\mathrm{B} \mathbf{\Theta} \bar{\mathbf{H}}^{[j]}_\mathrm{F}) \right\rVert _{\mathrm{F}}^2}{\label{op:ic_interference_ris}}{}
-						\addConstraint{\mathbf{\Theta}_g^\mathsf{H} \mathbf{\Theta}_g=\mathbf{I}, \quad \forall g,}{}{}
-					\end{mini!}
-					which can be viewed as a channel shaping problem on $\bar{\mathbf{H}}^{[kj]}_\mathrm{D}$, $\bar{\mathbf{H}}^{[k]}_\mathrm{B}$, and $\bar{\mathbf{H}}^{[j]}_\mathrm{F}$.
-
-					\begin{proposition}
-						Start from any $\mathbf{\Theta}^{(0)}$, the sequence
-						\begin{equation}
-							\mathbf{\Theta}_g^{(r+1)} = \mathbf{U}_g^{(r)} \mathbf{V}_g^{(r)}, \quad \forall g
-							\label{eq:scatter_leakage}
-						\end{equation}
-						converges to a stationary point of \eqref{op:ic_interference_ris}, where $\mathbf{U}_g^{(r)}$ and $\mathbf{V}_g^{(r)}$ are left and right singular matrix of
-						\begin{equation}
-							\mathbf{M}_g^{(r)} = \mathop{\sum\sum}_{j \neq k} \bigl(\mathbf{B}_{k,g} \mathbf{\Theta}_g^{(r)} \mathbf{H}^{[j]}_{\mathrm{F},g} - {\mathbf{H}^{[k]}_{\mathrm{B},g}}^\mathsf{H} {\mathbf{D}^{[kj]}_{g}}^{(r)}\bigr) {\mathbf{H}^{[j]}_{\mathrm{F},g}}^\mathsf{H},
-						\end{equation}
-						where $\mathbf{B}_{k,g} = \lambda_1\bigl({\mathbf{H}^{[k]}_{\mathrm{B},g}}^\mathsf{H} \mathbf{H}^{[k]}_{\mathrm{B},g}\bigr) \mathbf{I} - {\mathbf{H}^{[k]}_{\mathrm{B},g}}^\mathsf{H} \mathbf{H}^{[k]}_{\mathrm{B},g}$ and
-						\begin{equation}
-							{\mathbf{D}^{[kj]}_{g}}^{(r)} = \mathbf{H}^{[jk]}_\mathrm{D} + \sum_{g'<g} {\mathbf{H}_{k,g'}^\mathrm{B}}^\mathsf{H} \mathbf{\Theta}_{g'}^{(r+1)} \mathbf{H}_{k,g'}^\mathrm{F} + \sum_{g'>g} {\mathbf{H}_{k,g'}^\mathrm{B}}^\mathsf{H} \mathbf{\Theta}_{g'}^{(r)} \mathbf{H}_{k,g'}^\mathrm{F}.
-						\end{equation}
-					\end{proposition}
-					\begin{proof}
-						The proof is similar to Appendix~\ref{ap:power} and omitted here.
-					\end{proof}
-				\end{subsubsection}
-
-				Problem \eqref{op:leakage} can be solved iteratively by \eqref{eq:combiner_leakage}, \eqref{eq:precoder_leakage}, and \eqref{eq:scatter_leakage}.
-				Convergence to local-optimal points is guaranteed since each subproblem is solved optimally and the objective is bounded above.
-
-			\end{subsection}
-
-			\begin{subsection}{Weighted Sum-Rate Maximization}
-				Finally, we consider weighted sum-rate maximization in \gls{mimo}-\gls{ic} by joint active beamforming design at the transmitters and passive beamforming design at the \gls{ris}.
-				The achievable rate of transmission $k$ is given by
-				\begin{equation}
-					R_k = \log \det \biggl(\mathbf{I} + \mathbf{W}_k {\mathbf{H}^{[kj]}}^\mathsf{H} \mathbf{Q}_k^{-1} {\mathbf{H}^{[kj]}} \mathbf{W}_k\biggr),
-				\end{equation}
-				where $\mathbf{Q}_k$ is the interference-plus-noise covariance matrix at receiver $k$
-				\begin{equation}
-					\mathbf{Q}_k = \sum_{j \ne k} {\mathbf{H}^{[kj]}} \mathbf{W}_j {\mathbf{W}_j}^\mathsf{H} {\mathbf{H}^{[kj]}}^\mathsf{H} + \eta \mathbf{I},
-				\end{equation}
-				and $\eta$ is the average noise power.
-				The optimization problem is formulated as
+			\begin{subsubsection}{Alternating Optimization}
+				This approach updates $\mathbf{\Theta}$ and $\{\mathbf{W}_k\}_{k \in [K]}$ iteratively until convergence.
+				For a given precoder set, the passive beamforming subproblem is
 				\begin{maxi!}
-					{\scriptstyle{\mathbf{\Theta}, \{\mathbf{W}_k\}}}{\sum_k \rho_k R_k}{\label{op:ic_rate}}{\label{ob:ic_rate}}
-					\addConstraint{\mathbf{\Theta}_g^\mathsf{H} \mathbf{\Theta}_g=\mathbf{I}, \quad \forall g}{}{}
-					\addConstraint{\lVert \mathbf{W}_k \rVert _\mathrm{F}^2 \le P_k. \quad \forall k}{}{}
+					{\scriptstyle{\mathbf{\Theta}}}{\sum_{k=1}^K \rho_k R_k}{\label{op:wsr_ris}}{\label{ob:wsr_ris}}
+					\addConstraint{\mathbf{\Theta}_g^\mathsf{H} \mathbf{\Theta}_g=\mathbf{I}, \quad \forall g,}{}{}
 				\end{maxi!}
-				where $\rho_k$ is the weight that denotes the priority of transmission $k$.
-				The problem is non-convex and can be solved by the \gls{ao} method detailed below.
+				which can be solved optimally by Algorithm \ref{ag:rcg} with the partial derivative given in Lemma \ref{lm:wsr}.
 
-				\begin{subsubsection}{Precoder Design}
-					For a given $\mathbf{\Theta}$, \eqref{op:ic_rate} reduces to conventional linear beamforming problem, for which a closed-form iterative solution has been proposed in \cite{Negro2010} based on mutual information-\gls{mmse} relationship \cite{Guo2005}.
-					We restate the steps as follows.
+				\begin{lemma}
+					\label{lm:wsr}
+					The partial derivative of \eqref{ob:wsr_ris} with respect to \gls{bd}-\gls{ris} block $g$ is
+					\begin{equation}
+						\label{eq:gradient_eucl_wsr}
+						\begin{split}
+							\frac{\partial \rho_k R_k}{\partial \mathbf{\Theta}_g^*} = \sum_{k=1}^K & \rho_k {\mathbf{H}^{(k)\mathsf{H}}_{\mathrm{B},g}} \mathbf{Q}_k^{-1} {\mathbf{H}^{(kk)}} \mathbf{W}_k \mathbf{E}_k \mathbf{W}_k^\mathsf{H} \\
+							& \times \bigl({\mathbf{H}_{\mathrm{F},g}^{(k)\mathsf{H}}} - {\mathbf{H}^{(kk)\mathsf{H}}} \mathbf{Q}_k^{-1} \sum_{j \ne k} {\mathbf{H}^{(kj)}} \mathbf{W}_j \mathbf{W}_j^\mathsf{H} {\mathbf{H}^{(j)\mathsf{H}}_{\mathrm{F},g}}\bigr),
+						\end{split}
+					\end{equation}
+					where $\mathbf{E}_k = \bigl(\mathbf{I} + {\mathbf{W}_k^\mathsf{H}} {\mathbf{H}^{(kk)\mathsf{H}}} \mathbf{Q}_k {\mathbf{H}^{(kk)}} \mathbf{W}_k\bigr)^{-1}$ is the error matrix of receiver $k$.
+				\end{lemma}
 
-					At iteration $r$, the \gls{mmse} combiner at receiver $k$ is
-					\begin{equation}
-						\mathbf{G}_k^{(r)} = {\mathbf{W}_k^{(r-1)}}^\mathsf{H} {\mathbf{H}^{[kk]}}^\mathsf{H} \bigl(\mathbf{Q}_k^{(r-1)} + {\mathbf{H}^{[kk]}} \mathbf{W}_k^{(r-1)} {\mathbf{W}_k^{(r-1)}}^\mathsf{H} {\mathbf{H}^{[kk]}}^\mathsf{H}\bigr)^{-1},
-					\end{equation}
-					the corresponding error matrix is
-					\begin{equation}
-						\mathbf{E}_k^{(r)} = \bigl(\mathbf{I} + {\mathbf{W}_k^{(r-1)}}^\mathsf{H} {\mathbf{H}^{[kk]}}^\mathsf{H} \mathbf{Q}_k^{(r-1)} {\mathbf{H}^{[kk]}} \mathbf{W}_k^{(r-1)}\bigr)^{-1},
-					\end{equation}
-					the \gls{mse} weight is
-					\begin{equation}
-						\mathbf{\Omega}_k^{(r)} = \rho_k {\mathbf{E}_k^{(r)}}^{-1},
-					\end{equation}
-					the Lagrange multiplier is
-					\begin{equation}
-						\lambda_k^{(r)} = \frac{\mathrm{tr}\bigl(\eta \mathbf{\Omega}_k^{(r)} \mathbf{G}_k^{(r)}{\mathbf{G}_k^{(r)}}^\mathsf{H} + \sum_j \mathbf{\Omega}_k^{(r)}\mathbf{T}_{kj}^{(r)} {\mathbf{T}_{kj}^{(r)}}^\mathsf{H} - \mathbf{\Omega}_j^{(r)}\mathbf{T}_{jk}^{(r)} {\mathbf{T}_{jk}^{(r)}}^\mathsf{H} \bigr)}{P_k},
-					\end{equation}
-					where $\mathbf{T}_{kj}^{(r)} = \mathbf{G}_k^{(r)} {\mathbf{H}^{[kj]}} \mathbf{W}_j^{(r)}$.
-					The optimal precoder at transmitter $k$ is given by
-					\begin{equation}
-						\mathbf{W}_k^{(r)} = \Bigl(\sum_j {\mathbf{H}^{[jk]}}^\mathsf{H} {\mathbf{G}_j^{(r)}}^\mathsf{H} \mathbf{\Omega}_k^{(r)} \mathbf{G}_j^{(r)} \mathbf{H}^{[jk]} + \lambda_k^{(r)} \mathbf{I} \Bigr)^{-1} {\mathbf{H}^{[kk]}}^\mathsf{H} {\mathbf{G}_j^{(r)}}^\mathsf{H} \mathbf{\Omega}_k^{(r)}.
-					\end{equation}
-				\end{subsubsection}
+				\begin{proof}
+					Please refer to Appendix~\ref{ap:wsr}.
+				\end{proof}
 
-				\begin{subsubsection}{Scattering Matrix Design}
-					Once $\{\mathbf{W}_k\}$ is determined, the complex derivative of \eqref{ob:ic_rate} with respect to \gls{ris} block $g$ is
+				For a given $\mathbf{\Theta}$, problem \eqref{op:wsr} reduces to conventional precoding design for interference channel.
+				A closed-form iterative solution based on mutual information-\gls{mmse} relationship has been proposed in \cite{Shin2012,Negro2010} and we summarize the steps as follows.
+				At iteration $r$, the \gls{mmse} combiner at receiver $k$ is
+				\begin{equation}
+					\begin{split}
+						\mathbf{G}_k^{(r)} &= {\mathbf{W}_k^{(r-1)\mathsf{H}}} {\mathbf{H}^{(kk)\mathsf{H}}} \\
+						& \quad \times \bigl(\mathbf{Q}_k^{(r-1)} + {\mathbf{H}^{(kk)}} \mathbf{W}_k^{(r-1)} {\mathbf{W}_k^{(r-1)\mathsf{H}}} {\mathbf{H}^{(kk)\mathsf{H}}}\bigr)^{-1},
+					\end{split}
+				\end{equation}
+				the corresponding error matrix is
+				\begin{equation}
+					\mathbf{E}_k^{(r)} = \bigl(\mathbf{I} + {\mathbf{W}_k^{(r-1)\mathsf{H}}} {\mathbf{H}^{(kk)\mathsf{H}}} \mathbf{Q}_k^{(r-1)} {\mathbf{H}^{(kk)}} \mathbf{W}_k^{(r-1)}\bigr)^{-1},
+				\end{equation}
+				and the optimal precoder at transmitter $k$ is given by
+				\begin{equation}
+					\label{eq:precoder_wsr}
+					\begin{split}
+						\mathbf{W}_k^{(r)} & = \Bigl(\sum_{j=1}^K {\mathbf{H}^{(jk)\mathsf{H}}} {\mathbf{G}_j^{(r)\mathsf{H}}} \mathbf{\Omega}_k^{(r)} \mathbf{G}_j^{(r)} \mathbf{H}^{(jk)} + \lambda_k^{(r)} \mathbf{I} \Bigr)^{-1} \\
+						& \quad \times {\mathbf{H}^{(kk)\mathsf{H}}} {\mathbf{G}_j^{(r)\mathsf{H}}} \mathbf{\Omega}_k^{(r)},
+					\end{split}
+				\end{equation}
+				where $\mathbf{\Omega}_k^{(r)} = \rho_k {\mathbf{E}_k^{(r)-1}}$ is the mean-square error weight and $\lambda_k^{(r)}$ is the Lagrange multiplier retrievable by bisection \cite{Shin2012} or in closed form \cite{Negro2010}
+				\begin{equation}
+					\lambda_k^{(r)} = \frac{\mathrm{tr}\bigl(\eta \mathbf{\Omega}_k^{(r)} \mathbf{G}_k^{(r)}{\mathbf{G}_k^{(r)\mathsf{H}}} + \sum_{j=1}^K (\mathbf{Z}_{kj}^{(r)} - \mathbf{Z}_{jk}^{(r)}) \bigr)}{P_k},
+					% \lambda_k^{(r)} = \frac{\mathrm{tr}\bigl(\eta \mathbf{\Omega}_k^{(r)} \mathbf{G}_k^{(r)}{\mathbf{G}_k^{(r)\mathsf{H}}} + \sum_j \mathbf{\Omega}_k^{(r)}\mathbf{T}_{kj}^{(r)} {\mathbf{T}_{kj}^{(r)\mathsf{H}}} - \mathbf{\Omega}_j^{(r)}\mathbf{T}_{jk}^{(r)} {\mathbf{T}_{jk}^{(r)\mathsf{H}}} \bigr)}{P_k},
+				\end{equation}
+				where $\mathbf{Z}_{kj}^{(r)} = \mathbf{\Omega}_k^{(r)}\mathbf{T}_{kj}^{(r)} {\mathbf{T}_{kj}^{(r)\mathsf{H}}}$ and $\mathbf{T}_{kj}^{(r)} = \mathbf{G}_k^{(r)} {\mathbf{H}^{(kj)}} \mathbf{W}_j^{(r)}$.
+
+				The computational complexity of solving subproblem \eqref{op:wsr_ris} by geodesic \gls{rcg} is $\mathcal{O}\bigl(I_\text{RCG} G (N_\mathrm{T} d^2 + N_\mathrm{T}^2 d + N_\mathrm{T}^2 N_\mathrm{R} + N_\mathrm{T} N_\mathrm{R}^2 + K (N_\mathrm{T} N_\mathrm{R} d + N_\mathrm{T} N_\mathrm{R} L) + I_\text{BLS}L^3)\bigr)$.
+				That is, $\mathcal{O}_\mathrm{D}\bigl(N_\mathrm{S}\bigr)$ for \gls{d}-\gls{ris} and $\mathcal{O}_\mathrm{BD}\bigl(N_\mathrm{S}^3\bigr)$ for fully-connected \gls{bd}-\gls{ris}.
+			\end{subsubsection}
+
+			\begin{subsubsection}{Low-Complexity Solution}
+				Similar to Section \ref{sc:rate_pc_lc}, we suboptimally decouple the beamforming design by first shape the channel by \gls{ris} for minimum leakage interference and then optimize the active beamforming.
+				The leakage interference minimization problem is formulated as
+				\begin{mini!}
+					{\scriptstyle{\mathbf{\Theta}}}{I = \sum_{k=1}^K \sum_{j \ne k} \left\lVert {\mathbf{H}}^{(kj)}_\mathrm{D} + {\mathbf{H}}^{(k)}_\mathrm{B} \mathbf{\Theta} {\mathbf{H}}^{(j)}_\mathrm{F} \right\rVert _{\mathrm{F}}^2}{\label{op:interference}}{\label{ob:interference}}
+					\addConstraint{\mathbf{\Theta}_g^\mathsf{H} \mathbf{\Theta}_g=\mathbf{I}, \quad \forall g,}{}{}
+				\end{mini!}
+				which can be solved iteratively in closed form.
+
+				\begin{proposition}
+					\label{pp:interference}
+					Starting from any feasible $\mathbf{\Theta}^{(0)}$, the sequence
 					\begin{equation}
-						\frac{\partial \rho_k R_k}{\partial \mathbf{\Theta}_g^*} = \sum_k \rho_k {\mathbf{H}^{[k]}_{\mathrm{B},g}}^\mathsf{H} \mathbf{Q}_k^{-1} {\mathbf{H}^{[kk]}} \mathbf{W}_k \mathbf{E}_k \mathbf{W}_k^\mathsf{H} \bigl({\mathbf{H}_{k,g}^\mathrm{F}}^\mathsf{H} - {\mathbf{H}^{[kk]}}^\mathsf{H} \mathbf{Q}_k^{-1} \sum_{j \ne k} {\mathbf{H}^{[kj]}} \mathbf{W}_j \mathbf{W}_j^\mathsf{H} {\mathbf{H}^{[j]}_{\mathrm{F},g}}^\mathsf{H}\bigr).
-						\label{eq:ic_rate_gradient_ris}
+						\mathbf{\Theta}_g^{(r+1)} = \mathbf{U}_g^{(r)} \mathbf{V}_g^{(r)}, \quad \forall g
+						\label{eq:scatter_leakage}
 					\end{equation}
-				\end{subsubsection}
-				The \gls{ris} subproblem can be solved by \gls{rcg} Algorithm~\ref{ag:rcg} where line ?? uses \eqref{eq:ic_rate_gradient_ris} explicitly.
-			\end{subsection}
+					converges to a stationary point of \eqref{op:interference}, where $\mathbf{U}_g^{(r)}$ and $\mathbf{V}_g^{(r)}$ are any left and right singular matrices of
+					\begin{equation}
+						\mathbf{M}_g^{(r)} = \sum_{k=1}^K \sum_{j \ne k} \bigl(\mathbf{B}_g^{(k)} \mathbf{\Theta}_g^{(r)} \mathbf{H}^{(j)}_{\mathrm{F},g} - {\mathbf{H}^{(k)\mathsf{H}}_{\mathrm{B},g}} {\mathbf{D}^{(kj)(r)}_{g}}\bigr) {\mathbf{H}^{(j)\mathsf{H}}_{\mathrm{F},g}},
+					\end{equation}
+					where $\mathbf{B}_g^{(k)} = \lambda_1\bigl({\mathbf{H}^{(k)\mathsf{H}}_{\mathrm{B},g}} \mathbf{H}^{(k)}_{\mathrm{B},g}\bigr) \mathbf{I} - {\mathbf{H}^{(k)\mathsf{H}}_{\mathrm{B},g}} \mathbf{H}^{(k)}_{\mathrm{B},g}$ and ${\mathbf{D}^{(kj)(r)}_{g}} = \mathbf{H}^{(kj)}_\mathrm{D} + \sum_{g'<g} {\mathbf{H}_{\mathrm{B},g'}^{(k)\mathsf{H}}} \mathbf{\Theta}_{g'}^{(r+1)} \mathbf{H}_{\mathrm{F},g'}^{(k)} + \sum_{g'>g} {\mathbf{H}_{\mathrm{B},g'}^{(k)\mathsf{H}}} \mathbf{\Theta}_{g'}^{(r)} \mathbf{H}_{\mathrm{F},g'}^{(k)}.$
+				\end{proposition}
+				\begin{proof}
+					Please refer to Appendix~\ref{ap:interference}.
+				\end{proof}
+			\end{subsubsection}
+			Once the channel is shaped by \eqref{eq:scatter_leakage}, the active beamforming is retrieved iteratively by \eqref{eq:precoder_wsr}.
+			This Two-stage solution avoids outer iterations and efficiently handles inner iterations.
+		\end{subsection}
+
+			% \begin{subsection}{Leakage Interference Minimization}
+			% 	Leakage interference refers to the sum of all interference terms in \gls{ic}.
+			% 	Assume all transmitter sends $N_\mathrm{E} \le N \triangleq \min(N_\mathrm{T}, N_\mathrm{R})$ data streams to its intended receiver.
+			% 	The leakage interference minimization problem is formulated with respect to all transmit precoders, all receiver combiners, and the scattering matrix as
+			% 	\begin{mini!}
+			% 		{\scriptstyle{\mathbf{\Theta}, \{\mathbf{G}_k\}, \{\mathbf{W}_k\}_{k \in [K]}}}{\mathop{\sum\sum}_{j \neq k} \left\lVert \mathbf{G}_k (\mathbf{H}^{(kj)}_\mathrm{D} + \mathbf{H}^{(k)}_\mathrm{B} \mathbf{\Theta} \mathbf{H}^{(j)}_{\mathrm{F}}) \mathbf{W}_j \right\rVert _{\mathrm{F}}^2}{\label{op:leakage}}{}
+			% 		\addConstraint{\mathbf{\Theta}_g^\mathsf{H} \mathbf{\Theta}_g=\mathbf{I}, \quad}{\forall g}{\label{co:scatter}}
+			% 		\addConstraint{\mathbf{G}_k \mathbf{G}_k^\mathsf{H}=\mathbf{I}, \quad}{\forall k}{\label{co:combiner}}
+			% 		\addConstraint{\mathbf{W}_j^\mathsf{H} \mathbf{W}_j=\mathbf{I}, \quad}{\forall j,}{\label{co:precoder}}
+			% 	\end{mini!}
+			% 	where $\mathbf{G}_k \in \mathbb{C}^{N_\mathrm{D} \times N_\mathrm{R}}$ is the combiner at receiver $k$ and $\mathbf{W}_j \in \mathbb{C}^{N_\mathrm{T} \times N_\mathrm{D}}$ is the precoder at transmitter $j$.
+			% 	It is worth noting that $\mathbf{\Theta}_g$ is a square unitary matrix and $\mathbf{\Theta}_g^\mathsf{H} \mathbf{\Theta}_g=\mathbf{I}$ is equivalent to $\mathbf{\Theta}_g \mathbf{\Theta}_g^\mathsf{H}=\mathbf{I}$, while $\mathbf{G}_k$ and $\mathbf{W}_j$ may be respectively ``fat'' and ``tall'' rectangular semi-unitary matrices such that \eqref{co:combiner} and \eqref{co:precoder} are required.
+			% 	The non-convex problem can be solved iteratively by the \gls{bcd} method detailed below.
+
+			% 	\begin{subsubsection}{Combiner and Precoder Design}
+			% 		For a given $\mathbf{\Theta}$, problem \eqref{op:leakage} reduces to conventional linear beamforming problem, for which an iterative algorithm alternating between the original and reciprocal networks is proposed in \cite{Gomadam2011,Clerckx2013}.
+			% 		At iteration $r$, the combiner at receiver $k$ is updated as
+			% 		\begin{equation}
+			% 			\mathbf{G}_k^{(r)} = {\mathbf{U}_{k,N}^{(r-1)}}^\mathsf{H},
+			% 			\label{eq:combiner_leakage}
+			% 		\end{equation}
+			% 		where $\mathbf{U}_{k,N}^{(r-1)}$ is the eigenvectors corresponding to $N$ smallest eigenvalues of the interference covariance matrix $\mathbf{Q}_k^{(r-1)} = \sum_{j \ne k} {\mathbf{H}^{(kj)}} \mathbf{W}_j^{(r-1)} {\mathbf{W}_j^{(r-1)}}^\mathsf{H} {\mathbf{H}^{(kj)\mathsf{H}}}$.
+			% 		The precoder at transmitter $j$ is updated as
+			% 		\begin{equation}
+			% 			\mathbf{W}_j^{(r)} = \bar{\mathbf{U}}_{j,N}^{(r)},
+			% 			\label{eq:precoder_leakage}
+			% 		\end{equation}
+			% 		where $\bar{\mathbf{U}}_{j,N}^{(r)}$ corresponds $\bar{\mathbf{Q}}_j^{(r)} = \sum_{k \ne j} {\mathbf{H}^{(kj)\mathsf{H}}} {\mathbf{G}_k^{(r)\mathsf{H}}} \mathbf{G}_k^{(r)} {\mathbf{H}^{(kj)}}$ in the reciprocal network.
+			% 	\end{subsubsection}
+
+			% 	\begin{subsubsection}{Scattering Matrix Design}
+			% 		Once $\{\mathbf{G}_k\}$ and $\{\mathbf{W}_j\}$ are determined, we define $\bar{\mathbf{H}}^{(kj)}_\mathrm{D} \triangleq \mathbf{G}_k \mathbf{H}^{(kj)}_\mathrm{D} \mathbf{W}_j$, $\bar{\mathbf{H}}^{(k)}_\mathrm{B} \triangleq \mathbf{G}_k \mathbf{H}^{(k)}_\mathrm{B}$, and $\bar{\mathbf{H}}^{(j)}_\mathrm{F} \triangleq \mathbf{H}^{(j)}_\mathrm{F} \mathbf{W}_j$.
+			% 		The \gls{bd}-\gls{ris} subproblem boils down to
+			% 		\begin{mini!}
+			% 			{\scriptstyle{\mathbf{\Theta}}}{\mathop{\sum\sum}_{j \neq k} \left\lVert (\bar{\mathbf{H}}^{(kj)}_\mathrm{D} + \bar{\mathbf{H}}^{(k)}_\mathrm{B} \mathbf{\Theta} \bar{\mathbf{H}}^{(j)}_\mathrm{F}) \right\rVert _{\mathrm{F}}^2}{\label{op:ic_interference_ris}}{}
+			% 			\addConstraint{\mathbf{\Theta}_g^\mathsf{H} \mathbf{\Theta}_g=\mathbf{I}, \quad \forall g,}{}{}
+			% 		\end{mini!}
+			% 		which can be viewed as a channel shaping problem on $\bar{\mathbf{H}}^{(kj)}_\mathrm{D}$, $\bar{\mathbf{H}}^{(k)}_\mathrm{B}$, and $\bar{\mathbf{H}}^{(j)}_\mathrm{F}$.
+
+			% 		\begin{proposition}
+			% 			Start from any $\mathbf{\Theta}^{(0)}$, the sequence
+			% 			\begin{equation}
+			% 				\mathbf{\Theta}_g^{(r+1)} = \mathbf{U}_g^{(r)} \mathbf{V}_g^{(r)}, \quad \forall g
+			% 				\label{eq:scatter_leakage}
+			% 			\end{equation}
+			% 			converges to a stationary point of \eqref{op:ic_interference_ris}, where $\mathbf{U}_g^{(r)}$ and $\mathbf{V}_g^{(r)}$ are left and right singular matrix of
+			% 			\begin{equation}
+			% 				\mathbf{M}_g^{(r)} = \mathop{\sum\sum}_{j \neq k} \bigl(\mathbf{B}_{k,g} \mathbf{\Theta}_g^{(r)} \mathbf{H}^{(j)}_{\mathrm{F},g} - {\mathbf{H}^{(k)\mathsf{H}}_{\mathrm{B},g}} {\mathbf{D}^{(kj)}_{g}}^{(r)}\bigr) {\mathbf{H}^{(j)\mathsf{H}}_{\mathrm{F},g}},
+			% 			\end{equation}
+			% 			where $\mathbf{B}_{k,g} = \lambda_1\bigl({\mathbf{H}^{(k)\mathsf{H}}_{\mathrm{B},g}} \mathbf{H}^{(k)}_{\mathrm{B},g}\bigr) \mathbf{I} - {\mathbf{H}^{(k)\mathsf{H}}_{\mathrm{B},g}} \mathbf{H}^{(k)}_{\mathrm{B},g}$ and
+			% 			\begin{equation}
+			% 				{\mathbf{D}^{(kj)}_{g}}^{(r)} = \mathbf{H}^{(kj)}_\mathrm{D} + \sum_{g'<g} {\mathbf{H}_{k,g'}^\mathrm{B}}^\mathsf{H} \mathbf{\Theta}_{g'}^{(r+1)} \mathbf{H}_{k,g'}^\mathrm{F} + \sum_{g'>g} {\mathbf{H}_{k,g'}^\mathrm{B}}^\mathsf{H} \mathbf{\Theta}_{g'}^{(r)} \mathbf{H}_{k,g'}^\mathrm{F}.
+			% 			\end{equation}
+			% 		\end{proposition}
+			% 		\begin{proof}
+			% 			The proof is similar to Appendix~\ref{ap:power} and omitted here.
+			% 		\end{proof}
+			% 	\end{subsubsection}
+
+			% 	Problem \eqref{op:leakage} can be solved iteratively by \eqref{eq:combiner_leakage}, \eqref{eq:precoder_leakage}, and \eqref{eq:scatter_leakage}.
+			% 	Convergence to local-optimal points is guaranteed since each subproblem is solved optimally and the objective is bounded above.
+
+			% \end{subsection}
+
+			% \begin{subsection}{Weighted Sum-Rate Maximization}
+			% 	Finally, we consider weighted sum-rate maximization in \gls{mimo}-\gls{ic} by joint active beamforming design at the transmitters and passive beamforming design at the \gls{ris}.
+			% 	The achievable rate of transmission $k$ is given by
+			% 	\begin{equation}
+			% 		R_k = \log \det \biggl(\mathbf{I} + \mathbf{W}_k {\mathbf{H}^{(kj)\mathsf{H}}} \mathbf{Q}_k^{-1} {\mathbf{H}^{(kj)}} \mathbf{W}_k\biggr),
+			% 	\end{equation}
+			% 	where $\mathbf{Q}_k$ is the interference-plus-noise covariance matrix at receiver $k$
+			% 	\begin{equation}
+			% 		\mathbf{Q}_k = \sum_{j \ne k} {\mathbf{H}^{(kj)}} \mathbf{W}_j \mathbf{W}_j^\mathsf{H} {\mathbf{H}^{(kj)\mathsf{H}}} + \eta \mathbf{I},
+			% 	\end{equation}
+			% 	and $\eta$ is the average noise power.
+			% 	The optimization problem is formulated as
+			% 	\begin{maxi!}
+			% 		{\scriptstyle{\mathbf{\Theta}, \{\mathbf{W}_k\}_{k \in [K]}}}{\sum_k \rho_k R_k}{\label{op:ic_rate}}{\label{ob:ic_rate}}
+			% 		\addConstraint{\mathbf{\Theta}_g^\mathsf{H} \mathbf{\Theta}_g=\mathbf{I}, \quad \forall g}{}{}
+			% 		\addConstraint{\lVert \mathbf{W}_k \rVert _\mathrm{F}^2 \le P_k. \quad \forall k}{}{}
+			% 	\end{maxi!}
+			% 	where $\rho_k$ is the weight that denotes the priority of transmission $k$.
+			% 	The problem is non-convex and can be solved by the \gls{ao} method detailed below.
+
+			% 	\begin{subsubsection}{Precoder Design}
+			% 		For a given $\mathbf{\Theta}$, \eqref{op:ic_rate} reduces to conventional linear beamforming problem, for which a closed-form iterative solution has been proposed in \cite{Negro2010} based on mutual information-\gls{mmse} relationship \cite{Guo2005}.
+			% 		We restate the steps as follows.
+
+			% 		At iteration $r$, the \gls{mmse} combiner at receiver $k$ is
+			% 		\begin{equation}
+			% 			\mathbf{G}_k^{(r)} = {\mathbf{W}_k^{(r-1)\mathsf{H}}} {\mathbf{H}^{(kk)\mathsf{H}}} \bigl(\mathbf{Q}_k^{(r-1)} + {\mathbf{H}^{(kk)}} \mathbf{W}_k^{(r-1)} {\mathbf{W}_k^{(r-1)\mathsf{H}}} {\mathbf{H}^{(kk)\mathsf{H}}}\bigr)^{-1},
+			% 		\end{equation}
+			% 		the corresponding error matrix is
+			% 		\begin{equation}
+			% 			\mathbf{E}_k^{(r)} = \bigl(\mathbf{I} + {\mathbf{W}_k^{(r-1)\mathsf{H}}} {\mathbf{H}^{(kk)\mathsf{H}}} \mathbf{Q}_k^{(r-1)} {\mathbf{H}^{(kk)}} \mathbf{W}_k^{(r-1)}\bigr)^{-1},
+			% 		\end{equation}
+			% 		the \gls{mse} weight is
+			% 		\begin{equation}
+			% 			\mathbf{\Omega}_k^{(r)} = \rho_k {\mathbf{E}_k^{(r)}}^{-1},
+			% 		\end{equation}
+			% 		the Lagrange multiplier is
+			% 		\begin{equation}
+			% 			\lambda_k^{(r)} = \frac{\mathrm{tr}\bigl(\eta \mathbf{\Omega}_k^{(r)} \mathbf{G}_k^{(r)}{\mathbf{G}_k^{(r)\mathsf{H}}} + \sum_j \mathbf{\Omega}_k^{(r)}\mathbf{T}_{kj}^{(r)} {\mathbf{T}_{kj}^{(r)\mathsf{H}}} - \mathbf{\Omega}_j^{(r)}\mathbf{T}_{jk}^{(r)} {\mathbf{T}_{jk}^{(r)}}^\mathsf{H} \bigr)}{P_k},
+			% 		\end{equation}
+			% 		where $\mathbf{T}_{kj}^{(r)} = \mathbf{G}_k^{(r)} {\mathbf{H}^{(kj)}} \mathbf{W}_j^{(r)}$.
+			% 		The optimal precoder at transmitter $k$ is given by
+			% 		\begin{equation}
+			% 			\mathbf{W}_k^{(r)} = \Bigl(\sum_j {\mathbf{H}^{(jk)\mathsf{H}}} {\mathbf{G}_j^{(r)\mathsf{H}}} \mathbf{\Omega}_k^{(r)} \mathbf{G}_j^{(r)} \mathbf{H}^{(jk)} + \lambda_k^{(r)} \mathbf{I} \Bigr)^{-1} {\mathbf{H}^{(kk)\mathsf{H}}} {\mathbf{G}_j^{(r)\mathsf{H}}} \mathbf{\Omega}_k^{(r)}.
+			% 		\end{equation}
+			% 	\end{subsubsection}
+
+			% 	\begin{subsubsection}{Scattering Matrix Design}
+			% 		Once $\{\mathbf{W}_k\}$ is determined, the complex derivative of \eqref{ob:ic_rate} with respect to \gls{ris} block $g$ is
+			% 		\begin{equation}
+			% 			\frac{\partial \rho_k R_k}{\partial \mathbf{\Theta}_g^*} = \sum_k \rho_k {\mathbf{H}^{(k)\mathsf{H}}_{\mathrm{B},g}} \mathbf{Q}_k^{-1} {\mathbf{H}^{(kk)}} \mathbf{W}_k \mathbf{E}_k \mathbf{W}_k^\mathsf{H} \bigl({\mathbf{H}_{\mathrm{F},g}^{(k)\mathsf{H}}} - {\mathbf{H}^{(kk)\mathsf{H}}} \mathbf{Q}_k^{-1} \sum_{j \ne k} {\mathbf{H}^{(kj)}} \mathbf{W}_j \mathbf{W}_j^\mathsf{H} {\mathbf{H}^{(j)\mathsf{H}}_{\mathrm{F},g}}\bigr).
+			% 			\label{eq:ic_rate_gradient_ris}
+			% 		\end{equation}
+			% 	\end{subsubsection}
+			% 	The \gls{ris} subproblem can be solved by \gls{rcg} Algorithm~\ref{ag:rcg} where line ?? uses \eqref{eq:ic_rate_gradient_ris} explicitly.
+			% \end{subsection}
 		% \end{subsection}
 \end{section}
 
@@ -1312,7 +1374,7 @@
 % 		The overall complexity is thus $\mathcal{O}\bigl(I_\text{SAA} G \bigl(N_\mathrm{T} N_\mathrm{R} + (G+1)(NL^2+N_\mathrm{T} N_\mathrm{R} L) + L^3\bigr)\bigr)$, where $I_\text{SAA}$ is the number iterations for successive affine approximation.
 % 	\end{subsection}
 
-% 	\begin{subsection}{Achievable Rate Maximization}\label{sc:rate}
+% 	\begin{subsection}{Achievable Rate Maximization}\label{sc:rate_pc}
 % 		We aim to maximize the achievable rate of the \gls{bd}-\gls{ris}-aided \gls{mimo} system by jointly optimizing the active and passive beamforming
 % 		\begin{maxi!}
 % 			{\scriptstyle{\mathbf{W},\mathbf{\Theta}}}{R = \log \det \biggl(\mathbf{I} + \frac{\mathbf{W}^\mathsf{H}\mathbf{H}^\mathsf{H}\mathbf{H}\mathbf{W}}{\eta}\biggr)}{\label{op:rate}}{\label{ob:rate}}
@@ -1631,7 +1693,7 @@
 \begin{section}{Conclusion}
  This paper analyzes the channel shaping capability of \gls{ris} in terms of singular values redistribution.
  We consider a general \gls{bd} architecture that allows elements within the same group to interact, enabling more sophisticated manipulation than \gls{d}-\gls{ris}.
- This translates to a wider dynamic range of and better tradeoff between singular values and significant power and rate gains, especially in large-scale \gls{mimo} systems.
+ This translates to a wider dynamic range of and better trade-off between singular values and significant power and rate gains, especially in large-scale \gls{mimo} systems.
  We characterize the Pareto frontiers of channel singular values via optimization approach and provide analytical bounds for practical deployment scenarios.
  Specifically, the former is done by proposing an efficient \gls{rcg} algorithm for \gls{bd}-\gls{ris} optimization problems, which converges much faster than existing methods.
  We also present two beamforming designs for rate maximization problem, one for optimal performance and the other exploits channel shaping for lower complexity.
@@ -1650,576 +1712,374 @@
 
 
 \begin{appendix}
-% \begin{subsection}{Proof of Proposition \ref{pp:dof}}
-% 	\label{ap:dof}
-% 	The scattering matrix of \gls{bd}-\gls{ris} can be decomposed as
-% 	\begin{equation}
-% 		\mathbf{\Theta} = \mathbf{L} \mathbf{\Theta}_\mathrm{D} \mathbf{R}^\mathsf{H},
-% 	\end{equation}
-% 	where $\mathbf{\Theta}_\mathrm{D} \in \mathbb{U}^{N_\mathrm{S} \times N_\mathrm{S}}$ corresponds to \gls{d}-\gls{ris} and $\mathbf{L}, \mathbf{R} \in \mathbb{U}^{N_\mathrm{S} \times N_\mathrm{S}}$ are block-diagonal matrices of $L \times L$ unitary blocks.
-% 	Manipulating $\mathbf{L}$ and $\mathbf{R}$ rotates the linear spans of $\bar{\mathbf{H}}_\mathrm{B} \triangleq \mathbf{H}_\mathrm{B} \mathbf{L}$ and $\bar{\mathbf{H}}_\mathrm{F} \triangleq \mathbf{R}^\mathsf{H} \mathbf{H}_\mathrm{F}$ and maintains their rank.
-% 	On the other hand, there exists a $\mathbf{\Theta}_\mathrm{D}$ such that
-% 	\begin{equation*}
-% 		\begin{split}
-% 			\rank(\mathbf{H}_\mathrm{B} \mathbf{\Theta}_\mathrm{D} \mathbf{H}_\mathrm{F})
-% 			 & = \min \bigl( \rank(\mathbf{H}_\mathrm{B}), \rank(\mathbf{\Theta}_\mathrm{D}), \rank(\mathbf{H}_\mathrm{F}) \bigr) \\
-% 			 & = \min \bigl( \rank(\bar{\mathbf{H}}_\mathrm{B}), N_\mathrm{S}, \rank(\bar{\mathbf{H}}_\mathrm{F}) \bigr)          \\
-% 			 & = \max_\mathbf{\Theta} \ \rank(\mathbf{H}_\mathrm{B} \mathbf{\Theta} \mathbf{H}_\mathrm{F})
-% 		\end{split}
-% 	\end{equation*}
-% 	The same result holds if the direct channel is significant and the proof is omitted here.
-% \end{subsection}
+	\begin{subsection}{Proof of Proposition \ref{pp:dof}}
+		\label{ap:dof}
+		It suffices to consider the rank of the indirect channel.
+		Denote the \gls{svd} of the backward and forward channels as
+		\begin{equation*}
+			\mathbf{H}_\mathrm{B/F} = \begin{bmatrix}
+				\mathbf{U}_{\mathrm{B/F},1} & \mathbf{U}_{\mathrm{B/F},2}
+			\end{bmatrix}
+			\begin{bmatrix}
+				\mathbf{\Sigma}_{\mathrm{B/F},1} & \mathbf{0} \\
+				\mathbf{0}                     & \mathbf{0}
+			\end{bmatrix}
+			\begin{bmatrix}
+				\mathbf{V}_{\mathrm{B/F},1}^\mathsf{H} \\
+				\mathbf{V}_{\mathrm{B/F},2}^\mathsf{H}
+			\end{bmatrix},
+		\end{equation*}
+		where $\mathbf{U}_{\mathrm{B/F},1}$ and $\mathbf{V}_{\mathrm{B/F},1}$ are any left and right singular matrices of $\mathbf{H}_\mathrm{B/F}$ corresponding to non-zero singular values $\mathbf{\Sigma}_{\mathrm{B/F},1}$, and $\mathbf{U}_{\mathrm{B/F},2}$ and $\mathbf{V}_{\mathrm{B/F},2}$ are those corresponding to zero singular values.
+		The rank of the indirect channel is \cite[(16.5.10.b)]{Hogben2013}
+		\begin{equation*}
+			\begin{split}
+				\rank(\mathbf{H}_\mathrm{B} \mathbf{\Theta} \mathbf{H}_\mathrm{F})
+				& = \rank(\mathbf{H}_\mathrm{B}) - \dim \bigl(\ker(\mathbf{H}_\mathrm{F}^\mathsf{H} \mathbf{\Theta}^\mathsf{H}) \cap \ran(\mathbf{H}_\mathrm{B}^\mathsf{H})\bigr) \\
+				& = \rank(\mathbf{H}_\mathrm{B}) - \dim \bigl(\ran(\mathbf{\Theta} \mathbf{U}_{\mathrm{F},2}) \cap \ran(\mathbf{V}_{\mathrm{B},1})\bigr) \\
+				& \triangleq r_\mathrm{B} - r_\mathrm{L}(\mathbf{\Theta}),
+			\end{split}
+		\end{equation*}
+		where we define $r_\mathrm{L}(\mathbf{\Theta}) \triangleq \dim \bigl(\ran(\mathbf{\Theta} \mathbf{U}_{\mathrm{F},2}) \cap \ran(\mathbf{V}_{\mathrm{B},1})\bigr)$ and $r_\mathrm{B/F} \triangleq \rank(\mathbf{H}_\mathrm{B/F})$.
+		Since $\mathbf{U}_{\mathrm{F},2} \in \mathbb{U}^{N_\mathrm{S} \times (N_\mathrm{S} - r_\mathrm{F})}$ and $\mathbf{V}_{\mathrm{B},1} \in \mathbb{U}^{N_\mathrm{S} \times r_\mathrm{B}}$, we have $\max(r_\mathrm{B} - r_\mathrm{F}, 0) \le r_\mathrm{L}(\mathbf{\Theta}) \le \min(N_\mathrm{S} - r_\mathrm{F}, r_\mathrm{B})$
+		and thus
+		\begin{equation}
+			\label{iq:rank_indirect}
+			\max(r_\mathrm{B} + r_\mathrm{F} - N_\mathrm{S}, 0) \le \rank(\mathbf{H}_\mathrm{B} \mathbf{\Theta} \mathbf{H}_\mathrm{F}) \le \min(r_\mathrm{B}, r_\mathrm{F}).
+		\end{equation}
+		To attain the upper bound in \eqref{iq:rank_indirect}, the \gls{ris} needs to minimize $r_\mathrm{L}(\mathbf{\Theta})$ by aligning the ranges of $\mathbf{\Theta} \mathbf{U}_{\mathrm{F},2}$ and $\mathbf{V}_{\mathrm{B},2}$ as much as possible.
+		This is achieved by
+		\begin{equation}
+			\label{eq:ris_dof_max}
+			\mathbf{\Theta}_{\textnormal{DoF-max}}^{\textnormal{MIMO}} = \mathbf{Q}_{\mathrm{B},2} \mathbf{Q}_{\mathrm{F},2}^\mathsf{H},
+		\end{equation}
+		where $\mathbf{Q}_{\mathrm{B},2}$ and $\mathbf{Q}_{\mathrm{F},2}$ are the unitary matrices of the QR decomposition of $\mathbf{V}_{\mathrm{B},2}$ and $\mathbf{U}_{\mathrm{F},2}$, respectively.
+		Similarly, the lower bound in \eqref{iq:rank_indirect} is attained at
+		\begin{equation}
+			\label{eq:ris_dof_min}
+			\mathbf{\Theta}_{\textnormal{DoF-min}}^{\textnormal{MIMO}} = \mathbf{Q}_{\mathrm{B},1} \mathbf{Q}_{\mathrm{F},2}^\mathsf{H},
+		\end{equation}
+		where $\mathbf{Q}_{\mathrm{B},1}$ is the unitary matrix of the QR decomposition of $\mathbf{V}_{\mathrm{B},1}$.
+		While the \gls{dof}-optimal structures \eqref{eq:ris_dof_max} and \eqref{eq:ris_dof_min} are always feasible for fully-connected \gls{bd}-\gls{ris}, they are generally infeasible for \gls{d}-\gls{ris} unless there exist some QR decomposition that diagonalize $\mathbf{Q}_{\mathrm{B},2} \mathbf{Q}_{\mathrm{F},2}^\mathsf{H}$ and $\mathbf{Q}_{\mathrm{B},1} \mathbf{Q}_{\mathrm{F},2}^\mathsf{H}$ simultaneously.
+		That is, \gls{bd}-\gls{ris} may achieve a larger or smaller number of \gls{dof} of indirect channel, and thus equivalent channel, than \gls{d}-\gls{ris}.
+	\end{subsection}
 
-\begin{subsection}{Proof of Proposition \ref{pp:dof}}
-	\label{ap:dof}
-	It suffices to consider the rank of the indirect channel.
-	% Denote the rank of the
-	% Let $r_\mathrm{B}$ and $r_\mathrm{F}$ be the ranks of the backward and forward channels, respectively.
-	Denote the \gls{svd} of the backward and forward channels as
-	\begin{equation*}
-		\mathbf{H}_\mathrm{B/F} = \begin{bmatrix}
-			\mathbf{U}_{\mathrm{B/F},1} & \mathbf{U}_{\mathrm{B/F},2}
-		\end{bmatrix}
-		\begin{bmatrix}
-			\mathbf{\Sigma}_{\mathrm{B/F},1} & \mathbf{0} \\
-			\mathbf{0}                     & \mathbf{0}
-		\end{bmatrix}
-		\begin{bmatrix}
-			\mathbf{V}_{\mathrm{B/F},1}^\mathsf{H} \\
-			\mathbf{V}_{\mathrm{B/F},2}^\mathsf{H}
-		\end{bmatrix},
-	\end{equation*}
-	where $\mathbf{U}_{\mathrm{B/F},1}$ and $\mathbf{V}_{\mathrm{B/F},1}$ are any left and right singular matrices of $\mathbf{H}_\mathrm{B/F}$ corresponding to non-zero singular values $\mathbf{\Sigma}_{\mathrm{B/F},1}$, and $\mathbf{U}_{\mathrm{B/F},2}$ and $\mathbf{V}_{\mathrm{B/F},2}$ are those corresponding to zero singular values.
-	The rank of the indirect channel is \cite[(16.5.10.b)]{Hogben2013}
-	\begin{equation*}
-		\begin{split}
-			\rank(\mathbf{H}_\mathrm{B} \mathbf{\Theta} \mathbf{H}_\mathrm{F})
-			 & = \rank(\mathbf{H}_\mathrm{B}) - \dim \bigl(\ker(\mathbf{H}_\mathrm{F}^\mathsf{H} \mathbf{\Theta}^\mathsf{H}) \cap \ran(\mathbf{H}_\mathrm{B}^\mathsf{H})\bigr) \\
-			 & = \rank(\mathbf{H}_\mathrm{B}) - \dim \bigl(\ran(\mathbf{\Theta} \mathbf{U}_{\mathrm{F},2}) \cap \ran(\mathbf{V}_{\mathrm{B},1})\bigr) \\
-			 & \triangleq r_\mathrm{B} - r_\mathrm{L}(\mathbf{\Theta}),
-		\end{split}
-	\end{equation*}
-	where we define $r_\mathrm{L}(\mathbf{\Theta}) \triangleq \dim \bigl(\ran(\mathbf{\Theta} \mathbf{U}_{\mathrm{F},2}) \cap \ran(\mathbf{V}_{\mathrm{B},1})\bigr)$ and $r_\mathrm{B/F} \triangleq \rank(\mathbf{H}_\mathrm{B/F})$.
-	Since $\mathbf{U}_{\mathrm{F},2} \in \mathbb{U}^{N_\mathrm{S} \times (N_\mathrm{S} - r_\mathrm{F})}$ and $\mathbf{V}_{\mathrm{B},1} \in \mathbb{U}^{N_\mathrm{S} \times r_\mathrm{B}}$, we have $\max(r_\mathrm{B} - r_\mathrm{F}, 0) \le r_\mathrm{L}(\mathbf{\Theta}) \le \min(N_\mathrm{S} - r_\mathrm{F}, r_\mathrm{B})$
-	and thus
-	% the following inequality holds
-	% \begin{equation}
-	% 	\max(r_\mathrm{B} - r_\mathrm{F}, 0) \le r_\mathrm{L}(\mathbf{\Theta}) \le \min(N_\mathrm{S} - r_\mathrm{F}, r_\mathrm{B}),
-	% \end{equation}
-	% which implies
-	\begin{equation}
-		\label{iq:rank_indirect}
-		\max(r_\mathrm{B} + r_\mathrm{F} - N_\mathrm{S}, 0) \le \rank(\mathbf{H}_\mathrm{B} \mathbf{\Theta} \mathbf{H}_\mathrm{F}) \le \min(r_\mathrm{B}, r_\mathrm{F}).
-	\end{equation}
-	To attain the upper bound in \eqref{iq:rank_indirect}, the \gls{ris} needs to minimize $r_\mathrm{L}(\mathbf{\Theta})$ by aligning the ranges of $\mathbf{\Theta} \mathbf{U}_{\mathrm{F},2}$ and $\mathbf{V}_{\mathrm{B},2}$ as much as possible.
-	This is achieved by
-	\begin{equation}
-		\label{eq:ris_dof_max}
-		\mathbf{\Theta}_{\textnormal{DoF-max}}^{\textnormal{MIMO}} = \mathbf{Q}_{\mathrm{B},2} \mathbf{Q}_{\mathrm{F},2}^\mathsf{H},
-	\end{equation}
-	where $\mathbf{Q}_{\mathrm{B},2}$ and $\mathbf{Q}_{\mathrm{F},2}$ are the unitary matrices of the QR decomposition of $\mathbf{V}_{\mathrm{B},2}$ and $\mathbf{U}_{\mathrm{F},2}$, respectively.
-	Similarly, the lower bound in \eqref{iq:rank_indirect} is attained at
-	\begin{equation}
-		\label{eq:ris_dof_min}
-		\mathbf{\Theta}_{\textnormal{DoF-min}}^{\textnormal{MIMO}} = \mathbf{Q}_{\mathrm{B},1} \mathbf{Q}_{\mathrm{F},2}^\mathsf{H},
-	\end{equation}
-	where $\mathbf{Q}_{\mathrm{B},1}$ is the unitary matrix of the QR decomposition of $\mathbf{V}_{\mathrm{B},1}$.
-	While the \gls{dof}-optimal structures \eqref{eq:ris_dof_max} and \eqref{eq:ris_dof_min} are always feasible for fully-connected \gls{bd}-\gls{ris}, they are generally infeasible for \gls{d}-\gls{ris} unless there exist some QR decomposition that diagonalize $\mathbf{Q}_{\mathrm{B},2} \mathbf{Q}_{\mathrm{F},2}^\mathsf{H}$ and $\mathbf{Q}_{\mathrm{B},1} \mathbf{Q}_{\mathrm{F},2}^\mathsf{H}$ simultaneously.
-	That is, \gls{bd}-\gls{ris} may achieve a larger or smaller number of \gls{dof} of indirect channel, and thus equivalent channel, than \gls{d}-\gls{ris}.
-\end{subsection}
+	\begin{subsection}{Proof of Proposition \ref{pp:rd}}
+		\label{ap:rank_deficient}
+		We consider rank-$k$ forward channel and the proof follows similarly for rank-$k$ backward channel.
+		Let $\mathbf{H}_\mathrm{F} = \mathbf{U}_\mathrm{F} \mathbf{\Sigma}_\mathrm{F} \mathbf{V}_\mathrm{F}^\mathsf{H}$ be the \gls{svd} of the forward channel.
+		The channel Gram matrix $\mathbf{G} \triangleq \mathbf{H} \mathbf{H}^\mathsf{H} $ can be written as
+		\begin{equation*}
+			\begin{split}
+				\mathbf{G}
+				& = \mathbf{H}_\mathrm{D} \mathbf{H}_\mathrm{D}^\mathsf{H} + \mathbf{H}_\mathrm{B} \mathbf{\Theta} \mathbf{U}_\mathrm{F} \mathbf{\Sigma}_\mathrm{F} \mathbf{\Sigma}_\mathrm{F}^\mathsf{H} \mathbf{U}_\mathrm{F}^\mathsf{H} \mathbf{\Theta}^\mathsf{H} \mathbf{H}_\mathrm{B}^\mathsf{H}                                                         \\
+				& \quad + \mathbf{H}_\mathrm{B} \mathbf{\Theta} \mathbf{U}_\mathrm{F} \mathbf{\Sigma}_\mathrm{F} \mathbf{V}_\mathrm{F}^\mathsf{H} \mathbf{H}_\mathrm{D}^\mathsf{H} + \mathbf{H}_\mathrm{D} \mathbf{V}_\mathrm{F} \mathbf{\Sigma}_\mathrm{F} \mathbf{U}_\mathrm{F}^\mathsf{H} \mathbf{\Theta}^\mathsf{H} \mathbf{H}_\mathrm{B}^\mathsf{H}       \\
+				& = \mathbf{H}_\mathrm{D} (\mathbf{I} - \mathbf{V}_\mathrm{F} \mathbf{V}_\mathrm{F}^\mathsf{H}) \mathbf{H}_\mathrm{D}^\mathsf{H}                                                                                                                                                                                                               \\
+				& \quad + (\mathbf{H}_\mathrm{B} \mathbf{\Theta} \mathbf{U}_\mathrm{F} \mathbf{\Sigma}_\mathrm{F} + \mathbf{H}_\mathrm{D} \mathbf{V}_\mathrm{F}) (\mathbf{\Sigma}_\mathrm{F} \mathbf{U}_\mathrm{F}^\mathsf{H} \mathbf{\Theta}^\mathsf{H} \mathbf{H}_\mathrm{B}^\mathsf{H} + \mathbf{V}_\mathrm{F}^\mathsf{H} \mathbf{H}_\mathrm{D}^\mathsf{H}) \\
+				& = \mathbf{Y} + \mathbf{Z} \mathbf{Z}^\mathsf{H},
+			\end{split}
+		\end{equation*}
+		where we define $\mathbf{Y} \triangleq \mathbf{H}_\mathrm{D} (\mathbf{I} - \mathbf{V}_\mathrm{F} \mathbf{V}_\mathrm{F}^\mathsf{H}) \mathbf{H}_\mathrm{D}^\mathsf{H} \in \mathbb{H}^{N_\mathrm{R} \times N_\mathrm{R}}$ and $\mathbf{Z} \triangleq \mathbf{H}_\mathrm{B} \mathbf{\Theta} \mathbf{U}_\mathrm{F} \mathbf{\Sigma}_\mathrm{F} + \mathbf{H}_\mathrm{D} \mathbf{V}_\mathrm{F} \in \mathbb{C}^{N_\mathrm{R} \times k}$.
+		That is to say, $\mathbf{G}$ can be expressed as a Hermitian matrix plus $k$ rank-1 perturbations.
+		According to the Cauchy interlacing formula \cite[Theorem 8.4.3]{Golub2013}, the $n$-th eigenvalue of $\mathbf{G}$ is bounded by
+		\begin{align}
+			\lambda_n(\mathbf{G}) & \le \lambda_{n-k}(\mathbf{Y}), &  & \text{if } n > k, \label{iq:ev_rd_max}          \\
+			\lambda_n(\mathbf{G}) & \ge \lambda_n(\mathbf{Y}),     &  & \text{if } n < N - k + 1 \label{iq:ev_rd_min}.
+		\end{align}
+		Since $\mathbf{Y} = \mathbf{T} \mathbf{T}^\mathsf{H}$ is positive semi-definite, taking the square roots of \eqref{iq:ev_rd_max} and \eqref{iq:ev_rd_min} gives \eqref{iq:sv_rd_max} and \eqref{iq:sv_rd_min}.
+	\end{subsection}
 
+	\begin{subsection}{Proof of Proposition \ref{pp:nd}}
+		\label{ap:nd}
+		Let $\mathbf{H}_\mathrm{B} = \mathbf{U}_\mathrm{B} \mathbf{\Sigma}_\mathrm{B} \mathbf{V}_\mathrm{B}^\mathsf{H}$ and $\mathbf{H}_\mathrm{F} = \mathbf{U}_\mathrm{F} \mathbf{\Sigma}_\mathrm{F} \mathbf{V}_\mathrm{F}^\mathsf{H}$ be the \gls{svd} of the backward and forward channels, respectively.
+		The scattering matrix of fully-connected \gls{bd}-\gls{ris} can be decomposed as
+		\begin{equation}
+			\label{eq:ris_decompose}
+			\mathbf{\Theta} = \mathbf{V}_\mathrm{B} \mathbf{X} \mathbf{U}_\mathrm{F}^\mathsf{H},
+		\end{equation}
+		where $\mathbf{X} \in \mathbb{U}^{N_\mathrm{S} \times N_\mathrm{S}}$ is a unitary matrix to be designed.
+		The equivalent channel is thus a function of $\mathbf{X}$
+		\begin{equation}
+			\label{eq:channel_nd}
+			\mathbf{H} = \mathbf{H}_\mathrm{B} \mathbf{\Theta} \mathbf{H}_\mathrm{F} = \mathbf{U}_\mathrm{B} \mathbf{\Sigma}_\mathrm{B} \mathbf{X} \mathbf{\Sigma}_\mathrm{F} \mathbf{V}_\mathrm{F}^\mathsf{H}.
+		\end{equation}
+		Since $\sv(\mathbf{U} \mathbf{A} \mathbf{V}^\mathsf{H}) = \sv(\mathbf{A})$ for unitary $\mathbf{U}$ and $\mathbf{V}$, we have
+		\begin{equation}
+			\label{eq:sv_factor}
+			\begin{split}
+				\sv(\mathbf{H}) & = \sv(\mathbf{U}_\mathrm{B} \mathbf{\Sigma}_\mathrm{B} \mathbf{X} \mathbf{\Sigma}_\mathrm{F} \mathbf{V}_\mathrm{F}^\mathsf{H})                                                                     \\
+								& = \sv(\mathbf{\Sigma}_\mathrm{B} \mathbf{X} \mathbf{\Sigma}_\mathrm{F})                                                                                                                            \\
+								& = \sv(\bar{\mathbf{U}}_\mathrm{B} \mathbf{\Sigma}_\mathrm{B} \mathbf{\bar{V}}_\mathrm{B}^\mathsf{H} \bar{\mathbf{U}}_\mathrm{F} \mathbf{\Sigma}_\mathrm{F} \mathbf{\bar{V}}_\mathrm{F}^\mathsf{H}) \\
+								& = \sv(\mathbf{BF}),
+			\end{split}
+		\end{equation}
+		where $\bar{\mathbf{U}}_{\mathrm{B}} \in \mathbb{U}^{N_\mathrm{R} \times N_\mathrm{R}}$, $\bar{\mathbf{V}}_\mathrm{B}, \bar{\mathbf{U}}_\mathrm{F} \in \mathbb{U}^{N_\mathrm{S} \times N_\mathrm{S}}$, and $\bar{\mathbf{V}}_\mathrm{F} \in \mathbb{U}^{N_\mathrm{T} \times N_\mathrm{T}}$ can be designed arbitrarily.
+	\end{subsection}
 
+	\begin{subsection}{Proof of Corollary \ref{co:nd_sv_prod_tail}}
+		\label{ap:nd_sv_prod_tail}
+		\eqref{iq:sv_nd_prod_largest} follows from \eqref{iq:horn} when $r = k$.
+		On the other hand, if we can prove
+		\begin{equation}
+			\label{eq:sv_prod_all_ext}
+			\prod_{n=1}^{\bar{N}} \sigma_n(\mathbf{H}) = \prod_{n=1}^{\bar{N}} \sigma_n(\mathbf{H}_\mathrm{B}) \sigma_n(\mathbf{H}_\mathrm{F}),
+		\end{equation}
+		then \eqref{iq:sv_nd_prod_smallest} follows from \eqref{iq:sv_nd_prod_largest} and the non-negativity of singular values.
+		To see \eqref{eq:sv_prod_all_ext}, we start from a stricter result
+		\begin{equation}
+			\label{eq:sv_product_all}
+			\prod_{n=1}^{N_\mathrm{S}} \sigma_n(\mathbf{H}) = \prod_{n=1}^{N_\mathrm{S}} \sigma_n(\mathbf{H}_\mathrm{B}) \sigma_n(\mathbf{H}_\mathrm{F}),
+		\end{equation}
+		which is provable by cases.
+		When $N_\mathrm{S} > N$, both sides of \eqref{eq:sv_product_all} become zero since $\sigma_n(\mathbf{H}) = \sigma_n(\mathbf{H}_\mathrm{B}) = \sigma_n(\mathbf{H}_\mathrm{F}) = 0$ for $n > N$.
+		When $N_\mathrm{S} \le N$, we have
+		\begin{equation*}
+			\begin{split}
+				\prod\nolimits_{n=1}^{N_\mathrm{S}} \sigma_n(\mathbf{H})
+				& = \prod\nolimits_{n=1}^{N_\mathrm{S}} \sigma_n(\mathbf{\Sigma}_\mathrm{B} \mathbf{X} \mathbf{\Sigma}_\mathrm{F})             \\
+				& = \prod\nolimits_{n=1}^{N_\mathrm{S}} \sigma_n(\hat{\mathbf{\Sigma}}_\mathrm{B} \mathbf{X} \hat{\mathbf{\Sigma}}_\mathrm{F}) \\
+				& = \det\bigl(\hat{\mathbf{\Sigma}}_\mathrm{B} \mathbf{X} \hat{\mathbf{\Sigma}}_\mathrm{F}\bigr)                               \\
+				& = \det\bigl(\hat{\mathbf{\Sigma}}_\mathrm{B}\bigr) \det(\mathbf{X}) \det\bigl(\hat{\mathbf{\Sigma}}_\mathrm{F}\bigr)         \\
+				& = \prod\nolimits_{n=1}^{N_\mathrm{S}} \sigma_n(\mathbf{\Sigma}_\mathrm{B}) \sigma_n(\mathbf{\Sigma}_\mathrm{F}),
+			\end{split}
+		\end{equation*}
+		where the first equality follows from \eqref{eq:sv_factor} and $\hat{\mathbf{\Sigma}}_\mathrm{B}, \hat{\mathbf{\Sigma}}_\mathrm{F}$ truncate $\mathbf{\Sigma}_\mathrm{B}, \mathbf{\Sigma}_\mathrm{F}$ to square matrices of dimension $N_\mathrm{S}$, respectively.
+		It is evident that \eqref{eq:sv_product_all} implies \eqref{eq:sv_prod_all_ext} and thus \eqref{iq:sv_nd_prod_smallest}.
+	\end{subsection}
 
-\begin{subsection}{Proof of Proposition \ref{pp:rd}}
-	\label{ap:rank_deficient}
-	We consider rank-$k$ forward channel and the proof follows similarly for rank-$k$ backward channel.
-	Let $\mathbf{H}_\mathrm{F} = \mathbf{U}_\mathrm{F} \mathbf{\Sigma}_\mathrm{F} \mathbf{V}_\mathrm{F}^\mathsf{H}$ be the \gls{svd} of the forward channel.
-	The channel Gram matrix $\mathbf{G} \triangleq \mathbf{H} \mathbf{H}^\mathsf{H} $ can be written as
-	\begin{equation*}
-		\begin{split}
-			\mathbf{G}
-			 & = \mathbf{H}_\mathrm{D} \mathbf{H}_\mathrm{D}^\mathsf{H} + \mathbf{H}_\mathrm{B} \mathbf{\Theta} \mathbf{U}_\mathrm{F} \mathbf{\Sigma}_\mathrm{F} \mathbf{\Sigma}_\mathrm{F}^\mathsf{H} \mathbf{U}_\mathrm{F}^\mathsf{H} \mathbf{\Theta}^\mathsf{H} \mathbf{H}_\mathrm{B}^\mathsf{H}                                                         \\
-			 & \quad + \mathbf{H}_\mathrm{B} \mathbf{\Theta} \mathbf{U}_\mathrm{F} \mathbf{\Sigma}_\mathrm{F} \mathbf{V}_\mathrm{F}^\mathsf{H} \mathbf{H}_\mathrm{D}^\mathsf{H} + \mathbf{H}_\mathrm{D} \mathbf{V}_\mathrm{F} \mathbf{\Sigma}_\mathrm{F} \mathbf{U}_\mathrm{F}^\mathsf{H} \mathbf{\Theta}^\mathsf{H} \mathbf{H}_\mathrm{B}^\mathsf{H}       \\
-			 & = \mathbf{H}_\mathrm{D} (\mathbf{I} - \mathbf{V}_\mathrm{F} \mathbf{V}_\mathrm{F}^\mathsf{H}) \mathbf{H}_\mathrm{D}^\mathsf{H}                                                                                                                                                                                                               \\
-			 & \quad + (\mathbf{H}_\mathrm{B} \mathbf{\Theta} \mathbf{U}_\mathrm{F} \mathbf{\Sigma}_\mathrm{F} + \mathbf{H}_\mathrm{D} \mathbf{V}_\mathrm{F}) (\mathbf{\Sigma}_\mathrm{F} \mathbf{U}_\mathrm{F}^\mathsf{H} \mathbf{\Theta}^\mathsf{H} \mathbf{H}_\mathrm{B}^\mathsf{H} + \mathbf{V}_\mathrm{F}^\mathsf{H} \mathbf{H}_\mathrm{D}^\mathsf{H}) \\
-			 & = \mathbf{Y} + \mathbf{Z} \mathbf{Z}^\mathsf{H},
-		\end{split}
-	\end{equation*}
-	where we define $\mathbf{Y} \triangleq \mathbf{H}_\mathrm{D} (\mathbf{I} - \mathbf{V}_\mathrm{F} \mathbf{V}_\mathrm{F}^\mathsf{H}) \mathbf{H}_\mathrm{D}^\mathsf{H} \in \mathbb{H}^{N_\mathrm{R} \times N_\mathrm{R}}$ and $\mathbf{Z} \triangleq \mathbf{H}_\mathrm{B} \mathbf{\Theta} \mathbf{U}_\mathrm{F} \mathbf{\Sigma}_\mathrm{F} + \mathbf{H}_\mathrm{D} \mathbf{V}_\mathrm{F} \in \mathbb{C}^{N_\mathrm{R} \times k}$.
-	That is to say, $\mathbf{G}$ can be expressed as a Hermitian matrix plus $k$ rank-1 perturbations.
-	According to the Cauchy interlacing formula \cite[Theorem 8.4.3]{Golub2013}, the $n$-th eigenvalue of $\mathbf{G}$ is bounded by
-	\begin{align}
-		\lambda_n(\mathbf{G}) & \le \lambda_{n-k}(\mathbf{Y}), &  & \text{if } n > k, \label{iq:ev_rd_max}          \\
-		\lambda_n(\mathbf{G}) & \ge \lambda_n(\mathbf{Y}),     &  & \text{if } n < N - k + 1 \label{iq:ev_rd_min}.
-	\end{align}
-	Since $\mathbf{Y} = \mathbf{T} \mathbf{T}^\mathsf{H}$ is positive semi-definite, taking the square roots of \eqref{iq:ev_rd_max} and \eqref{iq:ev_rd_min} gives \eqref{iq:sv_rd_max} and \eqref{iq:sv_rd_min}.
-\end{subsection}
+	\begin{subsection}{Proof of Corollary \ref{co:nd_sv_indl}}
+		\label{ap:nd_sv_indl}
+		In \eqref{iq:sv_nd_indl}, the set of upper bounds
+		\begin{equation}
+			\label{iq:sv_nd_indl_set_max}
+			\bigl\{\sigma_n(\mathbf{H}) \le \sigma_i(\mathbf{H}_\mathrm{B}) \sigma_j(\mathbf{H}_\mathrm{F}) \mid [i,j,k] \in [N_\mathrm{S}]^3, i+j=n+1\bigr\}
+		\end{equation}
+		is a special case of \eqref{iq:horn} with $(I, J, K) \in [N_\mathrm{S}]^3$.
+		The minimum\footnote{One may think to take the \emph{maximum} of those upper bounds as the problem of interest is the attainable dynamic range of $n$-th singular value. However, this is infeasible since the singular values will be reordered therein.} of \eqref{iq:sv_nd_indl_set_max} is selected as the tightest upper bound in \eqref{iq:sv_nd_indl}.
+		On the other hand, the set of lower bounds
+		\begin{equation}
+			\label{iq:sv_nd_indl_set_min}
+			\bigl\{\sigma_n(\mathbf{H}) \ge \sigma_i(\mathbf{H}_\mathrm{B}) \sigma_j(\mathbf{H}_\mathrm{F}) \mid [i,j,k] \in [N_\mathrm{S}]^3, i+j=n+N_\mathrm{S}\bigr\}
+		\end{equation}
+		can be induced by \eqref{iq:sv_nd_indl_set_max}, \eqref{eq:sv_product_all}, and the non-negativity of singular values.
+		The maximum of \eqref{iq:sv_nd_indl_set_min} is selected as the tightest lower bound in \eqref{iq:sv_nd_indl}.
+		Interested readers are also referred to \cite[(2.0.3)]{Zhang2005}.
 
-\begin{subsection}{Proof of Proposition \ref{pp:nd}}
-	\label{ap:nd}
-	Let $\mathbf{H}_\mathrm{B} = \mathbf{U}_\mathrm{B} \mathbf{\Sigma}_\mathrm{B} \mathbf{V}_\mathrm{B}^\mathsf{H}$ and $\mathbf{H}_\mathrm{F} = \mathbf{U}_\mathrm{F} \mathbf{\Sigma}_\mathrm{F} \mathbf{V}_\mathrm{F}^\mathsf{H}$ be the \gls{svd} of the backward and forward channels, respectively.
-	The scattering matrix of fully-connected \gls{bd}-\gls{ris} can be decomposed as
-	\begin{equation}
-		\label{eq:ris_decompose}
-		\mathbf{\Theta} = \mathbf{V}_\mathrm{B} \mathbf{X} \mathbf{U}_\mathrm{F}^\mathsf{H},
-	\end{equation}
-	where $\mathbf{X} \in \mathbb{U}^{N_\mathrm{S} \times N_\mathrm{S}}$ is a unitary matrix to be designed.
-	The equivalent channel is thus a function of $\mathbf{X}$
-	\begin{equation}
-		\label{eq:channel_nd}
-		\mathbf{H} = \mathbf{H}_\mathrm{B} \mathbf{\Theta} \mathbf{H}_\mathrm{F} = \mathbf{U}_\mathrm{B} \mathbf{\Sigma}_\mathrm{B} \mathbf{X} \mathbf{\Sigma}_\mathrm{F} \mathbf{V}_\mathrm{F}^\mathsf{H}.
-	\end{equation}
-	Since $\sv(\mathbf{U} \mathbf{A} \mathbf{V}^\mathsf{H}) = \sv(\mathbf{A})$ for unitary $\mathbf{U}$ and $\mathbf{V}$, we have
-	\begin{equation}
-		\label{eq:sv_factor}
-		\begin{split}
-			\sv(\mathbf{H}) & = \sv(\mathbf{U}_\mathrm{B} \mathbf{\Sigma}_\mathrm{B} \mathbf{X} \mathbf{\Sigma}_\mathrm{F} \mathbf{V}_\mathrm{F}^\mathsf{H})                                                                     \\
-			                & = \sv(\mathbf{\Sigma}_\mathrm{B} \mathbf{X} \mathbf{\Sigma}_\mathrm{F})                                                                                                                            \\
-			                & = \sv(\bar{\mathbf{U}}_\mathrm{B} \mathbf{\Sigma}_\mathrm{B} \mathbf{\bar{V}}_\mathrm{B}^\mathsf{H} \bar{\mathbf{U}}_\mathrm{F} \mathbf{\Sigma}_\mathrm{F} \mathbf{\bar{V}}_\mathrm{F}^\mathsf{H}) \\
-			                & = \sv(\mathbf{BF}),
-		\end{split}
-	\end{equation}
-	% where $\bar{\mathbf{U}}_{\mathrm{B}/\mathrm{F}}$ and $\bar{\mathbf{V}}_{\mathrm{B}/\mathrm{F}}$ are arbitrary unitary matrices.
-	where $\bar{\mathbf{U}}_{\mathrm{B}} \in \mathbb{U}^{N_\mathrm{R} \times N_\mathrm{R}}$, $\bar{\mathbf{V}}_\mathrm{B}, \bar{\mathbf{U}}_\mathrm{F} \in \mathbb{U}^{N_\mathrm{S} \times N_\mathrm{S}}$, and $\bar{\mathbf{V}}_\mathrm{F} \in \mathbb{U}^{N_\mathrm{T} \times N_\mathrm{T}}$ can be designed arbitrarily.
-\end{subsection}
+		To attain the upper bound, the \gls{bd}-\gls{ris} needs to maximize the minimum of the first $n$ channel singular values.
+		It follows from \eqref{eq:ris_nd_sv_indl_max} that
+		\begin{equation*}
+			\begin{split}
+				\sv(\mathbf{H})
+				& = \sv(\mathbf{H}_\mathrm{B} \mathbf{V}_\mathrm{B} \mathbf{P} \mathbf{U}_\mathrm{F}^\mathsf{H} \mathbf{H}_\mathrm{F})                                                                                                                         \\
+				& = \sv(\mathbf{U}_\mathrm{B} \mathbf{\Sigma}_\mathrm{B} \mathbf{V}_\mathrm{B}^\mathsf{H} \mathbf{V}_\mathrm{B} \mathbf{P} \mathbf{U}_\mathrm{F}^\mathsf{H} \mathbf{U}_\mathrm{F} \mathbf{\Sigma}_\mathrm{F} \mathbf{U}_\mathrm{F}^\mathsf{H}) \\
+				& = \sv(\mathbf{\Sigma}_\mathrm{B} \mathbf{P} \mathbf{\Sigma}_\mathrm{F}).
+			\end{split}
+		\end{equation*}
+		On the one hand, $\mathbf{P}_{ij}=1$ with $(i, j)$ satisfying \eqref{eq:idx_nd_sv_indl_max} ensures $\min_{i+j=n+1} \sigma_i(\mathbf{H}_\mathrm{B}) \sigma_j(\mathbf{H}_\mathrm{F})$ is a singular value of $\mathbf{H}$.
+		It is actually among the first $n$ since the number of pairs $(i',j')$ not majorized by $(i,j)$ is $n-1$.
+		On the other hand, \eqref{eq:perm_nd_sv_indl_max} ensures the first $(n-1)$-th singular values are no smaller than $\min_{i+j=n+1} \sigma_i(\mathbf{H}_\mathrm{B}) \sigma_j(\mathbf{H}_\mathrm{F})$.
+		Combining both facts, we claim the upper bound $\sigma_n(\mathbf{H}) = \min_{i+j=n+1} \sigma_i(\mathbf{H}_\mathrm{B}) \sigma_j(\mathbf{H}_\mathrm{F})$ is attainable by \eqref{eq:ris_nd_sv_indl_max}.
+		The attainability of the lower bound can be proved similarly and the details are omitted.
+	\end{subsection}
 
-\begin{subsection}{Proof of Corollary \ref{co:nd_sv_prod_tail}}
-	\label{ap:nd_sv_prod_tail}
-	\eqref{iq:sv_nd_prod_largest} follows from \eqref{iq:horn} when $r = k$.
-	On the other hand, if we can prove
-	\begin{equation}
-		\label{eq:sv_prod_all_ext}
-		\prod_{n=1}^{\bar{N}} \sigma_n(\mathbf{H}) = \prod_{n=1}^{\bar{N}} \sigma_n(\mathbf{H}_\mathrm{B}) \sigma_n(\mathbf{H}_\mathrm{F}),
-	\end{equation}
-	then \eqref{iq:sv_nd_prod_smallest} follows from \eqref{iq:sv_nd_prod_largest} and the non-negativity of singular values.
-	To see \eqref{eq:sv_prod_all_ext}, we start from a stricter result
-	\begin{equation}
-		\label{eq:sv_product_all}
-		\prod_{n=1}^{N_\mathrm{S}} \sigma_n(\mathbf{H}) = \prod_{n=1}^{N_\mathrm{S}} \sigma_n(\mathbf{H}_\mathrm{B}) \sigma_n(\mathbf{H}_\mathrm{F}),
-	\end{equation}
-	which is provable by cases.
-	When $N_\mathrm{S} > N$, both sides of \eqref{eq:sv_product_all} become zero since $\sigma_n(\mathbf{H}) = \sigma_n(\mathbf{H}_\mathrm{B}) = \sigma_n(\mathbf{H}_\mathrm{F}) = 0$ for $n > N$.
-	When $N_\mathrm{S} \le N$, we have
-	\begin{equation*}
-		\begin{split}
-			\prod\nolimits_{n=1}^{N_\mathrm{S}} \sigma_n(\mathbf{H})
-			 & = \prod\nolimits_{n=1}^{N_\mathrm{S}} \sigma_n(\mathbf{\Sigma}_\mathrm{B} \mathbf{X} \mathbf{\Sigma}_\mathrm{F})             \\
-			 & = \prod\nolimits_{n=1}^{N_\mathrm{S}} \sigma_n(\hat{\mathbf{\Sigma}}_\mathrm{B} \mathbf{X} \hat{\mathbf{\Sigma}}_\mathrm{F}) \\
-			 & = \det\bigl(\hat{\mathbf{\Sigma}}_\mathrm{B} \mathbf{X} \hat{\mathbf{\Sigma}}_\mathrm{F}\bigr)                               \\
-			 & = \det\bigl(\hat{\mathbf{\Sigma}}_\mathrm{B}\bigr) \det(\mathbf{X}) \det\bigl(\hat{\mathbf{\Sigma}}_\mathrm{F}\bigr)         \\
-			 & = \prod\nolimits_{n=1}^{N_\mathrm{S}} \sigma_n(\mathbf{\Sigma}_\mathrm{B}) \sigma_n(\mathbf{\Sigma}_\mathrm{F}),
-		\end{split}
-	\end{equation*}
-	where the first equality follows from \eqref{eq:sv_factor} and $\hat{\mathbf{\Sigma}}_\mathrm{B}, \hat{\mathbf{\Sigma}}_\mathrm{F}$ truncate $\mathbf{\Sigma}_\mathrm{B}, \mathbf{\Sigma}_\mathrm{F}$ to square matrices of dimension $N_\mathrm{S}$, respectively.
-	It is evident that \eqref{eq:sv_product_all} implies \eqref{eq:sv_prod_all_ext} and thus \eqref{iq:sv_nd_prod_smallest}.
-\end{subsection}
+	\begin{subsection}{Proof of Corollary \ref{co:nd_power}}
+		\label{ap:nd_power}
+		From \eqref{eq:ris_decompose} and \eqref{eq:channel_nd} we have
+		\begin{equation}
+			\begin{split}
+				\lVert \mathbf{H} \rVert _\mathrm{F}^2
+				& = \tr \bigl(\mathbf{V}_\mathrm{F} \mathbf{\Sigma}_\mathrm{F}^\mathsf{H} \mathbf{X}^\mathsf{H} \mathbf{\Sigma}_\mathrm{B}^\mathsf{H} \mathbf{U}_\mathrm{B}^\mathsf{H} \mathbf{U}_\mathrm{B} \mathbf{\Sigma}_\mathrm{B} \mathbf{X} \mathbf{\Sigma}_\mathrm{F} \mathbf{V}_\mathrm{F}^\mathsf{H}\bigr) \\
+				& = \tr \bigl(\mathbf{\Sigma}_\mathrm{B}^\mathsf{H} \mathbf{\Sigma}_\mathrm{B} \cdot \mathbf{X} \mathbf{\Sigma}_\mathrm{F} \mathbf{\Sigma}_\mathrm{F}^\mathsf{H} \mathbf{X}^\mathsf{H}\bigr)                                                                                                         \\
+				& \triangleq \tr \bigl(\tilde{\mathbf{B}} \tilde{\mathbf{F}}\bigr),
+			\end{split}
+		\end{equation}
+		where $\mathbf{X} \triangleq \mathbf{V}_\mathrm{B}^\mathsf{H} \mathbf{\Theta} \mathbf{U}_\mathrm{F} \in \mathbb{U}^{N_\mathrm{S} \times N_\mathrm{S}}$, $\tilde{\mathbf{B}} \triangleq \mathbf{\Sigma}_\mathrm{B}^\mathsf{H} \mathbf{\Sigma}_\mathrm{B} \in \mathbb{H}_+^{N_\mathrm{S} \times N_\mathrm{S}}$, and $\tilde{\mathbf{F}} \triangleq \mathbf{X} \mathbf{\Sigma}_\mathrm{F} \mathbf{\Sigma}_\mathrm{F}^\mathsf{H} \mathbf{X}^\mathsf{H} \in \mathbb{H}_+^{N_\mathrm{S} \times N_\mathrm{S}}$.
+		By Ruhe's trace inequality for positive semi-definite matrices \cite[(H.1.g) and (H.1.h)]{Marshall2010},
+		\begin{equation*}
+			\sum_{n=1}^N \lambda_n(\tilde{\mathbf{B}}) \lambda_{N_\mathrm{S}-n+1}(\tilde{\mathbf{F}}) \le \tr \bigl(\tilde{\mathbf{B}} \tilde{\mathbf{F}}\bigr) \le \sum_{n=1}^N \lambda_n(\tilde{\mathbf{B}}) \lambda_n(\tilde{\mathbf{F}}),
+		\end{equation*}
+		which simplifies to \eqref{iq:power_nd}.
+		The upper bound is attained when $\mathbf{X}$ is chosen to match the singular values of $\tilde{\mathbf{F}}$ to those of $\tilde{\mathbf{B}}$ in similar order.
+		Apparently this occurs at $\mathbf{X} = \mathbf{I}$ and $\mathbf{\Theta} = \mathbf{V}_\mathrm{B} \mathbf{U}_\mathrm{F}^\mathsf{H}$.
+		On the other hand, the lower bound is attained when the singular values of $\tilde{\mathbf{F}}$ and $\tilde{\mathbf{B}}$ are matched in reverse order, namely $\mathbf{X} = \mathbf{J}$ and $\mathbf{\Theta} = \mathbf{V}_\mathrm{B} \mathbf{J} \mathbf{U}_\mathrm{F}^\mathsf{H}$.
+	\end{subsection}
 
-\begin{subsection}{Proof of Corollary \ref{co:nd_sv_indl}}
-	\label{ap:nd_sv_indl}
-	In \eqref{iq:sv_nd_indl}, the set of upper bounds
-	\begin{equation}
-		\label{iq:sv_nd_indl_set_max}
-		\bigl\{\sigma_n(\mathbf{H}) \le \sigma_i(\mathbf{H}_\mathrm{B}) \sigma_j(\mathbf{H}_\mathrm{F}) \mid [i,j,k] \in [N_\mathrm{S}]^3, i+j=n+1\bigr\}
-	\end{equation}
-	is a special case of \eqref{iq:horn} with $(I, J, K) \in [N_\mathrm{S}]^3$.
-	The minimum\footnote{One may think to take the \emph{maximum} of those upper bounds as the problem of interest is the attainable dynamic range of $n$-th singular value. However, this is infeasible since the singular values will be reordered therein.} of \eqref{iq:sv_nd_indl_set_max} is selected as the tightest upper bound in \eqref{iq:sv_nd_indl}.
-	On the other hand, the set of lower bounds
-	\begin{equation}
-		\label{iq:sv_nd_indl_set_min}
-		\bigl\{\sigma_n(\mathbf{H}) \ge \sigma_i(\mathbf{H}_\mathrm{B}) \sigma_j(\mathbf{H}_\mathrm{F}) \mid [i,j,k] \in [N_\mathrm{S}]^3, i+j=n+N_\mathrm{S}\bigr\}
-	\end{equation}
-	can be induced by \eqref{iq:sv_nd_indl_set_max}, \eqref{eq:sv_product_all}, and the non-negativity of singular values.
-	The maximum of \eqref{iq:sv_nd_indl_set_min} is selected as the tightest lower bound in \eqref{iq:sv_nd_indl}.
-	Interested readers are also referred to \cite[(2.0.3)]{Zhang2005}.
+	\begin{subsection}{Proof of Corollary \ref{co:nd_capacity_snr_extreme}}
+		\label{ap:nd_capacity}
+		When perfect \gls{csi} is available at the transmitter, in the low-\gls{snr} regime, the capacity is achieved by dominant eigenmode transmission \cite[(5.26)]{Clerckx2013}
+		\begin{align*}
+			C_{\rho_\downarrow}
+			& = \log\bigl(1 + \rho \lambda_1(\mathbf{H}^\mathsf{H} \mathbf{H})\bigr)        \\
+			& = \log\bigl(1 + \rho \sigma_1^2(\mathbf{H})\bigr)                             \\
+			& \approx \rho \sigma_1^2(\mathbf{H})                                           \\
+			& \le \rho \sigma_1^2(\mathbf{H}_\mathrm{B}) \sigma_1^2(\mathbf{H}_\mathrm{F}),
+		\end{align*}
+		where the approximation is $\log(1 + x) \approx x$ for small $x$ and the inequality follows from \eqref{iq:sv_nd_prod_largest} with $k=1$.
+		In the high-\gls{snr} regime, the capacity is achieved by multiple eigenmode transmission with uniform power location \cite[(5.27)]{Clerckx2013}
+		\begin{align*}
+			C_{\rho_\uparrow}
+			& = \sum\nolimits_{n=1}^N \log\Bigl(1 + \frac{\rho}{N} \lambda_n(\mathbf{H}^\mathsf{H} \mathbf{H})\Bigr)                     \\
+			& \approx \sum\nolimits_{n=1}^N \log\Bigl(\frac{\rho}{N} \sigma_n^2(\mathbf{H})\Bigr)                                        \\
+			& = N \log \frac{\rho}{N} + \sum\nolimits_{n=1}^N \log \sigma_n^2(\mathbf{H})                                                \\
+			& = N \log \frac{\rho}{N} + \log \prod\nolimits_{n=1}^N \sigma_n^2(\mathbf{H})                                               \\
+			& \le N \log \frac{\rho}{N} + 2 \log \prod\nolimits_{n=1}^N \sigma_n(\mathbf{H}_\mathrm{B}) \sigma_n(\mathbf{H}_\mathrm{F}),
+		\end{align*}
+		where the approximation is $\log(1 + x) \approx \log(x)$ for large $x$ and the inequality follows from \eqref{iq:sv_nd_prod_largest} with $k=N$.
 
-	To attain the upper bound, the \gls{bd}-\gls{ris} needs to maximize the minimum of the first $n$ channel singular values.
-	It follows from \eqref{eq:ris_nd_sv_indl_max} that
-	\begin{equation*}
-		\begin{split}
-			\sv(\mathbf{H})
-			 & = \sv(\mathbf{H}_\mathrm{B} \mathbf{V}_\mathrm{B} \mathbf{P} \mathbf{U}_\mathrm{F}^\mathsf{H} \mathbf{H}_\mathrm{F})                                                                                                                         \\
-			 & = \sv(\mathbf{U}_\mathrm{B} \mathbf{\Sigma}_\mathrm{B} \mathbf{V}_\mathrm{B}^\mathsf{H} \mathbf{V}_\mathrm{B} \mathbf{P} \mathbf{U}_\mathrm{F}^\mathsf{H} \mathbf{U}_\mathrm{F} \mathbf{\Sigma}_\mathrm{F} \mathbf{U}_\mathrm{F}^\mathsf{H}) \\
-			 & = \sv(\mathbf{\Sigma}_\mathrm{B} \mathbf{P} \mathbf{\Sigma}_\mathrm{F}).
-		\end{split}
-	\end{equation*}
-	On the one hand, $\mathbf{P}_{ij}=1$ with $(i, j)$ satisfying \eqref{eq:idx_nd_sv_indl_max} ensures $\min_{i+j=n+1} \sigma_i(\mathbf{H}_\mathrm{B}) \sigma_j(\mathbf{H}_\mathrm{F})$ is a singular value of $\mathbf{H}$.
-	It is actually among the first $n$ since the number of pairs $(i',j')$ not majorized by $(i,j)$ is $n-1$.
-	On the other hand, \eqref{eq:perm_nd_sv_indl_max} ensures the first $(n-1)$-th singular values are no smaller than $\min_{i+j=n+1} \sigma_i(\mathbf{H}_\mathrm{B}) \sigma_j(\mathbf{H}_\mathrm{F})$.
-	Combining both facts, we claim the upper bound $\sigma_n(\mathbf{H}) = \min_{i+j=n+1} \sigma_i(\mathbf{H}_\mathrm{B}) \sigma_j(\mathbf{H}_\mathrm{F})$ is attainable by \eqref{eq:ris_nd_sv_indl_max}.
-	The attainability of the lower bound can be proved similarly and the details are omitted.
+		We now show \eqref{eq:ris_nd_rate_max} can achieve the upper bounds in \eqref{iq:capacity_nd_snr_low} and \eqref{iq:capacity_nd_snr_high} simultaneously.
+		On the one hand, \eqref{eq:ris_nd_rate_max} is a special case of \eqref{eq:ris_nd_sv_indl_max} with $\mathbf{P} = \mathbf{I}$, which satisfies \eqref{eq:idx_nd_sv_indl_max} and \eqref{eq:perm_nd_sv_indl_max} for $n=1$ and thus attain $\sigma_1(\mathbf{H}) = \sigma_1(\mathbf{H}_\mathrm{B}) \sigma_1(\mathbf{H}_\mathrm{F})$.
+		On the other hand, since $\log(\cdot)$ is a monotonic function, we can prove similar to Appendix \ref{ap:nd_power} that $\sum_{n=1}^N \log \sigma_n^2(\mathbf{H}) \le \sum_{n=1}^N \log \sigma_n^2(\mathbf{H}_\mathrm{B}) \sigma_n^2(\mathbf{H}_\mathrm{F})$ and the bound is tight at \eqref{eq:ris_nd_rate_max}.
+		The proof is complete.
+	\end{subsection}
 
-	% In \eqref{iq:sv_nd_indl}, the set of upper bounds
-	% \begin{equation}
-	% 	\bigl\{\sigma_n(\mathbf{H}) \le \sigma_i(\mathbf{H}_\mathrm{B}) \sigma_j(\mathbf{H}_\mathrm{F}) \mid [i,j,k] \in [N]^3, i+j=n+1\bigr\}
-	% 	\label{iq:sv_nd_indl_set_max}
-	% \end{equation}
-	% is a special case of \eqref{iq:horn} with $(I, J, K) \in [N]^3$.
-	% The minimum\footnote{One may think to take the \emph{maximum} of those upper bounds as the problem of interest is the attainable dynamic range of $n$-th singular value. However, this is infeasible since the singular values will be reordered therein.} of \eqref{iq:sv_nd_indl_set_max} is selected as the tightest upper bound in \eqref{iq:sv_nd_indl}.
-	% On the other hand, the set of lower bounds
-	% \begin{equation}
-	% 	\bigl\{\sigma_n(\mathbf{H}) \ge \sigma_i(\mathbf{H}_\mathrm{B}) \sigma_j(\mathbf{H}_\mathrm{F}) \mid [i,j,k] \in [N]^3, i+j=n+N\bigr\}
-	% 	\label{iq:sv_nd_indl_set_min}
-	% \end{equation}
-	% can be induced by \eqref{iq:sv_nd_indl_set_max}, \eqref{eq:sv_product_all}, and the non-negativity of singular values.
-	% The maximum of \eqref{iq:sv_nd_indl_set_min} is selected as the tightest lower bound in \eqref{iq:sv_nd_indl}.
+	\begin{subsection}{Proof of Proposition \ref{pp:shaping}}
+		\label{ap:shaping}
+		The sub-differential of a symmetric gauge function of singular values of a matrix with respect to the matrix itself is given by \cite[Theorem 2]{Watson1992}
+		\begin{equation}
+			\partial_{\mathbf{H}^*} f\bigl(\sv(\mathbf{H})\bigr) = \conv \bigl\{ \mathbf{U} \mathbf{D} \mathbf{V}^\mathsf{H} \bigr\},
+		\end{equation}
+		where $\mathbf{D} \in \mathbb{C}^{N_\mathrm{R} \times N_\mathrm{T}}$ is a rectangular diagonal matrix with $[\mathbf{D}]_{n,n} \in \partial_{\sigma_n(\mathbf{H})} f\bigl(\sv(\mathbf{H})\bigr)$, $\forall n \in [N]$, and $\mathbf{U}$, $\mathbf{V}$ are any left and right singular matrices of $\mathbf{H}$.
+		It implies
+		\begin{align*}
+			\partial f\bigl(\sv(\mathbf{H})\bigr)
+			& \ni \tr \bigl(\mathbf{V}^* \mathbf{D}^\mathsf{T} \mathbf{U}^\mathsf{T} \partial \mathbf{H}^*\bigr) \\
+			& = \tr \bigl(\mathbf{V}^* \mathbf{D}^\mathsf{T} \mathbf{U}^\mathsf{T} \mathbf{H}_{\mathrm{B},g}^* \partial {\mathbf{\Theta}_g^*} \mathbf{H}_{\mathrm{F},g}^*\bigr) \\
+			& = \tr \bigl(\mathbf{H}_{\mathrm{F},g}^* \mathbf{V}^* \mathbf{D}^\mathsf{T} \mathbf{U}^\mathsf{T} \mathbf{H}_{\mathrm{B},g}^* \partial {\mathbf{\Theta}_g^*} \bigr),
+		\end{align*}
+		% \begin{align*}
+		% 	\partial f\bigl(\sv(\mathbf{H})\bigr)
+		% 	& = \tr \bigl(\conv \{ \mathbf{V}^* \mathbf{D}^\mathsf{T} \mathbf{U}^\mathsf{T} \} \partial \mathbf{H}^*\bigr) \\
+		% 	& = \tr \bigl(\conv \{ \mathbf{V}^* \mathbf{D}^\mathsf{T} \mathbf{U}^\mathsf{T} \mathbf{H}_{\mathrm{B},g}^* \partial {\mathbf{\Theta}_g^*} \mathbf{H}_{\mathrm{F},g}^* \}\bigr) \\
+		% 	& = \tr \bigl(\conv \{ \mathbf{H}_{\mathrm{F},g}^* \mathbf{V}^* \mathbf{D}^\mathsf{T} \mathbf{U}^\mathsf{T} \mathbf{H}_{\mathrm{B},g}^* \}\partial {\mathbf{\Theta}_g^*} \bigr)
+		% \end{align*}
+		and therefore $\mathbf{H}_{\mathrm{B},g}^\mathsf{H} \mathbf{U} \mathbf{D} \mathbf{V}^\mathsf{H} \mathbf{H}_{\mathrm{F},g}^\mathsf{H}$ constitutes a sub-gradient of $f\bigl(\sv(\mathbf{H})\bigr)$ with respect to $\mathbf{\Theta}_g$.
+		The convex hull of those sub-gradients is the sub-differential \eqref{eq:shaping_subdiff}.
+	\end{subsection}
 
-	% To attain the upper bound of $\sigma_n(\mathbf{H})$, the \gls{bd}-\gls{ris} needs to maximize the minimum of the first $n$ channel singular values.
-	% This is achieved by proper matching of the first $n$ modes of $\mathbf{H}_\mathrm{B}$ to the first $n$ modes of $\mathbf{H}_\mathrm{F}$.
-	% In particular, mode $i$ of $\mathbf{H}_\mathrm{B}$ should be completely aligned with mode $j$ of $\mathbf{H}_\mathrm{F}$ where $(i, j) = \arg \min_{i+j=n+1} \sigma_i(\mathbf{H}_\mathrm{B}) \sigma_j(\mathbf{H}_\mathrm{F})$ for $\mathbf{P}$
+	\begin{subsection}{Proof of Lemma \ref{lm:rate}}
+		\label{ap:rate}
+		The differential of $R$ with respect to $\mathbf{\Theta}_g^*$ is \cite{Hjorungnes2007}
+		\begin{align*}
+			\partial R
+			& = \frac{1}{\eta} \tr \biggl\{ \partial \mathbf{H}^* \cdot \mathbf{Q}^\mathsf{T} \mathbf{H}^\mathsf{T} \Bigl(\mathbf{I} + \frac{\mathbf{H}^* \mathbf{Q}^\mathsf{T} \mathbf{H}^\mathsf{T}}{\eta}\Bigr)^{-1} \biggr\}                                                                      \\
+			& = \frac{1}{\eta} \tr \biggl\{ \mathbf{H}_{\mathrm{B},g}^* \cdot \partial \mathbf{\Theta}_g^* \cdot \mathbf{H}_{\mathrm{F},g}^* \mathbf{Q}^\mathsf{T} \mathbf{H}^\mathsf{T} \Bigl(\mathbf{I} + \frac{\mathbf{H}^* \mathbf{Q}^\mathsf{T} \mathbf{H}^\mathsf{T}}{\eta}\Bigr)^{-1} \biggr\} \\
+			& = \frac{1}{\eta} \tr \biggl\{ \mathbf{H}_{\mathrm{F},g}^* \mathbf{Q}^\mathsf{T} \mathbf{H}^\mathsf{T} \Bigl(\mathbf{I} + \frac{\mathbf{H}^* \mathbf{Q}^\mathsf{T} \mathbf{H}^\mathsf{T}}{\eta}\Bigr)^{-1} \mathbf{H}_{\mathrm{B},g}^* \cdot \partial \mathbf{\Theta}_g^* \biggr\},
+		\end{align*}
+		and the corresponding complex derivative is \eqref{eq:gradient_eucl_rate}.
+	\end{subsection}
 
-	% % Interested readers are referred to \cite[Equation~2.0.3]{Zhang2005} for more information.
-	% % $i$-th mode of $\mathbf{H}_\mathrm{B}$ with the $j$-th mode of $\mathbf{H}_\mathrm{F}$ such that the $n$-th mode of $\mathbf{H}$ is maximized.
+	\begin{subsection}{Proof of Proposition \ref{pp:power}}
+		\label{ap:power}
+		The differential of \eqref{ob:power} with respect to $\mathbf{\Theta}_g^*$ is
+		\begin{align*}
+			\partial \lVert \mathbf{H} \rVert _\mathrm{F}^2
+			& = \tr\bigl(\mathbf{H}_{\mathrm{B},g}^* \cdot \partial \mathbf{\Theta}_g^* \cdot \mathbf{H}_{\mathrm{F},g}^* (\mathbf{H}_\mathrm{D}^\mathsf{T} + \mathbf{H}_\mathrm{F}^\mathsf{T} \mathbf{\Theta}^\mathsf{T} \mathbf{H}_\mathrm{B}^\mathsf{T})\bigr) \\
+			& = \tr\bigl(\mathbf{H}_{\mathrm{F},g}^* (\mathbf{H}_\mathrm{D}^\mathsf{T} + \mathbf{H}_\mathrm{F}^\mathsf{T} \mathbf{\Theta}^\mathsf{T} \mathbf{H}_\mathrm{B}^\mathsf{T}) \mathbf{H}_{\mathrm{B},g}^* \cdot \partial \mathbf{\Theta}_g^*\bigr)
+		\end{align*}
+		and the corresponding complex derivative is
+		\begin{equation}
+			\frac{\partial \lVert \mathbf{H} \rVert _\mathrm{F}^2}{\partial \mathbf{\Theta}_g^*} = \mathbf{H}_{\mathrm{B},g}^\mathsf{H} (\mathbf{H}_\mathrm{D} + \mathbf{H}_\mathrm{B} \mathbf{\Theta} \mathbf{H}_\mathrm{F}) \mathbf{H}_{\mathrm{F},g}^\mathsf{H} \triangleq \mathbf{M}_g,
+		\end{equation}
+		whose \gls{svd} is denoted as $\mathbf{M}_g = \mathbf{U}_g \mathbf{\Sigma}_g \mathbf{V}_g^\mathsf{H}$.
+		The quadratic objective \eqref{ob:power} can be successively approximated by its first-order Taylor expansion, resulting in the subproblem
+		\begin{maxi!}
+			{\scriptstyle{\mathbf{\Theta}}}{\sum_g 2 \Re\bigl\{ \tr(\mathbf{\Theta}_g^\mathsf{H} \mathbf{M}_g) \bigr\}}{\label{op:power_ris_taylor}}{\label{ob:power_ris_taylor}}
+			\addConstraint{\mathbf{\Theta}_g^\mathsf{H} \mathbf{\Theta}_g=\mathbf{I}, \quad \forall g,}{}{}
+		\end{maxi!}
+		whose optimal solution is
+		\begin{equation}
+			\label{eq:ris_power_taylor}
+			\tilde{\mathbf{\Theta}}_g = \mathbf{U}_g \mathbf{V}_g^\mathsf{H}, \quad \forall g.
+		\end{equation}
+		This is because $\Re \bigl\{\tr(\mathbf{\Theta}_g^\mathsf{H} \mathbf{M}_g)\bigr\} = \Re \bigl\{ \tr(\mathbf{\Sigma}_g \mathbf{V}_g^\mathsf{H} \mathbf{\Theta}_g^\mathsf{H} \mathbf{U}_g) \bigr\} \le \tr(\mathbf{\Sigma}_g)$ and the bound is tight when $\mathbf{V}_g^\mathsf{H} \mathbf{\Theta}_g^\mathsf{H} \mathbf{U}_g = \mathbf{I}$.
 
-	% % Maximizing $\sigma_n(\mathbf{H}) = \sigma_n(\mathbf{H}) \le \min_{i+j=n+1} \sigma_i(\mathbf{H}_\mathrm{B}) \sigma_j(\mathbf{H}_\mathrm{F})$ is equivalent to maximizing the minimum of the first $n$ channel singular values.
-	% % As such, the \gls{bd}-\gls{ris} needs to align t
-	% % align the modes of $\mathbf{H}_\mathrm{B}$ and $\mathbf{H}_\mathrm{F}$ such that the first $n$ modes of $\mathbf{H}$ are maximized.
-	% % To maximize the $n$-th channel singular value, the \gls{bd}-\gls{ris} needs to ensure
-	% % that the first $n$ modes of $\mathbf{H}$ are
+		Next, we prove that solving the affine approximation \eqref{op:power_ris_taylor} by \eqref{eq:ris_power_taylor} does not decrease \eqref{ob:power}.
+		Since $\tilde{\mathbf{\Theta}} = \diag(\tilde{\mathbf{\Theta}}_1, \ldots, \tilde{\mathbf{\Theta}}_G)$ is optimal for \eqref{op:power_ris_taylor}, we have
+		\begin{equation}
+			\label{iq:power_ris_taylor}
+			\begin{split}
+				2 \Re \bigl\{ & \sum\limits_g \tr(\tilde{\mathbf{\Theta}}_g^\mathsf{H} \mathbf{H}_{\mathrm{B},g}^\mathsf{H} \mathbf{H}_\mathrm{D} \mathbf{H}_{\mathrm{F},g}^\mathsf{H}) \\
+				& + \sum\limits_{g_1,g_2} \tr(\tilde{\mathbf{\Theta}}_{g_1}^\mathsf{H} \mathbf{H}_{\mathrm{B},g_1}^\mathsf{H} \mathbf{H}_{\mathrm{B},g_2} \mathbf{\Theta}_{g_2} \mathbf{H}_{\mathrm{F},g_2} \mathbf{H}_{\mathrm{F},g_1}^\mathsf{H})\bigr\} \\
+				\ge 2 \Re \bigl\{ &\sum\limits_g \tr({\mathbf{\Theta}}_g^\mathsf{H} \mathbf{H}_{\mathrm{B},g}^\mathsf{H} \mathbf{H}_\mathrm{D} \mathbf{H}_{\mathrm{F},g}^\mathsf{H}) \\
+				& + \sum\limits_{g_1,g_2} \tr({\mathbf{\Theta}}_{g_1}^\mathsf{H} \mathbf{H}_{\mathrm{B},g_1}^\mathsf{H} \mathbf{H}_{\mathrm{B},g_2} \mathbf{\Theta}_{g_2} \mathbf{H}_{\mathrm{F},g_2} \mathbf{H}_{\mathrm{F},g_1}^\mathsf{H})\bigr\}.
+			\end{split}
+		\end{equation}
+		Besides, $\lVert \sum_g \mathbf{H}_{\mathrm{B},g} \tilde{\mathbf{\Theta}}_g \mathbf{H}_{\mathrm{F},g} - \sum_g \mathbf{H}_{\mathrm{B},g} \mathbf{\Theta}_g \mathbf{H}_{\mathrm{F},g} \rVert _\mathrm{F}^2 \ge 0$ implies
+		\begin{equation}
+			\label{iq:auxiliary_nonnegative}
+			\begin{split}
+				& \sum\limits_{g_1,g_2} \tr(\mathbf{H}_{\mathrm{F},g_1}^\mathsf{H} \tilde{\mathbf{\Theta}}_{g_1}^\mathsf{H} \mathbf{H}_{\mathrm{B},g_1}^\mathsf{H} \mathbf{H}_{\mathrm{B},g_2} \tilde{\mathbf{\Theta}}_{g_2} \mathbf{H}_{\mathrm{F},g_2}) \\
+				& \quad + \sum\limits_{g_1,g_2} \tr(\mathbf{H}_{\mathrm{F},g_1}^\mathsf{H} {\mathbf{\Theta}}_{g_1}^\mathsf{H} \mathbf{H}_{\mathrm{B},g_1}^\mathsf{H} \mathbf{H}_{\mathrm{B},g_2} {\mathbf{\Theta}}_{g_2} \mathbf{H}_{\mathrm{F},g_2}) \\
+				\ge & 2 \Re \bigl\{\sum\limits_{g_1,g_2} \tr(\mathbf{H}_{\mathrm{F},g_1}^\mathsf{H} \tilde{\mathbf{\Theta}}_{g_1}^\mathsf{H} \mathbf{H}_{\mathrm{B},g_1}^\mathsf{H} \mathbf{H}_{\mathrm{B},g_2} \mathbf{\Theta}_{g_2} \mathbf{H}_{\mathrm{F},g_2})\bigr\}.
+			\end{split}
+		\end{equation}
+		Adding \eqref{iq:power_ris_taylor} and \eqref{iq:auxiliary_nonnegative}, we have
+		\begin{equation}
+			\begin{split}
+				& 2 \Re \bigl\{\tr(\tilde{\mathbf{\Theta}}^\mathsf{H} \mathbf{H}_\mathrm{B}^\mathsf{H} \mathbf{H}_\mathrm{D} \mathbf{H}_\mathrm{F}^\mathsf{H}) \bigr\} + \tr(\mathbf{H}_\mathrm{F}^\mathsf{H} \tilde{\mathbf{\Theta}}^\mathsf{H} \mathbf{H}_\mathrm{B}^\mathsf{H} \mathbf{H}_\mathrm{B} \tilde{\mathbf{\Theta}} \mathbf{H}_\mathrm{F}) \\
+				\ge & 2 \Re \bigl\{\tr({\mathbf{\Theta}}^\mathsf{H} \mathbf{H}_\mathrm{B}^\mathsf{H} \mathbf{H}_\mathrm{D} \mathbf{H}_\mathrm{F}^\mathsf{H}) \bigr\} + \tr(\mathbf{H}_\mathrm{F}^\mathsf{H} {\mathbf{\Theta}}^\mathsf{H} \mathbf{H}_\mathrm{B}^\mathsf{H} \mathbf{H}_\mathrm{B} {\mathbf{\Theta}} \mathbf{H}_\mathrm{F}),
+			\end{split}
+		\end{equation}
+		which suggests that \eqref{ob:power} is non-decreasing as the solution iterates over \eqref{eq:ris_power_taylor}.
+		Since \eqref{ob:power} is also bounded from above, the sequence of objective values converges.
 
-	% % should align the modes of $\mathbf{H}_\mathrm{B}$ and $\mathbf{H}_\mathrm{F}$ such that
+		Finally, we prove that any solution when \eqref{ob:power} converges, denoted by $\tilde{\mathbf{\Theta}}^?$, is a stationary point of \eqref{op:power}.
+		The \gls{kkt} conditions of \eqref{op:power} and \eqref{op:power_ris_taylor} are equivalent in terms of primal/dual feasibility and complementary slackness, while the stationary conditions are respectively, $\forall g$,
+		\begin{gather}
+			\mathbf{H}_{\mathrm{B},g}^\mathsf{H} (\mathbf{H}_\mathrm{D} + \mathbf{H}_\mathrm{B} \mathbf{\Theta}^\star \mathbf{H}_\mathrm{F}) \mathbf{H}_{\mathrm{F},g}^\mathsf{H} - \mathbf{\Theta}_g^\star \mathbf{\Lambda}_g^\mathsf{H} = 0,\label{eq:power_ris_optimal}\\
+			\mathbf{M}_g - \mathbf{\Theta}_g^\star \mathbf{\Lambda}_g^\mathsf{H} = 0.\label{eq:power_ris_taylor_optimal}
+		\end{gather}
+		On convergence of \eqref{ob:power}, we have $\lVert \mathbf{H}_\mathrm{D} + \mathbf{H}_\mathrm{B} \mathbf{\Theta}^? \mathbf{H}_\mathrm{F} \rVert _\mathrm{F}^2$
 
-	% % \cite[Equation~2.0.3]{Zhang2005}
-\end{subsection}
+		\eqref{eq:power_ris_taylor_optimal} becomes $\mathbf{H}_{\mathrm{B},g}^\mathsf{H} (\mathbf{H}_\mathrm{D} + \mathbf{H}_\mathrm{B} \mathbf{\Theta}^? \mathbf{H}_\mathrm{F}) \mathbf{H}_{\mathrm{F},g}^\mathsf{H} - \mathbf{\Theta}_g^? \mathbf{\Lambda}_g^\mathsf{H} = 0$ and reduces to \eqref{eq:power_ris_optimal}.
+		The proof is thus completed.
+	\end{subsection}
 
-\begin{subsection}{Proof of Corollary \ref{co:nd_power}}
-	\label{ap:nd_power}
-	From \eqref{eq:ris_decompose} and \eqref{eq:channel_nd} we have
-	\begin{equation}
-		\begin{split}
-			\lVert \mathbf{H} \rVert _\mathrm{F}^2
-			 & = \tr \bigl(\mathbf{V}_\mathrm{F} \mathbf{\Sigma}_\mathrm{F}^\mathsf{H} \mathbf{X}^\mathsf{H} \mathbf{\Sigma}_\mathrm{B}^\mathsf{H} \mathbf{U}_\mathrm{B}^\mathsf{H} \mathbf{U}_\mathrm{B} \mathbf{\Sigma}_\mathrm{B} \mathbf{X} \mathbf{\Sigma}_\mathrm{F} \mathbf{V}_\mathrm{F}^\mathsf{H}\bigr) \\
-			 & = \tr \bigl(\mathbf{\Sigma}_\mathrm{B}^\mathsf{H} \mathbf{\Sigma}_\mathrm{B} \cdot \mathbf{X} \mathbf{\Sigma}_\mathrm{F} \mathbf{\Sigma}_\mathrm{F}^\mathsf{H} \mathbf{X}^\mathsf{H}\bigr)                                                                                                         \\
-			 & \triangleq \tr \bigl(\tilde{\mathbf{B}} \tilde{\mathbf{F}}\bigr),
-		\end{split}
-	\end{equation}
-	where $\mathbf{X} \triangleq \mathbf{V}_\mathrm{B}^\mathsf{H} \mathbf{\Theta} \mathbf{U}_\mathrm{F} \in \mathbb{U}^{N_\mathrm{S} \times N_\mathrm{S}}$, $\tilde{\mathbf{B}} \triangleq \mathbf{\Sigma}_\mathrm{B}^\mathsf{H} \mathbf{\Sigma}_\mathrm{B} \in \mathbb{H}_+^{N_\mathrm{S} \times N_\mathrm{S}}$, and $\tilde{\mathbf{F}} \triangleq \mathbf{X} \mathbf{\Sigma}_\mathrm{F} \mathbf{\Sigma}_\mathrm{F}^\mathsf{H} \mathbf{X}^\mathsf{H} \in \mathbb{H}_+^{N_\mathrm{S} \times N_\mathrm{S}}$.
-	By Ruhe's trace inequality for positive semi-definite matrices \cite[(H.1.g) and (H.1.h)]{Marshall2010},
-	\begin{equation*}
-		\sum_n \lambda_n(\tilde{\mathbf{B}}) \lambda_{N_\mathrm{S}-n+1}(\tilde{\mathbf{F}}) \le \tr \bigl(\tilde{\mathbf{B}} \tilde{\mathbf{F}}\bigr) \le \sum_n \lambda_n(\tilde{\mathbf{B}}) \lambda_n(\tilde{\mathbf{F}}),
-	\end{equation*}
-	which simplifies to \eqref{iq:power_nd}.
-	The upper bound is attained when $\mathbf{X}$ is chosen to match the singular values of $\tilde{\mathbf{F}}$ to those of $\tilde{\mathbf{B}}$ in similar order.
-	Apparently this occurs at $\mathbf{X} = \mathbf{I}$ and $\mathbf{\Theta} = \mathbf{V}_\mathrm{B} \mathbf{U}_\mathrm{F}^\mathsf{H}$.
-	On the other hand, the lower bound is attained when the singular values of $\tilde{\mathbf{F}}$ and $\tilde{\mathbf{B}}$ are matched in reverse order, namely $\mathbf{X} = \mathbf{J}$ and $\mathbf{\Theta} = \mathbf{V}_\mathrm{B} \mathbf{J} \mathbf{U}_\mathrm{F}^\mathsf{H}$.
-\end{subsection}
+	\begin{subsection}{Proof of Lemma \ref{lm:wsr}}
+		\label{ap:wsr}
+		The differential of $f = \sum_{k=1}^K \rho_k R_k$ with respect to $\mathbf{\Theta}_g^*$ is
+		\begin{align*}
+			\partial f
+			& = \sum_{k=1}^K \rho_k \tr \Bigl\{ \mathbf{E}_k \mathbf{W}_k^\mathsf{H} \Bigl( \mathbf{H}_{\mathrm{F},g}^{(k)\mathsf{H}} \partial \mathbf{\Theta}_g^\mathsf{H} \mathbf{H}_{\mathrm{B},g}^{(k)\mathsf{H}} \mathbf{Q}_k^{(-1)} \mathbf{H}^{(kk)} \\
+			& \quad + \mathbf{H}^{(kk)\mathsf{H}} \mathbf{Q}_k^{(-1)} \mathbf{H}_{\mathrm{B},g}^{(k)} \partial \mathbf{\Theta}_g \mathbf{H}_{\mathrm{F},g}^{(k)} - \mathbf{H}^{(kk)\mathsf{H}} \mathbf{Q}_k^{(-1)} \\
+			& \quad \times \sum_{j \ne k} \Bigl(\mathbf{H}_{\mathrm{B},g}^{(k)} \partial \mathbf{\Theta}_g \mathbf{H}_{\mathrm{F},g}^{(j)} \mathbf{W}_j \mathbf{W}_j^\mathsf{H} \mathbf{H}^{(kj)\mathsf{H}} \\
+			& \quad + \mathbf{H}^{(kj)} \mathbf{W}_j \mathbf{W}_j^\mathsf{H} \mathbf{H}_{\mathrm{F},g}^{(j)\mathsf{H}} \partial \mathbf{\Theta}_g^\mathsf{H} \mathbf{H}_{\mathrm{B},g}^{(k)\mathsf{H}} \Bigr) \mathbf{Q}_k^{(-1)} \mathbf{H}^{(kk)} \Bigr) \mathbf{W}_k \Bigr\} \\
+			& = \sum_{k=1}^K \rho_k \Bigl( \tr \Bigl\{ \mathbf{H}_{\mathrm{B},g}^{(k)\mathsf{H}} \mathbf{Q}_k^{(-1)} \mathbf{H}^{(kk)} \mathbf{W}_k \mathbf{E}_k \mathbf{W}_k^\mathsf{H} \mathbf{H}_{\mathrm{F},g}^{(k)\mathsf{H}} \partial \mathbf{\Theta}_g^\mathsf{H}\Bigr\} \\
+			& \quad + \tr \Bigl\{ \mathbf{H}_{\mathrm{F},g}^{(k)\mathsf{H}} \mathbf{W}_k \mathbf{E}_k \mathbf{W}_k^\mathsf{H} \mathbf{H}^{(kk)\mathsf{H}} \mathbf{Q}_k^{(-1)} \mathbf{H}_{\mathrm{B},g}^{(k)\mathsf{H}} \partial \mathbf{\Theta}_g \Bigr\} \\
+			& \quad - \tr \Bigl\{ \sum_{j \ne k} \mathbf{H}_{\mathrm{B},g}^{(k)\mathsf{H}} \mathbf{Q}_k^{(-1)} \mathbf{H}^{(kk)} \mathbf{W}_k \mathbf{E}_k \mathbf{W}_k^\mathsf{H} \mathbf{H}^{(kk)\mathsf{H}} \\
+			& \quad \quad \times \mathbf{Q}_k^{(-1)} \mathbf{H}^{(kj)} \mathbf{W}_j \mathbf{W}_j^\mathsf{H} \mathbf{H}_{\mathrm{F},g}^{(j)\mathsf{H}} \partial \mathbf{\Theta}_g^\mathsf{H} \Bigr\} \\
+			& \quad - \tr \Bigl\{ \sum_{j \ne k} \mathbf{H}_{\mathrm{F},g}^{(j)\mathsf{H}} \mathbf{W}_j \mathbf{W}_j^\mathsf{H} \mathbf{H}^{(kj)\mathsf{H}} \mathbf{Q}_k^{(-1)} \mathbf{H}^{(kk)} \mathbf{W}_k \\
+			& \quad \quad \times \mathbf{E}_k \mathbf{W}_k^\mathsf{H} \mathbf{H}^{(kk)\mathsf{H}} \mathbf{Q}_k^{(-1)} \mathbf{H}_{\mathrm{B},g}^{(k)} \partial \mathbf{\Theta}_g \Bigr\} \Bigr),
+		\end{align*}
+		and the corresponding complex derivative is \eqref{eq:gradient_eucl_wsr}.
+	\end{subsection}
 
-\begin{subsection}{Proof of Corollary \ref{co:nd_capacity_snr_extreme}}
-	\label{ap:nd_capacity}
-	When perfect \gls{csi} is available at the transmitter, in the low-\gls{snr} regime, the capacity is achieved by dominant eigenmode transmission \cite[(5.26)]{Clerckx2013}
-	\begin{align*}
-		C_{\rho_\downarrow}
-		 & = \log\bigl(1 + \rho \lambda_1(\mathbf{H}^\mathsf{H} \mathbf{H})\bigr)        \\
-		 & = \log\bigl(1 + \rho \sigma_1^2(\mathbf{H})\bigr)                             \\
-		 & \approx \rho \sigma_1^2(\mathbf{H})                                           \\
-		 & \le \rho \sigma_1^2(\mathbf{H}_\mathrm{B}) \sigma_1^2(\mathbf{H}_\mathrm{F}),
-	\end{align*}
-	where the approximation is $\log(1 + x) \approx x$ for small $x$ and the inequality follows from \eqref{iq:sv_nd_prod_largest} with $k=1$.
-	In the high-\gls{snr} regime, the capacity is achieved by multiple eigenmode transmission with uniform power location \cite[(5.27)]{Clerckx2013}
-	\begin{align*}
-		C_{\rho_\uparrow}
-		 & = \sum\nolimits_{n=1}^N \log\Bigl(1 + \frac{\rho}{N} \lambda_n(\mathbf{H}^\mathsf{H} \mathbf{H})\Bigr)                     \\
-		 & \approx \sum\nolimits_{n=1}^N \log\Bigl(\frac{\rho}{N} \sigma_n^2(\mathbf{H})\Bigr)                                        \\
-		 & = N \log \frac{\rho}{N} + \sum\nolimits_{n=1}^N \log \sigma_n^2(\mathbf{H})                                                \\
-		 & = N \log \frac{\rho}{N} + \log \prod\nolimits_{n=1}^N \sigma_n^2(\mathbf{H})                                               \\
-		 & \le N \log \frac{\rho}{N} + 2 \log \prod\nolimits_{n=1}^N \sigma_n(\mathbf{H}_\mathrm{B}) \sigma_n(\mathbf{H}_\mathrm{F}),
-	\end{align*}
-	where the approximation is $\log(1 + x) \approx \log(x)$ for large $x$ and the inequality follows from \eqref{iq:sv_nd_prod_largest} with $k=N$.
-
-	We now show \eqref{eq:ris_nd_rate_max} can achieve the upper bounds in \eqref{iq:capacity_nd_snr_low} and \eqref{iq:capacity_nd_snr_high} simultaneously.
-	On the one hand, \eqref{eq:ris_nd_rate_max} is a special case of \eqref{eq:ris_nd_sv_indl_max} with $\mathbf{P} = \mathbf{I}$, which satisfies \eqref{eq:idx_nd_sv_indl_max} and \eqref{eq:perm_nd_sv_indl_max} for $n=1$ and thus attain $\sigma_1(\mathbf{H}) = \sigma_1(\mathbf{H}_\mathrm{B}) \sigma_1(\mathbf{H}_\mathrm{F})$.
-	On the other hand, since $\log(\cdot)$ is a monotonic function, we can prove similar to Appendix \ref{ap:nd_power} that $\sum_{n=1}^N \log \sigma_n^2(\mathbf{H}) \le \sum_{n=1}^N \log \sigma_n^2(\mathbf{H}_\mathrm{B}) \sigma_n^2(\mathbf{H}_\mathrm{F})$ and the bound is tight at \eqref{eq:ris_nd_rate_max}.
-	The proof is complete.
-\end{subsection}
-
-\begin{subsection}{Proof of Proposition \ref{pp:shaping}}
-	\label{ap:shaping}
-	The sub-differential of a symmetric gauge function of singular values of a matrix with respect to the matrix itself is given by \cite[Theorem 2]{Watson1992}
-	\begin{equation}
-		\partial_{\mathbf{H}^*} f\bigl(\sv(\mathbf{H})\bigr) = \conv \bigl\{ \mathbf{U} \mathbf{D} \mathbf{V}^\mathsf{H} \bigr\},
-	\end{equation}
-	% $$\mathbf{H} = \mathbf{H}_\mathrm{D} + \sum_g \mathbf{H}_{\mathrm{B},g} \mathbf{\Theta}_g \mathbf{H}_{\mathrm{F},g}$$
-	where $\mathbf{D} \in \mathbb{C}^{N_\mathrm{R} \times N_\mathrm{T}}$ is a rectangular diagonal matrix with $[\mathbf{D}]_{n,n} \in \partial_{\sigma_n(\mathbf{H})} f\bigl(\sv(\mathbf{H})\bigr)$, $\forall n \in [N]$, and $\mathbf{U}$, $\mathbf{V}$ are any left and right singular matrices of $\mathbf{H}$.
-	It implies
-	\begin{align*}
-		\partial f\bigl(\sv(\mathbf{H})\bigr)
-		& \ni \tr \bigl(\mathbf{V}^* \mathbf{D}^\mathsf{T} \mathbf{U}^\mathsf{T} \partial \mathbf{H}^*\bigr) \\
-		& = \tr \bigl(\mathbf{V}^* \mathbf{D}^\mathsf{T} \mathbf{U}^\mathsf{T} \mathbf{H}_{\mathrm{B},g}^* \partial {\mathbf{\Theta}_g^*} \mathbf{H}_{\mathrm{F},g}^*\bigr) \\
-		& = \tr \bigl(\mathbf{H}_{\mathrm{F},g}^* \mathbf{V}^* \mathbf{D}^\mathsf{T} \mathbf{U}^\mathsf{T} \mathbf{H}_{\mathrm{B},g}^* \partial {\mathbf{\Theta}_g^*} \bigr),
-	\end{align*}
-	% \begin{align*}
-	% 	\partial f\bigl(\sv(\mathbf{H})\bigr)
-	% 	& = \tr \bigl(\conv \{ \mathbf{V}^* \mathbf{D}^\mathsf{T} \mathbf{U}^\mathsf{T} \} \partial \mathbf{H}^*\bigr) \\
-	% 	& = \tr \bigl(\conv \{ \mathbf{V}^* \mathbf{D}^\mathsf{T} \mathbf{U}^\mathsf{T} \mathbf{H}_{\mathrm{B},g}^* \partial {\mathbf{\Theta}_g^*} \mathbf{H}_{\mathrm{F},g}^* \}\bigr) \\
-	% 	& = \tr \bigl(\conv \{ \mathbf{H}_{\mathrm{F},g}^* \mathbf{V}^* \mathbf{D}^\mathsf{T} \mathbf{U}^\mathsf{T} \mathbf{H}_{\mathrm{B},g}^* \}\partial {\mathbf{\Theta}_g^*} \bigr)
-	% \end{align*}
-	and therefore $\mathbf{H}_{\mathrm{B},g}^\mathsf{H} \mathbf{U} \mathbf{D} \mathbf{V}^\mathsf{H} \mathbf{H}_{\mathrm{F},g}^\mathsf{H}$ constitutes a sub-gradient of $f\bigl(\sv(\mathbf{H})\bigr)$ with respect to $\mathbf{\Theta}_g$.
-	The convex hull of those sub-gradients is the sub-differential \eqref{eq:shaping_subdiff}.
-\end{subsection}
-
-% \begin{subsection}{Proof of Lemma \ref{lm:pareto}}
-% 	\label{ap:pareto}
-% 	The sub-differential of $\sigma_n(\mathbf{H})$ with respect to $\mathbf{H}$ is given by
-% 	\begin{equation*}
-% 		\partial \sigma_n(\mathbf{H}) = \mathbf{u}_n \mathbf{v}_n^\mathsf{H},
-% 	\end{equation*}
-
-
-
-
-% 	Let $\mathbf{H} = \sum_n \mathbf{u}_n \sigma_n \mathbf{v}_n^\mathsf{H}$ be the \gls{svd} of the equivalent channel.
-% 	Since the singular vectors are orthonormal, the $n$-th singular value can be expressed as
-% 	\begin{equation}
-% 		\sigma_n = \mathbf{u}_n^\mathsf{H} \mathbf{H} \mathbf{v}_n = \mathbf{u}_n^\mathsf{T} \mathbf{H}^* \mathbf{v}_n^*.
-% 	\end{equation}
-
-
-% 	Let $f(\mathbf{\Theta}_g) = \sum_{n=1}^N \rho_n \sigma_n(\mathbf{H})$. Its sub-differential is defined as
-% 	\begin{equation}
-% 		\Bigl\{\mathbf{Y} \mid f(\tilde{\mathbf{\Theta}}_g) \ge f(\mathbf{\Theta}_g) + \tr\bigl(\mathbf{Y}^\mathsf{H} (\tilde{\mathbf{\Theta}}_g - \mathbf{\Theta}_g)\bigr), \forall \tilde{\mathbf{\Theta}}_g \in \mathbb{U}^{L \times L}\Bigr\}.
-% 	\end{equation}
-
-% 	whose sub-gradient with respect to $\mathbf{\Theta}_g^*$ is
-% 	\begin{align*}
-% 		\partial \sigma_n
-% 		 & = \partial \mathbf{u}_n^\mathsf{T} \underbrace{\mathbf{H}^* \mathbf{v}_n^*}_{\sum_m \mathbf{u}_m^* \sigma_m \mathbf{v}_m^\mathsf{T} \mathbf{v}_n^*} + \mathbf{u}_n^\mathsf{T} \cdot \partial \mathbf{H}^* \cdot \mathbf{v}_n^* + \underbrace{\mathbf{u}_n^\mathsf{T} \mathbf{H}^*}_{\mathbf{u}_n^\mathsf{T} \sum_m \mathbf{u}_m^* \sigma_m \mathbf{v}_m^\mathsf{T}} \partial \mathbf{v}_n^* \\
-% 		 & = \underbrace{\partial \mathbf{u}_n^\mathsf{T} \mathbf{u}_n^*}_{\partial 1 = 0} \cdot \sigma_n + \mathbf{u}_n^\mathsf{T} \cdot \partial \mathbf{H}^* \cdot \mathbf{v}_n^* + \sigma_n \cdot \underbrace{\mathbf{v}_n^\mathsf{T} \partial \mathbf{v}_n^*}_{\partial 1 = 0}                                                                                                                  \\
-% 		 & = \mathbf{u}_n^\mathsf{T} \mathbf{H}_{\mathrm{B},g}^* \cdot \partial \mathbf{\Theta}_g^* \cdot \mathbf{H}_{\mathrm{F},g}^* \mathbf{v}_n^*                                                                                                                                                                                                                                                 \\
-% 		 & = \tr(\mathbf{H}_{\mathrm{F},g}^* \mathbf{v}_n^*\mathbf{u}_n^\mathsf{T} \mathbf{H}_{\mathrm{B},g}^* \cdot \partial \mathbf{\Theta}_g^*).
-% 	\end{align*}
-% 	According to \cite{Hjorungnes2007}, the corresponding complex derivative is
-% 	\begin{equation}
-% 		\label{eq:gradient_eucl_sv_indl}
-% 		\frac{\partial \sigma_n}{\partial \mathbf{\Theta}_g^*} = \mathbf{H}_{\mathrm{B},g}^\mathsf{H} \mathbf{u}_n \mathbf{v}_n^\mathsf{H} \mathbf{H}_{\mathrm{F},g}^\mathsf{H}.
-% 	\end{equation}
-% 	A linear combination of \eqref{eq:gradient_eucl_sv_indl} yields \eqref{eq:gradient_eucl_pareto}.
-% \end{subsection}
-
-
-\begin{subsection}{Proof of Proposition \ref{pp:power}}
-	\label{ap:power}
-The differential of \eqref{ob:power} with respect to $\mathbf{\Theta}_g^*$ is
-\begin{align*}
-	\partial \lVert \mathbf{H} \rVert _\mathrm{F}^2
-	 & = \tr\bigl(\mathbf{H}_{\mathrm{B},g}^* \cdot \partial \mathbf{\Theta}_g^* \cdot \mathbf{H}_{\mathrm{F},g}^* (\mathbf{H}_\mathrm{D}^\mathsf{T} + \mathbf{H}_\mathrm{F}^\mathsf{T} \mathbf{\Theta}^\mathsf{T} \mathbf{H}_\mathrm{B}^\mathsf{T})\bigr) \\
-	 & = \tr\bigl(\mathbf{H}_{\mathrm{F},g}^* (\mathbf{H}_\mathrm{D}^\mathsf{T} + \mathbf{H}_\mathrm{F}^\mathsf{T} \mathbf{\Theta}^\mathsf{T} \mathbf{H}_\mathrm{B}^\mathsf{T}) \mathbf{H}_{\mathrm{B},g}^* \cdot \partial \mathbf{\Theta}_g^*\bigr)
-\end{align*}
-and the corresponding complex derivative is
-\begin{equation}
-	\frac{\partial \lVert \mathbf{H} \rVert _\mathrm{F}^2}{\partial \mathbf{\Theta}_g^*} = \mathbf{H}_{\mathrm{B},g}^\mathsf{H} (\mathbf{H}_\mathrm{D} + \mathbf{H}_\mathrm{B} \mathbf{\Theta} \mathbf{H}_\mathrm{F}) \mathbf{H}_{\mathrm{F},g}^\mathsf{H} = \mathbf{M}_g.
-\end{equation}
-% For a given $\mathbf{\Theta}$, we approximate the quadratic objective \eqref{ob:power} by local Taylor expansion and recast problem \eqref{op:power} as
-
-First, we approximate the quadratic objective \eqref{ob:power} by its local Taylor expansion
-\begin{maxi!}
-{\scriptstyle{\mathbf{\Theta}}}{\sum_g 2 \Re\bigl\{ \tr(\mathbf{\Theta}_g^\mathsf{H} \mathbf{M}_g) \bigr\}}{\label{op:power_ris_taylor}}{\label{ob:power_ris_taylor}}
-\addConstraint{\mathbf{\Theta}_g^\mathsf{H} \mathbf{\Theta}_g=\mathbf{I}, \quad \forall g.}{}{}
-\end{maxi!}
-Let $\mathbf{M}_g = \mathbf{U}_g \mathbf{\Sigma}_g \mathbf{V}_g^\mathsf{H}$ be the \gls{svd} of $\mathbf{M}_g$.
-We have
-\begin{equation}
-	\Re \bigl\{\tr(\mathbf{\Theta}_g^\mathsf{H} \mathbf{M}_g)\bigr\} = \Re \bigl\{ \tr(\mathbf{\Sigma}_g \mathbf{V}_g^\mathsf{H} \mathbf{\Theta}_g^\mathsf{H} \mathbf{U}_g) \bigr\} \le \tr(\mathbf{\Sigma}_g).
-\end{equation}
-The upper bound is tight when $\mathbf{V}_g^\mathsf{H} \mathbf{\Theta}_g^\mathsf{H} \mathbf{U}_g = \mathbf{I}$, which implies the optimal solution of \eqref{op:power_ris_taylor} is $\tilde{\mathbf{\Theta}}_g = \mathbf{U}_g \mathbf{V}_g^\mathsf{H}$, $\forall g$.
-
-Next, we prove that solving \eqref{op:power_ris_taylor} successively does not decrease \eqref{ob:power}.
-Since $\tilde{\mathbf{\Theta}}$ optimal for problem \eqref{op:power_ris_taylor}, we have $\sum_g 2 \Re\bigl\{ \tr(\tilde{\mathbf{\Theta}}_g^\mathsf{H} \mathbf{M}_g) \bigr\} \ge \sum_g 2 \Re\bigl\{ \tr(\mathbf{\Theta}_g^\mathsf{H} \mathbf{M}_g) \bigr\}$ which is explicitly expressed by \eqref{iq:power_ris_taylor}.
-% \begin{equation}
-% 	\label{iq:power_ris_taylor}
-% 	\scriptstyle
-% 	\begin{split}
-% 		2 \Re \Bigl\{\sum\limits_g \tr(\tilde{\mathbf{\Theta}}_g^\mathsf{H} \mathbf{H}_{\mathrm{B},g}^\mathsf{H} \mathbf{H}_\mathrm{D} \mathbf{H}_{\mathrm{F},g}^\mathsf{H}) + \sum\limits_{g_1,g_2} \tr(\tilde{\mathbf{\Theta}}_{g_1}^\mathsf{H} \mathbf{H}_{\mathrm{B},g_1}^\mathsf{H} \mathbf{H}_{\mathrm{B},g_2} \mathbf{\Theta}_{g_2} \mathbf{H}_{\mathrm{F},g_2} \mathbf{H}_{\mathrm{F},g_1}^\mathsf{H})\Bigr\} \\
-% 		\ge 2 \Re \Bigl\{\sum\limits_g \tr({\mathbf{\Theta}}_g^\mathsf{H} \mathbf{H}_{\mathrm{B},g}^\mathsf{H} \mathbf{H}_\mathrm{D} \mathbf{H}_{\mathrm{F},g}^\mathsf{H}) + \sum\limits_{g_1,g_2} \tr({\mathbf{\Theta}}_{g_1}^\mathsf{H} \mathbf{H}_{\mathrm{B},g_1}^\mathsf{H} \mathbf{H}_{\mathrm{B},g_2} \mathbf{\Theta}_{g_2} \mathbf{H}_{\mathrm{F},g_2} \mathbf{H}_{\mathrm{F},g_1}^\mathsf{H})\Bigr\}
-% 	\end{split}
-% \end{equation}
-\begin{multline}
-	\label{iq:power_ris_taylor}
-	\scriptstyle{2 \Re \bigl\{\sum\limits_g \tr(\tilde{\mathbf{\Theta}}_g^\mathsf{H} \mathbf{H}_{\mathrm{B},g}^\mathsf{H} \mathbf{H}_\mathrm{D} \mathbf{H}_{\mathrm{F},g}^\mathsf{H}) + \sum\limits_{g_1,g_2} \tr(\tilde{\mathbf{\Theta}}_{g_1}^\mathsf{H} \mathbf{H}_{\mathrm{B},g_1}^\mathsf{H} \mathbf{H}_{\mathrm{B},g_2} \mathbf{\Theta}_{g_2} \mathbf{H}_{\mathrm{F},g_2} \mathbf{H}_{\mathrm{F},g_1}^\mathsf{H})\bigr\}} \\
-	\scriptstyle{\ge 2 \Re \bigl\{\sum\limits_g \tr({\mathbf{\Theta}}_g^\mathsf{H} \mathbf{H}_{\mathrm{B},g}^\mathsf{H} \mathbf{H}_\mathrm{D} \mathbf{H}_{\mathrm{F},g}^\mathsf{H}) + \sum\limits_{g_1,g_2} \tr({\mathbf{\Theta}}_{g_1}^\mathsf{H} \mathbf{H}_{\mathrm{B},g_1}^\mathsf{H} \mathbf{H}_{\mathrm{B},g_2} \mathbf{\Theta}_{g_2} \mathbf{H}_{\mathrm{F},g_2} \mathbf{H}_{\mathrm{F},g_1}^\mathsf{H})\bigr\}}
-\end{multline}
-% Expanding both side gives \eqref{iq:power_ris_taylor}.
-On the other hand, expanding $\lVert \sum_g \mathbf{H}_{\mathrm{B},g} \tilde{\mathbf{\Theta}}_g \mathbf{H}_{\mathrm{F},g} - \sum_g \mathbf{H}_{\mathrm{B},g} \mathbf{\Theta}_g \mathbf{H}_{\mathrm{F},g} \rVert _\mathrm{F}^2 \ge 0$ gives \eqref{iq:auxiliary_nonnegative}.
-\begin{multline}
-	\label{iq:auxiliary_nonnegative}
-	\scriptstyle{\sum\limits_{g_1,g_2} \tr(\mathbf{H}_{\mathrm{F},g_1}^\mathsf{H} \tilde{\mathbf{\Theta}}_{g_1}^\mathsf{H} \mathbf{H}_{\mathrm{B},g_1}^\mathsf{H} \mathbf{H}_{\mathrm{B},g_2} \tilde{\mathbf{\Theta}}_{g_2} \mathbf{H}_{\mathrm{F},g_2}) - 2 \Re \bigl\{\sum\limits_{g_1,g_2} \tr(\mathbf{H}_{\mathrm{F},g_1}^\mathsf{H} \tilde{\mathbf{\Theta}}_{g_1}^\mathsf{H} \mathbf{H}_{\mathrm{B},g_1}^\mathsf{H} }\\
-		\scriptstyle{\mathbf{H}_{\mathrm{B},g_2} \mathbf{\Theta}_{g_2} \mathbf{H}_{\mathrm{F},g_2})\bigr\} + \sum\limits_{g_1,g_2} \tr(\mathbf{H}_{\mathrm{F},g_1}^\mathsf{H} {\mathbf{\Theta}}_{g_1}^\mathsf{H} \mathbf{H}_{\mathrm{B},g_1}^\mathsf{H} \mathbf{H}_{\mathrm{B},g_2} {\mathbf{\Theta}}_{g_2} \mathbf{H}_{\mathrm{F},g_2}) \ge 0}
-\end{multline}
-Adding \eqref{iq:power_ris_taylor} and \eqref{iq:auxiliary_nonnegative}, we have
-\begin{multline}
-	2 \Re \bigl\{\tr(\tilde{\mathbf{\Theta}}^\mathsf{H} \mathbf{H}_\mathrm{B}^\mathsf{H} \mathbf{H}_\mathrm{D} \mathbf{H}_\mathrm{F}^\mathsf{H}) \bigr\} + \tr(\mathbf{H}_\mathrm{F}^\mathsf{H} \tilde{\mathbf{\Theta}}^\mathsf{H} \mathbf{H}_\mathrm{B}^\mathsf{H} \mathbf{H}_\mathrm{B} \tilde{\mathbf{\Theta}} \mathbf{H}_\mathrm{F}) \\
-	\ge 2 \Re \bigl\{\tr({\mathbf{\Theta}}^\mathsf{H} \mathbf{H}_\mathrm{B}^\mathsf{H} \mathbf{H}_\mathrm{D} \mathbf{H}_\mathrm{F}^\mathsf{H}) \bigr\} + \tr(\mathbf{H}_\mathrm{F}^\mathsf{H} {\mathbf{\Theta}}^\mathsf{H} \mathbf{H}_\mathrm{B}^\mathsf{H} \mathbf{H}_\mathrm{B} {\mathbf{\Theta}} \mathbf{H}_\mathrm{F}),
-\end{multline}
-which suggests that updating $\tilde{\mathbf{\Theta}}$ does not decrease \eqref{ob:power}.
-% \begin{figure*}
-% \begin{equation}
-% 	\label{iq:power_ris_taylor}
-% 	\resizebox{0.95\textwidth}{!}{
-% 		$2 \Re \Bigl\{\sum\limits_g \tr(\tilde{\mathbf{\Theta}}_g^\mathsf{H} \mathbf{H}_{\mathrm{B},g}^\mathsf{H} \mathbf{H}_\mathrm{D} \mathbf{H}_{\mathrm{F},g}^\mathsf{H}) + \sum\limits_{g_1,g_2} \tr(\tilde{\mathbf{\Theta}}_{g_1}^\mathsf{H} \mathbf{H}_{\mathrm{B},g_1}^\mathsf{H} \mathbf{H}_{\mathrm{B},g_2} \mathbf{\Theta}_{g_2} \mathbf{H}_{\mathrm{F},g_2} \mathbf{H}_{\mathrm{F},g_1}^\mathsf{H})\Bigr\} \ge 2 \Re \Bigl\{\sum\limits_g \tr({\mathbf{\Theta}}_g^\mathsf{H} \mathbf{H}_{\mathrm{B},g}^\mathsf{H} \mathbf{H}_\mathrm{D} \mathbf{H}_{\mathrm{F},g}^\mathsf{H}) + \sum\limits_{g_1,g_2} \tr({\mathbf{\Theta}}_{g_1}^\mathsf{H} \mathbf{H}_{\mathrm{B},g_1}^\mathsf{H} \mathbf{H}_{\mathrm{B},g_2} \mathbf{\Theta}_{g_2} \mathbf{H}_{\mathrm{F},g_2} \mathbf{H}_{\mathrm{F},g_1}^\mathsf{H})\Bigr\}$
-% 	}
-% \end{equation}
-% 	\begin{equation}
-% 		\label{iq:auxiliary_nonnegative}
-% 		\resizebox{0.95\textwidth}{!}{
-% 			$\sum\limits_{g_1,g_2} \tr(\mathbf{H}_{\mathrm{F},g_1}^\mathsf{H} \tilde{\mathbf{\Theta}}_{g_1}^\mathsf{H} \mathbf{H}_{\mathrm{B},g_1}^\mathsf{H} \mathbf{H}_{\mathrm{B},g_2} \tilde{\mathbf{\Theta}}_{g_2} \mathbf{H}_{\mathrm{F},g_2}) - 2 \Re \Bigl\{\sum\limits_{g_1,g_2} \tr(\mathbf{H}_{\mathrm{F},g_1}^\mathsf{H} \tilde{\mathbf{\Theta}}_{g_1}^\mathsf{H} \mathbf{H}_{\mathrm{B},g_1}^\mathsf{H} \mathbf{H}_{\mathrm{B},g_2} \mathbf{\Theta}_{g_2} \mathbf{H}_{\mathrm{F},g_2})\Bigr\} + \sum\limits_{g_1,g_2} \tr(\mathbf{H}_{\mathrm{F},g_1}^\mathsf{H} {\mathbf{\Theta}}_{g_1}^\mathsf{H} \mathbf{H}_{\mathrm{B},g_1}^\mathsf{H} \mathbf{H}_{\mathrm{B},g_2} {\mathbf{\Theta}}_{g_2} \mathbf{H}_{\mathrm{F},g_2}) \ge 0$
-% 		}
-% 	\end{equation}
-% 	\hrulefill
-% \end{figure*}
-
-Finally, we prove that the converging point of \eqref{op:power_ris_taylor}, denoted by $\tilde{\mathbf{\Theta}}^?$, is a stationary point of \eqref{op:power}.
-The \gls{kkt} conditions of \eqref{op:power} and \eqref{op:power_ris_taylor} are equivalent in terms of primal/dual feasibility and complementary slackness, while the stationary conditions are respectively, $\forall g$,
-\begin{gather}
-	\mathbf{H}_{\mathrm{B},g}^\mathsf{H} (\mathbf{H}_\mathrm{D} + \mathbf{H}_\mathrm{B} \mathbf{\Theta}^\star \mathbf{H}_\mathrm{F}) \mathbf{H}_{\mathrm{F},g}^\mathsf{H} - \mathbf{\Theta}_g^\star \mathbf{\Lambda}_g^\mathsf{H} = 0,\label{eq:power_ris_optimal}\\
-	\mathbf{M}_g - \mathbf{\Theta}_g^\star \mathbf{\Lambda}_g^\mathsf{H} = 0.\label{eq:power_ris_taylor_optimal}
-\end{gather}
-On convergence, \eqref{eq:power_ris_taylor_optimal} becomes $\mathbf{H}_{\mathrm{B},g}^\mathsf{H} (\mathbf{H}_\mathrm{D} + \mathbf{H}_\mathrm{B} \mathbf{\Theta}^? \mathbf{H}_\mathrm{F}) \mathbf{H}_{\mathrm{F},g}^\mathsf{H} - \mathbf{\Theta}_g^? \mathbf{\Lambda}_g^\mathsf{H} = 0$ and reduces to \eqref{eq:power_ris_optimal}.
-The proof is thus completed.
-\end{subsection}
-
-
-\begin{subsection}{Proof of Lemma \ref{lm:rate}}
-	\label{ap:rate}
-	The differential of $R$ with respect to $\mathbf{\Theta}_g^*$ is \cite{Hjorungnes2007}
-	\begin{align*}
-		\partial R
-		 & = \frac{1}{\eta} \tr \biggl\{ \partial \mathbf{H}^* \cdot \mathbf{Q}^\mathsf{T} \mathbf{H}^\mathsf{T} \Bigl(\mathbf{I} + \frac{\mathbf{H}^* \mathbf{Q}^\mathsf{T} \mathbf{H}^\mathsf{T}}{\eta}\Bigr)^{-1} \biggr\}                                                                      \\
-		 & = \frac{1}{\eta} \tr \biggl\{ \mathbf{H}_{\mathrm{B},g}^* \cdot \partial \mathbf{\Theta}_g^* \cdot \mathbf{H}_{\mathrm{F},g}^* \mathbf{Q}^\mathsf{T} \mathbf{H}^\mathsf{T} \Bigl(\mathbf{I} + \frac{\mathbf{H}^* \mathbf{Q}^\mathsf{T} \mathbf{H}^\mathsf{T}}{\eta}\Bigr)^{-1} \biggr\} \\
-		 & = \frac{1}{\eta} \tr \biggl\{ \mathbf{H}_{\mathrm{F},g}^* \mathbf{Q}^\mathsf{T} \mathbf{H}^\mathsf{T} \Bigl(\mathbf{I} + \frac{\mathbf{H}^* \mathbf{Q}^\mathsf{T} \mathbf{H}^\mathsf{T}}{\eta}\Bigr)^{-1} \mathbf{H}_{\mathrm{B},g}^* \cdot \partial \mathbf{\Theta}_g^* \biggr\},
-	\end{align*}
-	and the corresponding complex derivative is \eqref{eq:gradient_eucl_rate}.
-\end{subsection}
-
+	\begin{subsection}{Proof of Proposition \ref{pp:interference}}
+		\label{ap:interference}
+		Minimizing \eqref{ob:interference} is equivalent to maximizing
+		% \begin{align*}
+		% 	f &= \sum_{k=1}^K \sum_{j \ne k} \tr \Bigl\{ \sum_g \bigl(- \mathbf{H}_{\mathrm{F},g}^{(j)} \mathbf{H}_{\mathrm{D}}^{(kj)\mathsf{H}} \mathbf{H}_{\mathrm{B},g}^{(k)} \mathbf{\Theta}_g - \mathbf{H}_{\mathrm{B},g}^{(k)\mathsf{H}} \mathbf{H}_{\mathrm{D}}^{(kj)} \mathbf{H}_{\mathrm{F},g}^{(j)\mathsf{H}} \mathbf{\Theta}_g^\mathsf{H}\bigr)\Bigr\}
+		% \end{align*}
+		\begin{align*}
+			f(\mathbf{\Theta}) & = - I + \sum_g \beta_g^{(k)} \tr \Bigl\{ \mathbf{H}_{\mathrm{F},g}^{(j)\mathsf{H}} \mathbf{H}_{\mathrm{F},g}^{(j)} \Bigr\} \\
+			& = \sum_{k=1}^K \sum_{j \ne k} - \tr \Bigl\{ \sum_g \mathbf{H}_{\mathrm{F},g}^{(j)} \mathbf{H}_{\mathrm{D}}^{(kj)\mathsf{H}} \mathbf{H}_{\mathrm{B},g}^{(k)} \mathbf{\Theta}_g\Bigr\} \\
+			& \quad - \tr \Bigl\{ \sum_g \mathbf{H}_{\mathrm{B},g}^{(k)\mathsf{H}} \mathbf{H}_{\mathrm{D}}^{(kj)} \mathbf{H}_{\mathrm{F},g}^{(j)\mathsf{H}} \mathbf{\Theta}_g^\mathsf{H} \Bigr\} \\
+			& \quad - \tr \Bigl\{ \sum_{g_1=1}^G \sum_{g_2 \ne g_1} \mathbf{H}_{\mathrm{B},g_2}^{(k)\mathsf{H}} \mathbf{H}_{\mathrm{B},g_1}^{(k)} \mathbf{\Theta}_{g_1} \mathbf{H}_{\mathrm{F},g_1}^{(j)} \mathbf{H}_{\mathrm{F},g_2}^{(j)\mathsf{H}} \mathbf{\Theta}_{g_2}^\mathsf{H}\Bigr\} \\
+			& \quad - \tr \Bigl\{ \sum_g \mathbf{H}_{\mathrm{B},g}^{(k)\mathsf{H}} \mathbf{H}_{\mathrm{B},g}^{(k)} \mathbf{\Theta}_{g} \mathbf{H}_{\mathrm{F},g}^{(j)\mathsf{H}} \mathbf{H}_{\mathrm{F},g}^{(j)} \mathbf{\Theta}_{g}^\mathsf{H} \Bigr\} \\
+			& \quad + \tr \Bigl\{ \sum_g \beta_g^{(k)} \mathbf{\Theta}_{g} \mathbf{H}_{\mathrm{F},g}^{(j)\mathsf{H}} \mathbf{H}_{\mathrm{F},g}^{(j)} \mathbf{\Theta}_{g}^\mathsf{H} \Bigr\} \\
+			& = \sum_{k=1}^K \sum_{j \ne k} - \tr \Bigl\{ \sum_g \mathbf{H}_{\mathrm{F},g}^{(j)} \mathbf{H}_{\mathrm{D}}^{(kj)\mathsf{H}} \mathbf{H}_{\mathrm{B},g}^{(k)} \mathbf{\Theta}_g\Bigr\} \\
+			& \quad - \tr \Bigl\{ \sum_g \mathbf{H}_{\mathrm{B},g}^{(k)\mathsf{H}} \mathbf{H}_{\mathrm{D}}^{(kj)} \mathbf{H}_{\mathrm{F},g}^{(j)\mathsf{H}} \mathbf{\Theta}_g^\mathsf{H} \Bigr\} \\
+			& \quad - \tr \Bigl\{ \sum_{g_1=1}^G \sum_{g_2 \ne g_1} \mathbf{H}_{\mathrm{B},g_2}^{(k)\mathsf{H}} \mathbf{H}_{\mathrm{B},g_1}^{(k)} \mathbf{\Theta}_{g_1} \mathbf{H}_{\mathrm{F},g_1}^{(j)} \mathbf{H}_{\mathrm{F},g_2}^{(j)\mathsf{H}} \mathbf{\Theta}_{g_2}^\mathsf{H}\Bigr\} \\
+			& \quad + \tr \Bigl\{ \sum_g \mathbf{B}_{g}^{(k)} \mathbf{\Theta}_{g} \mathbf{H}_{\mathrm{F},g}^{(j)\mathsf{H}} \mathbf{H}_{\mathrm{F},g}^{(j)} \mathbf{\Theta}_{g}^\mathsf{H} \Bigr\},
+		\end{align*}
+		where $\mathbf{B}_{g}^{(k)} = \beta_g^{(k)} \mathbf{I} - \mathbf{H}_{\mathrm{B},g}^{(k)\mathsf{H}} \mathbf{H}_{\mathrm{B},g}^{(k)}$ and the relaxation constant $\beta_g^{(k)}$ can be chosen arbitrarily.
+		One can choose $\beta_g^{(k)} = \lambda_1(\mathbf{H}_{\mathrm{B},g}^{(k)\mathsf{H}} \mathbf{H}_{\mathrm{B},g}^{(k)})$ to ensure the positive semi-definiteness of $\mathbf{B}_{g}^{(k)}$ and formulate a quadratic function to be maximized.
+		The remaining proof is similar to Appendix \ref{ap:power} and omitted here.
+	\end{subsection}
 \end{appendix}
 
-
-% \begin{section}{\glsentryshort{mimo}-\glsentryshort{ic}}
-% 	\begin{subsection}{Leakage Interference Minimization}
-% 		\begin{mini!}
-% 			{\scriptstyle{\mathbf{\Theta}, \{\mathbf{G}_k\}, \{\mathbf{W}_k\}}}{\mathop{\sum\sum}_{j \neq k} \left\lVert \mathbf{G}_k (\mathbf{H}_{kj}^\mathrm{D} + \mathbf{H}_k^\mathrm{B} \mathbf{\Theta} \mathbf{H}_j^\mathrm{F}) \mathbf{W}_j \right\rVert _{\mathrm{F}}^2}{}{}
-% 			\addConstraint{\mathbf{\Theta}_g^\mathsf{H} \mathbf{\Theta}_g=\mathbf{I}, \quad \forall g}{}{}
-% 			\addConstraint{\mathbf{G}_k \mathbf{G}_k^\mathsf{H}=\mathbf{I}, \quad \mathbf{W}_k^\mathsf{H} \mathbf{W}_k=\mathbf{I}, \quad \forall k.}{}{}
-% 		\end{mini!}
-% 		The non-convex problem can be solved by \gls{bcd} method.
-% 		For a given $\mathbf{\Theta}$, it reduces to conventional linear beamforming problem, for which an iterative algorithm alternating between the original and reciprocal networks is proposed in \cite{Gomadam2011,Clerckx2013}.
-% 		At iteration $r$, the combiner at receiver $k$ is updated as
-% 		\begin{equation}
-% 			\mathbf{G}_k^{(r)} = {\mathbf{U}_{k,N}^{(r-1)\mathsf{H}}},
-% 		\end{equation}
-% 		where $\mathbf{U}_{k,N}^{(r-1)}$ is the eigenvectors corresponding to $N$ smallest eigenvalues of interference covariance matrix $\mathbf{Q}_k^{(r-1)} = \sum_{j \ne k} \mathbf{H}_{kj} \mathbf{W}_j^{(r-1)} {\mathbf{W}_j^{(r-1)\mathsf{H}}} \mathbf{H}_{kj}^\mathsf{H}$.
-% 		The precoder at transmitter $j$ is updated as
-% 		\begin{equation}
-% 			\mathbf{W}_j^{(r)} = \bar{\mathbf{U}}_{j,N}^{(r)},
-% 		\end{equation}
-% 		where $\bar{\mathbf{U}}_{j,N}^{(r)}$ corresponds to interference covariance matrix $\bar{\mathbf{Q}}_j^{(r)} = \sum_{k \ne j} \mathbf{H}_{kj}^\mathsf{H} {\mathbf{G}_k^{(r)\mathsf{H}}} \mathbf{G}_k^{(r)} \mathbf{H}_{kj}$ in the reciprocal network.
-% 		Once $\{\mathbf{G}_k\}$ and $\{\mathbf{W}_k\}$ are determined, we define $\bar{\mathbf{H}}_{kj}^\mathrm{D} \triangleq \mathbf{G}_k \mathbf{H}_{kj}^\mathrm{D} \mathbf{W}_j$, $\bar{\mathbf{H}}_k^\mathrm{B} \triangleq \mathbf{G}_k \mathbf{H}_k^\mathrm{B}$, and $\bar{\mathbf{H}}_j^\mathrm{F} \triangleq \mathbf{H}_j^\mathrm{F} \mathbf{W}_j$.
-% 		The \gls{bd}-\gls{ris} subproblem reduces to
-% 		\begin{mini!}
-% 			{\scriptstyle{\mathbf{\Theta}}}{\mathop{\sum\sum}_{j \neq k} \left\lVert (\bar{\mathbf{H}}_{kj}^\mathrm{D} + \bar{\mathbf{H}}_k^\mathrm{B} \mathbf{\Theta} \bar{\mathbf{H}}_j^\mathrm{F}) \right\rVert _{\mathrm{F}}^2}{\label{op:ic_interference_ris}}{}
-% 			\addConstraint{\mathbf{\Theta}_g^\mathsf{H} \mathbf{\Theta}_g=\mathbf{I}, \quad \forall g.}{}{}
-% 		\end{mini!}
-
-% 		\begin{proposition}
-% 			Start from any $\mathbf{\Theta}^{(0)}$, the sequence
-% 			\begin{equation}
-% 				\mathbf{\Theta}_g^{(r+1)} = \mathbf{U}_g^{(r)} \mathbf{V}_g^{(r)}, \quad \forall g
-% 			\end{equation}
-% 			converges to a stationary point of \eqref{op:ic_interference_ris}, where $\mathbf{U}_g^{(r)}$ and $\mathbf{V}_g^{(r)}$ are left and right singular matrix of
-% 			\begin{equation}
-% 				\mathbf{M}_g^{(r)} = \mathop{\sum\sum}_{j \neq k} \bigl(\mathbf{B}_{k,g} \mathbf{\Theta}_g^{(r)} \mathbf{H}_{j,g}^\mathrm{F} - {\mathbf{H}_{k,g}^\mathrm{B}}^\mathsf{H} \mathbf{D}_{kj,g}^{(r)}\bigr) {\mathbf{H}_{j,g}^\mathrm{F}}^\mathsf{H},
-% 			\end{equation}
-% 			where $\mathbf{B}_{k,g} = \lambda_1\bigl(\mathbf{H}_{k,g}^\mathrm{B} {\mathbf{H}_{k,g}^\mathrm{B}}^\mathsf{H}\bigr) \mathbf{I} - {\mathbf{H}_{k,g}^\mathrm{B}}^\mathsf{H} \mathbf{H}_{k,g}^\mathrm{B}$ and
-% 			\begin{equation}
-% 				\mathbf{D}_{kj,g}^{(r)} = \mathbf{H}_{jk}^\mathrm{D} + \sum_{g'<g} {\mathbf{H}_{k,g'}^\mathrm{B}}^\mathsf{H} \mathbf{\Theta}_{g'}^{(r+1)} \mathbf{H}_{k,g'}^\mathrm{F} + \sum_{g'>g} {\mathbf{H}_{k,g'}^\mathrm{B}}^\mathsf{H} \mathbf{\Theta}_{g'}^{(r)} \mathbf{H}_{k,g'}^\mathrm{F}.
-% 			\end{equation}
-% 		\end{proposition}
-% 		\begin{proof}
-% 			To be added.
-% 		\end{proof}
-
-% 		\begin{figure}[!t]
-% 			\centering
-% 			\resizebox{0.65\columnwidth}{!}{
-% 				\input{../assets/simulation/ic_interference_sx.tex}
-% 			}
-% 			\caption{Average leakage interference versus \gls{ris} elements $N^\mathrm{S}$ and group size $L$. Transmitters and receivers are randomly generated in a disk of radius 50 m centered at the \gls{ris}. $(N^\mathrm{T}, N^\mathrm{R}, N^\mathrm{E}, K) = (8, 4, 3, 5)$, $(\gamma^\mathrm{D}, \gamma^\mathrm{F}, \gamma^\mathrm{B}) = (3, 2.4, 2.4)$, and reference pathloss at \qty{1}{\meter} is \qty{-30}{\dB}.}
-% 			\label{fg:ic_interference_sx}
-% 		\end{figure}
-% 		Fig.~\ref{fg:ic_interference_sx} illustrates how \gls{bd}-\gls{ris} helps to reduce the leakage interference.
-% 		In this case, a unitary $2^n$-element \gls{bd}-\gls{ris} is almost as good as a diagonal $2^{n+2}$-element \gls{ris} in terms of leakage interference.
-% 		Interestingly, the result suggests that \gls{bd}-\gls{ris} can achieve a higher \gls{dof} than \gls{d}-\gls{ris} in \gls{mimo}-\gls{ic}, which is not the case in \gls{mimo}-\gls{pc} (as discussed in \ref{sc:pc_rank_deficient}).
-% 	\end{subsection}
-
-% 	\begin{subsection}{Weighted Sum-Rate Maximization}
-% 		\begin{maxi!}
-% 			{\scriptstyle{\mathbf{\Theta}, \{\mathbf{W}_k\}}}{J_2 = \sum_k \rho_k \log \det \biggl(\mathbf{I} + \mathbf{W}_k \mathbf{H}_{kj}^\mathsf{H} \mathbf{Q}_k^{-1} \mathbf{H}_{kj} \mathbf{W}_k\biggr)}{\label{op:ic_rate}}{\label{ob:ic_rate}}
-% 			\addConstraint{\mathbf{\Theta}_g^\mathsf{H} \mathbf{\Theta}_g=\mathbf{I}, \quad \forall g}{}{}
-% 			\addConstraint{\lVert \mathbf{W}_k \rVert _\mathrm{F}^2 \le P_k. \quad \forall k}{}{}
-% 		\end{maxi!}
-% 		where $\rho_k$ is the weight of user $k$ and $\mathbf{Q}_k$ is the interference-plus-noise covariance matrix
-% 		\begin{equation}
-% 			\mathbf{Q}_k = \sum_{j \ne k} \mathbf{H}_{kj} \mathbf{W}_j {\mathbf{W}_j}^\mathsf{H} \mathbf{H}_{kj}^\mathsf{H} + \eta \mathbf{I}.
-% 		\end{equation}
-% 		For a given $\mathbf{\Theta}$, \eqref{op:ic_rate} reduces to conventional linear beamforming problem, for which a closed-form iterative solution based on \gls{wsr}-\gls{wmmse} relationship is proposed in \cite{Negro2010}.
-% 		At iteration $r$, the \gls{mmse} combiner at receiver $k$ is
-% 		\begin{equation}
-% 			\mathbf{G}_k^{(r)} = {\mathbf{W}_k^{(r-1)\mathsf{H}}} \mathbf{H}_{kk}^\mathsf{H} \bigl(\mathbf{Q}_k^{(r-1)} + \mathbf{H}_{kk} \mathbf{W}_k^{(r-1)} {\mathbf{W}_k^{(r-1)\mathsf{H}}} \mathbf{H}_{kk}^\mathsf{H}\bigr)^{-1},
-% 		\end{equation}
-% 		the corresponding error matrix is
-% 		\begin{equation}
-% 			\mathbf{E}_k^{(r)} = \bigl(\mathbf{I} + {\mathbf{W}_k^{(r-1)\mathsf{H}}} \mathbf{H}_{kk}^\mathsf{H} \mathbf{Q}_k^{(r-1)} \mathbf{H}_{kk} \mathbf{W}_k^{(r-1)}\bigr)^{-1},
-% 		\end{equation}
-% 		the \gls{mse} weight is
-% 		\begin{equation}
-% 			\mathbf{\Omega}_k^{(r)} = \rho_k {\mathbf{E}_k^{(r)}}^{-1},
-% 		\end{equation}
-% 		the Lagrange multiplier is
-% 		% \begin{equation}
-% 		% 	\begin{split}
-% 		% 		\lambda_k^{(r)}
-% 		% 		& = \frac{\sum_{j \ne k} \tr(\mathbf{\Omega}_k^{(r)}\mathbf{F}_{kj}^{(r)} {\mathbf{F}_{kj}^{(r)\mathsf{H}}}) - \sum_{j \ne k} \tr(\mathbf{\Omega}_j^{(r)}\mathbf{F}_{jk}^{(r)} {\mathbf{F}_{jk}^{(r)\mathsf{H}}})}{P_k} \\
-% 		% 		& \quad + \frac{\tr(\eta \mathbf{\Omega}_k^{(r)} \mathbf{G}_k^{(r)}{\mathbf{G}_k^{(r)\mathsf{H}}})}{P_k}
-% 		% 	\end{split}
-% 		% \end{equation}
-% 		\begin{equation}
-% 			\lambda_k^{(r)} = \frac{\tr\bigl(\eta \mathbf{\Omega}_k^{(r)} \mathbf{G}_k^{(r)}{\mathbf{G}_k^{(r)\mathsf{H}}} + \sum_j \mathbf{\Omega}_k^{(r)}\mathbf{T}_{kj}^{(r)} {\mathbf{T}_{kj}^{(r)\mathsf{H}}} - \mathbf{\Omega}_j^{(r)}\mathbf{T}_{jk}^{(r)} {\mathbf{T}_{jk}^{(r)\mathsf{H}}} \bigr)}{P_k},
-% 		\end{equation}
-% 		where $\mathbf{T}_{kj}^{(r)} = \mathbf{G}_k^{(r)} \mathbf{H}_{kj} \mathbf{W}_j^{(r)}$.
-% 		The precoder at transmitter $k$ is
-% 		\begin{equation}
-% 			\mathbf{W}_k^{(r)} = \Bigl(\sum_j \mathbf{H}_{jk}^\mathsf{H} {\mathbf{G}_j^{(r)\mathsf{H}}} \mathbf{\Omega}_k^{(r)} \mathbf{G}_j^{(r)} \mathbf{H}_{jk} + \lambda_k^{(r)} \mathbf{I} \Bigr)^{-1} \mathbf{H}_{kk}^\mathsf{H} {\mathbf{G}_j^{(r)\mathsf{H}}} \mathbf{\Omega}_k^{(r)}.
-% 		\end{equation}
-% 		Once $\{\mathbf{W}_k\}$ is determined, the complex derivative of \eqref{ob:ic_rate} with respect to \gls{ris} block $g$ is
-% 		\begin{equation}
-% 			\begin{split}
-% 				\frac{\partial J_2}{\partial \mathbf{\Theta}_g^*}
-% 				& = \sum_k \rho_k {\mathbf{H}_{k,g}^\mathrm{B}}^\mathsf{H} \mathbf{Q}_k^{-1} \mathbf{H}_{kk} \mathbf{W}_k \mathbf{E}_k \mathbf{W}_k^\mathsf{H} \\
-% 				& \quad \times \bigl({\mathbf{H}_{k,g}^\mathrm{F}}^\mathsf{H} - \mathbf{H}_{kk}^\mathsf{H} \mathbf{Q}_k^{-1} \sum_{j \ne k} \mathbf{H}_{kj} \mathbf{W}_j \mathbf{W}_j^\mathsf{H} {\mathbf{H}_{j,g}^\mathrm{F}}^\mathsf{H}\bigr).
-% 			\end{split}
-% 			\label{eq:ic_rate_gradient_ris}
-% 		\end{equation}
-% 		The \gls{ris} subproblem can be solved by \gls{rcg} Algorithm~\ref{ag:pc_rate_ris} with \eqref{eq:pc_rate_gradient_ris} replaced by \eqref{eq:ic_rate_gradient_ris}.
-
-% 		\begin{figure}[!t]
-% 			\centering
-% 			\resizebox{0.65\columnwidth}{!}{
-% 				\input{../assets/simulation/ic_rate_sx.tex}
-% 			}
-% 			\caption{Average weighted sum-rate versus \gls{snr}, \gls{ris} elements $N^\mathrm{S}$ and group size $L$. $(N^\mathrm{T}, N^\mathrm{R}, N^\mathrm{E}, K) = (8, 4, 3, 5)$, $(\Lambda^\mathrm{D}, \Lambda^\mathrm{F}, \Lambda^\mathrm{B}) = (65, 54, 46) \unit{dB}$, $\rho_k = 1, \ \forall k$.}
-% 			\label{fg:ic_rate_sx}
-% 		\end{figure}
-
-% 		\begin{figure}[!t]
-% 			\centering
-% 			\resizebox{0.65\columnwidth}{!}{
-% 				\input{../assets/simulation/ic_rate_user.tex}
-% 			}
-% 			\caption{Average weighted sum-rate versus user pairs $K$, \gls{ris} elements $N^\mathrm{S}$ and group size $L$ at $\mathrm{SNR} = \qty{15}{dB}$. $(N^\mathrm{T}, N^\mathrm{R}, N^\mathrm{E}) = (4, 4, 3)$, $\rho_k = 1, \ \forall k$.}
-% 			\label{fg:ic_rate_user}
-% 		\end{figure}
-
-% 		A new observation from Fig.~\ref{fg:ic_rate_sx} that the interference alignment capability of \gls{bd}-\gls{ris} scales much faster with group size than number of elements.\footnote{The results are not very stable and depend heavily on initialization.}
-% 	\end{subsection}
-% \end{section}
-
+\begin{section}{Acknowledgement}
+	The authors would like to thank the anonymous reviewers for their insightful criticisms and suggestions that helped us correct some technical errors and improve the clarity of the manuscript.
+\end{section}
 
 \bibliographystyle{IEEEtran}
 \bibliography{library.bib}
