@@ -68,7 +68,7 @@ hold off; grid on; box on; legend('Location', 'nw');
 xlabel('Transmit Power [dB]');
 ylabel('Achievable Rate [bit/s/Hz]');
 savefig('plots/pc_rate_symmetry.fig');
-matlab2tikz('../assets/simulation/pc_rate_symmetry.tex', 'width', '10cm', 'height', '7.5cm');
+matlab2tikz('../assets/simulation/pc_rate_symmetry.tex', 'width', '12cm', 'height', '9cm');
 
 
 function [Theta, H] = scatter_rate_symmetric_projected(H_d, H_f, H_b, W, L, P_n)

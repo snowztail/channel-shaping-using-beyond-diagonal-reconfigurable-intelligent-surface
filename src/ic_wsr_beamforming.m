@@ -62,7 +62,7 @@ hold off; grid on; ylim tight; box on; legend('Location', 'nw');
 xlabel('Transmit Power [dB]');
 ylabel('Weighted Sum-Rate [bit/s/Hz]');
 savefig('plots/ic_wsr_beamforming.fig');
-% matlab2tikz('../assets/simulation/ic_wsr_beamforming.tex', 'width', '10cm', 'height', '7.5cm');
+matlab2tikz('../assets/simulation/ic_wsr_beamforming.tex', 'width', '10cm', 'height', '7.5cm');
 
 
 function [C] = distribution_disk(r, K)

@@ -55,7 +55,7 @@ set(gca, 'XLim', [1, max(number.bond)], 'XTick', 1 : max(number.bond), 'XTickLab
 xlabel('RIS Group Size');
 ylabel('Channel Power [W]');
 savefig('plots/pc_power_symmetry.fig');
-matlab2tikz('../assets/simulation/pc_power_symmetry.tex', 'width', '8cm', 'height', '6cm');
+matlab2tikz('../assets/simulation/pc_power_symmetry.tex', 'width', '12cm', 'height', '9cm');
 
 
 function [Theta, H] = scatter_power_max_symmetric_legacy(H_f, H_b, L)

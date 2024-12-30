@@ -1,7 +1,7 @@
 clc; clear; close; setup;
 
 [transmit.antenna, reflect.antenna, receive.antenna, transmit.stream] = deal(2 .^ (2 : 2 : 4), 128, 2 .^ (2 : 2 : 4), 2);
-[network.coverage, network.pair] = deal(50, 10);
+[network.coverage, network.pair] = deal(20, 10);
 [transmit.power, receive.noise, network.weight] = deal(db2pow(-20 : 5 : 20), db2pow(-75), ones(1, 1, network.pair));
 [network.coordinate.transmit, network.coordinate.reflect, network.coordinate.receive] = deal(distribution_disk(network.coverage, network.pair), [0; 0], distribution_disk(network.coverage, network.pair));
 [channel.pathloss.reference, channel.pathloss.exponent.direct, channel.pathloss.exponent.forward, channel.pathloss.exponent.backward] = deal(db2pow(-30), 3, 2.4, 2.4);

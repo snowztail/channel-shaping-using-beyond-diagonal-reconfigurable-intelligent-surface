@@ -38,7 +38,7 @@ if flag.direct
 else
 	channel.power.aggregate.explicit = mean(channel.power.aggregate.explicit, ndims(channel.power.aggregate.explicit));
 end
-save('data/pc_power_sx.mat');
+% save('data/pc_power_sx.mat');
 
 figure('Name', 'Channel Power vs RIS Configuration', 'Position', [0, 0, 500, 400]);
 if flag.direct
@@ -80,8 +80,8 @@ hold off; grid on; box on;
 set(gca, 'XLim', [1, max(number.bond)], 'XTick', 1 : max(number.bond), 'XTickLabel', '$2^' + string(vec(0 : max(number.bond) - 1)) + '$', 'YLim', [channel.power.direct * 0.95, max(vec(channel.power.aggregate.iterative)) * 1.05]);
 xlabel('RIS Group Size');
 ylabel('Channel Power [W]');
-savefig('plots/pc_power_sx.fig');
-matlab2tikz('../assets/simulation/pc_power_sx.tex', 'width', '8cm', 'height', '6cm');
+% savefig('plots/pc_power_sx.fig');
+% matlab2tikz('../assets/simulation/pc_power_sx.tex', 'width', '8cm', 'height', '6cm');
 
 
 function [Theta, H] = scatter_power_max_explicit(H_f, H_b)

@@ -4,11 +4,18 @@
 %  http://www.mathworks.com/matlabcentral/fileexchange/22022-matlab2tikz-matlab2tikz
 %where you can also make suggestions and rate matlab2tikz.
 %
-\definecolor{mycolor1}{rgb}{0.00000,0.44706,0.74118}%
-\definecolor{mycolor2}{rgb}{0.85098,0.32549,0.09804}%
-\definecolor{mycolor3}{rgb}{0.92941,0.69412,0.12549}%
-\definecolor{mycolor4}{rgb}{0.49412,0.18431,0.55686}%
-\definecolor{mycolor5}{rgb}{0.46667,0.67451,0.18824}%
+\definecolor{mycolor1}{rgb}{0.00000,0.44700,0.74100}%
+\definecolor{mycolor2}{rgb}{0.00000,0.44706,0.74118}%
+\definecolor{mycolor3}{rgb}{0.85000,0.32500,0.09800}%
+\definecolor{mycolor4}{rgb}{0.85098,0.32549,0.09804}%
+\definecolor{mycolor5}{rgb}{0.92900,0.69400,0.12500}%
+\definecolor{mycolor6}{rgb}{0.92941,0.69412,0.12549}%
+\definecolor{mycolor7}{rgb}{0.49400,0.18400,0.55600}%
+\definecolor{mycolor8}{rgb}{0.49412,0.18431,0.55686}%
+\definecolor{mycolor9}{rgb}{0.46600,0.67400,0.18800}%
+\definecolor{mycolor10}{rgb}{0.46667,0.67451,0.18824}%
+\definecolor{mycolor11}{rgb}{0.30100,0.74500,0.93300}%
+\definecolor{mycolor12}{rgb}{0.50196,0.50196,0.50196}%
 %
 \begin{tikzpicture}
 
@@ -21,77 +28,100 @@ xmin=1,
 xmax=9,
 xtick={1,2,3,4,5,6,7,8,9},
 xticklabels={{$2^0$},{$2^1$},{$2^2$},{$2^3$},{$2^4$},{$2^5$},{$2^6$},{$2^7$},{$2^8$}},
-% xlabel style={font=\color{white!15!black}},
+xlabel style={font=\color{white!15!black}},
 xlabel={RIS Group Size},
-ymode=log,
-% ymin=0,
-ymax=0.000115917330108446,
-yminorticks=true,
-% ylabel style={font=\color{white!15!black}},
+ymin=0,
+ymax=0.000116439758271769,
+ylabel style={font=\color{white!15!black}},
 ylabel={Channel Power [W]},
 axis background/.style={fill=white},
 xmajorgrids,
 ymajorgrids,
-yminorgrids,
 legend style={at={(0.03,0.97)}, anchor=north west, legend cell align=left, align=left, draw=white!15!black}
 ]
-\addplot [color=mycolor1, line width=2.0pt]
+\addplot[only marks, mark=o, mark options={solid}, mark size=2pt, line width=2pt, draw=mycolor2, forget plot] table[row sep=crcr]{%
+x	y\\
+5	8.18421179472296e-07\\
+};
+\addplot[only marks, mark=o, mark options={solid}, mark size=2pt, line width=2pt, draw=mycolor4, forget plot] table[row sep=crcr]{%
+x	y\\
+6	2.47795062804422e-06\\
+};
+\addplot[only marks, mark=o, mark options={solid}, mark size=2pt, line width=2pt, draw=mycolor6, forget plot] table[row sep=crcr]{%
+x	y\\
+7	8.20088397806638e-06\\
+};
+\addplot[only marks, mark=o, mark options={solid}, mark size=2pt, line width=2pt, draw=mycolor8, forget plot] table[row sep=crcr]{%
+x	y\\
+8	2.94451091720999e-05\\
+};
+\addplot[only marks, mark=o, mark options={solid}, mark size=2pt, line width=2pt, draw=mycolor10, forget plot] table[row sep=crcr]{%
+x	y\\
+9	0.000111552731718914\\
+};
+\addplot[draw=none, only marks, mark=o, mark options={solid}, mark size=2pt, line width=2pt, draw=mycolor12] table[row sep=crcr]{%
+x	y\\
+0	0\\
+};
+\addlegendentry{Explicit}
+
+\addplot [color=mycolor2, line width=2.0pt]
   table[row sep=crcr]{%
-1	5.62265231393471e-07\\
-2	6.30889582242226e-07\\
-3	7.11254960263e-07\\
-4	7.81326631210281e-07\\
-5	8.14448482525861e-07\\
+1	5.66270957115429e-07\\
+2	6.32214073230813e-07\\
+3	7.11789599032912e-07\\
+4	7.83501502399535e-07\\
+5	8.1582630412623e-07\\
 };
 \addlegendentry{$N_\mathrm{S} = 16$}
 
-\addplot [color=mycolor2, dashed, line width=2.0pt]
+\addplot [color=mycolor4, dashed, line width=2.0pt]
   table[row sep=crcr]{%
-1	1.28776059362021e-06\\
-2	1.49666859439015e-06\\
-3	1.7748873501561e-06\\
-4	2.08628203322482e-06\\
-5	2.32064182394341e-06\\
-6	2.40700699069632e-06\\
+1	1.31853309573688e-06\\
+2	1.53662356650387e-06\\
+3	1.82774899163227e-06\\
+4	2.1412614461017e-06\\
+5	2.38070294433103e-06\\
+6	2.46743024417076e-06\\
 };
 \addlegendentry{$N_\mathrm{S} = 32$}
 
-\addplot [color=mycolor3, dotted, line width=2.0pt]
+\addplot [color=mycolor6, dotted, line width=2.0pt]
   table[row sep=crcr]{%
-1	3.15006337524297e-06\\
-2	3.87312444339353e-06\\
-3	4.86242306926796e-06\\
-4	6.08760688271974e-06\\
-5	7.25680982863437e-06\\
-6	7.92125259488618e-06\\
-7	8.12946998504463e-06\\
+1	3.16991712195604e-06\\
+2	3.88139289638628e-06\\
+3	4.87508772014936e-06\\
+4	6.11547438007159e-06\\
+5	7.2872459799269e-06\\
+6	7.95147687920036e-06\\
+7	8.1598841971569e-06\\
 };
 \addlegendentry{$N_\mathrm{S} = 64$}
 
-\addplot [color=mycolor4, dashdotted, line width=2.0pt]
+\addplot [color=mycolor8, dashdotted, line width=2.0pt]
   table[row sep=crcr]{%
-1	8.09679926499813e-06\\
-2	1.03932623438214e-05\\
-3	1.38959563603953e-05\\
-4	1.85906493199221e-05\\
-5	2.38130628567437e-05\\
-6	2.73295770613527e-05\\
-7	2.8861300924676e-05\\
-8	2.93516301422595e-05\\
+1	8.08840132190028e-06\\
+2	1.03513925278208e-05\\
+3	1.38370561575957e-05\\
+4	1.85667340754753e-05\\
+5	2.37528268575109e-05\\
+6	2.72839029873604e-05\\
+7	2.87929093680483e-05\\
+8	2.92781883450922e-05\\
 };
 \addlegendentry{$N_\mathrm{S} = 128$}
 
-\addplot [color=mycolor5, line width=2.0pt]
+\addplot [color=mycolor10, line width=2.0pt]
   table[row sep=crcr]{%
-1	2.17722070426804e-05\\
-2	2.9526076730669e-05\\
-3	4.18291043077588e-05\\
-4	5.97087109667717e-05\\
-5	8.17036753929845e-05\\
-6	9.7962703850956e-05\\
-7	0.000105935331911385\\
-8	0.000109247922920587\\
-9	0.000110397457246139\\
+1	2.18463432534312e-05\\
+2	2.96551238699234e-05\\
+3	4.20172201243997e-05\\
+4	5.99730466582087e-05\\
+5	8.20696998678401e-05\\
+6	9.8504151463339e-05\\
+7	0.00010650814145777\\
+8	0.000109789012745988\\
+9	0.000110895007877875\\
 };
 \addlegendentry{$N_\mathrm{S} = 256$}
 

@@ -1,7 +1,7 @@
 clc; clear; close; setup;
 
 [transmit.antenna, reflect.antenna, receive.antenna] = deal(4, 2 .^ (2 : 2 : 8), 4);
-[network.coverage, network.pair] = deal(50, 5);
+[network.coverage, network.pair] = deal(20, 5);
 [channel.pathloss.reference, channel.pathloss.exponent.direct, channel.pathloss.exponent.forward, channel.pathloss.exponent.backward] = deal(db2pow(-30), 3, 2.4, 2.4);
 [number.bond, number.antenna, number.realization, flag.direct] = deal(log2(reflect.antenna) + 1, length(reflect.antenna), 1e2, true);
 
