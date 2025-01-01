@@ -1,8 +1,8 @@
 function [W] = precoder_wsr(H, W, P_t, P_n, rho)
 	[N_r, N_t, N_e, K] = deal(size(H, 1), size(H, 2), size(W, 2), size(W, 4));
-	[iter.converge, iter.tolerance, iter.counter] = deal(false, 1e-4, 0);
+	[iter.converge, iter.tolerance, iter.counter] = deal(false, 1e-3, 0);
 	iter.J = sum(rho .* rate_mimo(H, W, P_n), 3);
-	while ~iter.converge
+	while ~iter.converge && iter.counter <= 1e2
 		T = pagemtimes(pagemtimes(H, W), 'none', pagemtimes(H, W), 'ctranspose');
 		Q = sum(T, 4) - T(:, :, logical(eye(K))) + P_n * eye(N_r);
 		F = pagemtimes(H(:, :, logical(eye(K))), pageswap(W));

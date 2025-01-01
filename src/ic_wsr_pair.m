@@ -1,7 +1,7 @@
 clc; clear; close; setup;
 
-[transmit.antenna, reflect.antenna, receive.antenna, transmit.stream] = deal(4, 64, 4, 2);
-[network.coverage, network.pair] = deal(20, 2 : 2 : 10);
+[transmit.antenna, reflect.antenna, receive.antenna, transmit.stream] = deal(4, 128, 4, 2);
+[network.coverage, network.pair] = deal(20, 2 : 2 : 8);
 [transmit.power, receive.noise] = deal(db2pow(20), db2pow(-75));
 [channel.pathloss.reference, channel.pathloss.exponent.direct, channel.pathloss.exponent.forward, channel.pathloss.exponent.backward] = deal(db2pow(-30), 3, 2.4, 2.4);
 [reflect.bond, channel.uncertainty] = deal([1, reflect.antenna], [1e-2, 1e-1, 5e-1]);
@@ -29,8 +29,8 @@ for r = 1 : number.realization
 			for b = 1 : number.bond
 				clear scatter_wsr;
 				transmit.beamformer = precoder_initialize(channel.direct.actual, transmit.stream, transmit.power);
-				[iter.converge, iter.tolerance, iter.counter, iter.wsr] = deal(false, 1e-4, 0, sum(network.weight .* rate_mimo(channel.direct.actual, transmit.beamformer, receive.noise), 3));
-				while ~iter.converge
+				[iter.converge, iter.tolerance, iter.counter, iter.wsr] = deal(false, 1e-3, 0, sum(network.weight .* rate_mimo(channel.direct.actual, transmit.beamformer, receive.noise), 3));
+				while ~iter.converge && iter.counter <= 1e2
 					[reflect.beamformer, channel.aggregate.estimate] = scatter_wsr(channel.direct.actual, channel.forward.estimate, channel.backward.estimate, transmit.beamformer, reflect.bond(b), receive.noise, network.weight);
 					transmit.beamformer = precoder_wsr(channel.aggregate.estimate, transmit.beamformer, transmit.power, receive.noise, network.weight);
 					network.wsr.aggregate.estimate(b, u, p, r) = sum(network.weight .* rate_mimo(channel.aggregate.estimate, transmit.beamformer, receive.noise), 3);

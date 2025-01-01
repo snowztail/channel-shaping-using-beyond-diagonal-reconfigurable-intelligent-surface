@@ -27,8 +27,8 @@ for r = 1 : number.realization
 			clear scatter_wsr;
 			for p = 1 : number.power
 				transmit.beamformer = precoder_initialize(channel.direct, transmit.stream, transmit.power(p));
-				[iter.converge, iter.tolerance, iter.counter, iter.wsr] = deal(false, 1e-4, 0, sum(network.weight .* rate_mimo(channel.direct, transmit.beamformer, receive.noise), 3));
-				while ~iter.converge
+				[iter.converge, iter.tolerance, iter.counter, iter.wsr] = deal(false, 1e-3, 0, sum(network.weight .* rate_mimo(channel.direct, transmit.beamformer, receive.noise), 3));
+				while ~iter.converge && iter.counter <= 1e2
 					[reflect.beamformer, channel.aggregate] = scatter_wsr(channel.direct, channel.forward, channel.backward, transmit.beamformer, reflect.bond(b), receive.noise, network.weight);
 					transmit.beamformer = precoder_wsr(channel.aggregate, transmit.beamformer, transmit.power(p), receive.noise, network.weight);
 					network.wsr.aggregate(p, b, a, r) = sum(network.weight .* rate_mimo(channel.aggregate, transmit.beamformer, receive.noise), 3);
@@ -56,7 +56,7 @@ hold off; grid on; ylim tight; box on; legend('Location', 'nw');
 xlabel('Transmit Power [dB]');
 ylabel('Weighted Sum-Rate [bit/s/Hz]');
 savefig('plots/ic_wsr_sx.fig');
-% matlab2tikz('../assets/simulation/ic_wsr_sx.tex', 'width', '10cm', 'height', '7.5cm');
+matlab2tikz('../assets/simulation/ic_wsr_sx.tex', 'width', '10cm', 'height', '7.5cm');
 
 
 function [C] = distribution_disk(r, K)

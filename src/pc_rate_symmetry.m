@@ -38,7 +38,7 @@ for r = 1 : number.realization
 
 			transmit.beamformer.symmetric.projected = precoder_rate(channel.direct, transmit.power(p), receive.noise);
 			[iter.converge, iter.tolerance, iter.counter, iter.rate] = deal(false, 1e-4, 0, rate_mimo(channel.direct, transmit.beamformer.symmetric.projected, receive.noise));
-			while ~iter.converge && iter.counter <= 5e2
+			while ~iter.converge && iter.counter <= 1e2
 				[reflect.beamformer.symmetric.projected, channel.aggregate.symmetric.projected] = scatter_rate_symmetric_projected(channel.direct, channel.forward, channel.backward, transmit.beamformer.symmetric.projected, reflect.bond, receive.noise);
 				transmit.beamformer.symmetric.projected = precoder_rate(channel.aggregate.symmetric.projected, transmit.power(p), receive.noise);
 				receive.rate.aggregate.symmetric.projected(p, a, r) = rate_mimo(channel.aggregate.symmetric.projected, transmit.beamformer.symmetric.projected, receive.noise);

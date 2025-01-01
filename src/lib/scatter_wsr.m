@@ -9,8 +9,8 @@ function [Theta, H] = scatter_wsr(H_d, H_f, H_b, W, L, P_n, rho)
 	G = length(Theta) / L;
 	H = channel_aggregate(H_d, H_f, H_b, Theta);
 	[G_e, G_r, D] = deal(zeros(size(Theta)));
-	[iter.converge, iter.tolerance, iter.counter, iter.J] = deal(false, 1e-4, 0, sum(rho .* rate_mimo(H, W, P_n), 3));
-	while ~iter.converge
+	[iter.converge, iter.tolerance, iter.counter, iter.J] = deal(false, 1e-3, 0, sum(rho .* rate_mimo(H, W, P_n), 3));
+	while ~iter.converge && iter.counter <= 1e2
 		[iter.G_r, iter.D] = deal(G_r, D);
 		for g = 1 : G
 			S = (g - 1) * L + 1 : g * L;
