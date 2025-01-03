@@ -16,11 +16,11 @@ height=7.5cm,
 at={(0cm,0cm)},
 scale only axis,
 xmin=2,
-xmax=10,
+xmax=8,
 xlabel style={font=\color{white!15!black}},
 xlabel={Number of Transceiver Pairs},
-ymin=40.4790465691513,
-ymax=64.8808696198092,
+ymin=19.6783408306497,
+ymax=31.2584285152524,
 ylabel style={font=\color{white!15!black}},
 ylabel={Weighted Sum-Rate [bit/s/Hz]},
 axis background/.style={fill=white},
@@ -30,71 +30,85 @@ legend style={at={(0.03,0.97)}, anchor=north west, legend cell align=left, align
 ]
 \addplot [color=black, line width=2.0pt]
   table[row sep=crcr]{%
-2	40.4790465691513\\
-4	53.3156610586714\\
-6	57.4429136883586\\
-8	58.0281325430682\\
-10	56.5734334721281\\
+2	20.0580414537675\\
+3	23.1494203806682\\
+4	23.8131916321643\\
+5	24.1397335191184\\
+6	24.5460196372092\\
+7	24.6755028086911\\
+8	25.1074670516212\\
 };
 \addlegendentry{No RIS}
 
 \addplot [color=mycolor1, line width=2.0pt, mark=o, mark options={solid, mycolor1}]
   table[row sep=crcr]{%
-2	42.5213880122363\\
-4	56.0457970933323\\
-6	62.5883109603648\\
-8	63.1583007147938\\
-10	64.6266622324551\\
+2	21.4573948816656\\
+3	27.1930653739343\\
+4	28.1831089641829\\
+5	29.0745868983109\\
+6	30.0024676892427\\
+7	30.2447444067533\\
+8	30.4953140968756\\
 };
 \addlegendentry{D: $\epsilon = 0.01$}
 
 \addplot [color=mycolor1, dashed, line width=2.0pt, mark=o, mark options={solid, mycolor1}]
   table[row sep=crcr]{%
-2	43.8827837290305\\
-4	56.2294345902305\\
-6	62.5280759005294\\
-8	64.208424187808\\
-10	64.8808696198092\\
+2	21.9522206635974\\
+3	27.9972659014569\\
+4	29.1774660072937\\
+5	29.8976401507066\\
+6	31.2492907400021\\
+7	31.0061272412754\\
+8	31.2584285152524\\
 };
 \addlegendentry{BD: $\epsilon = 0.01$}
 
 \addplot [color=mycolor2, line width=2.0pt, mark=+, mark options={solid, mycolor2}]
   table[row sep=crcr]{%
-2	42.4939744144284\\
-4	55.3936664527953\\
-6	61.1600282579619\\
-8	61.7434886767043\\
-10	60.7862119644371\\
+2	21.2137573609231\\
+3	26.7691088305489\\
+4	27.3922498353221\\
+5	28.4987705276947\\
+6	28.9805338770942\\
+7	29.0123559485939\\
+8	29.3028996599066\\
 };
 \addlegendentry{D: $\epsilon = 0.1$}
 
 \addplot [color=mycolor2, dashed, line width=2.0pt, mark=+, mark options={solid, mycolor2}]
   table[row sep=crcr]{%
-2	43.8528986089558\\
-4	55.3369563681885\\
-6	61.2663667669979\\
-8	61.7318587255579\\
-10	62.0880249046114\\
+2	21.8689236337818\\
+3	27.6438667486293\\
+4	28.3756628372712\\
+5	29.1140292282237\\
+6	30.2747006387336\\
+7	30.0460875923069\\
+8	30.0745412492538\\
 };
 \addlegendentry{BD: $\epsilon = 0.1$}
 
 \addplot [color=mycolor3, line width=2.0pt, mark=square, mark options={solid, mycolor3}]
   table[row sep=crcr]{%
-2	41.9457580307956\\
-4	48.8238213348668\\
-6	51.5002813105304\\
-8	50.4633260092583\\
-10	49.258410347576\\
+2	19.6783408306497\\
+3	23.5834177542131\\
+4	23.4786045133054\\
+5	23.9910896622471\\
+6	24.3263551713459\\
+7	24.3223986465523\\
+8	24.2891980094395\\
 };
 \addlegendentry{D: $\epsilon = 0.5$}
 
 \addplot [color=mycolor3, dashed, line width=2.0pt, mark=square, mark options={solid, mycolor3}]
   table[row sep=crcr]{%
-2	43.0905385920937\\
-4	48.3432675870388\\
-6	50.2934847574497\\
-8	50.4365146808841\\
-10	48.9778050766208\\
+2	20.4883438363461\\
+3	23.5557350734111\\
+4	23.4446441145768\\
+5	23.986245619365\\
+6	24.5703590360021\\
+7	24.3047930713767\\
+8	24.3803426979632\\
 };
 \addlegendentry{BD: $\epsilon = 0.5$}
 

@@ -2,7 +2,9 @@
 \RequirePackage{newtxtext}
 \RequirePackage{scrletter}
 \RequirePackage{xr-hyper}
+\RequirePackage{caption}
 \RequirePackage{enumitem}
+\RequirePackage{float}
 \RequirePackage[margin=2.5cm]{geometry}
 \RequirePackage[most]{tcolorbox}
 
@@ -24,6 +26,9 @@
 % adaptive eqref font
 \renewcommand{\eqref}[1]{(\ref{#1})}
 
+% section numbering
+\setcounter{secnumdepth}{0}
+
 % koma letter
 \renewcommand{\raggedsignature}{\raggedright}
 \setplength{toaddrhpos}{\oddsidemargin+1in}
@@ -35,7 +40,8 @@
 
 \newtcolorbox{refbox}{
 	colback=lightgray!20,
-	breakable
+	breakable,
+	enhanced
 }
 
 \providecommand{\summary}[1]{%

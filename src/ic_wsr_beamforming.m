@@ -1,6 +1,6 @@
 clc; clear; close; setup;
 
-[transmit.antenna, reflect.antenna, receive.antenna, transmit.stream] = deal(4, 128, 4, 2);
+[transmit.antenna, reflect.antenna, receive.antenna, transmit.stream] = deal(2, 128, 2, 2);
 [network.coverage, network.pair] = deal(20, 2);
 [transmit.power, receive.noise, network.weight] = deal(db2pow(-20 : 5 : 20), db2pow(-75), ones(1, 1, network.pair));
 [channel.pathloss.reference, channel.pathloss.exponent.direct, channel.pathloss.exponent.forward, channel.pathloss.exponent.backward] = deal(db2pow(-30), 3, 2.4, 2.4);
@@ -29,6 +29,7 @@ for r = 1 : number.realization
 		for p = 1 : number.power
 			% * alternating optimization
 			transmit.beamformer.alternate = precoder_initialize(channel.direct, transmit.stream, transmit.power(p));
+			% transmit.beamformer.alternate = precoder_wsr(channel.direct, transmit.beamformer.alternate, transmit.power(p), receive.noise, network.weight);
 			[iter.converge, iter.tolerance, iter.counter, iter.wsr] = deal(false, 1e-3, 0, sum(network.weight .* rate_mimo(channel.direct, transmit.beamformer.alternate, receive.noise), 3));
 			while ~iter.converge && iter.counter <= 1e2
 				[reflect.beamformer.alternate, channel.aggregate.alternate] = scatter_wsr(channel.direct, channel.forward, channel.backward, transmit.beamformer.alternate, reflect.bond(b), receive.noise, network.weight);

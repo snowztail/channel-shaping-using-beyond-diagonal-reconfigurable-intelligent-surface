@@ -26,7 +26,7 @@ end
 [counter.geodesic, counter.nongeodesic] = deal(mean(counter.geodesic, ndims(counter.geodesic)), mean(counter.nongeodesic, ndims(counter.nongeodesic)));
 [timer.geodesic, timer.nongeodesic] = deal(mean(timer.geodesic, ndims(timer.geodesic)), mean(timer.nongeodesic, ndims(timer.nongeodesic)));
 
-save('data/pc_complexity_test.mat');
+save('data/pc_complexity_algorithm.mat');
 
 
 

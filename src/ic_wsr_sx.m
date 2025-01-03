@@ -27,6 +27,7 @@ for r = 1 : number.realization
 			clear scatter_wsr;
 			for p = 1 : number.power
 				transmit.beamformer = precoder_initialize(channel.direct, transmit.stream, transmit.power(p));
+				% transmit.beamformer = precoder_wsr(channel.direct, transmit.beamformer, transmit.power(p), receive.noise, network.weight);
 				[iter.converge, iter.tolerance, iter.counter, iter.wsr] = deal(false, 1e-3, 0, sum(network.weight .* rate_mimo(channel.direct, transmit.beamformer, receive.noise), 3));
 				while ~iter.converge && iter.counter <= 1e2
 					[reflect.beamformer, channel.aggregate] = scatter_wsr(channel.direct, channel.forward, channel.backward, transmit.beamformer, reflect.bond(b), receive.noise, network.weight);

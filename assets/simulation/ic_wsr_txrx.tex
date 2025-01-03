@@ -6,6 +6,7 @@
 %
 \definecolor{mycolor1}{rgb}{0.00000,0.44706,0.74118}%
 \definecolor{mycolor2}{rgb}{0.85098,0.32549,0.09804}%
+\definecolor{mycolor3}{rgb}{0.92941,0.69412,0.12549}%
 %
 \begin{tikzpicture}
 
@@ -18,8 +19,8 @@ xmin=-20,
 xmax=20,
 xlabel style={font=\color{white!15!black}},
 xlabel={Transmit Power [dB]},
-ymin=2.99532882038294,
-ymax=118.430921897835,
+ymin=7.83733686074299,
+ymax=149.419217962719,
 ylabel style={font=\color{white!15!black}},
 ylabel={Weighted Sum-Rate [bit/s/Hz]},
 axis background/.style={fill=white},
@@ -29,75 +30,87 @@ legend style={at={(0.03,0.97)}, anchor=north west, legend cell align=left, align
 ]
 \addplot [color=mycolor1, line width=2.0pt, mark=o, mark options={solid, mycolor1}]
   table[row sep=crcr]{%
--20	2.99532882038294\\
--15	4.80996443712602\\
--10	7.11976413099317\\
--5	9.8099904772765\\
-0	13.2333676571829\\
-5	14.0392624136452\\
-10	17.6864561688774\\
-15	17.5890703560708\\
-20	21.638275242284\\
+-20	7.83948121186516\\
+-15	10.1015091609019\\
+-10	12.0004233682033\\
+-5	14.6380966326283\\
+0	17.4628816797072\\
+5	20.7218464633297\\
+10	24.6545958788906\\
+15	28.2726428196513\\
+20	31.7315951609709\\
 };
 \addlegendentry{D: $N_\mathrm{T}=N_\mathrm{R} = 2$}
 
 \addplot [color=mycolor1, dashed, line width=2.0pt, mark=o, mark options={solid, mycolor1}]
   table[row sep=crcr]{%
--20	3.18941335346925\\
--15	4.97623653962172\\
--10	7.34204073824679\\
--5	10.3111471001895\\
-0	11.1175871518529\\
-5	14.8786759769396\\
-10	18.7958048642655\\
-15	19.3743511526369\\
-20	23.8169899316522\\
+-20	7.83733686074299\\
+-15	10.0193736667404\\
+-10	12.9435742408175\\
+-5	16.2677883526666\\
+0	20.5526114639166\\
+5	24.6234221157436\\
+10	29.1511157299157\\
+15	33.0713533525499\\
+20	35.8147739447367\\
 };
 \addlegendentry{BD: $N_\mathrm{T}=N_\mathrm{R} = 2$}
 
 \addplot [color=mycolor2, line width=2.0pt, mark=+, mark options={solid, mycolor2}]
   table[row sep=crcr]{%
--20	8.69004371342154\\
--15	14.197126021026\\
--10	22.2643725680366\\
--5	33.9275344231109\\
-0	48.7684674530563\\
-5	66.1603215977753\\
-10	83.855642117828\\
-15	97.6674200628567\\
-20	117.055635047022\\
+-20	15.1209129283955\\
+-15	19.8413816594543\\
+-10	25.4981075377296\\
+-5	32.7715081751928\\
+0	41.198846706205\\
+5	48.3131886751132\\
+10	55.8086808857495\\
+15	62.1787080102253\\
+20	68.0551431649622\\
 };
-\addlegendentry{D: $N_\mathrm{T}=N_\mathrm{R} = 8$}
+\addlegendentry{D: $N_\mathrm{T}=N_\mathrm{R} = 4$}
 
 \addplot [color=mycolor2, dashed, line width=2.0pt, mark=+, mark options={solid, mycolor2}]
   table[row sep=crcr]{%
--20	8.86269678331989\\
--15	14.5483059233959\\
--10	22.9637920810085\\
--5	35.1784200830958\\
-0	50.8274930118468\\
-5	68.8031112366244\\
-10	88.0440931723043\\
-15	103.253196466975\\
-20	118.430921897835\\
+-20	15.7176086227888\\
+-15	21.4102495156061\\
+-10	28.5986790440202\\
+-5	37.4538565425314\\
+0	46.6609659124334\\
+5	56.0296672333454\\
+10	64.8867309162011\\
+15	72.3750621241665\\
+20	75.7859933518656\\
+};
+\addlegendentry{BD: $N_\mathrm{T}=N_\mathrm{R} = 4$}
+
+\addplot [color=mycolor3, line width=2.0pt, mark=square, mark options={solid, mycolor3}]
+  table[row sep=crcr]{%
+-20	25.7988635393337\\
+-15	35.9236746342655\\
+-10	49.1052350660732\\
+-5	65.0727389847456\\
+0	81.7530229815014\\
+5	96.0295529130877\\
+10	110.587455583348\\
+15	124.954201920781\\
+20	136.174808834443\\
+};
+\addlegendentry{D: $N_\mathrm{T}=N_\mathrm{R} = 8$}
+
+\addplot [color=mycolor3, dashed, line width=2.0pt, mark=square, mark options={solid, mycolor3}]
+  table[row sep=crcr]{%
+-20	26.9797451957892\\
+-15	38.1104897727695\\
+-10	52.981441121311\\
+-5	71.1782472996108\\
+0	90.3831761453612\\
+5	108.266417508482\\
+10	125.160228915665\\
+15	139.75853685782\\
+20	149.419217962719\\
 };
 \addlegendentry{BD: $N_\mathrm{T}=N_\mathrm{R} = 8$}
 
-\end{axis}
-
-\begin{axis}[%
-width=12.27cm,
-height=9.202cm,
-at={(-1.595cm,-1.012cm)},
-scale only axis,
-xmin=0,
-xmax=1,
-ymin=0,
-ymax=1,
-axis line style={draw=none},
-ticks=none,
-axis x line*=bottom,
-axis y line*=left
-]
 \end{axis}
 \end{tikzpicture}%
