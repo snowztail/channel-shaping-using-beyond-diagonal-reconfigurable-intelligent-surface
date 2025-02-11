@@ -11,7 +11,7 @@
 \usepackage[acronym]{glossaries-extra}
 \usepackage{hyperref}
 \usepackage{mathtools}
-\usepackage{microtype}
+\usepackage[nopatch=footnote]{microtype}
 \usepackage[short]{optidef}
 \usepackage{pgfplots}
 \usepackage[subtle]{savetrees}
@@ -106,11 +106,36 @@
 \newacronym{cscg}{CSCG}{Circularly Symmetric Complex Gaussian}
 \newacronym{sca}{SCA}{Successive Convex Approximation}
 \newacronym{kkt}{KKT}{Karush-Kuhn-Tucker}
-\newacronym{rf}{RF}{Radio}
+\newacronym{rf}{RF}{Radio Frequency}
 
 % * page limit hacks
+% \captionsetup[subfloat]{farskip=1pt,captionskip=1pt}
+% \setlength{\abovecaptionskip}{0pt plus 0pt minus 0pt}
+
+% \setlist{nosep}
+
+% \usepackage{xpatch}
+% \setlength{\topsep}{0pt}
+% \setlength{\partopsep}{0pt plus 0pt minus 0pt}
+% \setlength{\parskip}{0pt}
+% \setlength{\parindent}{0pt}
+% \makeatletter
+% \def\thm@space@setup{%
+% 	\thm@preskip=1mm
+% 	\thm@postskip=\thm@preskip % or whatever, if you don't want them to be equal
+% }
+% \xpatchcmd{\proof}{\topsep6\p@\@plus6\p@\relax}{}{}{}
+% \makeatother
+
+% \usepackage{titlesec}
+% \def\subparagraph{}
+% \titlespacing*{\section}{0pt}{0pt}{0pt}
+% \titlespacing{\subsection}{0pt}{0pt}{0pt}
+% \renewcommand{\thesubsubsection}{\arabic{subsubsection}}
+% \titleformat{\subsubsection}[runin]{\itshape}{\thesubsubsection)}{1ex}{}
+% \titlespacing*{\subsubsection}{0pt}{0pt}{*1}
+
 % \usepackage{setspace}
-% \usepackage[compact]{titlesec}
 % \abovedisplayskip=1mm
 % \belowdisplayskip=1mm
 % \abovedisplayshortskip=1mm
@@ -119,7 +144,8 @@
 % \setlength{\floatsep}{1mm}
 % \setlength{\textfloatsep}{1mm}
 % \setlength{\intextsep}{1mm}
-% \setlength{\skip\footins}{2mm}
+% \setlength{\skip\footins}{1mm}
+% \addtolength{\parindent}{-1mm}
 
 % * legacy
 % % Double superscript

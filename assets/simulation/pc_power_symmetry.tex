@@ -10,19 +10,19 @@
 \begin{tikzpicture}
 
 \begin{axis}[%
-width=11.411cm,
-height=9cm,
+width=9.509cm,
+height=7.5cm,
 at={(0cm,0cm)},
 scale only axis,
 xmin=1,
 xmax=7,
 xtick={1,2,3,4,5,6,7},
 xticklabels={{$2^0$},{$2^1$},{$2^2$},{$2^3$},{$2^4$},{$2^5$},{$2^6$}},
-xlabel style={font=\color{white!15!black}},
+% xlabel style={font=\color{white!15!black}},
 xlabel={RIS Group Size},
 ymin=0,
 ymax=9e-07,
-ylabel style={font=\color{white!15!black}},
+% ylabel style={font=\color{white!15!black}},
 ylabel={Channel Power [W]},
 axis background/.style={fill=white},
 xmajorgrids,
@@ -47,7 +47,7 @@ legend style={at={(0.03,0.97)}, anchor=north west, legend cell align=left, align
 4	1.85392359072275e-08\\
 5	1.69392170352418e-08\\
 };
-\addlegendentry{Symmetric-Enforced: $N_\mathrm{S} = 16$}
+\addlegendentry{Enforced: $N_\mathrm{S} = 16$}
 
 \addplot [color=mycolor1, dotted, line width=2.0pt, mark=o, mark options={solid, mycolor1}]
   table[row sep=crcr]{%
@@ -57,7 +57,7 @@ legend style={at={(0.03,0.97)}, anchor=north west, legend cell align=left, align
 4	4.41807731672663e-08\\
 5	4.8483723780213e-08\\
 };
-\addlegendentry{Symmetric-Legacy: $N_\mathrm{S} = 16$}
+\addlegendentry{Legacy: $N_\mathrm{S} = 16$}
 
 \addplot [color=mycolor1, dashdotted, line width=2.0pt, mark=o, mark options={solid, mycolor1}]
   table[row sep=crcr]{%
@@ -67,7 +67,7 @@ legend style={at={(0.03,0.97)}, anchor=north west, legend cell align=left, align
 4	5.13929112888468e-08\\
 5	5.39731769119744e-08\\
 };
-\addlegendentry{Symmetric-Takagi: $N_\mathrm{S} = 16$}
+\addlegendentry{Takagi: $N_\mathrm{S} = 16$}
 
 \addplot [color=mycolor2, line width=2.0pt, mark=+, mark options={solid, mycolor2}]
   table[row sep=crcr]{%
@@ -91,7 +91,7 @@ legend style={at={(0.03,0.97)}, anchor=north west, legend cell align=left, align
 6	2.22821968007804e-07\\
 7	2.16970499497674e-07\\
 };
-\addlegendentry{Symmetric-Enforced: $N_\mathrm{S} = 64$}
+\addlegendentry{Enforced: $N_\mathrm{S} = 64$}
 
 \addplot [color=mycolor2, dotted, line width=2.0pt, mark=+, mark options={solid, mycolor2}]
   table[row sep=crcr]{%
@@ -103,7 +103,7 @@ legend style={at={(0.03,0.97)}, anchor=north west, legend cell align=left, align
 6	7.85561233493806e-07\\
 7	8.04051669342744e-07\\
 };
-\addlegendentry{Symmetric-Legacy: $N_\mathrm{S} = 64$}
+\addlegendentry{Legacy: $N_\mathrm{S} = 64$}
 
 \addplot [color=mycolor2, dashdotted, line width=2.0pt, mark=+, mark options={solid, mycolor2}]
   table[row sep=crcr]{%
@@ -115,7 +115,7 @@ legend style={at={(0.03,0.97)}, anchor=north west, legend cell align=left, align
 6	8.10199796739281e-07\\
 7	8.22445224822532e-07\\
 };
-\addlegendentry{Symmetric-Takagi: $N_\mathrm{S} = 64$}
+\addlegendentry{Takagi: $N_\mathrm{S} = 64$}
 
 \end{axis}
 \end{tikzpicture}%

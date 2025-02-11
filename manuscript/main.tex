@@ -2,10 +2,7 @@
 
 \input{preamble}
 
-% \title{Channel Shaping Using Beyond Diagonal RIS:\\Analysis, Optimization, and Enhanced Flexibility}
 \title{MIMO Channel Shaping and Rate Maximization\\Using Beyond Diagonal RIS}
-% \title{MIMO Channel Shaping Using Beyond Diagonal RIS: Singular Value Redistribution and Rate Maximization}
-% \title{Beyond Diagonal RIS: MIMO Channel Shaping and Rate Maximization}
 \author{
 	\IEEEauthorblockN{
 		Yang Zhao, \IEEEmembership{Member, IEEE,}
@@ -14,11 +11,11 @@
 		and Bruno Clerckx, \IEEEmembership{Fellow, IEEE}
 	}
 	\thanks{
-		Yang Zhao, Hongyu Li, and Bruno Clerckx are with the Department of Electrical and Electronic Engineering, Imperial College London, London SW7 2AZ, U.K.
-		% (e-mail: \{\href{mailto:yang.zhao18@imperial.ac.uk}{yang.zhao18}, \href{mailto:c.li21@imperial.ac.uk}{c.li21}, \href{mailto:b.clerckx@imperial.ac.uk}{b.clerckx}\}@imperial.ac.uk).
+		Yang Zhao is with the School of Electronic and Electrical Engineering, University of Leeds, LS2 9JT, U.K. (e-mail: \href{mailto:yang.zhao@ieee.org}{yang.zhao@ieee.org}.)
+
+		Hongyu Li and Bruno Clerckx are with the Department of Electrical and Electronic Engineering, Imperial College London, SW7 2AZ, U.K.
 
 		Massimo Franceschetti is with the Department of Electrical and Computer Engineering, University of California, San Diego, La Jolla CA 92093, USA.
-		% (e-mail: \href{mailto:massimo@ece.ucsd.edu}{massimo@ece.ucsd.edu}).
 
 		This work has been partially supported by UKRI grant EP/Y004086/1, EP/X040569/1, EP/Y037197/1, EP/X04047X/1, EP/Y037243/1.
 	}
@@ -29,26 +26,31 @@
 \maketitle
 
 \begin{abstract}
-	This paper investigates the limits to which a passive \gls{ris} can redistribute the singular values of a point-to-point \gls{mimo} channel for providing power and rate gains.
-	We depart from conventional \gls{d}-\gls{ris} with diagonal phase shift matrix
-	and adopt a \gls{bd} architecture featuring group-wise connections for superior branch matching and mode alignment capabilities.
-	% wave manipulation flexibility.
-	Specifically, analytical channel singular value bounds are derived under the scenario of rank-deficient backward/forward channel or negligible direct channel, which imply the \gls{bd}-\gls{ris} shaping advantage in terms of dynamic range and \gls{dof}.
-	A numerical method is then proposed to optimize the \gls{bd}-\gls{ris} for a special class of singular value functions and invoked in a Pareto problem to reveal the singular value region.
-	As a side product, we tackle \gls{bd}-\gls{ris}-aided \gls{mimo} rate maximization problem by a local-optimal \gls{ao} and a low-complexity shaping-inspired approach, and extend both to \gls{wsr} maximization in \gls{mimo} interference channels.
+	This paper investigates the limits to which a passive \gls{ris} can shape a point-to-point \gls{mimo} in terms of singular values
+	% and power gain
+	and thus improve the rate performance.
+	% redistribute the singular values of a point-to-point \gls{mimo} channel for providing power and rate gains.
+	We depart from the conventional \gls{ris} with \gls{d} phase shift matrix and adopt a \gls{bd} model interconnecting elements for wave amplitude and phase manipulation.
+	This translates to superior branch matching and mode alignment capabilities in \gls{mimo}.
+	% featuring group-wise connections for enhanced branch matching and mode alignment capabilities.
+	Specifically, analytical singular values bounds are derived under popular \gls{ris} deployment scenarios
+	% the scenario of rank-deficient backward/forward channel or negligible direct channel, which
+	to showcase the shaping advantages of \gls{bd}-\gls{ris} in terms of dynamic range and \gls{dof}.
+	A numerical optimization method is then proposed for a broader range of shaping problems and invoked to characterize the entire achievable singular value region.
+	As a side product, we tackle \gls{bd}-\gls{ris}-aided \gls{mimo} rate maximization problem by a local-optimal \gls{ao} and a low-complexity shaping-inspired approach.
 	Results show that compared to \gls{d}-\gls{ris}, \gls{bd}-\gls{ris} significantly improves the dynamic range of all channel singular values and the trade-off in manipulating them, resulting in enhanced power gain and achievable rate.
-	Those gaps become more pronounced when the number of \gls{ris} elements or \gls{mimo} dimensions increase.
-	Of particular interest, \gls{bd}-\gls{ris} is shown to activate multi-stream transmission (hence achieving the asymptotic \gls{dof}) at much lower transmit power than \gls{d}-\gls{ris} thanks to its singular value redistribution capability.
+	Those benefits become more pronounced when the number of \gls{ris} elements or \gls{mimo} dimensions increase.
+	Of particular interest, \gls{bd}-\gls{ris} is shown to activate multi-stream transmission (hence achieving the asymptotic \gls{dof}) at much lower transmit power than \gls{d}-\gls{ris} thanks to its singular value shaping proficiency.
 \end{abstract}
 
 \begin{IEEEkeywords}
-	MIMO, RIS, channel shaping, rate maximization, singular value bounds, manifold optimization, interference channel.
+	MIMO, RIS, channel shaping, rate maximization, singular value bounds, manifold optimization.
 \end{IEEEkeywords}
 
 \glsresetall
 
 \begin{section}{Introduction}
-	\begin{subsection}{Background}
+	% \begin{subsection}{Background}
 		Today we are witnessing a paradigm shift from connectivity to intelligence, where the wireless environment is no longer a chaotic medium but a conscious agent that can serve on demand.
 		This is empowered by recent advances in \gls{ris}, a programmable passive planar surface that recycles and redistributes ambient electromagnetic waves for improved wireless performance.
 		A typical \gls{ris} consists of numerous low-power sub-wavelength non-resonant scattering elements, whose response can be engineered in real-time to manipulate the amplitude, phase, frequency, and polarization of the scattered waves \cite{Basar2019}.
@@ -58,10 +60,10 @@
 		Another \gls{ris} application is \emph{information modulation} by periodically switching its reflection pattern within the channel coherence time.
 		This creates a free-ride message stream with dual benefits: integrating with legacy transmitter for enhanced channel capacity \cite{Karasik2020,Basar2020,Ye2022}, or serving as individual source for low-power uplink communication \cite{Liang2020,Zhao2024,Yang2024}.
 		Different from above, \emph{channel shaping} exploits \gls{ris} as a stand-alone device to modify the inherent properties of the wireless environment, for example, compensate for the Doppler effect \cite{Basar2021}, flatten frequency-selective channels \cite{Arslan2022}, improve \gls{mimo} channel rank \cite{Ozdogan2020a}, and artificially diversify channel over time for orthogonal \cite{Yang2019} and non-orthogonal \cite{Chen2023} multiple access schemes.
-		This helps to decouple joint beamforming problems into a channel shaping stage and a legacy transceiver design stage, providing a versatile solution for various wireless applications.
-	\end{subsection}
+		This helps to decouple joint beamforming problems into a channel shaping stage and a conventional transceiver design stage, providing a versatile solution for various wireless applications.
+	% \end{subsection}
 
-	\begin{subsection}{Related Works}
+	% \begin{subsection}{Related Works}
 		At a specific resource block, channel shaping metrics can be classified into two categories.
 		\begin{itemize}
 			\item \emph{Singular value:} The impact of \gls{ris} has been studied in terms of minimum singular value \cite{ElMossallamy2021}, effective rank \cite{ElMossallamy2021,Meng2023}, condition number \cite{Zheng2022,Huang2023}, and degree of freedom \cite{Bafghi2022,Zheng2023,Chae2023}. Those are closely related to performance measures (e.g., achievable rate and harvested power \cite{Shen2021}) but sensitive to minor perturbations of the channel matrix.
@@ -86,13 +88,14 @@
 		A transmitter-side \gls{bd}-\gls{ris} was introduced to
 		massive \gls{mimo} systems that exploits statistical \gls{csi} for improved spectral efficiency \cite{Mishra2024}, which again assumed negligible direct channel and fully-connected \gls{bd}-\gls{ris}.
 		Received power maximization with continuous-valued and discrete-valued \gls{bd}-\gls{ris} have been tackled respectively in closed form \cite{Nerini2023} and by machine learning approach \cite{Nerini2023b}, but the corresponding single-stream transceiver is rate-suboptimal.
-	\end{subsection}
+	% \end{subsection}
 
-	\begin{subsection}{Contributions}
+	% \begin{subsection}{Contributions}
 		\label{sc:contributions}
 		This paper is motivated by a fundamental question:
-		\emph{What is the singular value shaping capability of a passive \gls{ris} in \gls{mimo} channels?}
-		We aim for a comprehensive answer via analysis and optimization.
+		\emph{What is the channel shaping capability (in terms of singular values and their functions) of a passive \gls{ris} in \gls{mimo} channels?}
+		Unlike existing works that focus on specific metrics or scenarios, we seek a general understanding of \gls{ris} in manipulating the wireless environment to provide insights for various wireless applications.
+		% We aim for a comprehensive answer via analysis and optimization.
 		The contributions are summarized below.
 
 		First, we pioneer \gls{bd}-\gls{ris} study in general \gls{mimo} channels and interpret its shaping potential as branch matching and mode alignment.
@@ -101,32 +104,37 @@
 		The former origins uniquely from the off-diagonal entries of the scattering matrix of \gls{bd}-\gls{ris}.
 
 		Second, we provide an analytical answer to the shaping question under specific channel conditions.
-		It is proved that \gls{bd}-\gls{ris} may achieve a larger or smaller number of \gls{mimo} \gls{dof} than \gls{d}-\gls{ris}.
-		When the backward or forward channel is rank-deficient, we derive asymptotic singular value bounds applying to both \gls{d}- and \gls{bd}-\gls{ris}.
-		When the direct channel is negligible, we recast the shaping question for fully-connected \gls{bd}-\gls{ris} as a well-studied linear algebra question and provide tight bounds on channel singular values, power gain, and capacity.
-		The corresponding \gls{ris} scattering matrices are also derived in closed form.
+		It is shown that \gls{bd}-\gls{ris} may achieve a larger or smaller communication \gls{dof} than \gls{d}-\gls{ris}.
+		When the backward or forward channel is rank-deficient, we derive asymptotic bounds of individual singular values applying to \gls{d}- and \gls{bd}-\gls{ris}.
+		When the direct channel is negligible, we recast the shaping question for fully-connected \gls{bd}-\gls{ris} as a well-studied linear algebra question and provide tight bounds (with closed-form \gls{ris} expressions) on channel singular values, power gain, and capacity.
+		% The corresponding \gls{ris} scattering matrices are also derived in closed form.
+		% The results are insightful for understanding the shaping advantages of \gls{bd}-\gls{ris} in \gls{mimo} channels.
+		These results help to understand the fundamental limits of channel shaping and serve as a foundation for advanced \gls{ris} designs.
 
-		Third, we provide a numerical answer to the shaping question by exploiting a geodesic \gls{rcg} method to optimize the \gls{bd}-\gls{ris} for a special class of singular value functions.
+		% guide the design and optimization of future wireless networks
+
+		Third, we provide a numerical answer to the shaping question by exploiting a geodesic \gls{rcg} method to optimize the \gls{bd}-\gls{ris} for a broad class of singular value functions.
 		It compares favorably to legacy \gls{ris} designs in that the updates are performed multiplicatively along the shortest paths on the manifold for accelerated convergence.
 		The method is then invoked in a Pareto problem to reveal the entire singular value region, which generalizes most relevant metrics and provides an intuitive shaping benchmark.
 
 		Fourth, we tackle \gls{bd}-\gls{ris}-aided \gls{mimo} rate maximization problem by a local-optimal \gls{ao} and a low-complexity shaping-inspired approach.
 		The former iteratively updates the passive beamforming by geodesic \gls{rcg} and the active beamforming by eigenmode transmission, until convergence.
-		The latter exploits the \gls{bd}-\gls{ris} to shape the channel once for maximum power gain and then performs eigenmode transmission.
+		The latter shapes the channel with \gls{ris} for maximum power gain and then performs conventional precoding.
+		% Closed-form solutions are derived for the power gain maximization subproblem in different scenarios.
 		% Interestingly, the rate deficit from the low-complexity design diminishes as the \gls{bd}-\gls{ris} evolves towards fully-connected.
-		We also extend both approaches to \gls{wsr} maximization in \gls{mimo} interference channels where the low-complexity design aims for minimum leakage interference.
+		% We also extend both approaches to \gls{wsr} maximization in \gls{mimo} interference channels where the low-complexity design aims for minimum leakage interference instead.
 
 		Fifth, we conduct extensive simulations to validate the analytical bounds and numerical methods.
 		It is concluded that:
-		\begin{enumerate}
+		\begin{itemize}
 			\item \gls{bd}-\gls{ris} significantly improves the dynamic range of all channel singular values and the trade-off in manipulating them, resulting in enhanced power gain and achievable rate;
 			\item The shaping advantages of \gls{bd}-\gls{ris} increase with the number of scattering elements and \gls{mimo} dimensions;
-			\item \gls{bd}-\gls{ris} can activate multi-stream transmission (hence achieving the asymptotic \gls{dof}) at low transmit power thanks to its superior singular value redistribution capability;
+			\item \gls{bd}-\gls{ris} can activate multi-stream transmission (hence achieving the asymptotic \gls{dof}) at low transmit power thanks to its singular value shaping proficiency;
 			\item The rate gap between the optimal and low-complexity beamforming designs diminishes as the \gls{ris} evolves from \gls{d} to fully-connected \gls{bd};
 			\item The additional optimization cost of \gls{bd}-\gls{ris} over \gls{d}-\gls{ris} is affordable and the geodesic \gls{rcg} method is efficient on large-scale problems;
 			\item All proposed asymmetric \gls{bd}-\gls{ris} designs can be modified for symmetry with reasonable performance cost.
-		\end{enumerate}
-	\end{subsection}
+		\end{itemize}
+	% \end{subsection}
 
 	\emph{Notation:}
 	Italic, bold lower-case, and bold upper-case letters indicate scalars, vectors and matrices, respectively.
@@ -154,7 +162,7 @@
 \end{section}
 
 \begin{section}{System Model}
-	\begin{subsection}{BD-RIS}
+	% \begin{subsection}{BD-RIS}
 		The \gls{bd}-\gls{ris} can be modeled as an $N_\mathrm{S}$-port network \cite{Ivrlac2010} that divides into $G$ individual groups, where group $g \in [G]$ contains $N_g$ scattering elements interconnected by real-time reconfigurable components \cite{Shen2020a}.
 		Apparently $N_\mathrm{S} = \sum_{g=1}^G N_g$.
 		Without loss of generality we assume equal size for all groups $N_g = L \triangleq N_\mathrm{S} / G, \ \forall g$ and no mutual coupling between elements.
@@ -166,28 +174,30 @@
 		where $\mathbf{\Theta}_g \in \mathbb{U}^{L \times L}$ is the $g$-th diagonal block modeling the response of group $g$.
 		It is noteworthy that \gls{d}-\gls{ris} is an extreme case of \eqref{eq:ris} with group size $L=1$, that is, each element is an individual.
 		Some viable architectures of \gls{bd}-\gls{ris} are illustrated in \cite[Fig. 3]{Shen2020a}, \cite[Fig. 5]{Li2023c}, \cite[Fig. 2]{Nerini2024} where the array geometry and circuit topology are modeled in $\mathbf{\Theta}$.
-	\end{subsection}
+	% \end{subsection}
 
-	\begin{subsection}{MIMO Point-to-Point Channel}
+	% \begin{subsection}{MIMO Point-to-Point Channel}
 		Consider a \gls{bd}-\gls{ris} aided \gls{mimo} \gls{pc} with $N_\mathrm{T}$ and $N_\mathrm{R}$ transmit and receive antennas, respectively, and $N_\mathrm{S}$ scattering elements at the \gls{bd}-\gls{ris}.
 		This configuration is denoted as $N_\mathrm{T} \times N_\mathrm{S} \times N_\mathrm{R}$.
 		Let $\mathbf{H}_\mathrm{D} \in \mathbb{C}^{N_\mathrm{R} \times N_\mathrm{T}}$, $\mathbf{H}_\mathrm{B} \in \mathbb{C}^{N_\mathrm{R} \times N_\mathrm{S}}$, $\mathbf{H}_\mathrm{F} \in \mathbb{C}^{N_\mathrm{S} \times N_\mathrm{T}}$ denote the direct (i.e., transmitter-receiver), backward (i.e., \gls{ris}-receiver), and forward (i.e., transmitter-\gls{ris}) channels, respectively.
 		The equivalent channel depends on the \gls{bd}-\gls{ris} scattering matrix
 		\begin{equation}
 			\label{eq:channel}
-			\mathbf{H} = \mathbf{H}_\mathrm{D} + \mathbf{H}_\mathrm{B} \mathbf{\Theta} \mathbf{H}_\mathrm{F} = \mathbf{H}_\mathrm{D} + \sum_g \mathbf{H}_{\mathrm{B},g} \mathbf{\Theta}_g \mathbf{H}_{\mathrm{F},g} \triangleq \mathbf{H}_\mathrm{D} + \sum_g \mathbf{H}_g,
+			\mathbf{H} = \mathbf{H}_\mathrm{D} + \mathbf{H}_\mathrm{B} \mathbf{\Theta} \mathbf{H}_\mathrm{F} = \mathbf{H}_\mathrm{D} + \sum_g \mathbf{H}_{\mathrm{B},g} \mathbf{\Theta}_g \mathbf{H}_{\mathrm{F},g},
+			%  \triangleq \mathbf{H}_\mathrm{D} + \sum_g \mathbf{H}_g,
 		\end{equation}
-		where $\mathbf{H}_{\mathrm{B},g} \in \mathbb{C}^{N_\mathrm{R} \times L}$ and $\mathbf{H}_{\mathrm{F},g} \in \mathbb{C}^{L \times N_\mathrm{T}}$ are the backward and forward channels associated with group $g$, corresponding to the $(g{-}1)L{+}1$ to $gL$ columns of $\mathbf{H}_\mathrm{B}$ and rows of $\mathbf{H}_\mathrm{F}$, respectively, and $\mathbf{H}_g \triangleq \mathbf{H}_{\mathrm{B},g} \mathbf{\Theta}_g \mathbf{H}_{\mathrm{F},g}$ is the indirect channel via group $g$.
+		where $\mathbf{H}_{\mathrm{B},g} \in \mathbb{C}^{N_\mathrm{R} \times L}$ and $\mathbf{H}_{\mathrm{F},g} \in \mathbb{C}^{L \times N_\mathrm{T}}$ are the backward and forward channels associated with group $g$, corresponding to the $(g{-}1)L{+}1$ to $gL$ columns of $\mathbf{H}_\mathrm{B}$ and rows of $\mathbf{H}_\mathrm{F}$, respectively.
+		% , and $\mathbf{H}_g \triangleq \mathbf{H}_{\mathrm{B},g} \mathbf{\Theta}_g \mathbf{H}_{\mathrm{F},g}$ is the indirect channel via group $g$.
 		Since unitary matrices constitute an algebraic group with respect to multiplication, the scattering matrix of group $g$ can be decomposed as
 		\begin{equation}
-			\mathbf{\Theta}_g = \mathbf{L}_g \mathbf{R}_g^\mathsf{H},
+			\mathbf{\Theta}_g = \mathbf{L}_g \mathbf{X}_g \mathbf{R}_g^\mathsf{H},
 		\end{equation}
-		where $\mathbf{L}_g, \mathbf{R}_g \in \mathbb{U}^{L \times L}$ are two unitary factor matrices.
-		Let $\mathbf{H}_{\mathrm{B/F},g} = \mathbf{U}_{\mathrm{B/F},g} \mathbf{\Sigma}_{\mathrm{B/F},g} \mathbf{V}_{\mathrm{B/F},g}^\mathsf{H}$ be the \gls{svd} of the backward and forward channels, respectively.
+		where $\mathbf{L}_g, \mathbf{R}_g \in \mathbb{U}^{L \times L}$ are two unitary matrices and $\mathbf{X}_g \in \mathbb{R}^{L \times L}$ is a permutation matrix.
+		Let $\mathbf{H}_g \triangleq \mathbf{H}_{\mathrm{B},g} \mathbf{\Theta}_g \mathbf{H}_{\mathrm{F},g}$ be the indirect channel via group $g$ and $\mathbf{H}_{\mathrm{B/F},g} = \mathbf{U}_{\mathrm{B/F},g} \mathbf{\Sigma}_{\mathrm{B/F},g} \mathbf{V}_{\mathrm{B/F},g}^\mathsf{H}$ be the \gls{svd} of the backward and forward channels, respectively.
 		The equivalent channel is thus
 		\begin{equation}
 			\label{eq:channel_svd}
-			\mathbf{H} = \overbrace{\mathbf{H}_\mathrm{D} + \sum_g \mathbf{U}_{\mathrm{B},g} \mathbf{\Sigma}_{\mathrm{B},g} \underbrace{\mathbf{V}_{\mathrm{B},g}^\mathsf{H} \mathbf{L}_g \mathbf{R}_g^\mathsf{H} \mathbf{U}_{\mathrm{F},g}}_\text{backward-forward} \mathbf{\Sigma}_{\mathrm{F},g} \mathbf{V}_{\mathrm{F},g}^\mathsf{H}}^\text{direct-indirect}.
+			\mathbf{H} = \overbrace{\mathbf{H}_\mathrm{D} + \sum_g \mathbf{U}_{\mathrm{B},g} \mathbf{\Sigma}_{\mathrm{B},g} \underbrace{\mathbf{V}_{\mathrm{B},g}^\mathsf{H} \mathbf{L}_g \mathbf{X}_g \mathbf{R}_g^\mathsf{H} \mathbf{U}_{\mathrm{F},g}}_\text{backward-forward} \mathbf{\Sigma}_{\mathrm{F},g} \mathbf{V}_{\mathrm{F},g}^\mathsf{H}}^\text{direct-indirect}.
 		\end{equation}
 
 		\begin{remark}
@@ -202,37 +212,39 @@
 		\begin{example}[\gls{siso} channel gain maximization]
 			\label{eg:siso}
 			Denote the direct, backward, forward channels as $h_\mathrm{D}$, $\mathbf{h}_\mathrm{B} \in \mathbb{C}^{N_\mathrm{S} \times 1}$, and $\mathbf{h}_\mathrm{F}^\mathsf{H} \in \mathbb{C}^{1 \times N_\mathrm{S}}$, respectively.
-			In this case, mode alignment boils down to phase matching and any $L \in [N_\mathrm{S}]$, including \gls{d}-\gls{ris}, suffices for perfect mode alignment using
+			In this case, mode alignment boils down to phase matching and the optimal \gls{bd}-\gls{ris} structure is
+			% any $L \in [N_\mathrm{S}]$, including \gls{d}-\gls{ris}, suffices for perfect mode alignment using
 			\begin{equation}
 				\mathbf{\Theta}_{\textnormal{P-max},g}^\textnormal{SISO} = \frac{h_\mathrm{D}}{\lvert h_\mathrm{D} \rvert} \mathbf{V}_{\mathrm{B},g} \mathbf{U}_{\mathrm{F},g}^\mathsf{H}, \quad \forall g,
 			\end{equation}
 			where $\mathbf{V}_{\mathrm{B},g} = \bigl[\mathbf{h}_{\mathrm{B},g}/\lVert \mathbf{h}_{\mathrm{B},g} \rVert, \mathbf{N}_{\mathrm{B},g}\bigr] \in \mathbb{U}^{L \times L}$, $\mathbf{U}_{\mathrm{F},g} = \bigl[\mathbf{h}_{\mathrm{F},g}/\lVert \mathbf{h}_{\mathrm{F},g} \rVert, \mathbf{N}_{\mathrm{F},g}\bigr] \in \mathbb{U}^{L \times L}$, and $\mathbf{N}_{\mathrm{B/F},g} \in \mathbb{C}^{L \times (L-1)}$ are the orthonormal bases of kernels of $\mathbf{h}_{\mathrm{B/F},g}$.
-			Evidently, the maximum channel gain is a function of $L$
+			Apparently, any group size $L$ (including \gls{d}-\gls{ris}) suffices for perfect phase matching.
+			The resulting maximum channel gain is a function of $L$
 			\begin{equation}
-				\ \lvert h \rvert _{\max} = \lvert h_\mathrm{D} \rvert + \sum_g \sum_l \lvert h_{\mathrm{B},g,\pi_{\mathrm{B},g}(l)} \rvert \lvert h_{\mathrm{F},g,\pi_{\mathrm{F},g}(l)} \rvert,
+				\ \lvert h \rvert = \lvert h_\mathrm{D} \rvert + \sum_g \sum_l \lvert h_{\mathrm{B},g,\pi_{\mathrm{B},g}(l)} \rvert \lvert h_{\mathrm{F},g,\pi_{\mathrm{F},g}(l)} \rvert,
 			\end{equation}
 			where $h_{\mathrm{B/F},g,l}$ are the $l$-th entries of $\mathbf{h}_{\mathrm{B/F},g}$, and $\pi_{\mathrm{B/F},g}$ are permutations of $[L]$ sorting their magnitude in similar orders.
-			That is, the maximum \gls{siso} channel gain is attained when each \gls{bd}-\gls{ris} group, apart from phase shifting, matches the $l$-th strongest backward and forward channel branches therein.
+			That is, the maximum \gls{siso} channel gain is attained when each \gls{bd}-\gls{ris} group, apart from phase shifting, matches the $l$-th strongest backward and forward channel branches.
 			A larger $L$ provides more flexible branch matching and thus higher channel gain.
 		\end{example}
 
 		Example~\ref{eg:siso} clarifies the difference between branch matching and mode alignment and show their impacts on channel shaping.
-		When it comes to \gls{mimo}, the advantage of \gls{bd}-\gls{ris} in branch matching improves since the number of available branches is proportional to $N_\mathrm{T} N_\mathrm{R}$. On the other hand, the limitation of \gls{d}-\gls{ris} in mode alignment worsens since each element can only apply a phase shift to the indirect channel of $N \triangleq \min(N_\mathrm{T}, N_\mathrm{R})$ modes.
-	\end{subsection}
+		When it comes to \gls{mimo}, the advantage of \gls{bd}-\gls{ris} in branch matching improves since the number of available branches is proportional to $N_\mathrm{T} N_\mathrm{R}$. On the other hand, the limitation of \gls{d}-\gls{ris} in mode alignment intensifies since each element can only apply a scalar phase shift to the indirect channel of $N \triangleq \min(N_\mathrm{T}, N_\mathrm{R})$ modes.
+	% \end{subsection}
 
-	\begin{subsection}{MIMO Interference Channel}
-		\label{sc:mimo_ic}
-		We also consider a \gls{bd}-\gls{ris} aided \gls{mimo} interference channel of $K$ transceiver pairs where each transmitter and receiver has $N_\mathrm{T}$ and $N_\mathrm{R}$ antennas, respectively, and the \gls{bd}-\gls{ris} has $N_\mathrm{S}$ scattering elements.
-		This configuration is denoted as $(N_\mathrm{T} \times N_\mathrm{S} \times N_\mathrm{R})^K$.
-		Let $\mathbf{H}_\mathrm{D}^{(kj)} \in \mathbb{C}^{N_\mathrm{R} \times N_\mathrm{T}}$, $\mathbf{H}_\mathrm{B}^{(k)} \in \mathbb{C}^{N_\mathrm{R} \times N_\mathrm{S}}$, $\mathbf{H}_\mathrm{F}^{(j)} \in \mathbb{C}^{N_\mathrm{S} \times N_\mathrm{T}}$ denote the direct channel from transmitter $j$ to receiver $k$, the backward channel of receiver $k$, and the forward channel of transmitter $j$, respectively, where $(j,k) \in [K]^2$.
-		Assume all transmitter-\gls{ris}-receiver paths share the same \gls{bd}-\gls{ris} scattering matrix $\mathbf{\Theta}$.
-		The equivalent channel from transmitter $j$ to receiver $k$ is
-		\begin{equation}
-			\label{eq:channel_interference}
-			\mathbf{H}^{(kj)} = \mathbf{H}_\mathrm{D}^{(kj)} + \mathbf{H}_\mathrm{B}^{(k)} \mathbf{\Theta} \mathbf{H}_\mathrm{F}^{(j)} = \mathbf{H}_\mathrm{D}^{(kj)} + \sum_g \mathbf{H}_{\mathrm{B},g}^{(k)} \mathbf{\Theta}_g \mathbf{H}_{\mathrm{F},g}^{(j)},
-		\end{equation}
-		where $\mathbf{H}_{\mathrm{B},g}^{(k)} \in \mathbb{C}^{N_\mathrm{R} \times L}$ and $\mathbf{H}_{\mathrm{F},g}^{(j)} \in \mathbb{C}^{L \times N_\mathrm{T}}$ are associated with \gls{ris} group $g$, corresponding to the $(g{-}1)L{+}1$ to $gL$ columns of $\mathbf{H}_{\mathrm{B},g}^{(k)}$ and rows of $\mathbf{H}_{\mathrm{F},g}^{(j)}$, respectively.
-	\end{subsection}
+	% \begin{subsection}{MIMO Interference Channel}
+		% \label{sc:mimo_ic}
+		% We also consider a \gls{bd}-\gls{ris} aided \gls{mimo} interference channel of $K$ transceiver pairs where each transmitter and receiver has $N_\mathrm{T}$ and $N_\mathrm{R}$ antennas, respectively, and the \gls{bd}-\gls{ris} has $N_\mathrm{S}$ scattering elements.
+		% This configuration is denoted as $(N_\mathrm{T} \times N_\mathrm{S} \times N_\mathrm{R})^K$.
+		% Let $\mathbf{H}_\mathrm{D}^{(kj)} \in \mathbb{C}^{N_\mathrm{R} \times N_\mathrm{T}}$, $\mathbf{H}_\mathrm{B}^{(k)} \in \mathbb{C}^{N_\mathrm{R} \times N_\mathrm{S}}$, $\mathbf{H}_\mathrm{F}^{(j)} \in \mathbb{C}^{N_\mathrm{S} \times N_\mathrm{T}}$ denote the direct channel from transmitter $j$ to receiver $k$, the backward channel of receiver $k$, and the forward channel of transmitter $j$, respectively, where $(j,k) \in [K]^2$.
+		% Assume all transmitter-\gls{ris}-receiver paths share the same \gls{bd}-\gls{ris} scattering matrix $\mathbf{\Theta}$.
+		% The equivalent channel from transmitter $j$ to receiver $k$ is
+		% \begin{equation}
+		% 	\label{eq:channel_interference}
+		% 	\mathbf{H}^{(kj)} = \mathbf{H}_\mathrm{D}^{(kj)} {+} \mathbf{H}_\mathrm{B}^{(k)} \mathbf{\Theta} \mathbf{H}_\mathrm{F}^{(j)} = \mathbf{H}_\mathrm{D}^{(kj)} {+} \sum_g \mathbf{H}_{\mathrm{B},g}^{(k)} \mathbf{\Theta}_g \mathbf{H}_{\mathrm{F},g}^{(j)},
+		% \end{equation}
+		% where $\mathbf{H}_{\mathrm{B},g}^{(k)} \in \mathbb{C}^{N_\mathrm{R} \times L}$ and $\mathbf{H}_{\mathrm{F},g}^{(j)} \in \mathbb{C}^{L \times N_\mathrm{T}}$ are associated with \gls{ris} group $g$, corresponding to the $(g{-}1)L{+}1$ to $gL$ columns of $\mathbf{H}_{\mathrm{B}}^{(k)}$ and rows of $\mathbf{H}_{\mathrm{F}}^{(j)}$, respectively.
+	% \end{subsection}
 \end{section}
 
 \begin{section}{Channel Shaping}
@@ -253,9 +265,11 @@
 		The singular value shaping capabilities of $\mathbf{\Theta}_\mathrm{D}$ and $\mathbf{\Theta}_\mathrm{BD}$ can thus be compared visually over 2 tunable parameters.
 		\begin{figure}
 			\centering
-			\includegraphics[width=\columnwidth]{../assets/simulation/pc_singular_trend.eps}
-			\caption{$2 \times 2 \times 2$ singular value shaping by \gls{d}-\gls{ris} and symmetric fully-connected \gls{bd}-\gls{ris} when the direct channel is negligible. $\sigma_1(\mathbf{H})$ and $\sigma_2(\mathbf{H})$ refer to the most and least dominant singular values, respectively.
-				Their maximum and minimum are marked explicitly on the plot.}
+			\includegraphics[width=0.7\columnwidth]{../assets/simulation/pc_singular_trend.eps}
+			\caption{$2 \times 2 \times 2$ singular value shaping by \gls{d}-\gls{ris} and symmetric fully-connected \gls{bd}-\gls{ris} when the direct channel is negligible.
+			% $\sigma_1(\mathbf{H})$ and $\sigma_2(\mathbf{H})$ refer to the most and least dominant singular values, respectively.
+			% Their maximum and minimum are marked explicitly on the plot.
+			The maximum and minimum of both singular values are marked explicitly on the plot.}
 			\label{fg:shaping_potential}
 		\end{figure}
 		With an exhaustive grid search over $(\theta_1, \theta_2)$ and $(\alpha, \psi)$, Fig.~\ref{fg:shaping_potential} shows the achievable singular values of a specific channel realization
@@ -286,13 +300,75 @@
 		The main results of this subsection are presented in the following Propositions and Corollaries.
 		\begin{proposition}[Degrees of freedom]
 			\label{pp:dof}
-			\gls{bd}-\gls{ris} may achieve a larger or smaller number of \gls{mimo} \gls{dof}\footnote{\gls{dof} refers to the maximum number of independent streams that can be transmitted in parallel over a \gls{mimo} channel. It is defined as $\mathrm{DoF}(\mathbf{H}) = \lim_{\rho \to \infty} \frac{\log \det(\mathbf{I} + \rho \mathbf{H} \mathbf{H}^\mathsf{H})}{\log \rho}$ where $\rho$ is the \gls{snr}.} than \gls{d}-\gls{ris}.
+			\gls{bd}-\gls{ris} may achieve a larger or smaller \gls{mimo} \gls{dof}\footnote{Here communication \gls{dof} refers to the maximum number of independent streams that can be transmitted in parallel over a \gls{mimo} channel, i.e., $\mathrm{DoF}(\mathbf{H}) = \lim_{\rho \to \infty} \frac{\log \det(\mathbf{I} + \rho \mathbf{H} \mathbf{H}^\mathsf{H})}{\log \rho}$ where $\rho$ is the \gls{snr}. The concept is closely related to radar \gls{dof} which refers to the number of independent measurements.} than \gls{d}-\gls{ris}.
 		\end{proposition}
 		\begin{proof}
 			Please refer to Appendix~\ref{ap:dof}.
 		\end{proof}
 
-		Proposition \ref{pp:dof} suggests that we can expect more parallel streams or less interference when shaping the channel with \gls{bd}-\gls{ris}.
+		While increasing the \gls{dof} improves the asymptotic rate performance for point-to-point transmission, the ability to reduce the \gls{dof} can be exploited to orthogonalize channels and align interference in multi-user scenarios.
+		% reducing the \gls{dof} does not necessarily degrade the rate at finite \gls{snr}.
+		% , it does not necessarily imply a higher rate at finite \gls{snr}.
+		% It is worth mentioning that a larger \gls{dof} implies more parallel streams or less interference, which is beneficial for high-rate communication.
+
+		\begin{example}[\gls{dof} of $4 \times 4 \times 4$ shaping]
+			\label{eg:dof}
+			Consider a $4 \times 4 \times 4$ shaping with $\mathbf{H}_\mathrm{D} = \mathbf{0}$ and
+			\begin{equation*}
+				\mathbf{H}_\mathrm{B} =
+				\begin{bmatrix}
+					1 & 1 & 0 & 0 \\
+					0 & 0 & 0 & 0 \\
+					0 & 0 & 1 & 0 \\
+					0 & 0 & 0 & 0
+				\end{bmatrix}, \quad
+				\mathbf{H}_\mathrm{F} =
+				\begin{bmatrix}
+					1 & 0 & 0 & 0 \\
+					0 & 1 & 0 & 0 \\
+					0 & 0 & 0 & 0 \\
+					0 & 0 & 0 & 0
+				\end{bmatrix}.
+			\end{equation*}
+			Evidently, any \gls{d}-\gls{ris} $\mathbf{\Theta}_\mathrm{D} = \diag(e^{\jmath \theta_1}, e^{\jmath \theta_2}, e^{\jmath \theta_3}, e^{\jmath \theta_4})$ results in
+			\begin{equation*}
+				\mathbf{H} =
+				\begin{bmatrix}
+					e^{\jmath \theta_1} & e^{\jmath \theta_2} & 0 & 0 \\
+					0 & 0 & 0 & 0 \\
+					0 & 0 & 0 & 0 \\
+					0 & 0 & 0 & 0
+				\end{bmatrix}
+			\end{equation*}
+			and achieves a \gls{dof} of 1.
+			On the other hand, as instructed by \eqref{eq:ris_dof_max} and \eqref{eq:ris_dof_min}, fully-connected \gls{bd}-\gls{ris} $\mathbf{\Theta}_{\textnormal{DoF-max}}^{\textnormal{MIMO}} =
+			\begin{bsmallmatrix}
+				0 & \frac{\sqrt{2}}{2} & 0 & -\frac{\sqrt{2}}{2} \\
+				0 & \frac{\sqrt{2}}{2} & 0 & \frac{\sqrt{2}}{2} \\
+				-1 & 0 & 0 & 0 \\
+				0 & 0 & 1 & 0
+			\end{bsmallmatrix}$ and $\mathbf{\Theta}_{\textnormal{DoF-min}}^{\textnormal{MIMO}} =
+			\begin{bsmallmatrix}
+				-\frac{\sqrt{2}}{2} & 0 & \frac{\sqrt{2}}{2} & 0\\
+				\frac{\sqrt{2}}{2} & 0 & \frac{\sqrt{2}}{2} & 0 \\
+				0 & 0 & 0 & 1 \\
+				0 & -1 & 0 & 0
+			\end{bsmallmatrix}$
+			result in
+			\begin{equation*}
+				\mathbf{H} =
+				\begin{bmatrix}
+					0 & \sqrt{2} & 0 & 0 \\
+					0 & 0 & 0 & 0 \\
+					-1 & 0 & 0 & 0 \\
+					0 & 0 & 0 & 0
+				\end{bmatrix}, \quad
+				\mathbf{H} = \mathbf{0},
+			\end{equation*}
+			and achieve \gls{dof} of 2 and 0, respectively.
+		\end{example}
+
+		Proposition \ref{pp:dof} and Example \ref{eg:dof} suggest that we can expect more parallel streams or less interference when shaping the channel with \gls{bd}-\gls{ris}.
 		We now take a step further to examine the limits of redistributing channel singular values under specific channel conditions.
 
 		\begin{proposition}[Rank-deficient channel]
@@ -326,6 +402,7 @@
 		with a \gls{d}-\gls{ris} or \gls{bd}-\gls{ris} of sufficiently large $N_\mathrm{S}$,
 		the $n$-th singular value of $\mathbf{H}$ can be enlarged to the $(n-k)$-th singular value of $\mathbf{T}$, or suppressed to the $n$-th singular value of $\mathbf{T}$.
 		Moreover, the first $k$ channel singular values are unbounded above\footnote{The energy conservation law $\sum_{n=1}^N \sigma_n^2(\mathbf{H}) \le 1$ still has to be respected in all cases. This constraint is omitted in context for brevity.} while the last $k$ channel singular values can be suppressed to zero.
+		Proposition \ref{pp:rd} complements Proposition \ref{pp:dof} and Example \ref{eg:dof} by quantifying the dynamic range of extreme singular values.
 		A special case is Corollary \ref{co:los} for \gls{los} channel\footnote{A similar eigenvalue result has been derived for \gls{d}-\gls{ris} only \cite{Semmler2023}.}.
 
 
@@ -403,7 +480,7 @@
 		\begin{corollary}[Product of some largest or smallest singular values]
 			\label{co:nd_sv_prod_tail}
 			If the direct channel is negligible,
-			then the product of the first (resp. last\footnote{The lower bounds coincide at zero when $N \ne N$ (i.e., $N_\mathrm{T} = N_\mathrm{S} = N_\mathrm{R}$ being false).}) $k$ singular values of $\mathbf{H}$ is bounded from above (resp. below) by those of $\mathbf{H}_\mathrm{B}$ and $\mathbf{H}_\mathrm{F}$, that is,
+			then the product of the first (resp. last\footnote{The lower bounds coincide at zero when $\bar{N} \ne N$ (i.e., $N_\mathrm{T} = N_\mathrm{S} = N_\mathrm{R}$ being false).}) $k$ singular values of $\mathbf{H}$ is bounded from above (resp. below) by those of $\mathbf{H}_\mathrm{B}$ and $\mathbf{H}_\mathrm{F}$, that is,
 			\begin{subequations}
 				\begin{align}
 					\prod_{n=1}^k \sigma_n(\mathbf{H})                   & \le \prod_{n=1}^k \sigma_n(\mathbf{H}_\mathrm{B}) \sigma_n(\mathbf{H}_\mathrm{F}), \label{iq:sv_nd_prod_largest}                    \\
@@ -459,7 +536,7 @@
 			Please refer to Appendix~\ref{ap:nd_sv_indl}.
 		\end{proof}
 
-		Corollary \ref{co:nd_sv_indl} and Proposition \ref{pp:rd} both reveal the shaping limits of individual channel singular values, which may be used to simplify the precoder design of \gls{mimo} systems with limited number of \gls{rf} chains.
+		Corollary \ref{co:nd_sv_indl} and Proposition \ref{pp:rd} both reveal the shaping limits of the $n$-th largest channel singular value, which may be used to simplify the \gls{mimo} precoder design with limited number $n$ of \gls{rf} chains.
 		They are derived under different assumptions are not special cases of each other.
 		Importantly, Corollary \ref{co:nd_sv_indl} establishes upper and lower bounds for \emph{each} channel singular value (c.f. first and last few in Proposition \ref{pp:rd}), applies to fully-connected \gls{bd}-\gls{ris} of arbitrary size, and provides a general solution structure.
 		We emphasize that in \eqref{eq:ris_nd_sv_indl} the mode alignment is realized by $\mathbf{V}_\mathrm{B}$ and $\mathbf{U}_\mathrm{F}$ while the ordering is enabled by permutation matrices $\mathbf{P}$ and $\mathbf{Q}$, which are special cases of unitary $\mathbf{X}$ defined in \eqref{eq:ris_decompose}.
@@ -499,7 +576,7 @@
 			\end{equation}
 			whose upper\footnote{%
 				\label{fn:power_nd_max}%
-				The upper bound \eqref{eq:ris_nd_power_max} is reminiscent of the optimal amplify-and-forward relay beamforming design \cite[(16), (17)]{Rong2009a} where the diagonal matrices boil down to $\mathbf{I}$ due to the passive nature of \gls{ris}.} and lower bounds are attained respectively at
+				The upper bound \eqref{eq:ris_nd_power_max} is reminiscent of the optimal amplify-and-forward relay beamforming design \cite[(16), (17)]{Rong2009a} where the diagonal power allocation matrices boil down to $\mathbf{I}$ due to the passive nature of \gls{ris}.} and lower bounds are attained respectively at
 			\begin{subequations}
 				\label{eq:ris_nd_power}
 				\begin{align}
@@ -525,8 +602,8 @@
 			\end{split}
 		\end{equation}
 		where $\lambda_n^{K}$ is the $n$-th eigenvalue of the complex $K \times K$ Wishart matrix with probability density function $f_{\lambda_n^{K}}(\cdot)$ given by \cite[(51)]{Zanella2009}.
-		\eqref{eq:power_nd_rayleigh} generalizes the \gls{siso} channel power gain aided by \gls{bd}-\gls{ris} \cite[(58)]{Shen2020a} to \gls{mimo} under double Rayleigh fading, but a closed-form expression seems nontrivial.
-		The next corollary has been derived in \cite{Bartoli2023} independently from Proposition \ref{pp:nd} and we include it here for completeness of results.
+		\eqref{eq:power_nd_rayleigh} generalizes the \gls{siso} channel power gain aided by \gls{bd}-\gls{ris} \cite[(58)]{Shen2020a} to \gls{mimo} but a closed-form expression is non-trivial.
+		The next corollary has been derived in \cite{Bartoli2023} independently of Proposition \ref{pp:nd} and we include it here for completeness of results.
 		\begin{corollary}[Channel capacity at general \gls{snr}]
 			\label{co:nd_capacity_snr_general}
 			If the direct channel is negligible, then the \gls{bd}-\gls{ris} aided \gls{mimo} channel capacity is
@@ -557,7 +634,7 @@
 			\begin{subequations}
 				\label{iq:capacity_nd_snr_extreme}
 				\begin{align}
-					C_{\rho_\downarrow} & \lessapprox \sigma_1^2(\mathbf{H}_\mathrm{B}) \sigma_1^2(\mathbf{H}_\mathrm{F}), \label{iq:capacity_nd_snr_low}                                           \\
+					C_{\rho_\downarrow} & \lessapprox \rho \sigma_1^2(\mathbf{H}_\mathrm{B}) \sigma_1^2(\mathbf{H}_\mathrm{F}), \label{iq:capacity_nd_snr_low}                                           \\
 					C_{\rho_\uparrow}   & \lessapprox N \log \frac{\rho}{N} + 2 \log \prod_{n=1}^N \sigma_n(\mathbf{H}_\mathrm{B}) \sigma_n(\mathbf{H}_\mathrm{F}). \label{iq:capacity_nd_snr_high}
 				\end{align}
 			\end{subequations}
@@ -582,7 +659,7 @@
 		\end{maxi!}
 		where $f: \mathbb{R}^{N} \to \mathbb{R}$ is a symmetric gauge function (i.e., a norm invariant under sign change and argument permutation) \cite{Watson1992}.
 		Examples of such $f$ include the Ky Fan $k$ norm, Schatten $p$ norm, $n$-th singular value, and channel power gain.
-		Problem \eqref{op:shaping} is non-convex due to the unitary constraints \eqref{cn:shaping_unitary}.
+		Problem \eqref{op:shaping} is non-convex due to the unitary constraints \eqref{cn:shaping_unitary} and non-smooth due to the possibility of repeated singular values or singular values crossing each other.
 		\begin{proposition}
 			\label{pp:shaping}
 			The sub-differential of \eqref{ob:shaping} with respect to \gls{bd}-\gls{ris} block $g$ is
@@ -601,7 +678,9 @@
 		The former solves unconstrained problem \eqref{ob:shaping} by quasi-Newton methods and projects the solution back to domain \eqref{cn:shaping_unitary} without guarantee of optimality.
 		The latter generalizes the conjugate gradient methods to Riemannian manifolds and updates the solution by addition and retraction, which constitutes a zigzag path departing from and returning to the manifold.
 		Next, we introduce a group-wise \emph{geodesic \gls{rcg}} method modified from \cite{Abrudan2008,Abrudan2009} that performs multiplicative updates along the geodesics on the Stiefel manifold for faster convergence.
-		It is applicable to a wide range of \gls{bd}-\gls{ris} design problems where the objective $f$ is smooth or convex non-smooth\footnote{$f$ is not necessarily the symmetric gauge function \eqref{ob:shaping}.} and the only constraint is group-wise unitarity \eqref{cn:shaping_unitary}.
+		\begin{remark}
+			The group-wise geodesic \gls{rcg} method is applicable to a wide range of \gls{bd}-\gls{ris} designs where the objective $f$ is smooth or convex non-smooth and the only constraint is block unitary \eqref{cn:shaping_unitary}.
+		\end{remark}
 		The steps for updating $\mathbf{\Theta}_g$ at iteration $r$ are summarized below:
 		\begin{enumerate}[label=(\roman*)]
 			\item \emph{Compute the Euclidean (sub-)gradient at $\mathbf{\Theta}_g^{(r)}$:} The (sub-)gradient of $f$ with respect to $\mathbf{\Theta}_g$ in the Euclidean space is
@@ -640,7 +719,7 @@
 			\item \emph{Translate to the geodesic at $\mathbf{\Theta}_g^{(r)}$:} The geodesic emanating from $\mathbf{\Theta}_g^{(r)}$ terminates at $\mathbf{\Theta}_g^{(r+1)}$ by multiplicative updates
 				\begin{equation}
 					\label{eq:geodesic_tran}
-					\mathbf{\Theta}_g^{(r+1)} = \mathbf{G}_{\mathbf{\Theta}_g^{(r)}}(\mu) = \mathbf{G}_\mathbf{I}(\mu) \mathbf{\Theta}_g^{(r)} = \exp(\mu \mathbf{D}_g^{(r)}) \mathbf{\Theta}_g^{(r)},
+					\mathbf{\Theta}_g^{(r+1)} {=} \mathbf{G}_{\mathbf{\Theta}_g^{(r)}}(\mu) {=} \mathbf{G}_\mathbf{I}(\mu) \mathbf{\Theta}_g^{(r)} {=} \exp(\mu \mathbf{D}_g^{(r)}) \mathbf{\Theta}_g^{(r)},
 				\end{equation}
 				where $\mu$ is the step size refinable\footnote{To double the step size, one can simply square the rotation matrix instead of recomputing the matrix exponential, that is, $\exp^2(\mu \mathbf{D}_g^{(r)}) = \exp(2 \mu \mathbf{D}_g^{(r)})$.} by the Armijo rule \cite{Armijo1966}.
 		\end{enumerate}
@@ -694,247 +773,245 @@
 		\end{maxi!}
 		where $\rho_n \ge 0$ is the weight associated with the $n$-th channel singular value.
 		Varying those weights help to characterize the Pareto frontier of singular values that encloses the achievable region.
-		While the objective \eqref{ob:pareto} does not suggest any meaningful performance metric (e.g., capacity or power gain), there exists an implicit relation since stronger channel shaping capability translates to better wireless performance.
+		While the objective \eqref{ob:pareto} itself seems obscure, a larger quantity translates to a stronger singular value redistribution capability and thus better wireless performance (e.g., channel capacity for communication, detection probability for sensing, and harvestable energy for power transfer).
 		Problem \eqref{op:pareto} also generalizes the \gls{dof} problem in Proposition \ref{pp:dof} and the individual singular value shaping problem in Corollary \ref{co:nd_sv_indl} and Proposition \ref{pp:rd}.
-		It can be solved optimally by Algorithm~\ref{ag:rcg} with $\mathbf{D}_{[n,n]} = \rho_n$ in \eqref{eq:shaping_subdiff}.
+		It can be solved optimally by Algorithm~\ref{ag:rcg} with $[\mathbf{D}]_{n,n} = \rho_n$ in \eqref{eq:shaping_subdiff}.
 	\end{subsection}
 \end{section}
 
 \begin{section}{Rate Maximization}
-	In this section, we first solve rate maximization problem for \gls{bd}-\gls{ris}-aided \gls{mimo} point-to-point and interference channels optimally by joint beamforming design, and then exploit channel shaping for a low-complexity two-stage solution.
+	\label{sc:rate}
+	In this section, we first solve rate maximization problem for \gls{bd}-\gls{ris}-aided \gls{mimo} point-to-point channel optimally by joint beamforming design, and then exploit channel shaping for a low-complexity two-stage solution.
 
-	\begin{subsection}{MIMO Point-to-Point Channel}
-		\label{sc:rate}
-		The achievable rate maximization problem for \gls{bd}-\gls{ris}-aided \gls{mimo} point-to-point channel is formulated as
+	The achievable rate maximization problem for \gls{bd}-\gls{ris}-aided \gls{mimo} point-to-point channel is formulated as
+	\begin{maxi!}
+		{\scriptstyle{\mathbf{W},\mathbf{\Theta}}}{R = \log \det \biggl(\mathbf{I} + \frac{\mathbf{W}^\mathsf{H}\mathbf{H}^\mathsf{H}\mathbf{H}\mathbf{W}}{\eta}\biggr)}{\label{op:rate}}{\label{ob:rate}}
+		\addConstraint{\lVert \mathbf{W} \rVert _\mathrm{F}^2}{\le P}
+		\addConstraint{\mathbf{\Theta}_g^\mathsf{H} \mathbf{\Theta}_g}{=\mathbf{I}, \quad \forall g,\label{cn:rate_unitary}}
+	\end{maxi!}
+	where $\mathbf{W}$ is the transmit precoder, $R$ is the achievable rate, $\eta$ is the average noise power, and $P$ is maximum average transmit power.
+	Problem \eqref{op:rate} is non-convex due to the block-unitary constraint \eqref{cn:rate_unitary} and the coupling between variables.
+	Two approaches are proposed to solve it optimally or efficiently.
+
+	\begin{subsection}{Alternating Optimization}
+		\label{sc:rate_ao}
+		This approach updates $\mathbf{\Theta}$ and $\mathbf{W}$ iteratively until convergence.
+		For a given $\mathbf{W}$, the passive beamforming subproblem is
 		\begin{maxi!}
-			{\scriptstyle{\mathbf{W},\mathbf{\Theta}}}{R = \log \det \biggl(\mathbf{I} + \frac{\mathbf{W}^\mathsf{H}\mathbf{H}^\mathsf{H}\mathbf{H}\mathbf{W}}{\eta}\biggr)}{\label{op:rate}}{\label{ob:rate}}
-			\addConstraint{\lVert \mathbf{W} \rVert _\mathrm{F}^2}{\le P}
-			\addConstraint{\mathbf{\Theta}_g^\mathsf{H} \mathbf{\Theta}_g}{=\mathbf{I}, \quad \forall g,\label{cn:rate_unitary}}
+			{\scriptstyle{\mathbf{\Theta}}}{\log \det \biggl(\mathbf{I} + \frac{\mathbf{H} \mathbf{Q} \mathbf{H}^\mathsf{H}}{\eta}\biggr)}{\label{op:rate_ris}}{\label{ob:rate_ris}}
+			\addConstraint{\mathbf{\Theta}_g^\mathsf{H} \mathbf{\Theta}_g=\mathbf{I}, \quad \forall g,}{}{}
 		\end{maxi!}
-		where $\mathbf{W}$ is the transmit precoder, $R$ is the achievable rate, $\eta$ is the average noise power, and $P$ is maximum average transmit power.
-		Problem \eqref{op:rate} is non-convex due to the block-unitary constraint \eqref{cn:rate_unitary} and the coupling between variables.
-		Two approaches are proposed to solve it optimally or efficiently.
-
-		\begin{subsubsection}{Alternating Optimization}
-			\label{sc:rate_ao}
-			This approach updates $\mathbf{\Theta}$ and $\mathbf{W}$ iteratively until convergence.
-			For a given $\mathbf{W}$, the passive beamforming subproblem is
-			\begin{maxi!}
-				{\scriptstyle{\mathbf{\Theta}}}{\log \det \biggl(\mathbf{I} + \frac{\mathbf{H} \mathbf{Q} \mathbf{H}^\mathsf{H}}{\eta}\biggr)}{\label{op:rate_ris}}{\label{ob:rate_ris}}
-				\addConstraint{\mathbf{\Theta}_g^\mathsf{H} \mathbf{\Theta}_g=\mathbf{I}, \quad \forall g,}{}{}
-			\end{maxi!}
-			where $\mathbf{Q} \triangleq \mathbf{W} \mathbf{W}^\mathsf{H}$ is the transmit covariance matrix.
-			Problem \eqref{op:rate_ris} can be solved optimally by Algorithm \ref{ag:rcg} with the partial derivative given in Lemma \ref{lm:rate}.
-			\begin{lemma}
-				\label{lm:rate}
-				The partial derivative of \eqref{ob:rate_ris} with respect to \gls{bd}-\gls{ris} block $g$ is
-				\begin{equation}
-					\label{eq:gradient_eucl_rate}
-					\frac{\partial R}{\partial \mathbf{\Theta}_g^*} = \frac{1}{\eta} \mathbf{H}_{\mathrm{B},g}^\mathsf{H} \biggl(\mathbf{I} + \frac{\mathbf{H}\mathbf{Q}\mathbf{H}^\mathsf{H}}{\eta}\biggr)^{-1} \mathbf{H} \mathbf{Q} \mathbf{H}_{\mathrm{F},g}^\mathsf{H}.
-				\end{equation}
-			\end{lemma}
-
-			\begin{proof}
-				Please refer to Appendix~\ref{ap:rate}.
-			\end{proof}
-			For a given $\mathbf{\Theta}$, the optimal transmit precoder is given by eigenmode transmission \cite{Clerckx2013}
+		where $\mathbf{Q} \triangleq \mathbf{W} \mathbf{W}^\mathsf{H}$ is the transmit covariance matrix.
+		Problem \eqref{op:rate_ris} can be solved optimally by Algorithm \ref{ag:rcg} with the partial derivative given in Lemma \ref{lm:rate}.
+		\begin{lemma}
+			\label{lm:rate}
+			The partial derivative of \eqref{ob:rate_ris} with respect to \gls{bd}-\gls{ris} block $g$ is
 			\begin{equation}
-				\label{eq:precoder_rate}
-				\mathbf{W}^\star = \mathbf{V} {\diag(\mathbf{s}^\star)}^{1/2},
+				\label{eq:gradient_eucl_rate}
+				\frac{\partial R}{\partial \mathbf{\Theta}_g^*} = \frac{1}{\eta} \mathbf{H}_{\mathrm{B},g}^\mathsf{H} \biggl(\mathbf{I} + \frac{\mathbf{H}\mathbf{Q}\mathbf{H}^\mathsf{H}}{\eta}\biggr)^{-1} \mathbf{H} \mathbf{Q} \mathbf{H}_{\mathrm{F},g}^\mathsf{H}.
 			\end{equation}
-			where $\mathbf{V}$ is the right singular matrix of $\mathbf{H}$ and $\mathbf{s}^\star$ is the optimal water-filling power allocation \cite{Clerckx2013}.
-			The \gls{ao} algorithm is guaranteed to converge to local-optimal points of problem \eqref{op:rate} since each subproblem is solved optimally and the objective is bounded above.
-			The computational complexity of solving subproblem \eqref{op:rate_ris} by geodesic \gls{rcg} is $\mathcal{O}\bigl(I_\text{RCG} G (NL^2 + L N_\mathrm{T} N_\mathrm{R} + N_\mathrm{T}^2 N_\mathrm{R} + N_\mathrm{T} N_\mathrm{R}^2 + N_\mathrm{R}^3 + I_\text{BLS} L^3)\bigr)$.
-			On the other hand, the complexity of solving active beamforming subproblem by \eqref{eq:precoder_rate} is $\mathcal{O}\bigl(N N_\mathrm{T} N_\mathrm{R}\bigr)$.
-			The overall complexity is thus $\mathcal{O}\bigl(I_\text{AO}\bigl(I_\text{RCG} G (NL^2 + L N_\mathrm{T} N_\mathrm{R} + N_\mathrm{T}^2 N_\mathrm{R} + N_\mathrm{T} N_\mathrm{R}^2 + N_\mathrm{R}^3 + I_\text{BLS} L^3) + N N_\mathrm{T} N_\mathrm{R}\bigr)\bigr)$, where $I_\text{AO}$ is the number of iterations for \gls{ao}.
-			That is, $\mathcal{O}_\mathrm{D}\bigl(N_\mathrm{S}\bigr)$ for \gls{d}-\gls{ris} and $\mathcal{O}_\mathrm{BD}\bigl(N_\mathrm{S}^3\bigr)$ for fully-connected \gls{bd}-\gls{ris}.
-			% That is, $\mathcal{O}_\mathrm{D}\bigl(I_\text{AO}\bigl(I_\text{RCG} N_\mathrm{S} (N + N_\mathrm{T} N_\mathrm{R} + N_\mathrm{T}^2 N_\mathrm{R} + N_\mathrm{T} N_\mathrm{R}^2 + N_\mathrm{R}^3 + I_\text{BLS}) + N N_\mathrm{T} N_\mathrm{R}\bigr)\bigr)$ for \gls{d}-\gls{ris} and $\mathcal{O}_\mathrm{BD}\bigl(I_\text{AO}\bigl(I_\text{RCG} (NN_\mathrm{S}^2 + N_\mathrm{S} N_\mathrm{T} N_\mathrm{R} + N_\mathrm{T}^2 N_\mathrm{R} + N_\mathrm{T} N_\mathrm{R}^2 + N_\mathrm{R}^3 + I_\text{BLS} N_\mathrm{S}^3) + N N_\mathrm{T} N_\mathrm{R}\bigr)\bigr)$ for fully-connected \gls{bd}-\gls{ris}.
-		\end{subsubsection}
+		\end{lemma}
 
-		\begin{subsubsection}{Low-Complexity Solution}
-			\label{sc:rate_lc}
-			To reduce the computational complexity, we suboptimally decouple the beamforming design by first shape the channel by \gls{ris} for maximum power gain and then optimize the active beamforming.
-			The channel power gain maximization problem is formulated as\footnote{%
-				\label{fn:power_gain}%
-				Problem \eqref{op:power} has been studied in \gls{siso} \cite{Shen2020a} and \gls{miso} equivalents \cite{Santamaria2023,Fang2023,Nerini2023,Nerini2023b} where only one mode is available. Generalizing those to \gls{mimo} is non-trivial due to trade-off between modes.
-			}
-			\begin{maxi!}
-				{\scriptstyle{\mathbf{\Theta}}}{\lVert \mathbf{H}_\mathrm{D} + \mathbf{H}_\mathrm{B} \mathbf{\Theta} \mathbf{H}_\mathrm{F} \rVert _\mathrm{F}^2}{\label{op:power}}{\label{ob:power}}
-				\addConstraint{\mathbf{\Theta}_g^\mathsf{H} \mathbf{\Theta}_g=\mathbf{I}, \quad \forall g.}{\label{cn:power_unitary}}{}
-			\end{maxi!}
-			Inspired by \cite{Nie2017}, we propose a closed-form iterative solution that empirically converges to a stationary point of problem \eqref{op:power}.
-			The idea is to approximate the quadratic objective \eqref{ob:power} successively by Taylor expansion and solve each subproblem by group-wise \gls{svd}.
-
-			\begin{proposition}
-				\label{pp:power}
-				Starting from any feasible $\mathbf{\Theta}^{(0)}$, the sequence\footnote{However, \eqref{eq:ris_power} might not converge to a single solution point when $\mathbf{M}_g$ is rank-deficient due to the non-uniqueness of the orthonormal bases of kernels.}
-				\begin{equation}
-					\label{eq:ris_power}
-					\mathbf{\Theta}_g^{(r+1)} = \mathbf{U}_g^{(r)} \mathbf{V}_g^{(r)}, \quad \forall g
-				\end{equation}
-				monotonically increases the objective function \eqref{ob:power},
-				% leads to a convergence of the objective function \eqref{ob:power} towards a stationary point,\footnote{However, \eqref{eq:ris_power} might not converge to a single solution point due to the non-uniqueness of \gls{svd}, especially when $\mathbf{M}_g$ is rank-deficient.}
-				where $\mathbf{U}_g^{(r)}$ and $\mathbf{V}_g^{(r)}$ are any left and right singular matrices of\footnote{We notice that $\mathbf{\Theta}_g$ coincides with the orthogonal projection of $\mathbf{M}_g$ onto the Stiefel manifold $\pi(\mathbf{M}_g) = {\arg\min}_{\mathbf{X}_g \in \mathbb{U}^{L \times L}} \lVert \mathbf{M}_g - \mathbf{X}_g \rVert _\mathrm{F} = \mathbf{U}_g \mathbf{V}_g$.} % \cite{Manton2002}
-				\begin{equation}
-					\label{eq:auxiliary_power}
-					\mathbf{M}_g^{(r)} = \mathbf{H}_{\mathrm{B},g}^\mathsf{H} \Bigl(\mathbf{H}_\mathrm{D} + \mathbf{H}_\mathrm{B} \diag\bigl(\mathbf{\Theta}_{[1:g-1]}^{(r+1)},\mathbf{\Theta}_{[g:G]}^{(r)}\bigr) \mathbf{H}_\mathrm{F}\Bigr) \mathbf{H}_{\mathrm{F},g}^\mathsf{H}.
-				\end{equation}
-				Besides, when \eqref{eq:auxiliary_power} converges, \eqref{eq:ris_power} leads to a convergence of the objective function \eqref{ob:power} towards a stationary point.
-			\end{proposition}
-
-			\begin{proof}
-				Please refer to Appendix~\ref{ap:power}.
-			\end{proof}
-
-			\begin{remark}
-				\label{re:power}
-				The sequence \eqref{eq:auxiliary_power} is constructed iteratively from its orthogonal projection.
-				Although a formal proof remains elusive, empirical evidence from simulation indicates that \eqref{eq:auxiliary_power} converge for vastly tested scenarios.
-				% We thus conjecture that the sequence \eqref{eq:ris_power} leads to a convergence of the objective function \eqref{ob:power} towards a stationary point.
-			\end{remark}
-
-			To update each \gls{bd}-\gls{ris} group, matrix multiplication \eqref{eq:auxiliary_power} requires $\mathcal{O}\bigl(N_\mathrm{T} N_\mathrm{R} + NL^2+N_\mathrm{T} N_\mathrm{R} L\bigr)$ operations and its \gls{svd} requires $\mathcal{O}(L^3)$ operations.
-			The overall complexity is thus $\mathcal{O}\bigl(I_\text{SAA} G \bigl(N_\mathrm{T} N_\mathrm{R} + NL^2+N_\mathrm{T} N_\mathrm{R} L + L^3\bigr)\bigr)$, where $I_\text{SAA}$ is the number iterations for successive affine approximation.
-			That is, $\mathcal{O}_\mathrm{D}\bigl(N_\mathrm{S}\bigr)$ for \gls{d}-\gls{ris} and $\mathcal{O}_\mathrm{BD}\bigl(N_\mathrm{S}^3\bigr)$ for fully-connected \gls{bd}-\gls{ris}.
-			% That is, $\mathcal{O}_\mathrm{D}\bigl(I_\text{SAA} N_\mathrm{S} \bigl(N_\mathrm{T} N_\mathrm{R} + N+N_\mathrm{T} N_\mathrm{R}\bigr)\bigr)$ for \gls{d}-\gls{ris} and $\mathcal{O}_\mathrm{BD}\bigl(I_\text{SAA} \bigl(N_\mathrm{T} N_\mathrm{R} + NN_\mathrm{S}^2+N_\mathrm{T} N_\mathrm{R} N_\mathrm{S} + N_\mathrm{S}^3\bigr)\bigr)$ for fully-connected \gls{bd}-\gls{ris}.
-			For the latter, the computational complexity can be further reduced:
-			\begin{itemize}
-				\item \emph{Negligible direct channel:} The optimal solution to \eqref{op:power} has been solved in closed form by \eqref{eq:ris_nd_power_max}.
-				\item \emph{Non-negligible direct channel:} In terms of maximizing the inner product $\langle \mathbf{H}_\mathrm{D}, \mathbf{H}_\mathrm{B} \mathbf{\Theta} \mathbf{H}_\mathrm{F} \rangle$, \eqref{op:power} is reminiscent of the weighted orthogonal Procrustes problem \cite{Gower2004}
-				\begin{mini!}
-					{\scriptstyle{\mathbf{\Theta}}}{\lVert \mathbf{H}_\mathrm{D} - \mathbf{H}_\mathrm{B} \mathbf{\Theta} \mathbf{H}_\mathrm{F} \rVert _\mathrm{F}^2}{\label{op:procrustes_wt}}{}
-					\addConstraint{\mathbf{\Theta}^\mathsf{H} \mathbf{\Theta}=\mathbf{I},}{\label{cn:procrustes_wt}}{}
-				\end{mini!}
-				which still has no trivial solution.
-				One \emph{lossy} transformation \cite{Bell2003} shifts $\mathbf{\Theta}$ to sides of the product by Moore-Penrose inverse, formulating standard orthogonal Procrustes problems
-				\begin{mini!}
-					{\scriptstyle{\mathbf{\Theta}}}{\lVert \mathbf{H}_\mathrm{B}^\dagger \mathbf{H}_\mathrm{D} - \mathbf{\Theta} \mathbf{H}_\mathrm{F} \rVert _\mathrm{F}^2 \text{ or } \lVert \mathbf{H}_\mathrm{D} \mathbf{H}_\mathrm{F}^\dagger - \mathbf{H}_\mathrm{B} \mathbf{\Theta} \rVert _\mathrm{F}^2}{\label{op:procrustes}}{}
-					\addConstraint{\mathbf{\Theta}^\mathsf{H} \mathbf{\Theta}=\mathbf{I},}{}{}
-				\end{mini!}
-				with optimal solutions \cite[(6.4.1)]{Golub2013}
-				\begin{equation}
-					\label{eq:ris_procrustes}
-					\mathbf{\Theta}_\textnormal{P-max-approx}^\textnormal{MIMO-HD} = \mathbf{U} \mathbf{V}^\mathsf{H},
-				\end{equation}
-				where $\mathbf{U}$ and $\mathbf{V}$ are respectively any left and right singular matrices of $\mathbf{H}_\mathrm{B}^\dagger \mathbf{H}_\mathrm{D} \mathbf{H}_\mathrm{F}^\mathsf{H}$ or $\mathbf{H}_\mathrm{B}^\mathsf{H} \mathbf{H}_\mathrm{D} \mathbf{H}_\mathrm{F}^\dagger$.
-			\end{itemize}
-
-			Although \eqref{eq:ris_nd_power_max} and \eqref{eq:ris_procrustes} are of similar form, the latter is neither optimal nor a generalization of the former due to the lossy transformation.
-			We will show in Section \ref{sc:simulation} that $\mathbf{\Theta}_\textnormal{P-max-approx}^\textnormal{MIMO-HD}$ is very close to optimal especially for a large $N_\mathrm{S}$.
-			Once the channel is shaped by \eqref{eq:ris_power} or \eqref{eq:ris_nd_power_max} or \eqref{eq:ris_procrustes}, the active beamforming is retrieved by \eqref{eq:precoder_rate}.
-			This two-stage solution avoids outer iterations and efficiently handles (or avoids) inner iterations.
-		\end{subsubsection}
-	\end{subsection}
-
-	\begin{subsection}{MIMO Interference Channel}
-		\label{sc:wsr}
-		On top of \eqref{eq:channel_interference}, the achievable rate of transmission $k$ is
+		\begin{proof}
+			Please refer to Appendix~\ref{ap:rate}.
+		\end{proof}
+		For a given $\mathbf{\Theta}$, the optimal transmit precoder is given by eigenmode transmission \cite{Clerckx2013}
 		\begin{equation}
-			R_k = \log \det \biggl(\mathbf{I} + \mathbf{W}_k {\mathbf{H}^{(kj)\mathsf{H}}} \mathbf{Q}_k^{-1} {\mathbf{H}^{(kj)}} \mathbf{W}_k\biggr),
+			\label{eq:precoder_rate}
+			\mathbf{W}^\star = \mathbf{V} {\diag(\mathbf{s}^\star)}^{1/2},
 		\end{equation}
-		where $\mathbf{W}_k$ is the precoder at transmitter $k$ and $\mathbf{Q}_k = \sum_{j \ne k} {\mathbf{H}^{(kj)}} \mathbf{W}_j \mathbf{W}_j^\mathsf{H} {\mathbf{H}^{(kj)\mathsf{H}}} + \eta \mathbf{I}$ is the interference-plus-noise covariance matrix at receiver $k$.
-		The \gls{wsr} maximization problem for \gls{bd}-\gls{ris}-aided \gls{mimo} interference channel is formulated as
-		\begin{maxi!}
-			{\scriptstyle{\mathbf{\Theta}, \{\mathbf{W}_k\}_{k \in [K]}}}{\sum_{k=1}^K \rho_k R_k}{\label{op:wsr}}{\label{ob:wsr}}
-			\addConstraint{\mathbf{\Theta}_g^\mathsf{H} \mathbf{\Theta}_g=\mathbf{I}, \quad \forall g}{}{}
-			\addConstraint{\lVert \mathbf{W}_k \rVert _\mathrm{F}^2 \le P_k. \quad \forall k}{}{}
-		\end{maxi!}
-		where $\rho_k \ge 0$ is the weight associated with transmission $k$.
-		This non-convex problem can be solved by extending both solutions covered in Section \ref{sc:rate} as detailed below.
-
-		\begin{subsubsection}{Alternating Optimization}
-			\label{sc:wsr_ao}
-			This approach updates $\mathbf{\Theta}$ and $\{\mathbf{W}_k\}_{k \in [K]}$ iteratively until convergence.
-			For a given precoder set, the passive beamforming subproblem is
-			\begin{maxi!}
-				{\scriptstyle{\mathbf{\Theta}}}{\sum_{k=1}^K \rho_k R_k}{\label{op:wsr_ris}}{\label{ob:wsr_ris}}
-				\addConstraint{\mathbf{\Theta}_g^\mathsf{H} \mathbf{\Theta}_g=\mathbf{I}, \quad \forall g,}{}{}
-			\end{maxi!}
-			which can be solved optimally by Algorithm \ref{ag:rcg} with the partial derivative given in Lemma \ref{lm:wsr}.
-
-			\begin{lemma}
-				\label{lm:wsr}
-				The partial derivative of \eqref{ob:wsr_ris} with respect to \gls{bd}-\gls{ris} block $g$ is
-				\begin{equation}
-					\label{eq:gradient_eucl_wsr}
-					\begin{split}
-						\frac{\partial \rho_k R_k}{\partial \mathbf{\Theta}_g^*} = \sum_{k=1}^K & \rho_k {\mathbf{H}^{(k)\mathsf{H}}_{\mathrm{B},g}} \mathbf{Q}_k^{-1} {\mathbf{H}^{(kk)}} \mathbf{W}_k \mathbf{E}_k \mathbf{W}_k^\mathsf{H} \\
-						& \times \bigl({\mathbf{H}_{\mathrm{F},g}^{(k)\mathsf{H}}} - {\mathbf{H}^{(kk)\mathsf{H}}} \mathbf{Q}_k^{-1} \sum_{j \ne k} {\mathbf{H}^{(kj)}} \mathbf{W}_j \mathbf{W}_j^\mathsf{H} {\mathbf{H}^{(j)\mathsf{H}}_{\mathrm{F},g}}\bigr),
-					\end{split}
-				\end{equation}
-				where $\mathbf{E}_k = \bigl(\mathbf{I} + {\mathbf{W}_k^\mathsf{H}} {\mathbf{H}^{(kk)\mathsf{H}}} \mathbf{Q}_k {\mathbf{H}^{(kk)}} \mathbf{W}_k\bigr)^{-1}$ is the error matrix of receiver $k$.
-			\end{lemma}
-
-			\begin{proof}
-				Please refer to Appendix~\ref{ap:wsr}.
-			\end{proof}
-
-			For a given $\mathbf{\Theta}$, problem \eqref{op:wsr} reduces to conventional precoding design for interference channel.
-			A closed-form iterative solution based on mutual information-\gls{mmse} relationship has been proposed in \cite{Shin2012,Negro2010} and we summarize the steps as follows.
-			At iteration $r$, the \gls{mmse} combiner at receiver $k$ is
-			\begin{equation}
-				\begin{split}
-					\mathbf{G}_k^{(r)} &= {\mathbf{W}_k^{(r-1)\mathsf{H}}} {\mathbf{H}^{(kk)\mathsf{H}}} \\
-					& \quad \times \bigl(\mathbf{Q}_k^{(r-1)} + {\mathbf{H}^{(kk)}} \mathbf{W}_k^{(r-1)} {\mathbf{W}_k^{(r-1)\mathsf{H}}} {\mathbf{H}^{(kk)\mathsf{H}}}\bigr)^{-1},
-				\end{split}
-			\end{equation}
-			the corresponding error matrix is
-			\begin{equation}
-				\mathbf{E}_k^{(r)} = \bigl(\mathbf{I} + {\mathbf{W}_k^{(r-1)\mathsf{H}}} {\mathbf{H}^{(kk)\mathsf{H}}} \mathbf{Q}_k^{(r-1)} {\mathbf{H}^{(kk)}} \mathbf{W}_k^{(r-1)}\bigr)^{-1},
-			\end{equation}
-			and the optimal precoder at transmitter $k$ is given by
-			\begin{equation}
-				\label{eq:precoder_wsr}
-				\begin{split}
-					\mathbf{W}_k^{(r)} & = \Bigl(\sum_{j=1}^K {\mathbf{H}^{(jk)\mathsf{H}}} {\mathbf{G}_j^{(r)\mathsf{H}}} \mathbf{\Omega}_k^{(r)} \mathbf{G}_j^{(r)} \mathbf{H}^{(jk)} + \lambda_k^{(r)} \mathbf{I} \Bigr)^{-1} \\
-					& \quad \times {\mathbf{H}^{(kk)\mathsf{H}}} {\mathbf{G}_j^{(r)\mathsf{H}}} \mathbf{\Omega}_k^{(r)},
-				\end{split}
-			\end{equation}
-			where $\mathbf{\Omega}_k^{(r)} = \rho_k {\mathbf{E}_k^{(r)-1}}$ is the mean-square error weight and $\lambda_k^{(r)}$ is the Lagrange multiplier retrievable by bisection \cite{Shin2012} or in closed form \cite{Negro2010}
-			\begin{equation}
-				\lambda_k^{(r)} = \frac{\mathrm{tr}\bigl(\eta \mathbf{\Omega}_k^{(r)} \mathbf{G}_k^{(r)}{\mathbf{G}_k^{(r)\mathsf{H}}} + \sum_{j=1}^K (\mathbf{Z}_{kj}^{(r)} - \mathbf{Z}_{jk}^{(r)}) \bigr)}{P_k},
-				% \lambda_k^{(r)} = \frac{\mathrm{tr}\bigl(\eta \mathbf{\Omega}_k^{(r)} \mathbf{G}_k^{(r)}{\mathbf{G}_k^{(r)\mathsf{H}}} + \sum_j \mathbf{\Omega}_k^{(r)}\mathbf{T}_{kj}^{(r)} {\mathbf{T}_{kj}^{(r)\mathsf{H}}} - \mathbf{\Omega}_j^{(r)}\mathbf{T}_{jk}^{(r)} {\mathbf{T}_{jk}^{(r)\mathsf{H}}} \bigr)}{P_k},
-			\end{equation}
-			where $\mathbf{Z}_{kj}^{(r)} = \mathbf{\Omega}_k^{(r)}\mathbf{T}_{kj}^{(r)} {\mathbf{T}_{kj}^{(r)\mathsf{H}}}$ and $\mathbf{T}_{kj}^{(r)} = \mathbf{G}_k^{(r)} {\mathbf{H}^{(kj)}} \mathbf{W}_j^{(r)}$.
-
-			The computational complexity of solving subproblem \eqref{op:wsr_ris} by geodesic \gls{rcg} is $\mathcal{O}\bigl(I_\text{RCG} G (N_\mathrm{T} d^2 + N_\mathrm{T}^2 d + N_\mathrm{T}^2 N_\mathrm{R} + N_\mathrm{T} N_\mathrm{R}^2 + K (N_\mathrm{T} N_\mathrm{R} d + N_\mathrm{T} N_\mathrm{R} L) + I_\text{BLS}L^3)\bigr)$.
-			That is, $\mathcal{O}_\mathrm{D}\bigl(N_\mathrm{S}\bigr)$ for \gls{d}-\gls{ris} and $\mathcal{O}_\mathrm{BD}\bigl(N_\mathrm{S}^3\bigr)$ for fully-connected \gls{bd}-\gls{ris}.
-		\end{subsubsection}
-
-		\begin{subsubsection}{Low-Complexity Solution}
-			\label{sc:wsr_lc}
-			Similar to Section \ref{sc:rate_lc}, we suboptimally decouple the beamforming design by first shape the channel by \gls{ris} for minimum leakage interference and then optimize the active beamforming.
-			The leakage interference minimization problem is formulated as
-			\begin{mini!}
-				{\scriptstyle{\mathbf{\Theta}}}{I = \sum_{k=1}^K \sum_{j \ne k} \left\lVert {\mathbf{H}}^{(kj)}_\mathrm{D} + {\mathbf{H}}^{(k)}_\mathrm{B} \mathbf{\Theta} {\mathbf{H}}^{(j)}_\mathrm{F} \right\rVert _{\mathrm{F}}^2}{\label{op:interference}}{\label{ob:interference}}
-				\addConstraint{\mathbf{\Theta}_g^\mathsf{H} \mathbf{\Theta}_g=\mathbf{I}, \quad \forall g,}{}{}
-			\end{mini!}
-			which can be solved iteratively in closed form.
-
-			\begin{proposition}
-				\label{pp:interference}
-				Starting from any feasible $\mathbf{\Theta}^{(0)}$, the sequence
-				\begin{equation}
-					\label{eq:ris_interference}
-					\mathbf{\Theta}_g^{(r+1)} = \mathbf{U}_g^{(r)} \mathbf{V}_g^{(r)}, \quad \forall g
-				\end{equation}
-				monotonically decreases the objective function \eqref{ob:interference},
-				% converges to a stationary point of \eqref{op:interference},
-				where $\mathbf{U}_g^{(r)}$ and $\mathbf{V}_g^{(r)}$ are any left and right singular matrices of
-				\begin{equation}
-					\label{eq:auxiliary_interference}
-					\mathbf{M}_g^{(r)} = \sum_{k=1}^K \sum_{j \ne k} \bigl(\mathbf{B}_g^{(k)} \mathbf{\Theta}_g^{(r)} \mathbf{H}^{(j)}_{\mathrm{F},g} - {\mathbf{H}^{(k)\mathsf{H}}_{\mathrm{B},g}} {\mathbf{D}^{(kj)(r)}_{g}}\bigr) {\mathbf{H}^{(j)\mathsf{H}}_{\mathrm{F},g}},
-				\end{equation}
-				where $\mathbf{B}_g^{(k)} = \lambda_1\bigl({\mathbf{H}^{(k)\mathsf{H}}_{\mathrm{B},g}} \mathbf{H}^{(k)}_{\mathrm{B},g}\bigr) \mathbf{I} - {\mathbf{H}^{(k)\mathsf{H}}_{\mathrm{B},g}} \mathbf{H}^{(k)}_{\mathrm{B},g}$ and ${\mathbf{D}^{(kj)(r)}_{g}} = \mathbf{H}^{(kj)}_\mathrm{D} + \sum_{g'<g} {\mathbf{H}_{\mathrm{B},g'}^{(k)\mathsf{H}}} \mathbf{\Theta}_{g'}^{(r+1)} \mathbf{H}_{\mathrm{F},g'}^{(k)} + \sum_{g'>g} {\mathbf{H}_{\mathrm{B},g'}^{(k)\mathsf{H}}} \mathbf{\Theta}_{g'}^{(r)} \mathbf{H}_{\mathrm{F},g'}^{(k)}.$
-				Besides, when \eqref{eq:auxiliary_interference} converges, \eqref{eq:ris_interference} leads to a convergence of the objective function \eqref{ob:interference} towards a stationary point.
-			\end{proposition}
-			\begin{proof}
-				Please refer to Appendix~\ref{ap:interference}.
-			\end{proof}
-			Once the channel is shaped by \eqref{eq:ris_interference}, the active beamforming is retrieved iteratively by \eqref{eq:precoder_wsr}.
-			This two-stage solution avoids outer iterations and efficiently handles inner iterations.
-		\end{subsubsection}
+		where $\mathbf{V}$ is the right singular matrix of $\mathbf{H}$ and $\mathbf{s}^\star$ is the optimal water-filling power allocation \cite{Clerckx2013}.
+		The \gls{ao} algorithm is guaranteed to converge to local-optimal points of problem \eqref{op:rate} since each subproblem is solved optimally and the objective is bounded above.
+		The computational complexity of solving subproblem \eqref{op:rate_ris} by geodesic \gls{rcg} is $\mathcal{O}\bigl(I_\text{RCG} G (NL^2 + L N_\mathrm{T} N_\mathrm{R} + N_\mathrm{T}^2 N_\mathrm{R} + N_\mathrm{T} N_\mathrm{R}^2 + N_\mathrm{R}^3 + I_\text{BLS} L^3)\bigr)$.
+		On the other hand, the complexity of active beamforming \eqref{eq:precoder_rate} is $\mathcal{O}\bigl(N N_\mathrm{T} N_\mathrm{R}\bigr)$.
+		The overall complexity is thus $\mathcal{O}\bigl(I_\text{AO}\bigl(I_\text{RCG} G (NL^2 + L N_\mathrm{T} N_\mathrm{R} + N_\mathrm{T}^2 N_\mathrm{R} + N_\mathrm{T} N_\mathrm{R}^2 + N_\mathrm{R}^3 + I_\text{BLS} L^3) + N N_\mathrm{T} N_\mathrm{R}\bigr)\bigr)$, where $I_\text{AO}$ is the number of iterations for \gls{ao}.
+		That is, $\mathcal{O}_\mathrm{D}\bigl(N_\mathrm{S}\bigr)$ for \gls{d}-\gls{ris} and $\mathcal{O}_\mathrm{BD}\bigl(N_\mathrm{S}^3\bigr)$ for fully-connected \gls{bd}-\gls{ris}.
+		% That is, $\mathcal{O}_\mathrm{D}\bigl(I_\text{AO}\bigl(I_\text{RCG} N_\mathrm{S} (N + N_\mathrm{T} N_\mathrm{R} + N_\mathrm{T}^2 N_\mathrm{R} + N_\mathrm{T} N_\mathrm{R}^2 + N_\mathrm{R}^3 + I_\text{BLS}) + N N_\mathrm{T} N_\mathrm{R}\bigr)\bigr)$ for \gls{d}-\gls{ris} and $\mathcal{O}_\mathrm{BD}\bigl(I_\text{AO}\bigl(I_\text{RCG} (NN_\mathrm{S}^2 + N_\mathrm{S} N_\mathrm{T} N_\mathrm{R} + N_\mathrm{T}^2 N_\mathrm{R} + N_\mathrm{T} N_\mathrm{R}^2 + N_\mathrm{R}^3 + I_\text{BLS} N_\mathrm{S}^3) + N N_\mathrm{T} N_\mathrm{R}\bigr)\bigr)$ for fully-connected \gls{bd}-\gls{ris}.
 	\end{subsection}
+
+	\begin{subsection}{Low-Complexity Solution}
+		\label{sc:rate_lc}
+		To reduce the computational complexity, we suboptimally decouple the beamforming design by first shape the channel for maximum power gain and then optimize the active beamforming.
+		The shaping subproblem is formulated as\footnote{%
+			\label{fn:power_gain}%
+			Problem \eqref{op:power} has been studied in \gls{siso} \cite{Shen2020a} and \gls{miso} equivalents \cite{Santamaria2023,Fang2023,Nerini2023,Nerini2023b} where only one mode is available. Generalizing those to \gls{mimo} is non-trivial due to trade-off between modes.
+		}
+		\begin{maxi!}
+			{\scriptstyle{\mathbf{\Theta}}}{\lVert \mathbf{H}_\mathrm{D} + \mathbf{H}_\mathrm{B} \mathbf{\Theta} \mathbf{H}_\mathrm{F} \rVert _\mathrm{F}^2}{\label{op:power}}{\label{ob:power}}
+			\addConstraint{\mathbf{\Theta}_g^\mathsf{H} \mathbf{\Theta}_g=\mathbf{I}, \quad \forall g.}{\label{cn:power_unitary}}{}
+		\end{maxi!}
+		Inspired by \cite{Nie2017}, we propose a closed-form iterative solution that empirically converges to a stationary point of problem \eqref{op:power}.
+		The idea is to approximate the quadratic objective \eqref{ob:power} successively by Taylor expansion and solve each subproblem by group-wise \gls{svd}.
+
+		\begin{proposition}
+			\label{pp:power}
+			Starting from any feasible $\mathbf{\Theta}^{(0)}$, the sequence\footnote{However, \eqref{eq:ris_power} might not converge to a single solution point when $\mathbf{M}_g$ is rank-deficient due to the non-uniqueness of the orthonormal bases of kernels.}
+			\begin{equation}
+				\label{eq:ris_power}
+				\mathbf{\Theta}_g^{(r+1)} = \mathbf{U}_g^{(r)} \mathbf{V}_g^{(r)}, \quad \forall g
+			\end{equation}
+			monotonically increases the objective function \eqref{ob:power},
+			% leads to a convergence of the objective function \eqref{ob:power} towards a stationary point,\footnote{However, \eqref{eq:ris_power} might not converge to a single solution point due to the non-uniqueness of \gls{svd}, especially when $\mathbf{M}_g$ is rank-deficient.}
+			where $\mathbf{U}_g^{(r)}$ and $\mathbf{V}_g^{(r)}$ are any left and right singular matrices of\footnote{We notice that $\mathbf{\Theta}_g$ coincides with the orthogonal projection of $\mathbf{M}_g$ onto the Stiefel manifold $\pi(\mathbf{M}_g) = {\arg\min}_{\mathbf{X}_g \in \mathbb{U}^{L \times L}} \lVert \mathbf{M}_g - \mathbf{X}_g \rVert _\mathrm{F} = \mathbf{U}_g \mathbf{V}_g$.} % \cite{Manton2002}
+			\begin{equation}
+				\label{eq:auxiliary_power}
+				\mathbf{M}_g^{(r)} = \mathbf{H}_{\mathrm{B},g}^\mathsf{H} \Bigl(\mathbf{H}_\mathrm{D} + \mathbf{H}_\mathrm{B} \diag\bigl(\mathbf{\Theta}_{[1:g-1]}^{(r+1)},\mathbf{\Theta}_{[g:G]}^{(r)}\bigr) \mathbf{H}_\mathrm{F}\Bigr) \mathbf{H}_{\mathrm{F},g}^\mathsf{H}.
+			\end{equation}
+			Besides, when \eqref{eq:auxiliary_power} converges, \eqref{eq:ris_power} leads to a convergence of the objective function \eqref{ob:power} towards a stationary point.
+		\end{proposition}
+
+		\begin{proof}
+			Please refer to Appendix~\ref{ap:power}.
+		\end{proof}
+
+		\begin{remark}
+			\label{re:power}
+			The sequence \eqref{eq:auxiliary_power} is constructed iteratively from its orthogonal projection.
+			Although a formal proof remains elusive, empirical evidence from simulation indicates that \eqref{eq:auxiliary_power} converge, and thus \eqref{eq:ris_power} converges to a stationary point, for extensively tested scenarios.
+			% We thus conjecture that the sequence \eqref{eq:ris_power} leads to a convergence of the objective function \eqref{ob:power} towards a stationary point.
+		\end{remark}
+
+		To update each \gls{bd}-\gls{ris} group, matrix multiplication \eqref{eq:auxiliary_power} requires $\mathcal{O}\bigl(N_\mathrm{T} N_\mathrm{R} + NL^2+N_\mathrm{T} N_\mathrm{R} L\bigr)$ operations and its \gls{svd} requires $\mathcal{O}(L^3)$ operations.
+		The overall complexity is thus $\mathcal{O}\bigl(I_\text{SAA} G \bigl(N_\mathrm{T} N_\mathrm{R} + NL^2+N_\mathrm{T} N_\mathrm{R} L + L^3\bigr)\bigr)$, where $I_\text{SAA}$ is the number iterations for successive affine approximation.
+		That is, $\mathcal{O}_\mathrm{D}\bigl(N_\mathrm{S}\bigr)$ for \gls{d}-\gls{ris} and $\mathcal{O}_\mathrm{BD}\bigl(N_\mathrm{S}^3\bigr)$ for fully-connected \gls{bd}-\gls{ris}.
+		% That is, $\mathcal{O}_\mathrm{D}\bigl(I_\text{SAA} N_\mathrm{S} \bigl(N_\mathrm{T} N_\mathrm{R} + N+N_\mathrm{T} N_\mathrm{R}\bigr)\bigr)$ for \gls{d}-\gls{ris} and $\mathcal{O}_\mathrm{BD}\bigl(I_\text{SAA} \bigl(N_\mathrm{T} N_\mathrm{R} + NN_\mathrm{S}^2+N_\mathrm{T} N_\mathrm{R} N_\mathrm{S} + N_\mathrm{S}^3\bigr)\bigr)$ for fully-connected \gls{bd}-\gls{ris}.
+		For the latter, the computational complexity can be further reduced:
+		\begin{itemize}
+			\item \emph{Negligible direct channel:} The optimal solution to \eqref{op:power} has been solved in closed form by \eqref{eq:ris_nd_power_max}.
+			\item \emph{Non-negligible direct channel:} In terms of maximizing the inner product $\langle \mathbf{H}_\mathrm{D}, \mathbf{H}_\mathrm{B} \mathbf{\Theta} \mathbf{H}_\mathrm{F} \rangle$, \eqref{op:power} is reminiscent of the weighted orthogonal Procrustes problem \cite{Gower2004}
+			\begin{mini!}
+				{\scriptstyle{\mathbf{\Theta}}}{\lVert \mathbf{H}_\mathrm{D} - \mathbf{H}_\mathrm{B} \mathbf{\Theta} \mathbf{H}_\mathrm{F} \rVert _\mathrm{F}^2}{\label{op:procrustes_wt}}{}
+				\addConstraint{\mathbf{\Theta}^\mathsf{H} \mathbf{\Theta}=\mathbf{I},}{\label{cn:procrustes_wt}}{}
+			\end{mini!}
+			which still has no trivial solution.
+			One \emph{lossy} transformation \cite{Bell2003} shifts $\mathbf{\Theta}$ to sides of the product by Moore-Penrose inverse, formulating standard orthogonal Procrustes problems
+			\begin{mini!}
+				{\scriptstyle{\mathbf{\Theta}}}{\lVert \mathbf{H}_\mathrm{B}^\dagger \mathbf{H}_\mathrm{D} - \mathbf{\Theta} \mathbf{H}_\mathrm{F} \rVert _\mathrm{F}^2 \text{ or } \lVert \mathbf{H}_\mathrm{D} \mathbf{H}_\mathrm{F}^\dagger - \mathbf{H}_\mathrm{B} \mathbf{\Theta} \rVert _\mathrm{F}^2}{\label{op:procrustes}}{}
+				\addConstraint{\mathbf{\Theta}^\mathsf{H} \mathbf{\Theta}=\mathbf{I},}{}{}
+			\end{mini!}
+			with optimal solutions \cite[(6.4.1)]{Golub2013}
+			\begin{equation}
+				\label{eq:ris_procrustes}
+				\mathbf{\Theta}_\textnormal{P-max-approx}^\textnormal{MIMO-HD} = \mathbf{U} \mathbf{V}^\mathsf{H},
+			\end{equation}
+			where $\mathbf{U}$ and $\mathbf{V}$ are respectively any left and right singular matrices of $\mathbf{H}_\mathrm{B}^\dagger \mathbf{H}_\mathrm{D} \mathbf{H}_\mathrm{F}^\mathsf{H}$ or $\mathbf{H}_\mathrm{B}^\mathsf{H} \mathbf{H}_\mathrm{D} \mathbf{H}_\mathrm{F}^\dagger$.
+		\end{itemize}
+
+		Although \eqref{eq:ris_nd_power_max} and \eqref{eq:ris_procrustes} are of similar form, the latter is neither optimal nor a generalization of the former due to the lossy transformation.
+		We will show in Section \ref{sc:simulation} that \eqref{eq:ris_procrustes} achieves near-optimal performance when $N_\mathrm{S}$ is large.
+		Once the channel is shaped by \eqref{eq:ris_power} or \eqref{eq:ris_nd_power_max} or \eqref{eq:ris_procrustes}, the active beamforming is retrieved by \eqref{eq:precoder_rate}.
+		This two-stage solution avoids outer iterations and efficiently handles (or avoids) inner iterations.
+	\end{subsection}
+
+	% \begin{subsection}{MIMO Interference Channel}
+	% 	\label{sc:wsr}
+	% 	On top of \eqref{eq:channel_interference}, the achievable rate of transmission $k$ is
+	% 	\begin{equation}
+	% 		R_k = \log \det \biggl(\mathbf{I} + \mathbf{W}_k {\mathbf{H}^{(kj)\mathsf{H}}} \mathbf{Q}_k^{-1} {\mathbf{H}^{(kk)}} \mathbf{W}_k\biggr),
+	% 	\end{equation}
+	% 	where $\mathbf{W}_k$ is the precoder at transmitter $k$ and $\mathbf{Q}_k = \sum_{j \ne k} {\mathbf{H}^{(kj)}} \mathbf{W}_j \mathbf{W}_j^\mathsf{H} {\mathbf{H}^{(kj)\mathsf{H}}} + \eta \mathbf{I}$ is the interference-plus-noise covariance matrix at receiver $k$.
+	% 	The \gls{wsr} maximization problem for \gls{bd}-\gls{ris}-aided \gls{mimo} interference channel is formulated as
+	% 	\begin{maxi!}
+	% 		{\scriptstyle{\mathbf{\Theta}, \{\mathbf{W}_k\}_{k \in [K]}}}{\sum_{k=1}^K \rho_k R_k}{\label{op:wsr}}{\label{ob:wsr}}
+	% 		\addConstraint{\mathbf{\Theta}_g^\mathsf{H} \mathbf{\Theta}_g=\mathbf{I}, \quad \forall g}{}{}
+	% 		\addConstraint{\lVert \mathbf{W}_k \rVert _\mathrm{F}^2 \le P_k. \quad \forall k}{}{}
+	% 	\end{maxi!}
+	% 	where $\rho_k \ge 0$ is the weight associated with transmission $k$.
+	% 	This non-convex problem can be solved by extending both solutions covered in Section \ref{sc:rate} as detailed below.
+
+	% 	\begin{subsubsection}{Alternating Optimization}
+	% 		\label{sc:wsr_ao}
+	% 		This approach updates $\mathbf{\Theta}$ and $\{\mathbf{W}_k\}_{k \in [K]}$ iteratively until convergence.
+	% 		For a given precoder set, the passive beamforming subproblem is
+	% 		\begin{maxi!}
+	% 			{\scriptstyle{\mathbf{\Theta}}}{\sum_{k=1}^K \rho_k R_k}{\label{op:wsr_ris}}{\label{ob:wsr_ris}}
+	% 			\addConstraint{\mathbf{\Theta}_g^\mathsf{H} \mathbf{\Theta}_g=\mathbf{I}, \quad \forall g,}{}{}
+	% 		\end{maxi!}
+	% 		which can be solved optimally by Algorithm \ref{ag:rcg} with the partial derivative given in Lemma \ref{lm:wsr}.
+
+	% 		\begin{lemma}
+	% 			\label{lm:wsr}
+	% 			The partial derivative of \eqref{ob:wsr_ris} with respect to \gls{bd}-\gls{ris} block $g$ is
+	% 			\begin{equation}
+	% 				\label{eq:gradient_eucl_wsr}
+	% 				\begin{split}
+	% 					\frac{\partial \rho_k R_k}{\partial \mathbf{\Theta}_g^*} = \sum_{k=1}^K & \rho_k {\mathbf{H}^{(k)\mathsf{H}}_{\mathrm{B},g}} \mathbf{Q}_k^{-1} {\mathbf{H}^{(kk)}} \mathbf{W}_k \mathbf{E}_k \mathbf{W}_k^\mathsf{H} \\
+	% 					& \times \bigl({\mathbf{H}_{\mathrm{F},g}^{(k)\mathsf{H}}} - {\mathbf{H}^{(kk)\mathsf{H}}} \mathbf{Q}_k^{-1} \sum_{j \ne k} {\mathbf{H}^{(kj)}} \mathbf{W}_j \mathbf{W}_j^\mathsf{H} {\mathbf{H}^{(j)\mathsf{H}}_{\mathrm{F},g}}\bigr),
+	% 				\end{split}
+	% 			\end{equation}
+	% 			where $\mathbf{E}_k = \bigl(\mathbf{I} + {\mathbf{W}_k^\mathsf{H}} {\mathbf{H}^{(kk)\mathsf{H}}} \mathbf{Q}_k {\mathbf{H}^{(kk)}} \mathbf{W}_k\bigr)^{-1}$ is the error matrix of receiver $k$.
+	% 		\end{lemma}
+
+	% 		\begin{proof}
+	% 			Please refer to Appendix~\ref{ap:wsr}.
+	% 		\end{proof}
+
+	% 		For a given $\mathbf{\Theta}$, problem \eqref{op:wsr} reduces to conventional precoding design for interference channel.
+	% 		A closed-form iterative solution based on mutual information-\gls{mmse} relationship has been proposed in \cite{Shin2012,Negro2010} and we summarize the steps as follows.
+	% 		At iteration $r$, the \gls{mmse} combiner at receiver $k$ is
+	% 		\begin{equation}
+	% 			\begin{split}
+	% 				\mathbf{G}_k^{(r)} &= {\mathbf{W}_k^{(r-1)\mathsf{H}}} {\mathbf{H}^{(kk)\mathsf{H}}} \\
+	% 				& \quad \times \bigl(\mathbf{Q}_k^{(r-1)} + {\mathbf{H}^{(kk)}} \mathbf{W}_k^{(r-1)} {\mathbf{W}_k^{(r-1)\mathsf{H}}} {\mathbf{H}^{(kk)\mathsf{H}}}\bigr)^{-1},
+	% 			\end{split}
+	% 		\end{equation}
+	% 		the corresponding error matrix is
+	% 		\begin{equation}
+	% 			\mathbf{E}_k^{(r)} = \bigl(\mathbf{I} + {\mathbf{W}_k^{(r-1)\mathsf{H}}} {\mathbf{H}^{(kk)\mathsf{H}}} \mathbf{Q}_k^{(r-1)} {\mathbf{H}^{(kk)}} \mathbf{W}_k^{(r-1)}\bigr)^{-1},
+	% 		\end{equation}
+	% 		and the optimal precoder at transmitter $k$ is given by
+	% 		\begin{equation}
+	% 			\label{eq:precoder_wsr}
+	% 			\begin{split}
+	% 				\mathbf{W}_k^{(r)} & = \Bigl(\sum_{j=1}^K {\mathbf{H}^{(jk)\mathsf{H}}} {\mathbf{G}_j^{(r)\mathsf{H}}} \mathbf{\Omega}_k^{(r)} \mathbf{G}_j^{(r)} \mathbf{H}^{(jk)} + \lambda_k^{(r)} \mathbf{I} \Bigr)^{-1} \\
+	% 				& \quad \times {\mathbf{H}^{(kk)\mathsf{H}}} {\mathbf{G}_j^{(r)\mathsf{H}}} \mathbf{\Omega}_k^{(r)},
+	% 			\end{split}
+	% 		\end{equation}
+	% 		where $\mathbf{\Omega}_k^{(r)} = \rho_k {\mathbf{E}_k^{(r)-1}}$ is the mean-square error weight and $\lambda_k^{(r)}$ is the Lagrange multiplier retrievable by bisection \cite{Shin2012} or in closed form \cite{Negro2010}
+	% 		\begin{equation}
+	% 			\lambda_k^{(r)} = \frac{\mathrm{tr}\bigl(\eta \mathbf{\Omega}_k^{(r)} \mathbf{G}_k^{(r)}{\mathbf{G}_k^{(r)\mathsf{H}}} + \sum_{j=1}^K (\mathbf{Z}_{kj}^{(r)} - \mathbf{Z}_{jk}^{(r)}) \bigr)}{P_k},
+	% 			% \lambda_k^{(r)} = \frac{\mathrm{tr}\bigl(\eta \mathbf{\Omega}_k^{(r)} \mathbf{G}_k^{(r)}{\mathbf{G}_k^{(r)\mathsf{H}}} + \sum_j \mathbf{\Omega}_k^{(r)}\mathbf{T}_{kj}^{(r)} {\mathbf{T}_{kj}^{(r)\mathsf{H}}} - \mathbf{\Omega}_j^{(r)}\mathbf{T}_{jk}^{(r)} {\mathbf{T}_{jk}^{(r)\mathsf{H}}} \bigr)}{P_k},
+	% 		\end{equation}
+	% 		where $\mathbf{Z}_{kj}^{(r)} = \mathbf{\Omega}_k^{(r)}\mathbf{T}_{kj}^{(r)} {\mathbf{T}_{kj}^{(r)\mathsf{H}}}$ and $\mathbf{T}_{kj}^{(r)} = \mathbf{G}_k^{(r)} {\mathbf{H}^{(kj)}} \mathbf{W}_j^{(r)}$.
+
+	% 		The computational complexity of solving subproblem \eqref{op:wsr_ris} by geodesic \gls{rcg} is $\mathcal{O}\bigl(I_\text{RCG} G (N_\mathrm{T} d^2 + N_\mathrm{T}^2 d + N_\mathrm{T}^2 N_\mathrm{R} + N_\mathrm{T} N_\mathrm{R}^2 + K (N_\mathrm{T} N_\mathrm{R} d + N_\mathrm{T} N_\mathrm{R} L) + I_\text{BLS}L^3)\bigr)$.
+	% 		That is, $\mathcal{O}_\mathrm{D}\bigl(N_\mathrm{S}\bigr)$ for \gls{d}-\gls{ris} and $\mathcal{O}_\mathrm{BD}\bigl(N_\mathrm{S}^3\bigr)$ for fully-connected \gls{bd}-\gls{ris}.
+	% 	\end{subsubsection}
+
+	% 	\begin{subsubsection}{Low-Complexity Solution}
+	% 		\label{sc:wsr_lc}
+	% 		Similar to Section \ref{sc:rate_lc}, we suboptimally decouple the beamforming design by first shape the channel by \gls{ris} for minimum leakage interference and then optimize the active beamforming.
+	% 		The leakage interference minimization problem is formulated as
+	% 		\begin{mini!}
+	% 			{\scriptstyle{\mathbf{\Theta}}}{I = \sum_{k=1}^K \sum_{j \ne k} \left\lVert {\mathbf{H}}^{(kj)}_\mathrm{D} + {\mathbf{H}}^{(k)}_\mathrm{B} \mathbf{\Theta} {\mathbf{H}}^{(j)}_\mathrm{F} \right\rVert _{\mathrm{F}}^2}{\label{op:interference}}{\label{ob:interference}}
+	% 			\addConstraint{\mathbf{\Theta}_g^\mathsf{H} \mathbf{\Theta}_g=\mathbf{I}, \quad \forall g,}{}{}
+	% 		\end{mini!}
+	% 		which can be solved iteratively in closed form.
+
+	% 		\begin{proposition}
+	% 			\label{pp:interference}
+	% 			Starting from any feasible $\mathbf{\Theta}^{(0)}$, the sequence
+	% 			\begin{equation}
+	% 				\label{eq:ris_interference}
+	% 				\mathbf{\Theta}_g^{(r+1)} = \mathbf{U}_g^{(r)} \mathbf{V}_g^{(r)}, \quad \forall g
+	% 			\end{equation}
+	% 			monotonically decreases the objective function \eqref{ob:interference},
+	% 			% converges to a stationary point of \eqref{op:interference},
+	% 			where $\mathbf{U}_g^{(r)}$ and $\mathbf{V}_g^{(r)}$ are any left and right singular matrices of
+	% 			\begin{equation}
+	% 				\label{eq:auxiliary_interference}
+	% 				\mathbf{M}_g^{(r)} = \sum_{k=1}^K \sum_{j \ne k} \bigl(\mathbf{B}_g^{(k)} \mathbf{\Theta}_g^{(r)} \mathbf{H}^{(j)}_{\mathrm{F},g} - {\mathbf{H}^{(k)\mathsf{H}}_{\mathrm{B},g}} {\mathbf{D}^{(kj)(r)}_{g}}\bigr) {\mathbf{H}^{(j)\mathsf{H}}_{\mathrm{F},g}},
+	% 			\end{equation}
+	% 			where $\mathbf{B}_g^{(k)} = \lambda_1\bigl({\mathbf{H}^{(k)\mathsf{H}}_{\mathrm{B},g}} \mathbf{H}^{(k)}_{\mathrm{B},g}\bigr) \mathbf{I} - {\mathbf{H}^{(k)\mathsf{H}}_{\mathrm{B},g}} \mathbf{H}^{(k)}_{\mathrm{B},g}$ and ${\mathbf{D}^{(kj)(r)}_{g}} = \mathbf{H}^{(kj)}_\mathrm{D} + \sum_{g'<g} {\mathbf{H}_{\mathrm{B},g'}^{(k)\mathsf{H}}} \mathbf{\Theta}_{g'}^{(r+1)} \mathbf{H}_{\mathrm{F},g'}^{(k)} + \sum_{g'>g} {\mathbf{H}_{\mathrm{B},g'}^{(k)\mathsf{H}}} \mathbf{\Theta}_{g'}^{(r)} \mathbf{H}_{\mathrm{F},g'}^{(k)}.$
+	% 			Besides, when \eqref{eq:auxiliary_interference} converges, \eqref{eq:ris_interference} leads to a convergence of the objective function \eqref{ob:interference} towards a stationary point.
+	% 		\end{proposition}
+	% 		\begin{proof}
+	% 			Please refer to Appendix~\ref{ap:interference}.
+	% 		\end{proof}
+	% 		Once the channel is shaped by \eqref{eq:ris_interference}, the active beamforming is retrieved iteratively by \eqref{eq:precoder_wsr}.
+	% 		This two-stage solution avoids outer iterations and efficiently handles inner iterations.
+	% 	\end{subsubsection}
+	% \end{subsection}
 \end{section}
 
 \begin{section}{Simulation Results}
@@ -945,7 +1022,7 @@
 	The small-scale fading model is $\mathbf{H} = \sqrt{\kappa/(1+\kappa)} \mathbf{H}_\text{LoS} + \sqrt{1/(1+\kappa)} \mathbf{H}_\text{NLoS}$, where $\kappa$ is the Rician K-factor, $\mathbf{H}_\text{LoS}$ is the deterministic \gls{los} component, and $\mathbf{H}_\text{NLoS} \sim \mathcal{N}_{\mathbb{C}}(\mathbf{0}, \mathbf{I})$ is the Rayleigh component.
 	Unless otherwise specified, we assume the direct channel is present, $\kappa = 0$ (i.e., Rayleigh fading) for all channels, and $\eta = \qty{-75}{dB}$ for all receivers.
 	For point-to-point channel, we set $d_\mathrm{D}=\qty{14.7}{m}$, $d_\mathrm{F}=\qty{10}{m}$, $d_\mathrm{B}=\qty{6.3}{m}$, which corresponds to a typical indoor environment with $\Lambda_\mathrm{D}=\qty{-65}{dB}$, $\Lambda_\mathrm{F}=\qty{-54}{dB}$, $\Lambda_\mathrm{B}=\qty{-46}{dB}$.
-	For interference channel, we assume $K$ transmitters and receivers are independently and uniformly distributed in a disk of radius \qty{20}{m}, and all transmissions use the same number of streams $N_\mathrm{E}$ and equal weight $\rho_k=1$, $\forall k$.
+	% For interference channel, we assume $K$ transmitters and receivers are independently and uniformly distributed in a disk of radius \qty{20}{m}, and all transmissions use the same number of streams $N_\mathrm{E}$ and equal weight $\rho_k=1$, $\forall k$.
 
 	\begin{subsection}{Algorithm Evaluation}
 		\begin{table}[!t]
@@ -1102,8 +1179,7 @@
 				}
 				\caption{
 					Average maximum channel power gain versus \gls{bd}-\gls{ris} group size and \gls{mimo} dimensions.
-					The direct channel is negligible.
-					`Cascaded' refers to the available power of the cascaded channel, i.e., the sum of (sorted) element-wise power product of backward and forward channels.
+					`Cascaded' refers to the upper bound in \eqref{iq:power_nd}.
 				}
 				\label{fg:power_bond}
 			\end{figure}
@@ -1118,141 +1194,139 @@
 	\end{subsection}
 
 	\begin{subsection}{Achievable Rate Maximization}
-		\begin{subsubsection}{MIMO Point-to-Point Channel}
-			\begin{figure}[!t]
-				\centering
-				\subfloat[$16 \times N_\mathrm{S} \times 16$ (no direct)]{
-					\label{fg:power_sx_txrx16_nd}
-					\resizebox{!}{3.15cm}{
-						\input{../assets/simulation/pc_power_sx_txrx16_nd.tex}
-					}
+		\begin{figure}[!t]
+			\centering
+			\subfloat[$16 \times N_\mathrm{S} \times 16$ (no direct)]{
+				\label{fg:power_sx_txrx16_nd}
+				\resizebox{!}{3.15cm}{
+					\input{../assets/simulation/pc_power_sx_txrx16_nd.tex}
 				}
-				\subfloat[$16 \times N_\mathrm{S} \times 16$]{
-					\label{fg:power_sx_txrx16}
-					\resizebox{!}{3.15cm}{
-						\input{../assets/simulation/pc_power_sx_txrx16.tex}
-					}
+			}
+			\subfloat[$16 \times N_\mathrm{S} \times 16$]{
+				\label{fg:power_sx_txrx16}
+				\resizebox{!}{3.15cm}{
+					\input{../assets/simulation/pc_power_sx_txrx16.tex}
 				}
-				\caption{
-					Average maximum channel power gain versus \gls{ris} configuration.
-					`Explicit' refers to the optimal solution \eqref{eq:ris_nd_power_max} when the direct channel is negligible.
-					`OP-left' and `OP-right' refer to the suboptimal solutions, when the direct channel is significant, by lossy transformation \eqref{op:procrustes} where $\mathbf{\Theta}$ is to the left and right of the product, respectively.
-				}
-				\label{fg:power_sx}
-			\end{figure}
+			}
+			\caption{
+				Average maximum channel power gain versus \gls{ris} configuration.
+				`Explicit' refers to the optimal solution \eqref{eq:ris_nd_power_max} when the direct channel is negligible.
+				`OP-left' and `OP-right' refer to the suboptimal solutions, when the direct channel is significant, by lossy transformation \eqref{op:procrustes} where $\mathbf{\Theta}$ is to the left and right of the product, respectively.
+			}
+			\label{fg:power_sx}
+		\end{figure}
 
-			We first focus on the channel power gain problem \eqref{op:power}.
-			Fig. \ref{fg:power_sx} shows the maximum channel power gain under different \gls{ris} configurations.
-			An interesting observation is that the relative power gain of \gls{bd}-\gls{ris} over \gls{d}-\gls{ris} is even larger when the direct channel is significant.
-			As shown in Figs. \subref*{fg:power_sx_txrx16_nd} and \subref*{fg:power_sx_txrx16}, a 64-element fully \gls{bd}-\gls{ris} can almost provide the same channel power gain as a 256-element \gls{d}-\gls{ris} when the direct channel is significant, but less so when it is negligible.
-			This is because the mode alignment advantage of \gls{bd}-\gls{ris} becomes more pronounced when the modes of direct channel is taken into account.
-			We also notice that the suboptimal solutions \eqref{eq:ris_procrustes} for fully-connected \gls{bd}-\gls{ris} by lossy transformation \eqref{op:procrustes} are very close to optimal especially for a large $N_\mathrm{S}$.
+		We first focus on the channel power gain problem \eqref{op:power}.
+		Fig. \ref{fg:power_sx} shows the maximum channel power gain under different \gls{ris} configurations.
+		An interesting observation is that the relative power gain of \gls{bd}-\gls{ris} over \gls{d}-\gls{ris} is even larger when the direct channel is significant.
+		As shown in Figs. \subref*{fg:power_sx_txrx16_nd} and \subref*{fg:power_sx_txrx16}, a 64-element fully \gls{bd}-\gls{ris} can almost provide the same channel power gain as a 256-element \gls{d}-\gls{ris} when the direct channel is significant, but less so when it is negligible.
+		This is because the mode alignment advantage of \gls{bd}-\gls{ris} becomes more pronounced when the modes of direct channel is taken into account.
+		We also notice that the suboptimal solutions \eqref{eq:ris_procrustes} for fully-connected \gls{bd}-\gls{ris} by lossy transformation \eqref{op:procrustes} are very close to optimal especially for a large $N_\mathrm{S}$.
 
-			\begin{figure}[!t]
-				\centering
-				\subfloat[$4 \times 128 \times 4$]{
-					\label{fg:rate_beamforming}
-					\resizebox{!}{3.25cm}{
-						\input{../assets/simulation/pc_rate_beamforming.tex}
-					}
+		\begin{figure}[!t]
+			\centering
+			\subfloat[$4 \times 128 \times 4$]{
+				\label{fg:rate_beamforming}
+				\resizebox{!}{3.25cm}{
+					\input{../assets/simulation/pc_rate_beamforming.tex}
 				}
-				\subfloat[$N_\mathrm{T} \times 128 \times N_\mathrm{R}$]{
-					\label{fg:rate_txrx}
-					\resizebox{!}{3.25cm}{
-						\input{../assets/simulation/pc_rate_txrx.tex}
-					}
+			}
+			\subfloat[$N_\mathrm{T} \times 128 \times N_\mathrm{R}$]{
+				\label{fg:rate_txrx}
+				\resizebox{!}{3.25cm}{
+					\input{../assets/simulation/pc_rate_txrx.tex}
 				}
-				\\
-				\subfloat[$4 \times N_\mathrm{S} \times 4$]{
-					\label{fg:rate_sx}
-					\resizebox{!}{3.25cm}{
-						\input{../assets/simulation/pc_rate_sx.tex}
-					}
+			}
+			\\
+			\subfloat[$4 \times N_\mathrm{S} \times 4$]{
+				\label{fg:rate_sx}
+				\resizebox{!}{3.25cm}{
+					\input{../assets/simulation/pc_rate_sx.tex}
 				}
-				\subfloat[$4 \times 128 \times 4$]{
-					\label{fg:rate_kfactor}
-					\resizebox{!}{3.25cm}{
-						\input{../assets/simulation/pc_rate_kfactor.tex}
-					}
+			}
+			\subfloat[$4 \times 128 \times 4$]{
+				\label{fg:rate_kfactor}
+				\resizebox{!}{3.25cm}{
+					\input{../assets/simulation/pc_rate_kfactor.tex}
 				}
-				\caption{
-					Average achievable rate versus \gls{mimo} and \gls{ris} configurations.
-					The transmit power corresponds to a direct \gls{snr} of \num{-10} to \qty{30}{dB}.
-					`Alternate' refers to the alternating optimization and `Decouple' refers to the low-complexity design.
-					`D' means \gls{d}-\gls{ris} and `BD' refers to fully-connected \gls{bd}-\gls{ris}.
-				}
-				\label{fg:rate}
-			\end{figure}
+			}
+			\caption{
+				Average achievable rate versus \gls{mimo} and \gls{ris} configurations.
+				The transmit power corresponds to a direct \gls{snr} of \num{-10} to \qty{30}{dB}.
+				`Alternate' refers to the alternating optimization and `Decouple' refers to the low-complexity design.
+				`D' means \gls{d}-\gls{ris} and `BD' refers to fully-connected \gls{bd}-\gls{ris}.
+			}
+			\label{fg:rate}
+		\end{figure}
 
-			Fig. \ref{fg:rate} presents the achievable rate under different \gls{mimo} and \gls{ris} configurations.
-			At a transmit power $P = \qty{10}{dB}$, Fig. \subref*{fg:rate_beamforming} shows that introducing a 128-element \gls{d}-\gls{ris} to $N_\mathrm{T}=N_\mathrm{R}=4$ \gls{mimo} can improve the achievable rate from \qty{22.2}{bps/Hz} to \qty{29.2}{bps/Hz} ($+\qty{31.5}{\percent}$).
-			A \gls{bd}-\gls{ris} of group size 4 and 128 can further elevate those to \qty{32.1}{bps/Hz} ($+\qty{44.6}{\percent}$) and \qty{34}{bps/Hz}  ($+\qty{53.2}{\percent}$), respectively.
-			An interesting observation is that the rate gap between the optimal \gls{ao} approach in Section \ref{sc:rate_ao} and the low-complexity shaping-inspired solution in Section \ref{sc:rate_lc} narrows as $L$ increases and completely vanishes for a fully-connected \gls{bd}-\gls{ris}.
-			This implies that joint \gls{ris}-transceiver designs can be decoupled by first shaping the wireless channel and then optimizing the active beamformer, which simplifies the design substantially.
-			Figs. \subref*{fg:rate_txrx} and \subref*{fg:rate_sx} also show that both \emph{absolute and relative} rate gains of \gls{bd}-\gls{ris} over \gls{d}-\gls{ris}
-			increases with the number of transmit and receive antennas and scattering elements, especially at high \gls{snr}.
-			For $N_\mathrm{S}=128$ and $P = \qty{20}{dB}$,
-			the achievable rate ratio of \gls{bd}-\gls{ris} over \gls{d}-\gls{ris} is \num{1.04}, \num{1.11}, and \num{1.13} for $N_\mathrm{T}=N_\mathrm{R}=1$, \num{4}, and \num{16}, respectively.
-			For $N_\mathrm{T}=N_\mathrm{R}=4$ and $P = \qty{20}{dB}$, this ratio amounts to \num{1.03}, \num{1.08}, and \num{1.13} for $N_\mathrm{S}=16$, \num{64}, and \num{256}, respectively.
-			Those observations align with the power gain results in Fig. \ref{fg:power_sx} and highlight the rate benefits of \gls{bd}-\gls{ris} over \gls{d}-\gls{ris} in large-scale \gls{mimo} systems.
-			In the low power regime (\num{-20} to \qty{-10}{dB}), we also notice that the slope of the achievable rate of \gls{bd}-\gls{ris} is steeper than that of \gls{d}-\gls{ris}.
-			That is, \gls{bd}-\gls{ris} can help to activate more streams and achieve the asymptotic \gls{dof} at a low transmit \gls{snr}.
-			This is particularly visible in Fig. \subref*{fg:rate_sx} where the topmost curve is almost a linear function of the transmit power.
-			It is also expected from the shaping results in Fig. \ref{fg:singular_pareto} that \gls{bd}-\gls{ris} can significantly enlarge all channel singular values for higher receive \gls{snr}.
-			Finally, Fig. \subref*{fg:rate_kfactor} shows that the gap between \gls{d}- and \gls{bd}-\gls{ris} narrows as the Rician K-factor increases and becomes indistinguishable in \gls{los} environment.
-			The observation is expected from previous studies \cite{Shen2020a,Li2023b,Nerini2023} and aligns with Corollary \ref{co:los}, which suggests that the \gls{bd}-\gls{ris} should be deployed in rich-scattering environments to exploit its channel shaping potential.
-		\end{subsubsection}
+		Fig. \ref{fg:rate} presents the achievable rate under different \gls{mimo} and \gls{ris} configurations.
+		At a transmit power $P = \qty{10}{dB}$, Fig. \subref*{fg:rate_beamforming} shows that introducing a 128-element \gls{d}-\gls{ris} to $N_\mathrm{T}=N_\mathrm{R}=4$ \gls{mimo} can improve the achievable rate from \qty{22.2}{bps/Hz} to \qty{29.2}{bps/Hz} ($+\qty{31.5}{\percent}$).
+		A \gls{bd}-\gls{ris} of group size 4 and 128 can further elevate those to \qty{32.1}{bps/Hz} ($+\qty{44.6}{\percent}$) and \qty{34}{bps/Hz}  ($+\qty{53.2}{\percent}$), respectively.
+		An interesting observation is that the rate gap between the optimal \gls{ao} approach in Section \ref{sc:rate_ao} and the low-complexity shaping-inspired solution in Section \ref{sc:rate_lc} narrows as $L$ increases and completely vanishes for a fully-connected \gls{bd}-\gls{ris}.
+		This implies that joint \gls{ris}-transceiver designs can be decoupled by first shaping the wireless channel and then optimizing the active beamformer, which simplifies the design substantially.
+		Figs. \subref*{fg:rate_txrx} and \subref*{fg:rate_sx} also show that both \emph{absolute and relative} rate gains of \gls{bd}-\gls{ris} over \gls{d}-\gls{ris}
+		increases with the number of transmit and receive antennas and scattering elements, especially at high \gls{snr}.
+		For $N_\mathrm{S}=128$ and $P = \qty{20}{dB}$,
+		the achievable rate ratio of \gls{bd}-\gls{ris} over \gls{d}-\gls{ris} is \num{1.04}, \num{1.11}, and \num{1.13} for $N_\mathrm{T}=N_\mathrm{R}=1$, \num{4}, and \num{16}, respectively.
+		For $N_\mathrm{T}=N_\mathrm{R}=4$ and $P = \qty{20}{dB}$, this ratio amounts to \num{1.03}, \num{1.08}, and \num{1.13} for $N_\mathrm{S}=16$, \num{64}, and \num{256}, respectively.
+		Those observations align with the power gain results in Fig. \ref{fg:power_sx} and highlight the rate benefits of \gls{bd}-\gls{ris} over \gls{d}-\gls{ris} in large-scale \gls{mimo} systems.
+		In the low power regime (\num{-20} to \qty{-10}{dB}), we also notice that the slope of the achievable rate of \gls{bd}-\gls{ris} is steeper than that of \gls{d}-\gls{ris}.
+		That is, \gls{bd}-\gls{ris} can help to activate more streams and achieve the asymptotic \gls{dof} at a low transmit \gls{snr}.
+		This is particularly visible in Fig. \subref*{fg:rate_sx} where the topmost curve is almost a linear function of the transmit power.
+		It is also expected from the shaping results in Fig. \ref{fg:singular_pareto} that \gls{bd}-\gls{ris} can significantly enlarge all channel singular values for higher receive \gls{snr}.
+		Finally, Fig. \subref*{fg:rate_kfactor} shows that the gap between \gls{d}- and \gls{bd}-\gls{ris} narrows as the Rician K-factor increases and becomes indistinguishable in \gls{los} environment.
+		The observation is expected from previous studies \cite{Shen2020a,Li2023b,Nerini2023} and aligns with Corollary \ref{co:los}, which suggests that the \gls{bd}-\gls{ris} should be deployed in rich-scattering environments to exploit its channel shaping potential.
 
-		\begin{subsubsection}{MIMO Interference Channel}
-			\label{sc:simulation_wsr}
-			\begin{figure}[!t]
-				\centering
-				\subfloat[Interference: $(4 \times N_\mathrm{S} \times 4)^5$]{
-					\label{fg:ic_interference_sx}
-					\resizebox{!}{3.15cm}{
-						\input{../assets/simulation/ic_interference_sx.tex}
-					}
-				}
-				\subfloat[WSR: $(2 \times 128 \times 2)^2, N_\mathrm{E} = 2$]{
-					\label{fg:ic_wsr_beamforming}
-					\resizebox{!}{3.15cm}{
-						\input{../assets/simulation/ic_wsr_beamforming.tex}
-					}
-				}
-				\\
-				\subfloat[WSR: $(4 \times N_\mathrm{S} \times 4)^5, N_\mathrm{E} = 4$]{
-					\label{fg:ic_wsr_sx}
-					\resizebox{!}{3.15cm}{
-						\input{../assets/simulation/ic_wsr_sx.tex}
-					}
-				}
-				\subfloat[WSR: $(N_\mathrm{T} \times 128 \times N_\mathrm{R})^{10}, N_\mathrm{E} = 2$]{
-					\label{fg:ic_wsr_txrx}
-					\resizebox{!}{3.15cm}{
-						\input{../assets/simulation/ic_wsr_txrx.tex}
-					}
-				}
-				\caption{
-					Average leakage interference and weighted sum-rate versus \gls{ris} and \gls{mimo} interference channel configurations.
-					`Alternate' refers to the alternating optimization and `Decouple' refers to the low-complexity design.
-					`D' means \gls{d}-\gls{ris} and `BD' refers to fully-connected \gls{bd}-\gls{ris}.
-				}
-			\end{figure}
+		% \begin{subsubsection}{MIMO Interference Channel}
+		% 	\label{sc:simulation_wsr}
+		% 	\begin{figure}[!t]
+		% 		\centering
+		% 		\subfloat[Interference: $(4 \times N_\mathrm{S} \times 4)^5$]{
+		% 			\label{fg:ic_interference_sx}
+		% 			\resizebox{!}{3.15cm}{
+		% 				\input{../assets/simulation/ic_interference_sx.tex}
+		% 			}
+		% 		}
+		% 		\subfloat[WSR: $(2 \times 128 \times 2)^2, N_\mathrm{E} = 2$]{
+		% 			\label{fg:ic_wsr_beamforming}
+		% 			\resizebox{!}{3.15cm}{
+		% 				\input{../assets/simulation/ic_wsr_beamforming.tex}
+		% 			}
+		% 		}
+		% 		\\
+		% 		\subfloat[WSR: $(4 \times N_\mathrm{S} \times 4)^5, N_\mathrm{E} = 4$]{
+		% 			\label{fg:ic_wsr_sx}
+		% 			\resizebox{!}{3.15cm}{
+		% 				\input{../assets/simulation/ic_wsr_sx.tex}
+		% 			}
+		% 		}
+		% 		\subfloat[WSR: $(N_\mathrm{T} \times 128 \times N_\mathrm{R})^{10}, N_\mathrm{E} = 2$]{
+		% 			\label{fg:ic_wsr_txrx}
+		% 			\resizebox{!}{3.15cm}{
+		% 				\input{../assets/simulation/ic_wsr_txrx.tex}
+		% 			}
+		% 		}
+		% 		\caption{
+		% 			Average leakage interference and weighted sum-rate versus \gls{ris} and \gls{mimo} interference channel configurations.
+		% 			`Alternate' refers to the alternating optimization and `Decouple' refers to the low-complexity design.
+		% 			`D' means \gls{d}-\gls{ris} and `BD' refers to fully-connected \gls{bd}-\gls{ris}.
+		% 		}
+		% 	\end{figure}
 
-			Fig.~\ref{fg:ic_interference_sx} illustrates how \gls{bd}-\gls{ris} helps to reduce the leakage interference by solving problem \eqref{op:interference}.
-			In this case, a fully-connected $2^n$-element \gls{bd}-\gls{ris} is almost as good as a $2^{n+2}$-element \gls{d}-\gls{ris} in terms of leakage interference.
-			The result also implies that \gls{bd}-\gls{ris} can achieve a higher \gls{dof} than diagonal \gls{ris} in \gls{mimo} interference channel, which generalizes Proposition \ref{pp:dof} and emphasizes the potential of \gls{bd}-\gls{ris} in interference alignment.
+		% 	Fig.~\ref{fg:ic_interference_sx} illustrates how \gls{bd}-\gls{ris} helps to reduce the leakage interference by solving problem \eqref{op:interference}.
+		% 	In this case, a fully-connected $2^n$-element \gls{bd}-\gls{ris} is almost as good as a $2^{n+2}$-element \gls{d}-\gls{ris} in terms of leakage interference.
+		% 	The result also implies that \gls{bd}-\gls{ris} can achieve a higher \gls{dof} than diagonal \gls{ris} in \gls{mimo} interference channel, which generalizes Proposition \ref{pp:dof} and emphasizes the potential of \gls{bd}-\gls{ris} in interference alignment.
 
-			Fig.~\ref{fg:ic_wsr_beamforming} compares the average \gls{wsr} achieved by the optimal and low-complexity beamforming designs in Section \ref{sc:wsr_ao} and \ref{sc:wsr_lc}, respectively.
-			Unlike the point-to-point case, the latter is not as effective as the former.
-			The reason is that, for $K$ transmissions of different path loss, interference alignment using only a shared passive beamformer is very challenging especially, when the direct channels are dominant.
-			On the other hand, using $K$ precoders in the joint beamforming design can reasonably orthogonalize the channels and the \gls{ris} can simply enhance the signal power.
-			A narrower performance gap is expected when $N_\mathrm{S}$ increases or \gls{ris} coverage area shrinks.
+		% 	Fig.~\ref{fg:ic_wsr_beamforming} compares the average \gls{wsr} achieved by the optimal and low-complexity beamforming designs in Section \ref{sc:wsr_ao} and \ref{sc:wsr_lc}, respectively.
+		% 	Unlike the point-to-point case, the latter is not as effective as the former.
+		% 	The reason is that, for $K$ transmissions of different path loss, interference alignment using only a shared passive beamformer is very challenging especially, when the direct channels are dominant.
+		% 	On the other hand, using $K$ precoders in the joint beamforming design can reasonably orthogonalize the channels and the \gls{ris} can simply enhance the signal power.
+		% 	A narrower performance gap is expected when $N_\mathrm{S}$ increases or \gls{ris} coverage area shrinks.
 
-			Figs.~\ref{fg:ic_wsr_sx} and \ref{fg:ic_wsr_txrx} show the average \gls{wsr} versus the number of scattering elements and transceiving antennas.
-			Again, we observe that the rate gain of \gls{bd}-\gls{ris} over \gls{d}-\gls{ris} increases with $N_\mathrm{S}$, $N_\mathrm{T}$, and $N_\mathrm{R}$.
-			The reasons have been discussed in the point-to-point case.
-		\end{subsubsection}
+		% 	Figs.~\ref{fg:ic_wsr_sx} and \ref{fg:ic_wsr_txrx} show the average \gls{wsr} versus the number of scattering elements and transceiving antennas.
+		% 	Again, we observe that the rate gain of \gls{bd}-\gls{ris} over \gls{d}-\gls{ris} increases with $N_\mathrm{S}$, $N_\mathrm{T}$, and $N_\mathrm{R}$.
+		% 	The reasons have been discussed in the point-to-point case.
+		% \end{subsubsection}
 	\end{subsection}
 
 	\begin{subsection}{Practical Constraints}
@@ -1282,7 +1356,7 @@
 				All proposed asymmetric \gls{bd}-\gls{ris} designs can be modified for symmetry. In particular,
 				\begin{enumerate}[label=(\roman*)]
 					\item \emph{\gls{svd}-based (e.g., \eqref{eq:ris_nd_sv_indl}, \eqref{eq:ris_nd_power}, \eqref{eq:ris_nd_rate_max}, \eqref{eq:ris_power}, \eqref{eq:ris_procrustes}):} Those closed-form asymmetric solutions are constructed from the product of singular matrices. If symmetry is required, one can replace the \gls{svd} of $\mathbf{A} = \mathbf{U} \mathbf{\Sigma} \mathbf{V}^\mathsf{H}$ by the Autonne-Takagi factorization of $\frac{\mathbf{A} + \mathbf{A}^\mathsf{T}}{2} = \mathbf{Q} \mathbf{\Sigma} \mathbf{Q}^\mathsf{T}$ \cite{Ikramov2012} and use unitary factor $\mathbf{Q}$ to construct the corresponding $\mathbf{\Theta}$. \label{it:takagi}
-					\item \emph{\gls{rcg}-based (e.g., \eqref{eq:shaping_subdiff}, \eqref{eq:gradient_eucl_rate}, \eqref{eq:gradient_eucl_wsr}):} The symmetry constraint is added to the corresponding optimization problems, and one can project the solution to the nearest symmetric point $\mathbf{\Theta} \gets \frac{\mathbf{\Theta} + \mathbf{\Theta}^\mathsf{T}}{2}$ after each iteration. \label{it:projection}
+					\item \emph{\gls{rcg}-based (e.g., \eqref{eq:shaping_subdiff}, \eqref{eq:gradient_eucl_rate}):} The symmetry constraint is added to the corresponding optimization problems, and one can project the solution to the nearest symmetric point $\mathbf{\Theta} \gets \frac{\mathbf{\Theta} + \mathbf{\Theta}^\mathsf{T}}{2}$ after each iteration. \label{it:projection}
 				\end{enumerate}
 			\end{remark}
 
@@ -1294,28 +1368,28 @@
 
 		\begin{subsubsection}{Channel Estimation Error}
 			\label{sc:estimation_error}
-			\begin{figure}[!t]
-				\centering
-				\resizebox{!}{3.15cm}{
-					\input{../assets/simulation/ic_wsr_pair.tex}
-				}
-				\caption{
-					Impact of channel estimation error and transceiver pairs on the weighted sum-rate of $(2 \times 64 \times 2)^K$ \gls{mimo} interference channel with $P = \qty{20}{dB}$ and $N_\mathrm{E} = 2$.
-				}
-				\label{fg:ic_wsr_pair}
-			\end{figure}
+			% \begin{figure}[!t]
+			% 	\centering
+			% 	\resizebox{!}{3.15cm}{
+			% 		\input{../assets/simulation/ic_wsr_pair.tex}
+			% 	}
+			% 	\caption{
+			% 		Impact of channel estimation error and transceiver pairs on the weighted sum-rate of $(2 \times 64 \times 2)^K$ \gls{mimo} interference channel with $P = \qty{20}{dB}$ and $N_\mathrm{E} = 2$.
+			% 	}
+			% 	\label{fg:ic_wsr_pair}
+			% \end{figure}
 
-			Fig.~\ref{fg:ic_wsr_pair} shows the average \gls{wsr} versus the backward/forward channel estimation error and the number of transceiver pairs.
-			Specifically, the active and passive beamformers are designed by Section \ref{sc:rate_ao} over the estimated backward and forward channels
-			\begin{equation*}
-				\hat{\mathbf{H}}_{\mathrm{B/F}}^{(k)} = \mathbf{H}_{\mathrm{B/F}}^{(k)} + \tilde{\mathbf{H}}_{\mathrm{B/F}}^{(k)}, \quad \forall k,
-			\end{equation*}
-			where the error follows $\mathrm{vec}(\tilde{\mathbf{H}}_{\mathrm{B/F}}^{(k)}) \sim \mathcal{N}_\mathbb{C}(\mathbf{0}, \epsilon \Lambda_\mathrm{B} \Lambda_\mathrm{F}\mathbf{I})$.
-			The \gls{wsr} is evaluated using the true channels.
-			We observe that the proposed joint beamforming design in Section \ref{sc:wsr_ao} is reasonably robust to channel estimation error and thus viable for practical implementation.
-			On the other hand, introducing a \gls{ris} to interference channel systems is helpful to mitigate the rate saturation effect as $K$ increases.
-			In the saturated regime ($K \ge 4$), \gls{bd}-\gls{ris} provides a much larger \gls{wsr} than \gls{d}-\gls{ris} thanks to its superior shaping capability in aligning the interference subspaces.
-			These results provide valuable insights for practical \gls{ris} design in dense connection scenarios, where proper \gls{bd} configurations can significantly enhance the network capacity.
+			% Fig.~\ref{fg:ic_wsr_pair} shows the average \gls{wsr} versus the backward/forward channel estimation error and the number of transceiver pairs.
+			% Specifically, the active and passive beamformers are designed by Section \ref{sc:rate_ao} over the estimated backward and forward channels
+			% \begin{equation*}
+			% 	\hat{\mathbf{H}}_{\mathrm{B/F}}^{(k)} = \mathbf{H}_{\mathrm{B/F}}^{(k)} + \tilde{\mathbf{H}}_{\mathrm{B/F}}^{(k)}, \quad \forall k,
+			% \end{equation*}
+			% where the error follows $\mathrm{vec}(\tilde{\mathbf{H}}_{\mathrm{B/F}}^{(k)}) \sim \mathcal{N}_\mathbb{C}(\mathbf{0}, \epsilon \Lambda_\mathrm{B} \Lambda_\mathrm{F}\mathbf{I})$.
+			% The \gls{wsr} is evaluated using the true channels.
+			% We observe that the proposed joint beamforming design in Section \ref{sc:wsr_ao} is reasonably robust to channel estimation error and thus viable for practical implementation.
+			% On the other hand, introducing a \gls{ris} to interference channel systems is helpful to mitigate the rate saturation effect as $K$ increases.
+			% In the saturated regime ($K \ge 4$), \gls{bd}-\gls{ris} provides a much larger \gls{wsr} than \gls{d}-\gls{ris} thanks to its superior shaping capability in aligning the interference subspaces.
+			% These results provide valuable insights for practical \gls{ris} design in dense connection scenarios, where proper \gls{bd} configurations can significantly enhance the network capacity.
 		\end{subsubsection}
 	\end{subsection}
 \end{section}
@@ -1643,58 +1717,58 @@
 		which suggests that \eqref{ob:power} is non-decreasing as the solution iterates over \eqref{eq:ris_power_taylor}.
 		Since \eqref{ob:power} is also bounded from above, the sequence of objective value converges.
 
-		Finally, we prove that any solution when \eqref{eq:auxiliary_power} converges, denoted by $\tilde{\mathbf{\Theta}}^?$, is a stationary point of \eqref{op:power}.
+		Finally, we prove that any solution when \eqref{eq:auxiliary_power} converges, denoted by $\mathbf{\Theta}'$, is a stationary point of \eqref{op:power}.
 		The \gls{kkt} conditions of \eqref{op:power} and \eqref{op:power_ris_taylor} are equivalent in terms of primal/dual feasibility and complementary slackness, while the stationary conditions are respectively, $\forall g$,
 		\begin{gather}
 			\mathbf{H}_{\mathrm{B},g}^\mathsf{H} (\mathbf{H}_\mathrm{D} + \mathbf{H}_\mathrm{B} \mathbf{\Theta}^\star \mathbf{H}_\mathrm{F}) \mathbf{H}_{\mathrm{F},g}^\mathsf{H} - \mathbf{\Theta}_g^\star \mathbf{\Lambda}_g^\mathsf{H} = 0,\label{eq:power_ris_optimal}\\
 			\mathbf{M}_g - \mathbf{\Theta}_g^\star \mathbf{\Lambda}_g^\mathsf{H} = 0.\label{eq:power_ris_taylor_optimal}
 		\end{gather}
-		When \eqref{eq:auxiliary_power} converges, $\mathbf{H}_{\mathrm{B},g}^\mathsf{H} (\mathbf{H}_\mathrm{D} + \mathbf{H}_\mathrm{B} \mathbf{\Theta}^? \mathbf{H}_\mathrm{F}) \mathbf{H}_{\mathrm{F},g}^\mathsf{H} = \mathbf{H}_{\mathrm{B},g}^\mathsf{H} (\mathbf{H}_\mathrm{D} + \mathbf{H}_\mathrm{B} \mathbf{\Theta}^\star \mathbf{H}_\mathrm{F}) \mathbf{H}_{\mathrm{F},g}^\mathsf{H}$ and \eqref{eq:power_ris_taylor_optimal} reduces to \eqref{eq:power_ris_optimal}.
+		When \eqref{eq:auxiliary_power} converges, $\mathbf{H}_{\mathrm{B},g}^\mathsf{H} (\mathbf{H}_\mathrm{D} + \mathbf{H}_\mathrm{B} \mathbf{\Theta}' \mathbf{H}_\mathrm{F}) \mathbf{H}_{\mathrm{F},g}^\mathsf{H} = \mathbf{H}_{\mathrm{B},g}^\mathsf{H} (\mathbf{H}_\mathrm{D} + \mathbf{H}_\mathrm{B} \mathbf{\Theta}^\star \mathbf{H}_\mathrm{F}) \mathbf{H}_{\mathrm{F},g}^\mathsf{H}$ and \eqref{eq:power_ris_taylor_optimal} reduces to \eqref{eq:power_ris_optimal}.
 		The proof is thus completed.
 	\end{subsection}
 
-	\begin{subsection}{Proof of Lemma \ref{lm:wsr}}
-		\label{ap:wsr}
-		The differential of $f = \sum_{k=1}^K \rho_k R_k$ with respect to $\mathbf{\Theta}_g^*$ is
-		\begin{align*}
-			\partial f
-			& = \sum_{k=1}^K \rho_k \tr \Bigl\{ \mathbf{E}_k \mathbf{W}_k^\mathsf{H} \Bigl( \mathbf{H}_{\mathrm{F},g}^{(k)\mathsf{H}} \partial \mathbf{\Theta}_g^\mathsf{H} \mathbf{H}_{\mathrm{B},g}^{(k)\mathsf{H}} \mathbf{Q}_k^{(-1)} \mathbf{H}^{(kk)} \\
-			& \quad + \mathbf{H}^{(kk)\mathsf{H}} \mathbf{Q}_k^{(-1)} \mathbf{H}_{\mathrm{B},g}^{(k)} \partial \mathbf{\Theta}_g \mathbf{H}_{\mathrm{F},g}^{(k)} - \mathbf{H}^{(kk)\mathsf{H}} \mathbf{Q}_k^{(-1)} \\
-			& \quad \times \sum_{j \ne k} \Bigl(\mathbf{H}_{\mathrm{B},g}^{(k)} \partial \mathbf{\Theta}_g \mathbf{H}_{\mathrm{F},g}^{(j)} \mathbf{W}_j \mathbf{W}_j^\mathsf{H} \mathbf{H}^{(kj)\mathsf{H}} \\
-			& \quad + \mathbf{H}^{(kj)} \mathbf{W}_j \mathbf{W}_j^\mathsf{H} \mathbf{H}_{\mathrm{F},g}^{(j)\mathsf{H}} \partial \mathbf{\Theta}_g^\mathsf{H} \mathbf{H}_{\mathrm{B},g}^{(k)\mathsf{H}} \Bigr) \mathbf{Q}_k^{(-1)} \mathbf{H}^{(kk)} \Bigr) \mathbf{W}_k \Bigr\} \\
-			& = \sum_{k=1}^K \rho_k \Bigl( \tr \Bigl\{ \mathbf{H}_{\mathrm{B},g}^{(k)\mathsf{H}} \mathbf{Q}_k^{(-1)} \mathbf{H}^{(kk)} \mathbf{W}_k \mathbf{E}_k \mathbf{W}_k^\mathsf{H} \mathbf{H}_{\mathrm{F},g}^{(k)\mathsf{H}} \partial \mathbf{\Theta}_g^\mathsf{H}\Bigr\} \\
-			& \quad + \tr \Bigl\{ \mathbf{H}_{\mathrm{F},g}^{(k)\mathsf{H}} \mathbf{W}_k \mathbf{E}_k \mathbf{W}_k^\mathsf{H} \mathbf{H}^{(kk)\mathsf{H}} \mathbf{Q}_k^{(-1)} \mathbf{H}_{\mathrm{B},g}^{(k)\mathsf{H}} \partial \mathbf{\Theta}_g \Bigr\} \\
-			& \quad - \tr \Bigl\{ \sum_{j \ne k} \mathbf{H}_{\mathrm{B},g}^{(k)\mathsf{H}} \mathbf{Q}_k^{(-1)} \mathbf{H}^{(kk)} \mathbf{W}_k \mathbf{E}_k \mathbf{W}_k^\mathsf{H} \mathbf{H}^{(kk)\mathsf{H}} \\
-			& \quad \quad \times \mathbf{Q}_k^{(-1)} \mathbf{H}^{(kj)} \mathbf{W}_j \mathbf{W}_j^\mathsf{H} \mathbf{H}_{\mathrm{F},g}^{(j)\mathsf{H}} \partial \mathbf{\Theta}_g^\mathsf{H} \Bigr\} \\
-			& \quad - \tr \Bigl\{ \sum_{j \ne k} \mathbf{H}_{\mathrm{F},g}^{(j)\mathsf{H}} \mathbf{W}_j \mathbf{W}_j^\mathsf{H} \mathbf{H}^{(kj)\mathsf{H}} \mathbf{Q}_k^{(-1)} \mathbf{H}^{(kk)} \mathbf{W}_k \\
-			& \quad \quad \times \mathbf{E}_k \mathbf{W}_k^\mathsf{H} \mathbf{H}^{(kk)\mathsf{H}} \mathbf{Q}_k^{(-1)} \mathbf{H}_{\mathrm{B},g}^{(k)} \partial \mathbf{\Theta}_g \Bigr\} \Bigr),
-		\end{align*}
-		and the corresponding complex derivative is \eqref{eq:gradient_eucl_wsr}.
-	\end{subsection}
+	% \begin{subsection}{Proof of Lemma \ref{lm:wsr}}
+	% 	\label{ap:wsr}
+	% 	The differential of $f = \sum_{k=1}^K \rho_k R_k$ with respect to $\mathbf{\Theta}_g^*$ is
+	% 	\begin{align*}
+	% 		\partial f
+	% 		& = \sum_{k=1}^K \rho_k \tr \Bigl\{ \mathbf{E}_k \mathbf{W}_k^\mathsf{H} \Bigl( \mathbf{H}_{\mathrm{F},g}^{(k)\mathsf{H}} \partial \mathbf{\Theta}_g^\mathsf{H} \mathbf{H}_{\mathrm{B},g}^{(k)\mathsf{H}} \mathbf{Q}_k^{(-1)} \mathbf{H}^{(kk)} \\
+	% 		& \quad + \mathbf{H}^{(kk)\mathsf{H}} \mathbf{Q}_k^{(-1)} \mathbf{H}_{\mathrm{B},g}^{(k)} \partial \mathbf{\Theta}_g \mathbf{H}_{\mathrm{F},g}^{(k)} - \mathbf{H}^{(kk)\mathsf{H}} \mathbf{Q}_k^{(-1)} \\
+	% 		& \quad \times \sum_{j \ne k} \Bigl(\mathbf{H}_{\mathrm{B},g}^{(k)} \partial \mathbf{\Theta}_g \mathbf{H}_{\mathrm{F},g}^{(j)} \mathbf{W}_j \mathbf{W}_j^\mathsf{H} \mathbf{H}^{(kj)\mathsf{H}} \\
+	% 		& \quad + \mathbf{H}^{(kj)} \mathbf{W}_j \mathbf{W}_j^\mathsf{H} \mathbf{H}_{\mathrm{F},g}^{(j)\mathsf{H}} \partial \mathbf{\Theta}_g^\mathsf{H} \mathbf{H}_{\mathrm{B},g}^{(k)\mathsf{H}} \Bigr) \mathbf{Q}_k^{(-1)} \mathbf{H}^{(kk)} \Bigr) \mathbf{W}_k \Bigr\} \\
+	% 		& = \sum_{k=1}^K \rho_k \Bigl( \tr \Bigl\{ \mathbf{H}_{\mathrm{B},g}^{(k)\mathsf{H}} \mathbf{Q}_k^{(-1)} \mathbf{H}^{(kk)} \mathbf{W}_k \mathbf{E}_k \mathbf{W}_k^\mathsf{H} \mathbf{H}_{\mathrm{F},g}^{(k)\mathsf{H}} \partial \mathbf{\Theta}_g^\mathsf{H}\Bigr\} \\
+	% 		& \quad + \tr \Bigl\{ \mathbf{H}_{\mathrm{F},g}^{(k)\mathsf{H}} \mathbf{W}_k \mathbf{E}_k \mathbf{W}_k^\mathsf{H} \mathbf{H}^{(kk)\mathsf{H}} \mathbf{Q}_k^{(-1)} \mathbf{H}_{\mathrm{B},g}^{(k)\mathsf{H}} \partial \mathbf{\Theta}_g \Bigr\} \\
+	% 		& \quad - \tr \Bigl\{ \sum_{j \ne k} \mathbf{H}_{\mathrm{B},g}^{(k)\mathsf{H}} \mathbf{Q}_k^{(-1)} \mathbf{H}^{(kk)} \mathbf{W}_k \mathbf{E}_k \mathbf{W}_k^\mathsf{H} \mathbf{H}^{(kk)\mathsf{H}} \\
+	% 		& \quad \quad \times \mathbf{Q}_k^{(-1)} \mathbf{H}^{(kj)} \mathbf{W}_j \mathbf{W}_j^\mathsf{H} \mathbf{H}_{\mathrm{F},g}^{(j)\mathsf{H}} \partial \mathbf{\Theta}_g^\mathsf{H} \Bigr\} \\
+	% 		& \quad - \tr \Bigl\{ \sum_{j \ne k} \mathbf{H}_{\mathrm{F},g}^{(j)\mathsf{H}} \mathbf{W}_j \mathbf{W}_j^\mathsf{H} \mathbf{H}^{(kj)\mathsf{H}} \mathbf{Q}_k^{(-1)} \mathbf{H}^{(kk)} \mathbf{W}_k \\
+	% 		& \quad \quad \times \mathbf{E}_k \mathbf{W}_k^\mathsf{H} \mathbf{H}^{(kk)\mathsf{H}} \mathbf{Q}_k^{(-1)} \mathbf{H}_{\mathrm{B},g}^{(k)} \partial \mathbf{\Theta}_g \Bigr\} \Bigr),
+	% 	\end{align*}
+	% 	and the corresponding complex derivative is \eqref{eq:gradient_eucl_wsr}.
+	% \end{subsection}
 
-	\begin{subsection}{Proof of Proposition \ref{pp:interference}}
-		\label{ap:interference}
-		Minimizing \eqref{ob:interference} is equivalent to maximizing
-		\begin{align*}
-			f(\mathbf{\Theta}) & = - I + \sum_g \beta_g^{(k)} \tr \Bigl\{ \mathbf{H}_{\mathrm{F},g}^{(j)\mathsf{H}} \mathbf{H}_{\mathrm{F},g}^{(j)} \Bigr\} \\
-			& = \sum_{k=1}^K \sum_{j \ne k} - \tr \Bigl\{ \sum_g \mathbf{H}_{\mathrm{F},g}^{(j)} \mathbf{H}_{\mathrm{D}}^{(kj)\mathsf{H}} \mathbf{H}_{\mathrm{B},g}^{(k)} \mathbf{\Theta}_g\Bigr\} \\
-			& \quad - \tr \Bigl\{ \sum_g \mathbf{H}_{\mathrm{B},g}^{(k)\mathsf{H}} \mathbf{H}_{\mathrm{D}}^{(kj)} \mathbf{H}_{\mathrm{F},g}^{(j)\mathsf{H}} \mathbf{\Theta}_g^\mathsf{H} \Bigr\} \\
-			& \quad - \tr \Bigl\{ \sum_{g_1=1}^G \sum_{g_2 \ne g_1} \mathbf{H}_{\mathrm{B},g_2}^{(k)\mathsf{H}} \mathbf{H}_{\mathrm{B},g_1}^{(k)} \mathbf{\Theta}_{g_1} \mathbf{H}_{\mathrm{F},g_1}^{(j)} \mathbf{H}_{\mathrm{F},g_2}^{(j)\mathsf{H}} \mathbf{\Theta}_{g_2}^\mathsf{H}\Bigr\} \\
-			& \quad - \tr \Bigl\{ \sum_g \mathbf{H}_{\mathrm{B},g}^{(k)\mathsf{H}} \mathbf{H}_{\mathrm{B},g}^{(k)} \mathbf{\Theta}_{g} \mathbf{H}_{\mathrm{F},g}^{(j)\mathsf{H}} \mathbf{H}_{\mathrm{F},g}^{(j)} \mathbf{\Theta}_{g}^\mathsf{H} \Bigr\} \\
-			& \quad + \tr \Bigl\{ \sum_g \beta_g^{(k)} \mathbf{\Theta}_{g} \mathbf{H}_{\mathrm{F},g}^{(j)\mathsf{H}} \mathbf{H}_{\mathrm{F},g}^{(j)} \mathbf{\Theta}_{g}^\mathsf{H} \Bigr\} \\
-			& = \sum_{k=1}^K \sum_{j \ne k} - \tr \Bigl\{ \sum_g \mathbf{H}_{\mathrm{F},g}^{(j)} \mathbf{H}_{\mathrm{D}}^{(kj)\mathsf{H}} \mathbf{H}_{\mathrm{B},g}^{(k)} \mathbf{\Theta}_g\Bigr\} \\
-			& \quad - \tr \Bigl\{ \sum_g \mathbf{H}_{\mathrm{B},g}^{(k)\mathsf{H}} \mathbf{H}_{\mathrm{D}}^{(kj)} \mathbf{H}_{\mathrm{F},g}^{(j)\mathsf{H}} \mathbf{\Theta}_g^\mathsf{H} \Bigr\} \\
-			& \quad - \tr \Bigl\{ \sum_{g_1=1}^G \sum_{g_2 \ne g_1} \mathbf{H}_{\mathrm{B},g_2}^{(k)\mathsf{H}} \mathbf{H}_{\mathrm{B},g_1}^{(k)} \mathbf{\Theta}_{g_1} \mathbf{H}_{\mathrm{F},g_1}^{(j)} \mathbf{H}_{\mathrm{F},g_2}^{(j)\mathsf{H}} \mathbf{\Theta}_{g_2}^\mathsf{H}\Bigr\} \\
-			& \quad + \tr \Bigl\{ \sum_g \mathbf{B}_{g}^{(k)} \mathbf{\Theta}_{g} \mathbf{H}_{\mathrm{F},g}^{(j)\mathsf{H}} \mathbf{H}_{\mathrm{F},g}^{(j)} \mathbf{\Theta}_{g}^\mathsf{H} \Bigr\},
-		\end{align*}
-		where $\mathbf{B}_{g}^{(k)} = \beta_g^{(k)} \mathbf{I} - \mathbf{H}_{\mathrm{B},g}^{(k)\mathsf{H}} \mathbf{H}_{\mathrm{B},g}^{(k)}$ and the relaxation constant $\beta_g^{(k)}$ can be chosen arbitrarily.
-		One can choose $\beta_g^{(k)} = \lambda_1(\mathbf{H}_{\mathrm{B},g}^{(k)\mathsf{H}} \mathbf{H}_{\mathrm{B},g}^{(k)})$ to ensure the positive semi-definiteness of $\mathbf{B}_{g}^{(k)}$ and formulate a quadratic function to be maximized.
-		The remaining proof is similar to Appendix \ref{ap:power} and omitted here.
-	\end{subsection}
+	% \begin{subsection}{Proof of Proposition \ref{pp:interference}}
+	% 	\label{ap:interference}
+	% 	Minimizing \eqref{ob:interference} is equivalent to maximizing
+	% 	\begin{align*}
+	% 		f(\mathbf{\Theta}) & = - I + \sum_g \beta_g^{(k)} \tr \Bigl\{ \mathbf{H}_{\mathrm{F},g}^{(j)\mathsf{H}} \mathbf{H}_{\mathrm{F},g}^{(j)} \Bigr\} \\
+	% 		& = \sum_{k=1}^K \sum_{j \ne k} - \tr \Bigl\{ \sum_g \mathbf{H}_{\mathrm{F},g}^{(j)} \mathbf{H}_{\mathrm{D}}^{(kj)\mathsf{H}} \mathbf{H}_{\mathrm{B},g}^{(k)} \mathbf{\Theta}_g\Bigr\} \\
+	% 		& \quad - \tr \Bigl\{ \sum_g \mathbf{H}_{\mathrm{B},g}^{(k)\mathsf{H}} \mathbf{H}_{\mathrm{D}}^{(kj)} \mathbf{H}_{\mathrm{F},g}^{(j)\mathsf{H}} \mathbf{\Theta}_g^\mathsf{H} \Bigr\} \\
+	% 		& \quad - \tr \Bigl\{ \sum_{g_1=1}^G \sum_{g_2 \ne g_1} \mathbf{H}_{\mathrm{B},g_2}^{(k)\mathsf{H}} \mathbf{H}_{\mathrm{B},g_1}^{(k)} \mathbf{\Theta}_{g_1} \mathbf{H}_{\mathrm{F},g_1}^{(j)} \mathbf{H}_{\mathrm{F},g_2}^{(j)\mathsf{H}} \mathbf{\Theta}_{g_2}^\mathsf{H}\Bigr\} \\
+	% 		& \quad - \tr \Bigl\{ \sum_g \mathbf{H}_{\mathrm{B},g}^{(k)\mathsf{H}} \mathbf{H}_{\mathrm{B},g}^{(k)} \mathbf{\Theta}_{g} \mathbf{H}_{\mathrm{F},g}^{(j)\mathsf{H}} \mathbf{H}_{\mathrm{F},g}^{(j)} \mathbf{\Theta}_{g}^\mathsf{H} \Bigr\} \\
+	% 		& \quad + \tr \Bigl\{ \sum_g \beta_g^{(k)} \mathbf{\Theta}_{g} \mathbf{H}_{\mathrm{F},g}^{(j)\mathsf{H}} \mathbf{H}_{\mathrm{F},g}^{(j)} \mathbf{\Theta}_{g}^\mathsf{H} \Bigr\} \\
+	% 		& = \sum_{k=1}^K \sum_{j \ne k} - \tr \Bigl\{ \sum_g \mathbf{H}_{\mathrm{F},g}^{(j)} \mathbf{H}_{\mathrm{D}}^{(kj)\mathsf{H}} \mathbf{H}_{\mathrm{B},g}^{(k)} \mathbf{\Theta}_g\Bigr\} \\
+	% 		& \quad - \tr \Bigl\{ \sum_g \mathbf{H}_{\mathrm{B},g}^{(k)\mathsf{H}} \mathbf{H}_{\mathrm{D}}^{(kj)} \mathbf{H}_{\mathrm{F},g}^{(j)\mathsf{H}} \mathbf{\Theta}_g^\mathsf{H} \Bigr\} \\
+	% 		& \quad - \tr \Bigl\{ \sum_{g_1=1}^G \sum_{g_2 \ne g_1} \mathbf{H}_{\mathrm{B},g_2}^{(k)\mathsf{H}} \mathbf{H}_{\mathrm{B},g_1}^{(k)} \mathbf{\Theta}_{g_1} \mathbf{H}_{\mathrm{F},g_1}^{(j)} \mathbf{H}_{\mathrm{F},g_2}^{(j)\mathsf{H}} \mathbf{\Theta}_{g_2}^\mathsf{H}\Bigr\} \\
+	% 		& \quad + \tr \Bigl\{ \sum_g \mathbf{B}_{g}^{(k)} \mathbf{\Theta}_{g} \mathbf{H}_{\mathrm{F},g}^{(j)\mathsf{H}} \mathbf{H}_{\mathrm{F},g}^{(j)} \mathbf{\Theta}_{g}^\mathsf{H} \Bigr\},
+	% 	\end{align*}
+	% 	where $\mathbf{B}_{g}^{(k)} = \beta_g^{(k)} \mathbf{I} - \mathbf{H}_{\mathrm{B},g}^{(k)\mathsf{H}} \mathbf{H}_{\mathrm{B},g}^{(k)}$ and the relaxation constant $\beta_g^{(k)}$ can be chosen arbitrarily.
+	% 	One can choose $\beta_g^{(k)} = \lambda_1(\mathbf{H}_{\mathrm{B},g}^{(k)\mathsf{H}} \mathbf{H}_{\mathrm{B},g}^{(k)})$ to ensure the positive semi-definiteness of $\mathbf{B}_{g}^{(k)}$ and formulate a quadratic function to be maximized.
+	% 	The remaining proof is similar to Appendix \ref{ap:power} and omitted here.
+	% \end{subsection}
 \end{appendix}
 
 \begin{section}{Acknowledgement}
-	The authors would like to thank the anonymous reviewers for their insightful criticisms and suggestions that helped us correct some technical errors and improve the clarity of the manuscript.
+	The authors would like to thank the anonymous reviewers for their insightful criticisms and suggestions that helped us correct some technical errors.
 \end{section}
 
 \bibliographystyle{IEEEtran}

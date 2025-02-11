@@ -8,7 +8,7 @@ function [Theta, H] = scatter_power_min(H_d, H_f, H_b, L)
 
 	G = length(Theta) / L;
 	H = channel_aggregate(H_d, H_f, H_b, Theta);
-	[iter.converge, iter.tolerance, iter.counter, iter.P] = deal(false, 1e-7, 0, norm(H, 'fro') ^ 2);
+	[iter.converge, iter.tolerance, iter.counter, iter.P] = deal(false, 1e-4, 0, norm(H, 'fro') ^ 2);
 	while ~iter.converge
 		for g = 1 : G
 			S = (g - 1) * L + 1 : g * L;
@@ -22,7 +22,7 @@ function [Theta, H] = scatter_power_min(H_d, H_f, H_b, L)
 		end
 		H = channel_aggregate(H_d, H_f, H_b, Theta);
 		P = norm(H, 'fro') ^ 2;
-		iter.converge = (abs(P - iter.P) / iter.P <= iter.tolerance);
+		iter.converge = (abs(P - iter.P) / iter.P <= iter.tolerance) || P <= eps;
 		iter.P = P;
 		iter.counter = iter.counter + 1;
 	end

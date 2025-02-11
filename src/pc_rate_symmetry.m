@@ -60,8 +60,8 @@ hold all;
 handle.rate.direct = plot(pow2db(transmit.power), receive.rate.direct / log(2), 'Color', 'k', 'Marker', 'none', 'DisplayName', 'No RIS');
 for a = 1 : number.antenna
 	handle.rate.aggregate(1, a) = plot(pow2db(transmit.power), receive.rate.aggregate.asymmetric(:, a) / log(2), 'DisplayName', 'Asymmetric BD: $N_\mathrm{S} = ' + string(reflect.antenna(a)) + '$');
-	handle.rate.aggregate(2, a) = plot(pow2db(transmit.power), receive.rate.aggregate.symmetric.enforced(:, a) / log(2), 'DisplayName', 'Symmetric-Enforced BD: $N_\mathrm{S} = ' + string(reflect.antenna(a)) + '$');
-	handle.rate.aggregate(3, a) = plot(pow2db(transmit.power), receive.rate.aggregate.symmetric.projected(:, a) / log(2), 'DisplayName', 'Symmetric-Projected BD: $N_\mathrm{S} = ' + string(reflect.antenna(a)) + '$');
+	handle.rate.aggregate(2, a) = plot(pow2db(transmit.power), receive.rate.aggregate.symmetric.enforced(:, a) / log(2), 'DisplayName', 'Enforced BD: $N_\mathrm{S} = ' + string(reflect.antenna(a)) + '$');
+	handle.rate.aggregate(3, a) = plot(pow2db(transmit.power), receive.rate.aggregate.symmetric.projected(:, a) / log(2), 'DisplayName', 'Projected BD: $N_\mathrm{S} = ' + string(reflect.antenna(a)) + '$');
 end
 style_plot(handle.rate.aggregate, 3);
 hold off; grid on; box on; legend('Location', 'nw');

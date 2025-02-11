@@ -40,11 +40,11 @@ figure('Name', 'Channel Power vs RIS Symmetry', 'Position', [0, 0, 500, 400]);
 for a = 1 : number.antenna
 	handle.power.aggregate(1, a) = plot(1 : number.bond(a), channel.power.aggregate.asymmetric(1 : number.bond(a), a), 'DisplayName', 'Asymmetric: $N_\mathrm{S} = ' + string(reflect.antenna(a)) + '$');
     hold on;
-	handle.power.aggregate(2, a) = plot(1 : number.bond(a), channel.power.aggregate.symmetric.enforced(1 : number.bond(a), a), 'DisplayName', 'Symmetric-Enforced: $N_\mathrm{S} = ' + string(reflect.antenna(a)) + '$');
+	handle.power.aggregate(2, a) = plot(1 : number.bond(a), channel.power.aggregate.symmetric.enforced(1 : number.bond(a), a), 'DisplayName', 'Enforced: $N_\mathrm{S} = ' + string(reflect.antenna(a)) + '$');
 	hold on;
-	handle.power.aggregate(3, a) = plot(1 : number.bond(a), channel.power.aggregate.symmetric.legacy(1 : number.bond(a), a), 'DisplayName', 'Symmetric-Legacy: $N_\mathrm{S} = ' + string(reflect.antenna(a)) + '$');
+	handle.power.aggregate(3, a) = plot(1 : number.bond(a), channel.power.aggregate.symmetric.legacy(1 : number.bond(a), a), 'DisplayName', 'Legacy: $N_\mathrm{S} = ' + string(reflect.antenna(a)) + '$');
     hold on;
-	handle.power.aggregate(4, a) = plot(1 : number.bond(a), channel.power.aggregate.symmetric.takagi(1 : number.bond(a), a), 'DisplayName', 'Symmetric-Takagi: $N_\mathrm{S} = ' + string(reflect.antenna(a)) + '$');
+	handle.power.aggregate(4, a) = plot(1 : number.bond(a), channel.power.aggregate.symmetric.takagi(1 : number.bond(a), a), 'DisplayName', 'Takagi: $N_\mathrm{S} = ' + string(reflect.antenna(a)) + '$');
     hold on;
 end
 hold off;

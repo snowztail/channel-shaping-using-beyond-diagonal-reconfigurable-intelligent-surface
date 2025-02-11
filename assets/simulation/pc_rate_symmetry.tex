@@ -10,17 +10,17 @@
 \begin{tikzpicture}
 
 \begin{axis}[%
-width=11.411cm,
-height=9cm,
+width=9.509cm,
+height=7.5cm,
 at={(0cm,0cm)},
 scale only axis,
 xmin=-20,
 xmax=20,
-xlabel style={font=\color{white!15!black}},
+% xlabel style={font=\color{white!15!black}},
 xlabel={Transmit Power [dB]},
 ymin=0,
 ymax=60,
-ylabel style={font=\color{white!15!black}},
+% ylabel style={font=\color{white!15!black}},
 ylabel={Achievable Rate [bit/s/Hz]},
 axis background/.style={fill=white},
 xmajorgrids,
@@ -67,7 +67,7 @@ legend style={at={(0.03,0.97)}, anchor=north west, legend cell align=left, align
 15	29.9576641834048\\
 20	36.545658607323\\
 };
-\addlegendentry{Symmetric-Enforced BD: $N_\mathrm{S} = 16$}
+\addlegendentry{Enforced BD: $N_\mathrm{S} = 16$}
 
 \addplot [color=mycolor1, dotted, line width=2.0pt, mark=o, mark options={solid, mycolor1}]
   table[row sep=crcr]{%
@@ -81,7 +81,7 @@ legend style={at={(0.03,0.97)}, anchor=north west, legend cell align=left, align
 15	29.8328777883331\\
 20	36.3827795168908\\
 };
-\addlegendentry{Symmetric-Projected BD: $N_\mathrm{S} = 16$}
+\addlegendentry{Projected BD: $N_\mathrm{S} = 16$}
 
 \addplot [color=mycolor2, line width=2.0pt, mark=+, mark options={solid, mycolor2}]
   table[row sep=crcr]{%
@@ -109,7 +109,7 @@ legend style={at={(0.03,0.97)}, anchor=north west, legend cell align=left, align
 15	40.7022106761348\\
 20	47.4165131438527\\
 };
-\addlegendentry{Symmetric-Enforced BD: $N_\mathrm{S} = 256$}
+\addlegendentry{Enforced BD: $N_\mathrm{S} = 256$}
 
 \addplot [color=mycolor2, dotted, line width=2.0pt, mark=+, mark options={solid, mycolor2}]
   table[row sep=crcr]{%
@@ -123,7 +123,7 @@ legend style={at={(0.03,0.97)}, anchor=north west, legend cell align=left, align
 15	42.393566131641\\
 20	49.1026041293653\\
 };
-\addlegendentry{Symmetric-Projected BD: $N_\mathrm{S} = 256$}
+\addlegendentry{Projected BD: $N_\mathrm{S} = 256$}
 
 \end{axis}
 \end{tikzpicture}%
