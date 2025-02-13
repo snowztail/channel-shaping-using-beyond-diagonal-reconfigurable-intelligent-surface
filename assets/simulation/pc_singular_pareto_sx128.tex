@@ -6,30 +6,31 @@
 %
 \definecolor{mycolor1}{rgb}{0.00000,0.44706,0.74118}%
 \definecolor{mycolor2}{rgb}{0.92900,0.69400,0.12500}%
-\definecolor{mycolor3}{rgb}{0.85098,0.32549,0.09804}%
-\definecolor{mycolor4}{rgb}{0.30100,0.74500,0.93300}%
-\definecolor{mycolor5}{rgb}{0.92941,0.69412,0.12549}%
-\definecolor{mycolor6}{rgb}{0.85000,0.32500,0.09800}%
-\definecolor{mycolor7}{rgb}{0.49412,0.18431,0.55686}%
+\definecolor{mycolor3}{rgb}{0.49400,0.18400,0.55600}%
+\definecolor{mycolor4}{rgb}{0.85098,0.32549,0.09804}%
+\definecolor{mycolor5}{rgb}{0.63500,0.07800,0.18400}%
+\definecolor{mycolor6}{rgb}{0.00000,0.44700,0.74100}%
+\definecolor{mycolor7}{rgb}{0.92941,0.69412,0.12549}%
 \definecolor{mycolor8}{rgb}{0.46600,0.67400,0.18800}%
-\definecolor{mycolor9}{rgb}{0.63500,0.07800,0.18400}%
-\definecolor{mycolor10}{rgb}{0.50196,0.50196,0.50196}%
+\definecolor{mycolor9}{rgb}{0.49412,0.18431,0.55686}%
+\definecolor{mycolor10}{rgb}{0.85000,0.32500,0.09800}%
+\definecolor{mycolor11}{rgb}{0.50196,0.50196,0.50196}%
 %
 \begin{tikzpicture}
 
 \begin{axis}[%
-width=7.607cm,
-height=6cm,
+width=9.509cm,
+height=7.5cm,
 at={(0cm,0cm)},
 scale only axis,
 unbounded coords=jump,
 xmin=6.82872585627327e-18,
 xmax=0.00243816160662188,
-xlabel style={font=\color{white!15!black}},
+% xlabel style={font=\color{white!15!black}},
 xlabel={$\sigma_1(\mathbf{H})$},
 ymin=3.65485567546015e-21,
 ymax=0.00161848476949908,
-ylabel style={font=\color{white!15!black}},
+% ylabel style={font=\color{white!15!black}},
 ylabel={$\sigma_2(\mathbf{H})$},
 axis background/.style={fill=white},
 xmajorgrids,
@@ -114,6 +115,10 @@ x	y\\
 x	y\\
 0.00209785728241506	0.000629897607970685\\
 };
+\addplot[only marks, mark=x, mark options={}, mark size=3.5355pt, draw=mycolor1, forget plot] table[row sep=crcr]{%
+x	y\\
+0.00215085610784843	0.000271599925869964\\
+};
 \addplot [color=mycolor1, line width=2.0pt, forget plot]
   table[row sep=crcr]{%
 0.00215085610784843	0.000271599925869964\\
@@ -151,7 +156,7 @@ x	y\\
 0.00141343882647389	0.00122268663375429\\
 0.00135084809104336	0.00122423429959488\\
 };
-\addplot [color=mycolor3, dotted, line width=2.0pt]
+\addplot [color=mycolor4, dotted, line width=2.0pt]
   table[row sep=crcr]{%
 0.00224810954787343	0.00142765882888639\\
 0.00223752516987624	0.00143773668940813\\
@@ -204,11 +209,15 @@ x	y\\
 };
 \addlegendentry{$L = 4$}
 
-\addplot[only marks, mark=o, mark options={}, mark size=3.5355pt, draw=mycolor3, forget plot] table[row sep=crcr]{%
+\addplot[only marks, mark=o, mark options={}, mark size=3.5355pt, draw=mycolor4, forget plot] table[row sep=crcr]{%
 x	y\\
 0.00229487765359623	0.00136744900965217\\
 };
-\addplot [color=mycolor3, line width=2.0pt, forget plot]
+\addplot[only marks, mark=x, mark options={}, mark size=3.5355pt, draw=mycolor4, forget plot] table[row sep=crcr]{%
+x	y\\
+0.00235306574672104	0.00112241590476244\\
+};
+\addplot [color=mycolor4, line width=2.0pt, forget plot]
   table[row sep=crcr]{%
 0.00235306574672104	0.00112241590476244\\
 0.00235222900963638	0.00115749997958599\\
@@ -245,7 +254,7 @@ x	y\\
 0.00201538660022458	0.00152551134991323\\
 0.00199610708059676	0.00152597176892137\\
 };
-\addplot [color=mycolor5, dotted, line width=2.0pt]
+\addplot [color=mycolor7, dotted, line width=2.0pt]
   table[row sep=crcr]{%
 0.00238467756794191	0.00157463743802116\\
 0.0023819055258318	0.00157727655066139\\
@@ -299,11 +308,15 @@ x	y\\
 };
 \addlegendentry{$L = 16$}
 
-\addplot[only marks, mark=o, mark options={}, mark size=3.5355pt, draw=mycolor5, forget plot] table[row sep=crcr]{%
+\addplot[only marks, mark=o, mark options={}, mark size=3.5355pt, draw=mycolor7, forget plot] table[row sep=crcr]{%
 x	y\\
 0.00239439821373247	0.00156278291878547\\
 };
-\addplot [color=mycolor5, line width=2.0pt, forget plot]
+\addplot[only marks, mark=x, mark options={}, mark size=3.5355pt, draw=mycolor7, forget plot] table[row sep=crcr]{%
+x	y\\
+0.00241058391784397	0.001500391286991\\
+};
+\addplot [color=mycolor7, line width=2.0pt, forget plot]
   table[row sep=crcr]{%
 0.00241058391784397	0.001500391286991\\
 0.00241038337686835	0.00150873726156622\\
@@ -340,7 +353,7 @@ x	y\\
 0.00231109266365087	0.00160235119567967\\
 0.00230106518932941	0.00160259231647374\\
 };
-\addplot [color=mycolor7, dotted, line width=2.0pt]
+\addplot [color=mycolor9, dotted, line width=2.0pt]
   table[row sep=crcr]{%
 0.00243247601307818	0.00161102948034108\\
 0.00243181726442887	0.00161165656477936\\
@@ -391,11 +404,15 @@ x	y\\
 };
 \addlegendentry{$L = 128$}
 
-\addplot[only marks, mark=o, mark options={}, mark size=3.5355pt, draw=mycolor7, forget plot] table[row sep=crcr]{%
+\addplot[only marks, mark=o, mark options={}, mark size=3.5355pt, draw=mycolor9, forget plot] table[row sep=crcr]{%
 x	y\\
 0.00243470267688429	0.00160831823103241\\
 };
-\addplot [color=mycolor7, line width=2.0pt, forget plot]
+\addplot[only marks, mark=x, mark options={}, mark size=3.5355pt, draw=mycolor9, forget plot] table[row sep=crcr]{%
+x	y\\
+0.00243816160662188	0.00159530193644534\\
+};
+\addplot [color=mycolor9, line width=2.0pt, forget plot]
   table[row sep=crcr]{%
 0.00243816160662188	0.00159530193644534\\
 0.00243812120540108	0.00159696998886273\\
@@ -433,15 +450,17 @@ x	y\\
 0.00240800886067149	0.00161848476949908\\
 };
 
-\addlegendimage{only marks, mark=o, mark options={solid}, mark size=2pt, line width=2pt, draw=mycolor10}
+\addlegendimage{only marks, mark=o, mark options={solid}, mark size=2pt, line width=2pt, draw=mycolor11}
 \addlegendentry{P-max}
 
-\addplot [draw=none, color=mycolor10, line width=2.0pt]
+\addlegendimage{only marks, mark=x, mark options={solid}, mark size=3pt, line width=2pt, draw=mycolor11}
+\addlegendentry{E-max}
+
+\addplot [draw=none, color=mycolor11, line width=2.0pt]
   table[row sep=crcr]{%
 0	0\\
 };
 \addlegendentry{R-max}
-
 
 \end{axis}
 \end{tikzpicture}%

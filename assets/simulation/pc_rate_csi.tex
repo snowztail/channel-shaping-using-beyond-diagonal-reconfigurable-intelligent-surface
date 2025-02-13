@@ -1,0 +1,129 @@
+% This file was created by matlab2tikz.
+%
+%The latest updates can be retrieved from
+%  http://www.mathworks.com/matlabcentral/fileexchange/22022-matlab2tikz-matlab2tikz
+%where you can also make suggestions and rate matlab2tikz.
+%
+\definecolor{mycolor1}{rgb}{0.00000,0.44706,0.74118}%
+\definecolor{mycolor2}{rgb}{0.85098,0.32549,0.09804}%
+%
+\begin{tikzpicture}
+
+\begin{axis}[%
+width=9.509cm,
+height=7.5cm,
+at={(0cm,0cm)},
+scale only axis,
+xmin=-20,
+xmax=20,
+% xlabel style={font=\color{white!15!black}},
+xlabel={Transmit Power [dB]},
+ymin=0.872791961172002,
+ymax=47.8680403270704,
+% ylabel style={font=\color{white!15!black}},
+ylabel={Achievable Rate [bit/s/Hz]},
+axis background/.style={fill=white},
+xmajorgrids,
+ymajorgrids,
+legend style={at={(0.03,0.97)}, anchor=north west, legend cell align=left, align=left, draw=white!15!black}
+]
+\addplot [color=black, line width=2.0pt]
+  table[row sep=crcr]{%
+-20	0.872791961172002\\
+-15	2.07904737782427\\
+-10	4.27044866001181\\
+-5	7.57596761019195\\
+0	12.0581965631964\\
+5	17.7466867911886\\
+10	24.0493143932381\\
+15	30.5805423901838\\
+20	37.1882780145721\\
+};
+\addlegendentry{No RIS}
+
+\addplot [color=mycolor1, line width=2.0pt, mark=o, mark options={solid, mycolor1}]
+  table[row sep=crcr]{%
+-20	1.72199515744992\\
+-15	3.59697161695806\\
+-10	6.5895331682259\\
+-5	10.9723869941346\\
+0	17.3323710991557\\
+5	23.7503231602655\\
+10	30.3210481368116\\
+15	36.941604234274\\
+20	43.578074408526\\
+};
+\addlegendentry{D: $\epsilon = 0.01$}
+
+\addplot [color=mycolor1, dashed, line width=2.0pt, mark=o, mark options={solid, mycolor1}]
+  table[row sep=crcr]{%
+-20	1.71536945206226\\
+-15	3.58520666728276\\
+-10	6.57366233471145\\
+-5	10.9490393137998\\
+0	17.2930208713544\\
+5	23.7096575476636\\
+10	30.2798063010204\\
+15	36.9001857304648\\
+20	43.5366039849325\\
+};
+\addlegendentry{D: $\epsilon = 0.1$}
+
+\addplot [color=mycolor1, dotted, line width=2.0pt, mark=o, mark options={solid, mycolor1}]
+  table[row sep=crcr]{%
+-20	1.55441512858157\\
+-15	3.33220429724211\\
+-10	6.23113234284968\\
+-5	10.420387175913\\
+0	16.538499287718\\
+5	22.9165434284263\\
+10	29.4734527514333\\
+15	36.0894704932352\\
+20	42.7244977470308\\
+};
+\addlegendentry{D: $\epsilon = 0.5$}
+
+\addplot [color=mycolor2, line width=2.0pt, mark=+, mark options={solid, mycolor2}]
+  table[row sep=crcr]{%
+-20	2.26316055471769\\
+-15	4.77307899043111\\
+-10	9.39639994943951\\
+-5	15.124974996935\\
+0	21.4464746896447\\
+5	27.984503388636\\
+10	34.5944862634857\\
+15	41.2275888731308\\
+20	47.8680403270704\\
+};
+\addlegendentry{BD: $\epsilon = 0.01$}
+
+\addplot [color=mycolor2, dashed, line width=2.0pt, mark=+, mark options={solid, mycolor2}]
+  table[row sep=crcr]{%
+-20	2.24904712851749\\
+-15	4.74754914484069\\
+-10	9.34470319031593\\
+-5	15.0631073403706\\
+0	21.380523013882\\
+5	27.9171868966866\\
+10	34.5267244403906\\
+15	41.1596859123352\\
+20	47.8000925325886\\
+};
+\addlegendentry{BD: $\epsilon = 0.1$}
+
+\addplot [color=mycolor2, dotted, line width=2.0pt, mark=+, mark options={solid, mycolor2}]
+  table[row sep=crcr]{%
+-20	1.93925626618002\\
+-15	4.25529914900791\\
+-10	8.29391410054909\\
+-5	13.8015257433391\\
+0	20.029137829252\\
+5	26.534917281773\\
+10	33.1342433437324\\
+15	39.7639478491383\\
+20	46.4033172121794\\
+};
+\addlegendentry{BD: $\epsilon = 0.5$}
+
+\end{axis}
+\end{tikzpicture}%
